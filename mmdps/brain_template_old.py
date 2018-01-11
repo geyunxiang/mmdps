@@ -48,7 +48,7 @@ class BrainTemplate:
 		return indexes
 
 def get_template(name):
-	folder_templates = os.path.join(folder_module, '../../../data/templates')
+	folder_templates = os.path.join(folder_module, '../data/templates')
 	folder_templates = os.path.abspath(folder_templates)
 	jfilename = name+'.json'
 	niifilename = name+'.nii'

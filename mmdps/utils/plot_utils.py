@@ -1,3 +1,4 @@
+from matplotlib import cm
 from matplotlib import pyplot as plt
 from scipy import stats
 import numpy as np
@@ -44,6 +45,9 @@ def plot_heatmap_template_subnet(mat, template, cmap, rawindexes, valuerange=(-1
 	plotindexesrank = np.array(rawplotindexes).argsort().argsort()
 	subtemplate.plotindexes = plotindexesrank
 	return plot_heatmap_template(mat, subtemplate, cmap, valuerange)
+
+def plot_heatmap_from_net(net, title, valuerange = (-1, 1)):
+	return plot_heatmap(net.net, net.template.ticks, title, valuerange)
 
 def plot_heatmap(mat, xticks, title, valuerange = (-1, 1)):
 	cmap = cm.coolwarm
