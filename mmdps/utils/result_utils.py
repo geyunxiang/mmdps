@@ -6,6 +6,13 @@ import os
 from matplotlib import pyplot as plt
 
 from mmdps.loadfile import load_csvmat
+from mmdps.utils import plot_utils
+
+def generate_net_heatmap(net, output_file, title):
+	fig = plot_utils.plot_heatmap_from_net(net, title)
+	os.makedirs(os.path.dirname(output_file), exist_ok = True)
+	plt.savefig(output_file)
+	plt.close()
 
 class ResultGenerator:
 	def __init__(self, boldPath, template, resultPath):
