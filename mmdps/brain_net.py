@@ -13,6 +13,7 @@ class BrainNet:
 	def __init__(self, net_config_file):
 		self.net_config = json.load(open(net_config_file, 'r'))
 		self.template = brain_template.get_template(self.net_config['template'])
+		self.ticks = self.template.ticks
 		self.raw_data = None # raw .nii data
 		self.net = None
 		
@@ -59,6 +60,7 @@ class BrainNet:
 			np.copyto(data, nib.flip_axis(data, axis=0))
 
 class SubNet:
+	# TODO: incorporate subnet to brainnet
 	def __init__(self, rawnet, template, subnetinfo):
 		self.subnetinfo = subnetinfo
 		self.name = self.subnetinfo.name
@@ -69,19 +71,39 @@ class SubNet:
 
 	def _calc_net(self, rawnet, template):
 		self.idx = template.ticks_to_indexes(self.ticks)
-		self.mat = self._sub_matrix(rawnet, self.idx)
+		self.net = self._sub_matrix(rawnet, self.idx)
 
 	def get_value_at_tick(self, xtick, ytick):
 		if xtick not in self.ticks or ytick not in self.ticks:
 			print('xtick %s or ytick %s not in SubNet.' % (xtick, ytick))
 			return None
 		# given self.mat is a symmetric matrix
-		return self.mat[self.ticks.index(xtick), self.ticks.index(ytick)]
+		return self.net[self.ticks.index(xtick), self.ticks.index(ytick)]
 
 	@staticmethod
 	def _sub_matrix(mat, idx):
 		npidx = np.array(idx)
 		return mat[npidx[:, np.newaxis], npidx]
+
+class SubNetInfo:
+	def __init__(self, name, conf):
+		self.name = name
+		self.description = conf['description']
+		self.template = conf['template']
+		self.labels = conf['labels']
+
+class SubNetGroupInfo:
+	def __init__(self, config_file):
+		config = json.load(open(config_file, 'r'))
+		self.name = config['name']
+		self.conf = config['subnets']
+		self.load_subnets()
+
+	def load_subnets(self):
+		self.subnets = {}
+		for name, conf in self.conf.items():
+			subnet = SubNetInfo(name, conf)
+			self.subnets[name] = subnet
 
 class NodeFile:
 	def __init__(self, initnode=None):

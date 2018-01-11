@@ -10,28 +10,6 @@ from mmdps.paraproc import run_in_folder
 from matplotlib import cm
 import matplotlib.pyplot as plt
 
-def load_subnetgroup(conf):
-	return SubNetGroupInfo(conf['name'], conf['subnets'])
-
-class SubNetInfo:
-	def __init__(self, name, conf):
-		self.name = name
-		self.description = conf['description']
-		self.template = conf['template']
-		self.labels = conf['labels']
-
-class SubNetGroupInfo:
-	def __init__(self, name, conf):
-		self.name = name
-		self.conf = conf
-		self.load_subnets()
-
-	def load_subnets(self):
-		self.subnets = {}
-		for name, conf in self.conf.items():
-			subnet = SubNetInfo(name, conf)
-			self.subnets[name] = subnet
-
 class SubNetReporter:
 	def __init__(self, subnet=None):
 		self.subnet = subnet
