@@ -1,6 +1,6 @@
 import json
 import os.path
-from . import BrainNet
+from . import brain_net
 
 folder_module = os.path.dirname(os.path.abspath(__file__))
 
@@ -17,7 +17,7 @@ class BrainTemplate:
 		self.region_counts = self.dd['region_counts']
 		if 'nodefile' in self.dd:
 			self.nodefilename = self.dd['nodefile']
-			self.nodefile = BrainNet.get_nodefile(self.nodefilename)
+			self.nodefile = brain_net.get_nodefile(self.nodefilename)
 		self.ticks_adjusted = self.adjust_ticks()
 		
 	def __str__(self):

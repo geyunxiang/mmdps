@@ -3,7 +3,7 @@ import csv, os, json
 import nibabel as nib
 import numpy as np
 
-from mmdps import BrainTemplate_old as BrainTemplate
+from mmdps import brain_template_old as brain_template
 
 class BrainNet:
 	"""
@@ -22,7 +22,7 @@ class BrainNet:
 			self.gen_by_templatename(template_name, outfolder)
 
 	def gen_by_templatename(self, template_name, outfolder):
-		template = BrainTemplate.get_template(template_name)
+		template = brain_template.get_template(template_name)
 		time_series = self.gen_timeseries_by_template(template)
 		np.savetxt(os.path.join(outfolder, 'timeseries.csv'), time_series, delimiter=',')
 		time_series_corr = np.corrcoef(time_series)
