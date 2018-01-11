@@ -9,11 +9,13 @@ class BrainTemplate:
 	def __init__(self, config):
 		self.config = config
 		self.name = self.config['name']
+		self.nii_path = os.path.abspath(os.path.join(folder_module, '../data/templates/%s.nii' % self.name))
 		self.brief = self.config['brief']
 		self.numRegions = self.config['count']
-		self.regions = self.config['regions']
+		self.count = self.numRegions
+		self.regions = self.config['regions'] # actual number in nii file
 		self.ticks = self.config['ticks']
-		self.plotindexes = self.config['plotindexes']
+		self.plotindexes = self.config['plotindexes'] # plot which first
 		if 'nodefile' in self.config:
 			self.nodefile = brain_net.get_nodefile(self.config['nodefile'])
 		self.ticks_adjusted = self.adjust_ticks()
