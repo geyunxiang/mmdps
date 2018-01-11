@@ -60,6 +60,31 @@ class BrainNet:
 			data = img.get_data()
 			np.copyto(data, nib.flip_axis(data, axis=0))
 
+class SubNet:
+	def __init__(self, rawnet, template, subnetinfo):
+		self.subnetinfo = subnetinfo
+		self.name = self.subnetinfo.name
+		self.ticks = self.subnetinfo.labels
+		self.count = len(self.ticks)
+		self._calc_net(rawnet, template)
+		self.original_template = template
+
+	def _calc_net(self, rawnet, template):
+		self.idx = template.ticks_to_indexes(self.ticks)
+		self.mat = self._sub_matrix(rawnet, self.idx)
+
+	def get_value_at_tick(self, xtick, ytick):
+		if xtick not in self.ticks or ytick not in self.ticks:
+			print('xtick %s or ytick %s not in SubNet.' % (xtick, ytick))
+			return None
+		# given self.mat is a symmetric matrix
+		return self.mat[self.ticks.index(xtick), self.ticks.index(ytick)]
+
+	@staticmethod
+	def _sub_matrix(mat, idx):
+		npidx = np.array(idx)
+		return mat[npidx[:, np.newaxis], npidx]
+
 class NodeFile:
 	def __init__(self, initnode=None):
 		nodedata = []
