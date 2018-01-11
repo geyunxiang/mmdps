@@ -3,7 +3,7 @@ import csv, os, json
 import nibabel as nib
 import numpy as np
 
-from mmdps import brain_template_old as brain_template
+from mmdps import brain_template
 from mmdps import loadfile
 
 class BrainNet:
