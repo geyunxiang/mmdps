@@ -6,19 +6,21 @@ from mmdps.loadfile import load_json
 folder_module = os.path.dirname(os.path.abspath(__file__))
 
 class BrainTemplate:
-	def __init__(self, descdict):
-		self.dd = descdict
-		self.name = self.dd['name']
-		self.brief = self.dd['brief']
-		self.count = self.dd['count']
-		self.regions = self.dd['regions']
-		self.ticks = self.dd['ticks']
-		self.plotindexes = self.dd['plotindexes']
-		if 'nodefile' in self.dd:
-			self.nodefile = brain_net.get_nodefile(self.dd['nodefile'])
+	def __init__(self, config):
+		self.config = config
+		self.name = self.config['name']
+		self.nii_path = os.path.abspath(os.path.join(folder_module, '../data/templates/%s.nii' % self.name))
+		self.brief = self.config['brief']
+		self.numRegions = self.config['count']
+		self.count = self.numRegions
+		self.regions = self.config['regions'] # actual number in nii file
+		self.ticks = self.config['ticks']
+		self.plotindexes = self.config['plotindexes'] # plot which first
+		if 'nodefile' in self.config:
+			self.nodefile = brain_net.get_nodefile(self.config['nodefile'])
 		self.ticks_adjusted = self.adjust_ticks()
-		if 'volumes' in self.dd:
-			self.add_volumes(self.dd['volumes'])
+		if 'volumes' in self.config:
+			self.add_volumes(self.config['volumes'])
 
 	def add_volumes(self, volumes):
 		self.volumes = {}
@@ -29,8 +31,8 @@ class BrainTemplate:
 		return self.volumes[volumename]
 
 	def adjust_ticks(self):
-		adjticks = [None] * self.count
-		for i in range(self.count):
+		adjticks = [None] * self.numRegions
+		for i in range(self.numRegions):
 			realpos = self.plotindexes[i]
 			adjticks[i] = self.ticks[realpos]
 		return adjticks
@@ -53,17 +55,17 @@ class BrainTemplate:
 		indexes = [self._tickindexdict[tick] for tick in ticks]
 		return indexes
 
-def get_template(name):
-	folder_templates = os.path.join(folder_module, '../data/templates')
-	folder_templates = os.path.abspath(folder_templates)
-	jfilename = name+'.json'
-	jfilepath = os.path.join(folder_templates, jfilename)
-	tconf = load_json(jfilepath)
-	return BrainTemplate(tconf)
+def get_template(template_name):
+	template_folder = os.path.join(folder_module, '../data/templates')
+	template_folder = os.path.abspath(template_folder)
+	config_file = template_name + '.json'
+	config_file_path = os.path.join(template_folder, config_file)
+	template_config = load_json(config_file_path)
+	return BrainTemplate(template_config)
 
 def load_template(folder, templatename):
-	jfilepath = os.path.join(folder, templatename + '.json')
-	templatedesc = load_json(jfilepath)
+	config_file_path = os.path.join(folder, templatename + '.json')
+	templatedesc = load_json(config_file_path)
 	templatedesc['nodefile'] = os.path.join(folder, templatedesc['nodefile'])
 	return BrainTemplate(templatedesc)
 
