@@ -4,6 +4,7 @@ import nibabel as nib
 import numpy as np
 
 from mmdps import brain_template_old as brain_template
+from mmdps import loadfile
 
 class BrainNet:
 	"""
@@ -14,8 +15,14 @@ class BrainNet:
 		self.raw_data = None # raw .nii data
 		self.net = None
 
-	def generate_brain_net(self, raw_data_path, output_path):
+	def read_net(self, net_file_path):
+		self.net = loadfile.load_csvmat(net_file_path)
+
+	def load_raw_data(self, raw_data_path):
 		self.raw_data = nib.load(raw_data_path)
+
+	def generate_brain_net(self, raw_data_path, output_path):
+		self.load_raw_data(raw_data_path)
 		for template_name in self.net_config['templates']:
 			outfolder = os.path.join(output_path, template_name)
 			os.makedirs(outfolder, exist_ok = True)
