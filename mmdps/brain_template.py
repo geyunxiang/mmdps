@@ -1,6 +1,6 @@
 import os
 import json
-from mmdps import BrainNet
+from mmdps import brain_net
 from mmdps.loadfile import load_json
 
 folder_module = os.path.dirname(os.path.abspath(__file__))
@@ -15,7 +15,7 @@ class BrainTemplate:
 		self.ticks = self.dd['ticks']
 		self.plotindexes = self.dd['plotindexes']
 		if 'nodefile' in self.dd:
-			self.nodefile = BrainNet.get_nodefile(self.dd['nodefile'])
+			self.nodefile = brain_net.get_nodefile(self.dd['nodefile'])
 		self.ticks_adjusted = self.adjust_ticks()
 		if 'volumes' in self.dd:
 			self.add_volumes(self.dd['volumes'])
@@ -54,7 +54,7 @@ class BrainTemplate:
 		return indexes
 
 def get_template(name):
-	folder_templates = os.path.join(folder_module, '../../../data/templates')
+	folder_templates = os.path.join(folder_module, '../data/templates')
 	folder_templates = os.path.abspath(folder_templates)
 	jfilename = name+'.json'
 	jfilepath = os.path.join(folder_templates, jfilename)
