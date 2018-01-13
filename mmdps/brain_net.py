@@ -1,4 +1,4 @@
-import csv, os, json
+import csv, os, json, copy
 
 import nibabel as nib
 import numpy as np
@@ -10,13 +10,22 @@ class BrainNet:
 	"""
 	A brain net must have a template
 	"""
-	def __init__(self, net_config_file):
-		self.net_config_file = net_config_file
-		self.net_config = json.load(open(net_config_file, 'r'))
-		self.template = brain_template.get_template(self.net_config['template'])
-		self.ticks = self.template.ticks
+	def __init__(self, net_config = None, net = None, template = None):
+		self.net_config = net_config
+		if self.net_config:
+			self.template = brain_template.get_template(self.net_config['template'])
+			self.ticks = self.template.ticks
+		elif template:
+			self.template = template
+			self.ticks = self.template.ticks
+		else:
+			self.template = None
+			self.ticks = None
+		if net is None:
+			self.net = None
+		else:
+			self.net = net
 		self.raw_data = None # raw .nii data
-		self.net = None
 
 	def get_value_at_tick(self, xtick, ytick):
 		if xtick not in self.ticks or ytick not in self.ticks:
@@ -81,14 +90,13 @@ class BrainNet:
 			np.copyto(data, nib.flip_axis(data, axis=0))
 
 class SubNet(BrainNet):
-	def __init__(self, net_config_file, subnetinfo):
-		super().__init__(net_config_file)
+	def __init__(self, subnetinfo, parent_net):
+		super(SubNet, self).__init__(net = parent_net.net, template = parent_net.template)
 		self.subnetinfo = subnetinfo
 		self.name = self.subnetinfo.name
 		self.ticks = self.subnetinfo.labels
 		self.count = len(self.ticks)
 		self._calc_net()
-		self.original_template = template
 
 	def _calc_net(self):
 		self.idx = self.template.ticks_to_indexes(self.ticks)
@@ -98,9 +106,6 @@ class SubNet(BrainNet):
 	def _sub_matrix(mat, idx):
 		npidx = np.array(idx)
 		return mat[npidx[:, np.newaxis], npidx]
-
-def create_subnet_from_net(brainnet, subnetinfo):
-	return SubNet(brainnet.net_config_file, subnetinfo)
 
 class SubNetInfo:
 	def __init__(self, name, conf):

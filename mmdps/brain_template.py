@@ -49,11 +49,14 @@ class BrainTemplate:
 		indexes = [self._regionindexdict[region] for region in regions]
 		return indexes
 
+	def ticks_to_plot_indexes(self, ticks):
+		"""
+		return the plot indexes for the given ticks defined by this template
+		"""
+		return [self.plotindexes[self.ticks.index(tick)] for tick in ticks]
+
 	def ticks_to_indexes(self, ticks):
-		if not hasattr(self, '_tickindexdict'):
-			self._tickindexdict = dict([(k, i) for i, k in enumerate(self.ticks)])
-		indexes = [self._tickindexdict[tick] for tick in ticks]
-		return indexes
+		return [self.ticks.index(tick) for tick in ticks]
 
 def get_template(template_name):
 	template_folder = os.path.join(folder_module, '../data/templates')
