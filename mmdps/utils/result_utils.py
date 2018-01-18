@@ -5,6 +5,7 @@ import os
 
 from matplotlib import pyplot as plt
 
+from mmdps import brain_template
 from mmdps.loadfile import load_csvmat
 from mmdps.utils import plot_utils
 
@@ -14,10 +15,10 @@ def generate_net_heatmap(net, output_file, title):
 	plt.savefig(output_file)
 	plt.close()
 
-class ResultGenerator:
-	def __init__(self, boldPath, template, resultPath):
+class HistGenerator:
+	def __init__(self, boldPath, template_name, resultPath):
 		self.boldPath = boldPath
-		self.template = template
+		self.template = brain_template.get_template(template_name)
 		self.resultPath = resultPath # 'E:/Results/Beijing Zang FC Analysis/'
 
 	def get_all_fc_at_ticks(self, xtick, ytick):
@@ -28,11 +29,15 @@ class ResultGenerator:
 			ret.append(rawnet[self.template.ticks_to_indexes([xtick])[0], self.template.ticks_to_indexes([ytick])[0]])
 		return ret
 
-	def plot_FCHist_at_tick(self, xtick, ytick):
+	def plot_FCHist_at_tick(self, xtick, ytick, show_img = False):
 		data = self.get_all_fc_at_ticks(xtick, ytick)
 		plt.hist(data, bins = 40, range = (-1, 1))
 		plt.xlabel('functional connectivity')
 		plt.ylabel('num')
 		plt.title('fc hist %s-%s' % (xtick, ytick))
+		os.makedirs(os.path.join(self.resultPath, 'FC Hist'), exist_ok = True)
 		plt.savefig(os.path.join(self.resultPath, 'FC Hist/%s-%s fc hist.png' % (xtick, ytick)))
-		plt.show()
+		if show_img:
+			plt.show()
+		else:
+			plt.close()
