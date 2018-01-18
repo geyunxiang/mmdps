@@ -5,6 +5,7 @@ import os
 
 from matplotlib import pyplot as plt
 
+from mmdps import brain_template
 from mmdps.loadfile import load_csvmat
 from mmdps.utils import plot_utils
 
@@ -14,25 +15,48 @@ def generate_net_heatmap(net, output_file, title):
 	plt.savefig(output_file)
 	plt.close()
 
-class ResultGenerator:
-	def __init__(self, boldPath, template, resultPath):
-		self.boldPath = boldPath
-		self.template = template
-		self.resultPath = resultPath # 'E:/Results/Beijing Zang FC Analysis/'
+def loadAllNets(boldPath):
+	return [load_csvmat(os.path.join(boldPath, scan, 'bold_net/brodmann_lr_3/corrcoef.csv')) for scan in os.listdir(boldPath)]
 
-	def get_all_fc_at_ticks(self, xtick, ytick):
-		ret = []
-		for scan in os.listdir(self.boldPath):
-			matpath = os.path.join(self.boldPath, scan, 'bold_net/brodmann_lr_3/corrcoef.csv')
-			rawnet = load_csvmat(matpath)
-			ret.append(rawnet[self.template.ticks_to_indexes([xtick])[0], self.template.ticks_to_indexes([ytick])[0]])
-		return ret
+def getAllFCAtHist(xtick, ytick, template_name, boldPath = None, all_nets = None):
+	template = brain_template.get_template(template_name)
+	xtickIdx, ytickIdx = template.ticks_to_indexes([xtick, ytick])
+	if boldPath is not None:
+		return [rawnet[xtickIdx, ytickIdx] for rawnet in loadAllNets(boldPath)]
+	if all_nets is not None:
+		return [rawnet[xtickIdx, ytickIdx] for rawnet in all_nets]
+	raise
 
-	def plot_FCHist_at_tick(self, xtick, ytick):
-		data = self.get_all_fc_at_ticks(xtick, ytick)
-		plt.hist(data, bins = 40, range = (-1, 1))
-		plt.xlabel('functional connectivity')
-		plt.ylabel('num')
-		plt.title('fc hist %s-%s' % (xtick, ytick))
-		plt.savefig(os.path.join(self.resultPath, 'FC Hist/%s-%s fc hist.png' % (xtick, ytick)))
+def plot_FCHist_at_tick(xtick, ytick, boldPath, template_name, saveDir = None, show_img = False):
+	data = getAllFCAtHist(xtick, ytick, boldPath, template_name)
+	plt.hist(data, bins = 40, range = (-1, 1))
+	plt.xlabel('functional connectivity')
+	plt.ylabel('num')
+	plt.title('fc hist %s-%s' % (xtick, ytick))
+	if saveDir:
+		os.makedirs(saveDir, exist_ok = True)
+		plt.savefig(os.path.join(saveDir, '%s-%s fc hist.png' % (xtick, ytick)))
+	if show_img:
 		plt.show()
+	else:
+		plt.close()
+
+def overlap_FCHists_at_tick(xtick, ytick, template_name, dataDict, saveDir = None, show_img = False):
+	"""
+	dataDict should be: {'Beijing':'/path/to/folder'} or {'Beijing': [<rawnet1>, <rawnet2>, ...]}
+	"""
+	alpha_value = 1.0/len(dataDict)
+	for name, dataValue in dataDict.items():
+		if isinstance(dataValue, str):
+			data = getAllFCAtHist(xtick, ytick, template_name, boldPath = dataValue)
+		else:
+			data = getAllFCAtHist(xtick, ytick, template_name, all_nets = dataValue)
+		plt.hist(data, bins = 40, range = (-1, 1), alpha = alpha_value, label = name)
+	plt.legend(loc = 'upper right')
+	if saveDir:
+		os.makedirs(saveDir, exist_ok = True)
+		plt.savefig(os.path.join(saveDir, '%s-%s fc hist.png' % (xtick, ytick)))
+	if show_img:
+		plt.show()
+	else:
+		plt.close()

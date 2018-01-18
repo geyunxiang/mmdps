@@ -4,52 +4,33 @@ from scipy import stats
 import numpy as np
 import copy
 
-def adjust_mat_col_order(mat, template):
-	mat1 = np.empty(mat.shape)
-	for i in range(template.count):
-		realpos = template.plotindexes[i]
-		mat1[:, i] = mat[:, realpos]
-	return mat1
+def plot_heatmap_from_net(net, title, valuerange = (-1, 1)):
+	actual_plot_index = [i[0] for i in sorted(enumerate(net.template.ticks_to_plot_indexes(net.ticks)), key = lambda x:x[1])]
+	return plot_heatmap_order(net.net, net.template.ticks, actual_plot_index, title, valuerange)
 
-def plot_heatmap_template(mat, template, title, valuerange = (-1, 1)):
+def plot_heatmap_order(mat, xticks, plotindexes, title, valuerange = (-1, 1)):
+	"""
+	mat.shape[0] must equal len(xticks) and len(plotindexes).
+	plotindexes should be a permutation of range(len(xticks))
+	Here data order is adjusted.
+	"""
+	# TODO: optimize code here, use ndarray methods.
 	mat1 = np.empty(mat.shape)
 	mat2 = np.empty(mat.shape)
-	for i in range(template.count):
-		realpos = template.plotindexes[i]
+	plot_ticks = [None] * len(xticks)
+	for i in range(len(plotindexes)):
+		realpos = plotindexes[i]
 		mat1[i, :] = mat[realpos, :]
-	for i in range(template.count):
-		realpos = template.plotindexes[i]
+		plot_ticks[i] = xticks[realpos]
+	for i in range(len(plotindexes)):
+		realpos = plotindexes[i]
 		mat2[:, i] = mat1[:, realpos]
-	ticks = [None] * template.count
-	for i in range(template.count):
-		realpos = template.plotindexes[i]
-		ticks[i] = template.ticks[realpos]
-	return plot_heatmap(mat2, ticks, title, valuerange = valuerange)
-
-def sub_matrix(mat, idx):
-	npidx = np.array(idx)
-	return mat[npidx[:, np.newaxis], npidx]
-
-def sub_list(l, idx):
-	nl = []
-	for i in idx:
-		nl.append(l[i])
-	return nl
-
-def plot_heatmap_template_subnet(mat, template, cmap, rawindexes, valuerange=(-1,1)):
-	mat = sub_matrix(mat, rawindexes)
-	subtemplate = dummy()
-	subtemplate.count = len(rawindexes)
-	subtemplate.ticks = sub_list(template.ticks, rawindexes)
-	rawplotindexes = sub_list(template.plotindexes, rawindexes)
-	plotindexesrank = np.array(rawplotindexes).argsort().argsort()
-	subtemplate.plotindexes = plotindexesrank
-	return plot_heatmap_template(mat, subtemplate, cmap, valuerange)
-
-def plot_heatmap_from_net(net, title, valuerange = (-1, 1)):
-	return plot_heatmap(net.net, net.ticks, title, valuerange)
+	return plot_heatmap(mat2, plot_ticks, title, valuerange = valuerange)
 
 def plot_heatmap(mat, xticks, title, valuerange = (-1, 1)):
+	"""
+	actually plotting a mat using default orders and ticks.
+	"""
 	cmap = cm.coolwarm
 	fig = plt.figure(figsize = (20, 20))
 	axim = plt.imshow(mat, interpolation = 'none', cmap = cmap, vmin = valuerange[0], vmax = valuerange[1])
@@ -65,3 +46,20 @@ def plot_heatmap(mat, xticks, title, valuerange = (-1, 1)):
 	plt.title(title, fontsize = 30)
 	fig.colorbar(axim, fraction = 0.046, pad = 0.04)
 	return fig
+
+def adjust_mat_col_order(mat, template):
+	mat1 = np.empty(mat.shape)
+	for i in range(template.count):
+		realpos = template.plotindexes[i]
+		mat1[:, i] = mat[:, realpos]
+	return mat1
+
+def sub_matrix(mat, idx):
+	npidx = np.array(idx)
+	return mat[npidx[:, np.newaxis], npidx]
+
+def sub_list(l, idx):
+	nl = []
+	for i in idx:
+		nl.append(l[i])
+	return nl
