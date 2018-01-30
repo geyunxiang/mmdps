@@ -10,8 +10,19 @@ class BrainNet:
 	"""
 	A brain net must have a template
 	"""
-	def __init__(self, net_config = None, net = None, template = None):
+	def __init__(self, net_config = None, template = None, net = None, time_series = None, net_file_path = None, time_series_file_path = None, raw_data_path = None):
+		"""
+		BrainNet initialization method:
+		* must provide one of:
+			- net_config as a dict
+			- template as a BrainTemplate
+		* provide one of:
+			- net, time_series
+			- net_file_path, time_series_file_path
+			- raw_data_path
+		"""
 		self.net_config = net_config
+		# get template and ticks
 		if self.net_config:
 			self.template = brain_template.get_template(self.net_config['template'])
 			self.ticks = self.template.ticks
@@ -19,13 +30,56 @@ class BrainNet:
 			self.template = template
 			self.ticks = self.template.ticks
 		else:
-			self.template = None
-			self.ticks = None
-		if net is None:
-			self.net = None
-		else:
+			# brain net must have a template
+			raise
+		# get net and time series
+		if net is not None:
 			self.net = net
-		self.raw_data = None # raw .nii data
+			self.time_series = time_series
+		elif net_file_path is not None:
+			self.loadNet(net_file_path = net_file_path, time_series_file_path = time_series_file_path)
+		elif raw_data_path is not None:
+			self.generate_net_from_raw_data(raw_data_path)
+		else:
+			# brain net must have one of net/time_series, net/time_series file path or raw_data_path
+			raise
+
+	def loadNet(self, output_path = None, net_file_path = None, time_series_file_path = None):
+		if output_path:
+			self.net = loadfile.load_csvmat(os.path.join(output_path, 'corrcoef.csv'))
+			self.time_series = np.loadtxt(os.path.join(output_path, 'time_series.csv'))
+		else:
+			self.net = loadfile.load_csvmat(net_file_path)
+			self.time_series = np.loadtxt(time_series_file_path)
+
+	def load_raw_data(self, raw_data_path):
+		return nib.load(raw_data_path)
+
+	def saveNet(self, output_path):
+		outfolder = os.path.join(output_path, self.template.name)
+		os.makedirs(outfolder, exist_ok = True)
+		np.savetxt(os.path.join(outfolder, 'time_series.csv'), self.time_series, delimiter=',')
+		np.savetxt(os.path.join(outfolder, 'corrcoef.csv'), self.net, delimiter=',')
+
+	def generate_net_from_raw_data(self, raw_data_path = None):
+		if raw_data_path:
+			self.raw_data = self.load_raw_data(raw_data_path)
+		self.time_series = self.generate_ROI_time_series()
+		self.net = np.corrcoef(self.time_series)
+
+	def generate_ROI_time_series(self):
+		template_img = nib.load(self.template.nii_path)
+		self.set_positive_affine_x(self.raw_data)
+		self.set_positive_affine_x(template_img)
+		data = self.raw_data.get_data()
+		template_data = template_img.get_data()
+		timepoints = data.shape[3]
+		time_series = np.empty((self.template.count, timepoints))
+		for i, region in enumerate(self.template.regions):
+			regiondots = data[template_data == region, :]
+			regionts = np.mean(regiondots, axis=0)
+			time_series[i, :] = regionts
+		return time_series
 
 	def get_value_at_tick(self, xtick, ytick):
 		if xtick not in self.ticks or ytick not in self.ticks:
@@ -39,44 +93,9 @@ class BrainNet:
 
 	def add_net(self, net_file_path):
 		if self.net is None:
-			self.read_net(net_file_path)
+			self.net = self.read_net_from_file(net_file_path)
 		else:
 			self.net += loadfile.load_csvmat(net_file_path)
-
-	def read_net(self, net_file_path):
-		self.net = loadfile.load_csvmat(net_file_path)
-
-	def load_raw_data(self, raw_data_path):
-		self.raw_data = nib.load(raw_data_path)
-
-	def save_timeseries(self, output_path):
-		outfolder = os.path.join(output_path, self.template.name)
-		os.makedirs(outfolder, exist_ok = True)
-		np.savetxt(os.path.join(outfolder, 'timeseries.csv'), self.time_series, delimiter=',')
-
-	def save_net(self, output_path):
-		outfolder = os.path.join(output_path, self.template.name)
-		os.makedirs(outfolder, exist_ok = True)
-		np.savetxt(os.path.join(outfolder, 'corrcoef.csv'), self.net, delimiter=',')
-
-	def generate_net_by_template(self, raw_data_path):
-		self.load_raw_data(raw_data_path)
-		self.time_series = self.generate_ROI_time_series()
-		self.net = np.corrcoef(self.time_series)
-
-	def generate_ROI_time_series(self):
-		template_img = nib.load(self.template.nii_path)
-		self.set_positive_affine_x(self.raw_data)
-		self.set_positive_affine_x(template_img)
-		data = self.raw_data.get_data()
-		template_data = template_img.get_data()
-		timepoints = data.shape[3]
-		timeseries = np.empty((self.template.count, timepoints))
-		for i, region in enumerate(self.template.regions):
-			regiondots = data[template_data == region, :]
-			regionts = np.mean(regiondots, axis=0)
-			timeseries[i, :] = regionts
-		return timeseries
 
 	def set_positive_affine_x(self, img):
 		# TODO: check this
@@ -89,12 +108,33 @@ class BrainNet:
 			data = img.get_data()
 			np.copyto(data, nib.flip_axis(data, axis=0))
 
+class DynamicNet(BrainNet):
+	def __init__(self, parent_net, step = 3, window_length = 100):
+		super(DynamicNet, self).__init__(template = parent_net.template, net = parent_net.net, time_series = parent_net.time_series)
+		self.stepSize = step
+		self.window_length = window_length
+		self.dynamic_nets = []
+
+	def generate_dynamic_nets(self):
+		start = 0
+		while start + self.window_length <= self.time_series.shape[1]:
+			self.dynamic_nets.append(np.corrcoef(self.time_series[:, start:start + self.window_length]))
+			start += self.stepSize
+
+	def save_dynamic_nets(self, output_path):
+		outfolder = os.path.join(output_path, self.template.name)
+		os.makedirs(outfolder, exist_ok = True)
+		start = 0
+		for dnet in self.dynamic_nets:
+			np.savetxt(os.path.join(outfolder, 'corrcoef-%d.%d.csv' % (start, self.stepSize)), dnet, delimiter = ',')
+			start += 3
+
 class SubNet(BrainNet):
-	def __init__(self, subnetinfo, parent_net):
-		super(SubNet, self).__init__(net = parent_net.net, template = parent_net.template)
-		self.subnetinfo = subnetinfo
-		self.name = self.subnetinfo.name
-		self.ticks = self.subnetinfo.labels
+	def __init__(self, parent_net, subnetInfo):
+		super(SubNet, self).__init__(template = parent_net.template, net = parent_net.net, time_series = parent_net.time_series)
+		self.subnetInfo = subnetInfo
+		self.name = self.subnetInfo.name
+		self.ticks = self.subnetInfo.labels
 		self.count = len(self.ticks)
 		self._calc_net()
 
@@ -108,24 +148,24 @@ class SubNet(BrainNet):
 		return mat[npidx[:, np.newaxis], npidx]
 
 class SubNetInfo:
-	def __init__(self, name, conf):
+	def __init__(self, name, config):
 		self.name = name # the name of the subnet
-		self.description = conf['description']
-		self.template = conf['template']
-		self.labels = conf['labels'] # a list of ticks
+		self.description = config['description']
+		self.template = config['template']
+		self.labels = config['labels'] # a list of ticks
 
 class SubNetGroupInfo:
 	def __init__(self, config_file):
 		config = json.load(open(config_file, 'r'))
-		self.name = config['name']
-		self.conf = config['subnets']
+		self.groupName = config['name']
+		self.subnetConfigs = config['subnets']
 		self.load_subnets()
 
 	def load_subnets(self):
-		self.subnets = {}
-		for name, conf in self.conf.items():
-			subnet = SubNetInfo(name, conf)
-			self.subnets[name] = subnet
+		self.subnetsInfo = {}
+		for name, config in self.subnetConfigs.items():
+			subnet = SubNetInfo(name, config)
+			self.subnetsInfo[name] = subnet
 
 class NodeFile:
 	def __init__(self, initnode=None):

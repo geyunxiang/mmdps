@@ -41,7 +41,7 @@ def plot_FCHist_at_tick(xtick, ytick, boldPath, template_name, saveDir = None, s
 	else:
 		plt.close()
 
-def overlap_FCHists_at_tick(xtick, ytick, template_name, dataDict, saveDir = None, show_img = False):
+def overlap_FCHists_at_tick(xtick, ytick, template_name, dataDict, normalize = False, saveDir = None, show_img = False):
 	"""
 	dataDict should be: {'Beijing':'/path/to/folder'} or {'Beijing': [<rawnet1>, <rawnet2>, ...]}
 	"""
@@ -51,7 +51,7 @@ def overlap_FCHists_at_tick(xtick, ytick, template_name, dataDict, saveDir = Non
 			data = getAllFCAtHist(xtick, ytick, template_name, boldPath = dataValue)
 		else:
 			data = getAllFCAtHist(xtick, ytick, template_name, all_nets = dataValue)
-		plt.hist(data, bins = 40, range = (-1, 1), alpha = alpha_value, label = name)
+		plt.hist(data, bins = 25, range = (-1, 1), alpha = alpha_value, label = name, density = normalize)
 	plt.legend(loc = 'upper right')
 	if saveDir:
 		os.makedirs(saveDir, exist_ok = True)
