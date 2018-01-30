@@ -126,8 +126,8 @@ class DynamicNet(BrainNet):
 		os.makedirs(outfolder, exist_ok = True)
 		start = 0
 		for dnet in self.dynamic_nets:
-			np.savetxt(os.path.join(outfolder, 'corrcoef-%d.%d.csv' % (start, self.stepSize)), dnet, delimiter = ',')
-			start += 3
+			np.savetxt(os.path.join(outfolder, 'corrcoef-%d.%d.csv' % (start, start + self.window_length)), dnet, delimiter = ',')
+			start += self.stepSize
 
 class SubNet(BrainNet):
 	def __init__(self, parent_net, subnetInfo):
