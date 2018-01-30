@@ -26,6 +26,10 @@ class BrainNet:
 		else:
 			self.net = net
 		self.raw_data = None # raw .nii data
+		self.time_series = None
+
+	def read_net_from_file(self, net_file_path):
+		self.net = loadfile.load_csvmat(net_file_path)
 
 	def get_value_at_tick(self, xtick, ytick):
 		if xtick not in self.ticks or ytick not in self.ticks:
@@ -39,12 +43,9 @@ class BrainNet:
 
 	def add_net(self, net_file_path):
 		if self.net is None:
-			self.read_net(net_file_path)
+			self.read_net_from_file(net_file_path)
 		else:
 			self.net += loadfile.load_csvmat(net_file_path)
-
-	def read_net(self, net_file_path):
-		self.net = loadfile.load_csvmat(net_file_path)
 
 	def load_raw_data(self, raw_data_path):
 		self.raw_data = nib.load(raw_data_path)
@@ -71,12 +72,12 @@ class BrainNet:
 		data = self.raw_data.get_data()
 		template_data = template_img.get_data()
 		timepoints = data.shape[3]
-		timeseries = np.empty((self.template.count, timepoints))
+		time_series = np.empty((self.template.count, timepoints))
 		for i, region in enumerate(self.template.regions):
 			regiondots = data[template_data == region, :]
 			regionts = np.mean(regiondots, axis=0)
-			timeseries[i, :] = regionts
-		return timeseries
+			time_series[i, :] = regionts
+		return time_series
 
 	def set_positive_affine_x(self, img):
 		# TODO: check this
@@ -88,6 +89,27 @@ class BrainNet:
 			img.set_qform(aff)
 			data = img.get_data()
 			np.copyto(data, nib.flip_axis(data, axis=0))
+
+class DynamicNet(BrainNet):
+	def __init__(self, parent_net, step = 3, window_length = 100):
+		super(DynamicNet, self).__init__(net = parent_net.net, template = parent_net.template)
+		self.stepSize = step
+		self.window_length = window_length
+		self.dynamic_nets = []
+
+	def generate_dynamic_nets(self):
+		start = 0
+		while start + self.window_length <= self.time_series.shape[1]:
+			self.dynamic_nets.append(np.corrcoef(self.time_series[:, start:start + self.window_length]))
+			start += self.stepSize
+
+	def save_dynamic_nets(self, output_path):
+		outfolder = os.path.join(output_path, self.template.name)
+		os.makedirs(outfolder, exist_ok = True)
+		start = 0
+		for dnet in self.dynamic_nets:
+			np.savetxt(os.path.join(outfolder, 'corrcoef-%d.%d.csv' % (start, self.stepSize)), dnet, delimiter = ',')
+			start += 3
 
 class SubNet(BrainNet):
 	def __init__(self, subnetinfo, parent_net):
