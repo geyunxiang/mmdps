@@ -121,6 +121,13 @@ class DynamicNet(BrainNet):
 			self.dynamic_nets.append(np.corrcoef(self.time_series[:, start:start + self.window_length]))
 			start += self.stepSize
 
+	def load_dynamic_nets(self, load_path):
+		self.dynamic_nets = []
+		start = 0
+		while start + self.window_length <= self.time_series.shape[1]:
+			self.dynamic_nets.append(np.loadtxt(os.path.join(load_path, 'corrcoef-%d.%d.csv' % (start, start + self.window_length))))
+			start += self.stepSize
+
 	def save_dynamic_nets(self, output_path):
 		outfolder = os.path.join(output_path, self.template.name)
 		os.makedirs(outfolder, exist_ok = True)

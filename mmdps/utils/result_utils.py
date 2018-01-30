@@ -1,7 +1,7 @@
 """
 Result
 """
-import os
+import os, glob
 
 from matplotlib import pyplot as plt
 
@@ -15,14 +15,20 @@ def generate_net_heatmap(net, output_file, title):
 	plt.savefig(output_file)
 	plt.close()
 
-def loadAllNets(boldPath):
-	return [load_csvmat(os.path.join(boldPath, scan, 'bold_net/brodmann_lr_3/corrcoef.csv')) for scan in os.listdir(boldPath)]
+def loadAllNets(boldPath, dynamicIncluded = False):
+	if dynamicIncluded:
+		ret = []
+		for scan in os.listdir(boldPath):
+			ret += [load_csvmat(filename) for filename in glob.glob(os.path.join(boldPath, scan, 'bold_net/brodmann_lr_3/corrcoef*'))]
+		return ret
+	else:
+		return [load_csvmat(os.path.join(boldPath, scan, 'bold_net/brodmann_lr_3/corrcoef.csv')) for scan in os.listdir(boldPath)]
 
-def getAllFCAtHist(xtick, ytick, template_name, boldPath = None, all_nets = None):
+def getAllFCAtHist(xtick, ytick, template_name, boldPath = None, all_nets = None, dynamicIncluded = False):
 	template = brain_template.get_template(template_name)
 	xtickIdx, ytickIdx = template.ticks_to_indexes([xtick, ytick])
 	if boldPath is not None:
-		return [rawnet[xtickIdx, ytickIdx] for rawnet in loadAllNets(boldPath)]
+		return [rawnet[xtickIdx, ytickIdx] for rawnet in loadAllNets(boldPath, dynamicIncluded)]
 	if all_nets is not None:
 		return [rawnet[xtickIdx, ytickIdx] for rawnet in all_nets]
 	raise
@@ -41,14 +47,14 @@ def plot_FCHist_at_tick(xtick, ytick, boldPath, template_name, saveDir = None, s
 	else:
 		plt.close()
 
-def overlap_FCHists_at_tick(xtick, ytick, template_name, dataDict, normalize = False, saveDir = None, show_img = False):
+def overlap_FCHists_at_tick(xtick, ytick, template_name, dataDict, dynamicIncluded = False, normalize = False, saveDir = None, show_img = False):
 	"""
 	dataDict should be: {'Beijing':'/path/to/folder'} or {'Beijing': [<rawnet1>, <rawnet2>, ...]}
 	"""
 	alpha_value = 1.0/len(dataDict)
 	for name, dataValue in dataDict.items():
 		if isinstance(dataValue, str):
-			data = getAllFCAtHist(xtick, ytick, template_name, boldPath = dataValue)
+			data = getAllFCAtHist(xtick, ytick, template_name, boldPath = dataValue, dynamicIncluded = dynamicIncluded)
 		else:
 			data = getAllFCAtHist(xtick, ytick, template_name, all_nets = dataValue)
 		plt.hist(data, bins = 25, range = (-1, 1), alpha = alpha_value, label = name, density = normalize)
