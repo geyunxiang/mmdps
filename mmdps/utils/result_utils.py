@@ -15,6 +15,19 @@ def generate_net_heatmap(net, output_file, title):
 	plt.savefig(output_file)
 	plt.close()
 
+def loadDynamicNetsByCategory(boldPath):
+	ret = {}
+	for subject in os.listdir(boldPath):
+		for netPath in glob.glob(os.path.join(boldPath, subject, 'bold_net/brodmann_lr_3/corrcoef-*')):
+			filename = os.path.basename(netPath)
+			start = filename[filename.find('-')+1:filename.find('.')]
+			end = filename[filename.find('.')+1:filename.rfind('.')]
+			if start + '-' + end not in ret:
+				ret[start + '-' + end] = [load_csvmat(netPath)]
+			else:
+				ret[start + '-' + end].append(load_csvmat(netPath))
+	return ret
+
 def loadAllNets(boldPath, dynamicIncluded = False):
 	if dynamicIncluded:
 		ret = []
@@ -66,3 +79,9 @@ def overlap_FCHists_at_tick(xtick, ytick, template_name, dataDict, dynamicInclud
 		plt.show()
 	else:
 		plt.close()
+
+def intersect_FCHist_at_tick_dynamic_category(xtick, ytick, template_name, dataDict, normalize = False, saveDir = None, show_img = False):
+	"""
+	Plot the intersection of dynamic functional connections, viewing each window position as a unique category.
+	"""
+	pass
