@@ -9,6 +9,21 @@ from mmdps import brain_template
 from mmdps.loadfile import load_csvmat
 from mmdps.utils import plot_utils
 
+# dynamic related
+def filter_DFCs(raw_dfcs, template_dfcs):
+	"""
+	Return list of dfc dicts whose tick appears in template_dfcs.
+	Input argument raw_dfcs is a list of dfc dicts.
+	Argument template_dfcs is a list of strings, aka tick names
+	"""
+	ret = []
+	for dfcDict in raw_dfcs:
+		if dfcDict['ticks'] in template_dfcs:
+			ret.append(dfcDict)
+	return ret
+
+# heatmap, histogram related plotting
+
 def generate_net_heatmap(net, output_file, title):
 	fig = plot_utils.plot_heatmap_from_net(net, title)
 	os.makedirs(os.path.dirname(output_file), exist_ok = True)
