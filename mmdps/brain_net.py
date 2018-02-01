@@ -156,15 +156,19 @@ class DynamicNet(BrainNet):
 		self.DFCStrength /= float(len(self.dynamic_nets))
 		self.DFCStability = 1 - self.DFCStability/(float(len(self.dynamic_nets)) - 1)
 
-	def get_DFC_stable_connections(self, topNum = 30):
+	def get_DFC_stable_connections(self, topNum = 30, leastNum = None):
 		"""
 		Return a list of dicts sorted by the stability of DFC in descending order.
 		The dict contains {'index', 'stability', 'strength', 'ticks'}
 		"""
 		stability = np.tril(self.DFCStability, -1) # lower triangle without main diagnal
+		numZeros = np.count_nonzero(stability == 0)
 		increasingIndex = stability.argsort(axis = None)
-		sortedIndex = increasingIndex[::-1]
-		originIndex = np.unravel_index(sortedIndex[:topNum], stability.shape)
+		if leastNum:
+			originIndex = np.unravel_index(increasingIndex[numZeros:numZeros + leastNum], stability.shape)
+		else:
+			sortedIndex = increasingIndex[::-1]
+			originIndex = np.unravel_index(sortedIndex[:topNum], stability.shape)
 		ret = []
 		for x, y in zip(originIndex[0], originIndex[1]):
 			ret.append({'index':(x.item(0), y.item(0)), 'stability':stability[(x, y)].item(0), 'strength':self.DFCStrength[(x, y)].item(0), 'ticks':'%s-%s' % (self.ticks[x], self.ticks[y])})
