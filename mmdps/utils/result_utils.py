@@ -78,14 +78,17 @@ def plot_FCHist_at_tick(xtick, ytick, boldPath, template_name, saveDir = None, s
 def overlap_FCHists_at_tick(xtick, ytick, template_name, dataDict, dynamicIncluded = False, normalize = False, saveDir = None, show_img = False):
 	"""
 	dataDict should be: {'Beijing':'/path/to/folder'} or {'Beijing': [<rawnet1>, <rawnet2>, ...]}
+	The return value, n, is a list of lists. Each list contains the height of each bin. One can calculate the intersection by selecting the minimal value among lists.
 	"""
 	alpha_value = 1.0/len(dataDict)
+	heights = []
 	for name, dataValue in dataDict.items():
 		if isinstance(dataValue, str):
 			data = getAllFCAtHist(xtick, ytick, template_name, boldPath = dataValue, dynamicIncluded = dynamicIncluded)
 		else:
 			data = getAllFCAtHist(xtick, ytick, template_name, all_nets = dataValue)
-		plt.hist(data, bins = 25, range = (-1, 1), alpha = alpha_value, label = name, density = normalize)
+		n, bins, patches = plt.hist(data, bins = 25, range = (-1, 1), alpha = alpha_value, label = name, density = normalize)
+		heights.append(n)
 	plt.legend(loc = 'upper right')
 	if saveDir:
 		os.makedirs(saveDir, exist_ok = True)
@@ -94,6 +97,7 @@ def overlap_FCHists_at_tick(xtick, ytick, template_name, dataDict, dynamicInclud
 		plt.show()
 	else:
 		plt.close()
+	return heights
 
 def intersect_FCHist_at_tick_dynamic_category(xtick, ytick, template_name, dataDict, normalize = False, saveDir = None, show_img = False):
 	"""
