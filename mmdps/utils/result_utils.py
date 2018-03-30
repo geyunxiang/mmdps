@@ -2,7 +2,7 @@
 Result
 """
 import os, glob
-
+import numpy as np
 from matplotlib import pyplot as plt
 
 from mmdps import brain_template
@@ -43,16 +43,36 @@ def loadDynamicNetsByCategory(boldPath):
 				ret[start + '-' + end].append(load_csvmat(netPath))
 	return ret
 
-def loadAllNets(boldPath, dynamicIncluded = False):
-	if dynamicIncluded:
-		ret = []
-		for scan in os.listdir(boldPath):
-			ret += [load_csvmat(filename) for filename in glob.glob(os.path.join(boldPath, scan, 'bold_net/brodmann_lr_3/corrcoef*'))]
-		return ret
-	else:
-		return [load_csvmat(os.path.join(boldPath, scan, 'bold_net/brodmann_lr_3/corrcoef.csv')) for scan in os.listdir(boldPath)]
+def loadSpecificNets(boldPath, template_name = 'brodmann_lr_3'):
+	"""
+	This function is used to load the first/second/etc scans of patients
+	"""
+	ret = []
+	subjectName = 'None'
+	for scan in sorted(os.listdir(boldPath)):
+		if scan.find(subjectName) != -1:
+			continue
+		subjectName = scan[:scan.find('_')]
+		try:
+			ret.append(load_csvmat(os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name)))
+		except FileNotFoundError:
+			print('File %s not found.' % os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name))
+	return ret
 
-def getAllFCAtHist(xtick, ytick, template_name, boldPath = None, all_nets = None, dynamicIncluded = False):
+def loadAllNets(boldPath, dynamicIncluded = False, template_name = 'brodmann_lr_3'):
+	ret = []
+	if dynamicIncluded:
+		for scan in os.listdir(boldPath):
+			ret += [load_csvmat(filename) for filename in glob.glob(os.path.join(boldPath, scan, 'bold_net/%s/corrcoef*' % template_name))]
+	else:
+		for scan in os.listdir(boldPath):
+			try:
+				ret.append(load_csvmat(os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name)))
+			except FileNotFoundError:
+				print('File %s not found.' % os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name))
+	return ret
+
+def getAllFCAtTick(xtick, ytick, template_name, boldPath = None, all_nets = None, dynamicIncluded = False):
 	template = brain_template.get_template(template_name)
 	xtickIdx, ytickIdx = template.ticks_to_indexes([xtick, ytick])
 	if boldPath is not None:
@@ -62,7 +82,7 @@ def getAllFCAtHist(xtick, ytick, template_name, boldPath = None, all_nets = None
 	raise
 
 def plot_FCHist_at_tick(xtick, ytick, boldPath, template_name, saveDir = None, show_img = False):
-	data = getAllFCAtHist(xtick, ytick, boldPath, template_name)
+	data = getAllFCAtTick(xtick, ytick, boldPath, template_name)
 	plt.hist(data, bins = 40, range = (-1, 1))
 	plt.xlabel('functional connectivity')
 	plt.ylabel('num')
@@ -75,29 +95,43 @@ def plot_FCHist_at_tick(xtick, ytick, boldPath, template_name, saveDir = None, s
 	else:
 		plt.close()
 
-def overlap_FCHists_at_tick(xtick, ytick, template_name, dataDict, dynamicIncluded = False, normalize = False, saveDir = None, show_img = False):
+def overlap_FCHists_at_tick(xtick, ytick, dataDict, dynamicIncluded = False, normalize = False, saveDir = None, show_img = False):
 	"""
-	dataDict should be: {'Beijing':'/path/to/folder'} or {'Beijing': [<rawnet1>, <rawnet2>, ...]}
+	dataDict should be: {'Beijing':{'path':'/path/to/folder', 'template_name'}} or {'Beijing': {'net_list':[<rawnet1>, <rawnet2>, ...], 'template_name'}}
 	The return value, n, is a list of lists. Each list contains the height of each bin. One can calculate the intersection by selecting the minimal value among lists.
 	"""
 	alpha_value = 1.0/len(dataDict)
 	heights = []
 	for name, dataValue in dataDict.items():
-		if isinstance(dataValue, str):
-			data = getAllFCAtHist(xtick, ytick, template_name, boldPath = dataValue, dynamicIncluded = dynamicIncluded)
+		if 'path' in dataValue:
+			data = getAllFCAtTick(xtick, ytick, dataValue['template_name'], boldPath = dataValue['path'], dynamicIncluded = dynamicIncluded)
 		else:
-			data = getAllFCAtHist(xtick, ytick, template_name, all_nets = dataValue)
+			data = getAllFCAtTick(xtick, ytick, dataValue['template_name'], all_nets = dataValue['net_list'])
 		n, bins, patches = plt.hist(data, bins = 25, range = (-1, 1), alpha = alpha_value, label = name, density = normalize)
 		heights.append(n)
 	plt.legend(loc = 'upper right')
+	intersection_area = calculate_intersection_area(heights)
+	plt.title('Intersection: %1.3f %s-%s' % (intersection_area, xtick, ytick))
 	if saveDir:
 		os.makedirs(saveDir, exist_ok = True)
-		plt.savefig(os.path.join(saveDir, '%s-%s fc hist.png' % (xtick, ytick)))
+		plt.savefig(os.path.join(saveDir, '%1.3f %s-%s fc hist.png' % (intersection_area, xtick, ytick)))
 	if show_img:
 		plt.show()
 	else:
 		plt.close()
 	return heights
+
+def calculate_intersection_area(heights):
+	"""
+	heights is a list of lists.
+	Each list contains the height of the bin
+	"""
+	num_bins = len(heights[0])
+	bin_width = 2.0/num_bins
+	intersection_area = 0.0
+	for bidx in range(num_bins):
+		intersection_area += bin_width * min([h[bidx] for h in heights])
+	return intersection_area
 
 def intersect_FCHist_at_tick_dynamic_category(xtick, ytick, template_name, dataDict, normalize = False, saveDir = None, show_img = False):
 	"""
