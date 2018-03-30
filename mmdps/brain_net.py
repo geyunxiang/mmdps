@@ -47,10 +47,10 @@ class BrainNet:
 	def loadNet(self, output_path = None, net_file_path = None, time_series_file_path = None):
 		if output_path:
 			self.net = loadfile.load_csvmat(os.path.join(output_path, 'corrcoef.csv'))
-			self.time_series = np.loadtxt(os.path.join(output_path, 'time_series.csv'))
+			self.time_series = np.loadtxt(os.path.join(output_path, 'time_series.csv'), delimiter = ',')
 		else:
 			self.net = loadfile.load_csvmat(net_file_path)
-			self.time_series = np.loadtxt(time_series_file_path)
+			self.time_series = np.loadtxt(time_series_file_path, delimiter = ',')
 
 	def load_raw_data(self, raw_data_path):
 		return nib.load(raw_data_path)
@@ -114,11 +114,14 @@ class DynamicNet(BrainNet):
 		self.stepSize = step
 		self.window_length = window_length
 		self.dynamic_nets = []
+		self.DFCStrength = None
+		self.DFCStability = None
 
-	def generate_dynamic_nets(self):
+	def load_dynamic_nets(self, load_path):
+		self.dynamic_nets = []
 		start = 0
 		while start + self.window_length <= self.time_series.shape[1]:
-			self.dynamic_nets.append(np.corrcoef(self.time_series[:, start:start + self.window_length]))
+			self.dynamic_nets.append(np.loadtxt(os.path.join(load_path, 'corrcoef-%d.%d.csv' % (start, start + self.window_length)), delimiter = ','))
 			start += self.stepSize
 
 	def save_dynamic_nets(self, output_path):
@@ -126,8 +129,53 @@ class DynamicNet(BrainNet):
 		os.makedirs(outfolder, exist_ok = True)
 		start = 0
 		for dnet in self.dynamic_nets:
-			np.savetxt(os.path.join(outfolder, 'corrcoef-%d.%d.csv' % (start, self.stepSize)), dnet, delimiter = ',')
-			start += 3
+			np.savetxt(os.path.join(outfolder, 'corrcoef-%d.%d.csv' % (start, start + self.window_length)), dnet, delimiter = ',')
+			start += self.stepSize
+
+	def generate_dynamic_nets(self):
+		start = 0
+		while start + self.window_length <= self.time_series.shape[1]:
+			self.dynamic_nets.append(np.corrcoef(self.time_series[:, start:start + self.window_length]))
+			start += self.stepSize
+
+	def calculate_DFC_characteristics(self):
+		"""
+		For stability, the higher, the more stable (maximum equals 1)
+		"""
+		self.DFCStrength = np.zeros(self.dynamic_nets[0].shape)
+		self.DFCStability = np.zeros(self.dynamic_nets[0].shape)
+		first = True
+		for dnet in self.dynamic_nets:
+			self.DFCStrength += dnet
+			if first:
+				lastNet = dnet
+				first = False
+			else:
+				self.DFCStability += abs(dnet - lastNet)/2.0
+				lastNet = dnet
+		self.DFCStrength /= float(len(self.dynamic_nets))
+		self.DFCStability = 1 - self.DFCStability/(float(len(self.dynamic_nets)) - 1)
+
+	def get_DFC_stable_connections(self, topNum = 30, leastNum = None, stableRange = None):
+		"""
+		Return a list of dicts sorted by the stability of DFC in descending order.
+		The dict contains {'index', 'stability', 'strength', 'ticks'}
+		"""
+		stability = np.tril(self.DFCStability, -1) # lower triangle without main diagnal
+		numZeros = np.count_nonzero(stability == 0)
+		increasingIndex = stability.argsort(axis = None)
+		if leastNum:
+			originIndex = np.unravel_index(increasingIndex[numZeros:numZeros + leastNum], stability.shape)
+		elif stableRange:
+			sortedIndex = increasingIndex[::-1]
+			originIndex = np.unravel_index(sortedIndex[stableRange[0]:stableRange[1]], stability.shape)
+		else:
+			sortedIndex = increasingIndex[::-1]
+			originIndex = np.unravel_index(sortedIndex[:topNum], stability.shape)
+		ret = []
+		for x, y in zip(originIndex[0], originIndex[1]):
+			ret.append({'index':(x.item(0), y.item(0)), 'stability':stability[(x, y)].item(0), 'strength':self.DFCStrength[(x, y)].item(0), 'ticks':'%s-%s' % (self.ticks[x], self.ticks[y])})
+		return ret
 
 class SubNet(BrainNet):
 	def __init__(self, parent_net, subnetInfo):
