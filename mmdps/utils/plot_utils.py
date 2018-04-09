@@ -63,3 +63,48 @@ def sub_list(l, idx):
 	for i in idx:
 		nl.append(l[i])
 	return nl
+
+def generate_edge_file(nodeFilePath, edgeFilePath, edgeDict):
+	"""
+	generate an edge file for BrainNet Viewer
+	edgeDict = {'L2-R5':0.345}
+	"""
+	nodeList = []
+	with open(nodeFilePath) as nodeFile:
+		counter = 0
+		for line in nodeFile.readlines():
+			counter += 1
+			line = line.strip().split('\t')
+			if len(line) < 2:
+				# last line
+				continue
+			if counter >= 83 and counter % 2 == 1:
+				nodeList.append('AL%d' % (counter + 8))
+			elif counter >= 83 and counter % 2 == 0:
+				nodeList.append('AR%d' % (counter + 8))
+			else:
+				nodeList.append(line[-1])
+	edgeMatrix = np.zeros((len(nodeList), len(nodeList)))
+	for edge in edgeDict:
+		xtick = edge.split('-')[0]
+		ytick = edge.split('-')[1]
+		edgeMatrix[nodeList.index(xtick), nodeList.index(ytick)] = edgeDict[edge]
+		edgeMatrix[nodeList.index(ytick), nodeList.index(xtick)] = edgeDict[edge]
+	save_matrix_csv_style(edgeMatrix, edgeFilePath)
+
+def save_matrix_csv_style(mat, filePath):
+	xlim = mat.shape[0]
+	ylim = mat.shape[1]
+	xidx = 0
+	with open(filePath, 'w') as f:
+		while xidx < xlim:
+			yidx = 0
+			while yidx < ylim:
+				if yidx + 1 < ylim:
+					f.write('%f\t' % mat[xidx, yidx])
+				elif xidx + 1 < xlim:
+					f.write('%f\n' % mat[xidx, yidx])
+				else:
+					f.write('%f' % mat[xidx, yidx])
+				yidx += 1
+			xidx += 1
