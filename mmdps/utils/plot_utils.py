@@ -4,6 +4,8 @@ from scipy import stats
 import numpy as np
 import copy
 
+from mmdps.utils import io_utils
+
 def plot_heatmap_from_net(net, title, valuerange = (-1, 1)):
 	actual_plot_index = [i[0] for i in sorted(enumerate(net.template.ticks_to_plot_indexes(net.ticks)), key = lambda x:x[1])]
 	return plot_heatmap_order(net.net, net.template.ticks, actual_plot_index, title, valuerange)
@@ -63,3 +65,31 @@ def sub_list(l, idx):
 	for i in idx:
 		nl.append(l[i])
 	return nl
+
+def generate_edge_file(nodeFilePath, edgeFilePath, edgeDict):
+	"""
+	generate an edge file for BrainNet Viewer
+	edgeDict = {'L2-R5':0.345}
+	"""
+	nodeList = []
+	with open(nodeFilePath) as nodeFile:
+		counter = 0
+		for line in nodeFile.readlines():
+			counter += 1
+			line = line.strip().split('\t')
+			if len(line) < 2:
+				# last line
+				continue
+			if counter >= 83 and counter % 2 == 1:
+				nodeList.append('AL%d' % (counter + 8))
+			elif counter >= 83 and counter % 2 == 0:
+				nodeList.append('AR%d' % (counter + 8))
+			else:
+				nodeList.append(line[-1])
+	edgeMatrix = np.zeros((len(nodeList), len(nodeList)))
+	for edge in edgeDict:
+		xtick = edge.split('-')[0]
+		ytick = edge.split('-')[1]
+		edgeMatrix[nodeList.index(xtick), nodeList.index(ytick)] = edgeDict[edge]
+		edgeMatrix[nodeList.index(ytick), nodeList.index(xtick)] = edgeDict[edge]
+	io_utils.save_matrix_csv_style(edgeMatrix, edgeFilePath)
