@@ -10,7 +10,7 @@ class BrainNet:
 	"""
 	A brain net must have a template
 	"""
-	def __init__(self, net_config = None, template = None, net = None, time_series = None, net_file_path = None, time_series_file_path = None, raw_data_path = None):
+	def __init__(self, net_config = None, template = None, net = None, time_series = None, output_path = None, net_file_path = None, time_series_file_path = None, raw_data_path = None):
 		"""
 		BrainNet initialization method:
 		* must provide one of:
@@ -19,6 +19,7 @@ class BrainNet:
 		* provide one of:
 			- net, time_series
 			- net_file_path, time_series_file_path
+			- output_path
 			- raw_data_path
 		"""
 		self.net_config = net_config
@@ -36,6 +37,8 @@ class BrainNet:
 		if net is not None:
 			self.net = net
 			self.time_series = time_series
+		elif output_path is not None:
+			self.loadNet(output_path = output_path)
 		elif net_file_path is not None:
 			self.loadNet(net_file_path = net_file_path, time_series_file_path = time_series_file_path)
 		elif raw_data_path is not None:

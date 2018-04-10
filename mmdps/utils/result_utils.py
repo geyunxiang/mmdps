@@ -5,7 +5,7 @@ import os, glob
 import numpy as np
 from matplotlib import pyplot as plt
 
-from mmdps import brain_template
+from mmdps import brain_template, brain_net
 from mmdps.loadfile import load_csvmat
 from mmdps.utils import plot_utils
 
@@ -72,6 +72,15 @@ def loadAllNets(boldPath, dynamicIncluded = False, template_name = 'brodmann_lr_
 				print('File %s not found.' % os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name))
 	return ret
 
+def loadAllBrainNets(boldPath, template_name = 'brodmann_lr_3'):
+	ret = []
+	for scan in os.listdir(boldPath):
+		try:
+			ret.append(brain_net.BrainNet(template = brain_template.get_template(template_name)), output_path = os.path.join(boldPath, scan, 'bold_net', template_name))
+		except FileNotFoundError:
+			print('File %s not found.' % os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name))
+	return ret
+
 def getAllFCAtTick(xtick, ytick, template_name, boldPath = None, all_nets = None, dynamicIncluded = False):
 	template = brain_template.get_template(template_name)
 	xtickIdx, ytickIdx = template.ticks_to_indexes([xtick, ytick])
@@ -81,11 +90,9 @@ def getAllFCAtTick(xtick, ytick, template_name, boldPath = None, all_nets = None
 		return [rawnet[xtickIdx, ytickIdx] for rawnet in all_nets]
 	raise
 
-def plot_FCHist_at_tick(xtick, ytick, boldPath, template_name, saveDir = None, show_img = False):
-	data = getAllFCAtTick(xtick, ytick, boldPath, template_name)
-	plt.hist(data, bins = 40, range = (-1, 1))
-	plt.xlabel('functional connectivity')
-	plt.ylabel('num')
+def plot_FCHist_at_tick(xtick, ytick, all_nets = None, template_name = 'brodmann_lr_3', normalize = True, saveDir = None, show_img = False):
+	data = getAllFCAtTick(xtick, ytick, template_name, all_nets = all_nets)
+	n, bins, patches = plt.hist(data, bins = 25, range = (-1, 1), density = normalize)
 	plt.title('fc hist %s-%s' % (xtick, ytick))
 	if saveDir:
 		os.makedirs(saveDir, exist_ok = True)
@@ -94,6 +101,7 @@ def plot_FCHist_at_tick(xtick, ytick, boldPath, template_name, saveDir = None, s
 		plt.show()
 	else:
 		plt.close()
+	return n
 
 def overlap_FCHists_at_tick(xtick, ytick, dataDict, dynamicIncluded = False, normalize = False, saveDir = None, show_img = False):
 	"""
