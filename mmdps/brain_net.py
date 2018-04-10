@@ -91,6 +91,9 @@ class BrainNet:
 		# given self.mat is a symmetric matrix
 		return self.net[self.ticks.index(xtick), self.ticks.index(ytick)]
 
+	def get_value_at_idx(self, xidx, yidx):
+		return self.net[xidx, yidx]
+
 	def average_net(self, num_to_average):
 		self.net /= float(num_to_average)
 

@@ -4,6 +4,8 @@ from scipy import stats
 import numpy as np
 import copy
 
+from mmdps.utils import io_utils
+
 def plot_heatmap_from_net(net, title, valuerange = (-1, 1)):
 	actual_plot_index = [i[0] for i in sorted(enumerate(net.template.ticks_to_plot_indexes(net.ticks)), key = lambda x:x[1])]
 	return plot_heatmap_order(net.net, net.template.ticks, actual_plot_index, title, valuerange)
@@ -90,21 +92,4 @@ def generate_edge_file(nodeFilePath, edgeFilePath, edgeDict):
 		ytick = edge.split('-')[1]
 		edgeMatrix[nodeList.index(xtick), nodeList.index(ytick)] = edgeDict[edge]
 		edgeMatrix[nodeList.index(ytick), nodeList.index(xtick)] = edgeDict[edge]
-	save_matrix_csv_style(edgeMatrix, edgeFilePath)
-
-def save_matrix_csv_style(mat, filePath):
-	xlim = mat.shape[0]
-	ylim = mat.shape[1]
-	xidx = 0
-	with open(filePath, 'w') as f:
-		while xidx < xlim:
-			yidx = 0
-			while yidx < ylim:
-				if yidx + 1 < ylim:
-					f.write('%f\t' % mat[xidx, yidx])
-				elif xidx + 1 < xlim:
-					f.write('%f\n' % mat[xidx, yidx])
-				else:
-					f.write('%f' % mat[xidx, yidx])
-				yidx += 1
-			xidx += 1
+	io_utils.save_matrix_csv_style(edgeMatrix, edgeFilePath)

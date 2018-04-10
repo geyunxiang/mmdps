@@ -6,8 +6,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from mmdps import brain_template, brain_net
-from mmdps.loadfile import load_csvmat
-from mmdps.utils import plot_utils
+from mmdps.utils import plot_utils, io_utils
 
 # dynamic related
 def filter_DFCs(raw_dfcs, template_dfcs):
@@ -30,68 +29,11 @@ def generate_net_heatmap(net, output_file, title):
 	plt.savefig(output_file)
 	plt.close()
 
-def loadDynamicNetsByCategory(boldPath):
-	ret = {}
-	for subject in os.listdir(boldPath):
-		for netPath in glob.glob(os.path.join(boldPath, subject, 'bold_net/brodmann_lr_3/corrcoef-*')):
-			filename = os.path.basename(netPath)
-			start = filename[filename.find('-')+1:filename.find('.')]
-			end = filename[filename.find('.')+1:filename.rfind('.')]
-			if start + '-' + end not in ret:
-				ret[start + '-' + end] = [load_csvmat(netPath)]
-			else:
-				ret[start + '-' + end].append(load_csvmat(netPath))
-	return ret
-
-def loadSpecificNets(boldPath, template_name = 'brodmann_lr_3'):
-	"""
-	This function is used to load the first/second/etc scans of patients
-	"""
-	ret = []
-	subjectName = 'None'
-	for scan in sorted(os.listdir(boldPath)):
-		if scan.find(subjectName) != -1:
-			continue
-		subjectName = scan[:scan.find('_')]
-		try:
-			ret.append(load_csvmat(os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name)))
-		except FileNotFoundError:
-			print('File %s not found.' % os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name))
-	return ret
-
-def loadAllNets(boldPath, dynamicIncluded = False, template_name = 'brodmann_lr_3'):
-	ret = []
-	if dynamicIncluded:
-		for scan in os.listdir(boldPath):
-			ret += [load_csvmat(filename) for filename in glob.glob(os.path.join(boldPath, scan, 'bold_net/%s/corrcoef*' % template_name))]
-	else:
-		for scan in os.listdir(boldPath):
-			try:
-				ret.append(load_csvmat(os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name)))
-			except FileNotFoundError:
-				print('File %s not found.' % os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name))
-	return ret
-
-def loadAllBrainNets(boldPath, template_name = 'brodmann_lr_3'):
-	ret = []
-	for scan in os.listdir(boldPath):
-		try:
-			ret.append(brain_net.BrainNet(template = brain_template.get_template(template_name)), output_path = os.path.join(boldPath, scan, 'bold_net', template_name))
-		except FileNotFoundError:
-			print('File %s not found.' % os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name))
-	return ret
-
-def getAllFCAtTick(xtick, ytick, template_name, boldPath = None, all_nets = None, dynamicIncluded = False):
-	template = brain_template.get_template(template_name)
-	xtickIdx, ytickIdx = template.ticks_to_indexes([xtick, ytick])
-	if boldPath is not None:
-		return [rawnet[xtickIdx, ytickIdx] for rawnet in loadAllNets(boldPath, dynamicIncluded)]
-	if all_nets is not None:
-		return [rawnet[xtickIdx, ytickIdx] for rawnet in all_nets]
-	raise
+def getAllFCAtTick(xtick, ytick, all_nets, dynamicIncluded = False):
+	return [net.get_value_at_tick(xtick, ytick) for net in all_nets]
 
 def plot_FCHist_at_tick(xtick, ytick, all_nets = None, template_name = 'brodmann_lr_3', normalize = True, saveDir = None, show_img = False):
-	data = getAllFCAtTick(xtick, ytick, template_name, all_nets = all_nets)
+	data = getAllFCAtTick(xtick, ytick, all_nets)
 	n, bins, patches = plt.hist(data, bins = 25, range = (-1, 1), density = normalize)
 	plt.title('fc hist %s-%s' % (xtick, ytick))
 	if saveDir:
@@ -114,7 +56,7 @@ def overlap_FCHists_at_tick(xtick, ytick, dataDict, dynamicIncluded = False, nor
 		if 'path' in dataValue:
 			data = getAllFCAtTick(xtick, ytick, dataValue['template_name'], boldPath = dataValue['path'], dynamicIncluded = dynamicIncluded)
 		else:
-			data = getAllFCAtTick(xtick, ytick, dataValue['template_name'], all_nets = dataValue['net_list'])
+			data = getAllFCAtTick(xtick, ytick, dataValue['net_list'])
 		n, bins, patches = plt.hist(data, bins = 25, range = (-1, 1), alpha = alpha_value, label = name, density = normalize)
 		heights.append(n)
 	plt.legend(loc = 'upper right')
