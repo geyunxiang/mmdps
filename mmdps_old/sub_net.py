@@ -5,8 +5,8 @@ Subnet analysis
 import os
 import csv
 import numpy as np
-from mmdps.utils import plot_utils
-from mmdps.paraproc import run_in_folder
+from mmdps_old.utils import plot_utils
+from mmdps_old.paraproc import run_in_folder
 from matplotlib import cm
 import matplotlib.pyplot as plt
 

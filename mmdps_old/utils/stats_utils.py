@@ -26,11 +26,14 @@ def filter_sigdiff_connections(netListA, netListB, sigLevel = 0.05):
 	The significant different connections are returned in a list of strings
 	"""
 	ret = []
-	sampleNet = netListA[0]
-	for xidx in range(len(sampleNet.ticks)):
-		for yidx in range(xidx + 1, len(sampleNet.ticks)):
+	ticks = netListA[0].ticks
+	totalTests = 0
+	for xidx in range(len(ticks)):
+		for yidx in range(xidx + 1, len(ticks)):
 			t, p = scipy.stats.ttest_ind([a.get_value_at_idx(xidx, yidx) for a in netListA], 
 				[b.get_value_at_idx(xidx, yidx) for b in netListB])
+			totalTests += 1
 			if p < sigLevel:
-				ret.append('%s-%s' % (sampleNet.ticks[xidx], sampleNet.ticks[yidx]))
+				ret.append('%s-%s' % (ticks[xidx], ticks[yidx]))
+	print('SigDiff connections: %d. Discover rate: %1.4f with sigLevel: %1.4f' % (len(ret), float(len(ret))/totalTests, sigLevel))
 	return ret

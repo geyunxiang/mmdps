@@ -3,8 +3,8 @@ import csv, os, json, copy
 import nibabel as nib
 import numpy as np
 
-from mmdps import brain_template
-from mmdps import loadfile
+from mmdps_old import brain_template
+from mmdps_old import loadfile
 
 class BrainNet:
 	"""
@@ -46,6 +46,10 @@ class BrainNet:
 		else:
 			# brain net must have one of net/time_series, net/time_series file path or raw_data_path
 			raise
+		self.allConnections = []
+		for xidx in range(len(self.template.plotindexes)):
+			for yidx in range(xidx + 1, len(self.template.plotindexes)):
+				self.allConnections.append('%s-%s' % (self.ticks[self.template.plotindexes[xidx]], self.ticks[self.template.plotindexes[yidx]]))
 
 	def loadNet(self, output_path = None, net_file_path = None, time_series_file_path = None):
 		if output_path:
@@ -86,13 +90,23 @@ class BrainNet:
 
 	def get_value_at_tick(self, xtick, ytick):
 		if xtick not in self.ticks or ytick not in self.ticks:
-			print('xtick %s or ytick %s not in SubNet.' % (xtick, ytick))
+			print('xtick %s or ytick %s not in net.' % (xtick, ytick))
 			return None
 		# given self.mat is a symmetric matrix
 		return self.net[self.ticks.index(xtick), self.ticks.index(ytick)]
 
+	def set_value_at_tick(self, xtick, ytick, value):
+		if xtick not in self.ticks or ytick	not in self.ticks:
+			print('xtick %s or ytick %s not in net.' % (xtick, ytick))
+			raise
+		self.net[self.ticks.index(xtick), self.ticks.index(ytick)] = value
+		self.net[self.ticks.index(ytick), self.ticks.index(xtick)] = value
+
 	def get_value_at_idx(self, xidx, yidx):
 		return self.net[xidx, yidx]
+
+	def get_all_connection_values(self):
+		return [self.get_value_at_tick(conn[:conn.find('-')], conn[conn.find('-')+1:]) for conn in self.allConnections]
 
 	def average_net(self, num_to_average):
 		self.net /= float(num_to_average)
@@ -183,14 +197,23 @@ class DynamicNet(BrainNet):
 			ret.append({'index':(x.item(0), y.item(0)), 'stability':stability[(x, y)].item(0), 'strength':self.DFCStrength[(x, y)].item(0), 'ticks':'%s-%s' % (self.ticks[x], self.ticks[y])})
 		return ret
 
-class SubNet(BrainNet):
-	def __init__(self, parent_net, subnetInfo):
-		super(SubNet, self).__init__(template = parent_net.template, net = parent_net.net, time_series = parent_net.time_series)
-		self.subnetInfo = subnetInfo
-		self.name = self.subnetInfo.name
-		self.ticks = self.subnetInfo.labels
+class Subnet(BrainNet):
+	def __init__(self, parent_net, subnetName, subnetConfig):
+		super(Subnet, self).__init__(template = parent_net.template, net = parent_net.net, time_series = parent_net.time_series)
+		self.subnetConfig = subnetConfig
+		self.name = subnetName
+		self.ticks = self.subnetConfig['labels']
 		self.count = len(self.ticks)
 		self._calc_net()
+		possibleConnections = []
+		for xidx in range(len(self.ticks)):
+			for yidx in range(xidx + 1, len(self.ticks)):
+				possibleConnections.append('%s-%s' % (self.ticks[xidx], self.ticks[yidx]))
+		tmp = []
+		for globalConnection in self.allConnections:
+			if globalConnection in possibleConnections:
+				tmp.append(globalConnection)
+		self.allConnections = tmp
 
 	def _calc_net(self):
 		self.idx = self.template.ticks_to_indexes(self.ticks)
@@ -201,25 +224,12 @@ class SubNet(BrainNet):
 		npidx = np.array(idx)
 		return mat[npidx[:, np.newaxis], npidx]
 
-class SubNetInfo:
-	def __init__(self, name, config):
-		self.name = name # the name of the subnet
-		self.description = config['description']
-		self.template = config['template']
-		self.labels = config['labels'] # a list of ticks
-
-class SubNetGroupInfo:
-	def __init__(self, config_file):
-		config = json.load(open(config_file, 'r'))
-		self.groupName = config['name']
-		self.subnetConfigs = config['subnets']
-		self.load_subnets()
-
-	def load_subnets(self):
-		self.subnetsInfo = {}
-		for name, config in self.subnetConfigs.items():
-			subnet = SubNetInfo(name, config)
-			self.subnetsInfo[name] = subnet
+class SubnetInfo:
+	def __init__(self, configFilePath):
+		with open(configFilePath) as f:
+			config = json.load(f)
+		self.config = config # the name of the subnet
+		self.subnets = config['subnets']
 
 class NodeFile:
 	def __init__(self, initnode=None):
@@ -269,6 +279,12 @@ def get_nodefile(name):
 	if os.path.isfile(name):
 		return NodeFile(name)
 	return NodeFile()
+
+def convertBrainNetsToSubnets(brainNetList, subnetName, subnetConfig):
+	"""
+	This function converts all brain net in the list to subnets
+	"""
+	return [Subnet(net, subnetName, subnetConfig) for net in brainNetList]
 
 if __name__ == '__main__':
 	nf = get_nodefile('brodmann_lr.node')
