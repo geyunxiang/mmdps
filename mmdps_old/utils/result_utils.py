@@ -5,8 +5,8 @@ import os, glob
 import numpy as np
 from matplotlib import pyplot as plt
 
-from mmdps import brain_template, brain_net
-from mmdps.utils import plot_utils, io_utils
+from mmdps_old import brain_template, brain_net
+from mmdps_old.utils import plot_utils, io_utils
 
 # dynamic related
 def filter_DFCs(raw_dfcs, template_dfcs):
@@ -22,7 +22,6 @@ def filter_DFCs(raw_dfcs, template_dfcs):
 	return ret
 
 # heatmap, histogram related plotting
-
 def generate_net_heatmap(net, output_file, title):
 	fig = plot_utils.plot_heatmap_from_net(net, title)
 	os.makedirs(os.path.dirname(output_file), exist_ok = True)
@@ -88,3 +87,17 @@ def intersect_FCHist_at_tick_dynamic_category(xtick, ytick, template_name, dataD
 	Plot the intersection of dynamic functional connections, viewing each window position as a unique category.
 	"""
 	pass
+
+def plot_hist_per_subject(subjectName, subjectNet, normalize = False, saveDir = None, show_img = False):
+	"""
+	This function is used to plot the histogram of all connections for one person. 
+	"""
+	plt.hist(subjectNet.get_all_connection_values(), bins = 25, range = (-1, 1), label = subjectName, density = normalize)
+	plt.title(subjectName)
+	if saveDir:
+		os.makedirs(saveDir, exist_ok = True)
+		plt.savefig(os.path.join(saveDir, '%s fc hist.png' % (subjectName)))
+	if show_img:
+		plt.show()
+	else:
+		plt.close()

@@ -4,7 +4,7 @@ from scipy import stats
 import numpy as np
 import copy
 
-from mmdps.utils import io_utils
+from mmdps_old.utils import io_utils
 
 def plot_heatmap_from_net(net, title, valuerange = (-1, 1)):
 	actual_plot_index = [i[0] for i in sorted(enumerate(net.template.ticks_to_plot_indexes(net.ticks)), key = lambda x:x[1])]
@@ -33,7 +33,7 @@ def plot_heatmap(mat, xticks, title, valuerange = (-1, 1)):
 	"""
 	actually plotting a mat using default orders and ticks.
 	"""
-	cmap = cm.coolwarm
+	cmap = cm.terrain
 	fig = plt.figure(figsize = (20, 20))
 	axim = plt.imshow(mat, interpolation = 'none', cmap = cmap, vmin = valuerange[0], vmax = valuerange[1])
 	nrow, ncol = mat.shape

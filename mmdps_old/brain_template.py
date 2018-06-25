@@ -1,7 +1,7 @@
 import os
 import json
-from mmdps import brain_net
-from mmdps.loadfile import load_json
+from mmdps_old import brain_net
+from mmdps_old.loadfile import load_json
 
 folder_module = os.path.dirname(os.path.abspath(__file__))
 
@@ -71,6 +71,21 @@ def load_template(folder, templatename):
 	templatedesc = load_json(config_file_path)
 	templatedesc['nodefile'] = os.path.join(folder, templatedesc['nodefile'])
 	return BrainTemplate(templatedesc)
+
+def sort_per_connection(connections, template_name = 'brodmann_lr_3'):
+	"""
+	This function adjusts tick order of each connection to ensure
+	the area with smaller plot index goes first
+	"""
+	ret = []
+	template = get_template(template_name)
+	for connection in connections:
+		xpidx, ypidx = template.ticks_to_plot_indexes(connection.split('-'))
+		if xpidx < ypidx:
+			ret.append(connection)
+		else:
+			ret.append('%s-%s' % (connection.split('-')[1], connection.split('-')[0]))
+	return ret
 
 if __name__ == '__main__':
 	t = get_template('aal')
