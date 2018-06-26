@@ -128,6 +128,13 @@ class BrainNet:
 			data = img.get_data()
 			np.copyto(data, nib.flip_axis(data, axis=0))
 
+# class DynamicNet():
+# 	"""
+# 	A dynamic net is a collection of smaller networks
+# 	"""
+# 	def __init__(self, net_config):
+# 		self.template = brain_template.get_template(net_config['template'])
+
 class DynamicNet(BrainNet):
 	def __init__(self, parent_net, step = 3, window_length = 100):
 		super(DynamicNet, self).__init__(template = parent_net.template, net = parent_net.net, time_series = parent_net.time_series)
