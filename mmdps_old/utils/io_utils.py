@@ -2,6 +2,8 @@ import shutil
 import os
 import gzip
 
+from mmdps.proc import netattr, atlas
+from mmdps.util import loadsave
 from mmdps_old import brain_net
 
 def ungzip(fgz):
@@ -73,7 +75,40 @@ def loadAllTemporalNets(boldPath, totalTimeCase, template_name = 'brodmann_lr_3'
 		currentPersonScans.append(brain_net.BrainNet(net_config = {'template':template_name}, output_path = os.path.join(boldPath, scan, 'bold_net', template_name)))
 	return ret
 
-def loadSpecificNets(boldPath, template_name = 'brodmann_lr_3', timeCase = 1, subjectList = None):
+def loadSpecificNets(boldPath, template_name = 'brodmann_lr', timeCase = 1, subjectList = None):
+	"""
+	This function is an implementation on the new mmdps version
+	"""
+	atlasobj = atlas.get(template_name)
+	if subjectList is not None:
+		# read in subjectList
+		with open(subjectList) as f:
+			subjectList = []
+			for line in f.readlines():
+				subjectList.append(line.strip())
+	ret = []
+	subjectName = 'None'
+	lastSubjectName = 'Unknown'
+	for scan in sorted(os.listdir(boldPath)):
+		if scan.find('_') != -1:
+			subjectName = scan[:scan.find('_')]
+		else:
+			subjectName = scan
+		if subjectName != lastSubjectName:
+			occurrenceCounter = 0
+			lastSubjectName = subjectName
+		occurrenceCounter += 1
+		if subjectList is not None and subjectName not in subjectList:
+			continue
+		if occurrenceCounter == timeCase:
+			try:
+				ret.append(netattr.Net(loadsave.load_csvmat(os.path.join(boldPath, scan, 'bold_net', template_name+'_3', 'corrcoef.csv')), atlasobj))
+			except FileNotFoundError as e:
+				print('File %s not found.' % os.path.join(boldPath, scan, 'bold_net/%s/corrcoef.csv' % template_name))
+				print(e)
+	return ret
+
+def loadSpecificNets_old(boldPath, template_name = 'brodmann_lr_3', timeCase = 1, subjectList = None):
 	"""
 	This function is used to load the first/second/etc scans of patients
 	Specify which patients to load as a list of strings in subjectList.

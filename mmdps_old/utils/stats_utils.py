@@ -21,6 +21,26 @@ def twoSampleTTest(a, b):
 
 def filter_sigdiff_connections(netListA, netListB, sigLevel = 0.05):
 	"""
+	This function is an implementation on the new mmdps version
+	A connection is represented by a 2-element-tuple of idx
+	"""
+	ret = []
+	atlasobj = netListA[0].atlasobj
+	totalTests = 0
+	for xidx in range(atlasobj.count):
+		for yidx in range(xidx + 1, atlasobj.count):
+			# perform t-test
+			t, p = scipy.stats.ttest_ind(
+				[a.data[xidx, yidx] for a in netListA], 
+				[b.data[xidx, yidx] for b in netListB])
+			totalTests += 1
+			if p < sigLevel:
+				ret.append((xidx, yidx))
+	print('SigDiff connections: %d. Discover rate: %1.4f with sigLevel: %1.4f' % (len(ret), float(len(ret))/totalTests, sigLevel))
+	return ret
+
+def filter_sigdiff_connections_old(netListA, netListB, sigLevel = 0.05):
+	"""
 	this function takes in two lists of networks, perform 2 sample t-test on each 
 	connections, and take out those that are significant. 
 	The significant different connections are returned in a list of strings

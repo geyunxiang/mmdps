@@ -28,8 +28,8 @@ def generate_net_heatmap(net, output_file, title):
 	plt.savefig(output_file)
 	plt.close()
 
-def getAllFCAtTick(xtick, ytick, all_nets, dynamicIncluded = False):
-	return [net.get_value_at_tick(xtick, ytick) for net in all_nets]
+def getAllFCAtTick(xidx, yidx, all_nets, dynamicIncluded = False):
+	return [net.data[xidx, yidx] for net in all_nets]
 
 def plot_FCHist_at_tick(xtick, ytick, all_nets = None, template_name = 'brodmann_lr_3', normalize = True, saveDir = None, show_img = False):
 	data = getAllFCAtTick(xtick, ytick, all_nets)
