@@ -1,0 +1,269 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.proc.atlas &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.proc.atlas</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Brain atlas tools.</span>
+
+<span class="sd">Access brain atlases.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">rootconfig</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">loadsave</span>
+<span class="kn">from</span> <span class="nn">..vis</span> <span class="k">import</span> <span class="n">bnv</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">dataop</span>
+
+<div class="viewcode-block" id="Atlas"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas">[docs]</a><span class="k">class</span> <span class="nc">Atlas</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The brain atlas.</span>
+
+<span class="sd">    Init use a description desc, check atlas folder for example.</span>
+<span class="sd">    Can be used without actual atlas nii. If do have nii, it is in atlasfolder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">descdict</span><span class="p">,</span> <span class="n">atlasfolder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the atlas object.&quot;&quot;&quot;</span>
+        <span class="c1"># the original description dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dd</span> <span class="o">=</span> <span class="n">descdict</span>
+        <span class="c1"># the name of the atlas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="c1"># if atlasfolder not specified, use default</span>
+        <span class="k">if</span> <span class="n">atlasfolder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atlasfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">atlas</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atlasfolder</span> <span class="o">=</span> <span class="n">atlasfolder</span>
+        <span class="c1"># brief description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">brief</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">[</span><span class="s1">&#39;brief&#39;</span><span class="p">]</span>
+        <span class="c1"># total region count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
+        <span class="c1"># the regions list, they are the numbers appearred in nii file, sequentially, except 0.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">[</span><span class="s1">&#39;regions&#39;</span><span class="p">]</span>
+        <span class="c1"># the ticks list, correspond to regions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">[</span><span class="s1">&#39;ticks&#39;</span><span class="p">]</span>
+        <span class="c1"># the plotindexes list, n means it is the nth to be ploted.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotindexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">[</span><span class="s1">&#39;plotindexes&#39;</span><span class="p">]</span>
+        <span class="c1"># nodefile for use with brainnet viewer.</span>
+        <span class="k">if</span> <span class="s1">&#39;nodefile&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nodefile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">[</span><span class="s1">&#39;nodefile&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bnvnode</span> <span class="o">=</span> <span class="n">bnv</span><span class="o">.</span><span class="n">BNVNode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodefile</span><span class="p">)</span>
+        <span class="c1"># ticks_adjusted is the ticks list, adjusted using plotindexes.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticks_adjusted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjust_ticks</span><span class="p">()</span>
+        <span class="c1"># volumes to access the actual nii file.</span>
+        <span class="k">if</span> <span class="s1">&#39;volumes&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_volumes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">[</span><span class="s1">&#39;volumes&#39;</span><span class="p">])</span>
+
+<div class="viewcode-block" id="Atlas.fullpath"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.fullpath">[docs]</a>    <span class="k">def</span> <span class="nf">fullpath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;fullpath for atlas folder.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atlasfolder</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Atlas.add_volumes"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.add_volumes">[docs]</a>    <span class="k">def</span> <span class="nf">add_volumes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volumes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add volumes for actual nii files.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volumes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">volumename</span> <span class="ow">in</span> <span class="n">volumes</span><span class="p">:</span>
+            <span class="n">volumes</span><span class="p">[</span><span class="n">volumename</span><span class="p">][</span><span class="s1">&#39;niifile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullpath</span><span class="p">(</span><span class="n">volumes</span><span class="p">[</span><span class="n">volumename</span><span class="p">][</span><span class="s1">&#39;niifile&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">volumes</span><span class="p">[</span><span class="n">volumename</span><span class="p">]</span> <span class="o">=</span> <span class="n">volumes</span><span class="p">[</span><span class="n">volumename</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Atlas.get_volume"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.get_volume">[docs]</a>    <span class="k">def</span> <span class="nf">get_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volumename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get one volume using volumename.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">volumes</span><span class="p">[</span><span class="n">volumename</span><span class="p">]</span></div>
+    
+<div class="viewcode-block" id="Atlas.adjust_ticks"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.adjust_ticks">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_ticks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adjust ticks according to plotindexes.&quot;&quot;&quot;</span>
+        <span class="n">adjticks</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
+            <span class="n">realpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotindexes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">adjticks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticks</span><span class="p">[</span><span class="n">realpos</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">adjticks</span></div>
+
+<div class="viewcode-block" id="Atlas.adjust_vec"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.adjust_vec">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vec</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adjust a vector according to plotindexes.&quot;&quot;&quot;</span>
+        <span class="n">vec_adjusted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
+            <span class="n">realpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotindexes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">vec_adjusted</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">vec</span><span class="p">[</span><span class="n">realpos</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vec_adjusted</span></div>
+
+<div class="viewcode-block" id="Atlas.adjust_mat"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.adjust_mat">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sqmat</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adjust a matrix according to plotindexes.</span>
+
+<span class="sd">        Both columns and rows are adjusted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mat1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">sqmat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">mat2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">sqmat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
+            <span class="n">realpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotindexes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">mat1</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">sqmat</span><span class="p">[</span><span class="n">realpos</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
+            <span class="n">realpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotindexes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">mat2</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mat1</span><span class="p">[:,</span> <span class="n">realpos</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">mat2</span></div>
+
+<div class="viewcode-block" id="Atlas.adjust_mat_col"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.adjust_mat_col">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_mat_col</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adjust matrix columns according to plotindexes.</span>
+
+<span class="sd">        Only columns are adjusted, rows not adjusted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mat1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
+            <span class="n">realpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotindexes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">mat1</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[:,</span> <span class="n">realpos</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">mat1</span></div>
+
+<div class="viewcode-block" id="Atlas.adjust_mat_row"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.adjust_mat_row">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_mat_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adjust matrix rows according to plotindexes.</span>
+<span class="sd">        </span>
+<span class="sd">        Only rows are adjusted, columns not adjusted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mat1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">):</span>
+            <span class="n">realpos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotindexes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">mat1</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[</span><span class="n">realpos</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="n">mat1</span></div>
+    
+<div class="viewcode-block" id="Atlas.ticks_to_regions"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.ticks_to_regions">[docs]</a>    <span class="k">def</span> <span class="nf">ticks_to_regions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ticks</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert ticks to regions.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_tickregiondict&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tickregiondict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ticks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">)])</span>
+        <span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_tickregiondict</span><span class="p">[</span><span class="n">tick</span><span class="p">]</span> <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ticks</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">regions</span></div>
+
+<div class="viewcode-block" id="Atlas.regions_to_indexes"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.regions_to_indexes">[docs]</a>    <span class="k">def</span> <span class="nf">regions_to_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert regions to indexes.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_regionindexdict&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_regionindexdict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">)])</span>
+        <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_regionindexdict</span><span class="p">[</span><span class="n">region</span><span class="p">]</span> <span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">regions</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">indexes</span></div>
+
+<div class="viewcode-block" id="Atlas.ticks_to_indexes"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.ticks_to_indexes">[docs]</a>    <span class="k">def</span> <span class="nf">ticks_to_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ticks</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert ticks to indexes.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_tickindexdict&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tickindexdict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ticks</span><span class="p">)])</span>
+        <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_tickindexdict</span><span class="p">[</span><span class="n">tick</span><span class="p">]</span> <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ticks</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">indexes</span></div>
+
+<div class="viewcode-block" id="Atlas.indexes_to_ticks"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.indexes_to_ticks">[docs]</a>    <span class="k">def</span> <span class="nf">indexes_to_ticks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert indexes to ticks.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ticks</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indexes</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Atlas.create_sub"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.Atlas.create_sub">[docs]</a>    <span class="k">def</span> <span class="nf">create_sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subatlasname</span><span class="p">,</span> <span class="n">subindexes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a sub atlas using specified sub indexes.</span>
+<span class="sd">        </span>
+<span class="sd">        Create a sub atlas with name and sub indexes. The new sub atlas can be used</span>
+<span class="sd">        just like a normal atlas.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">subdd</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">subdd</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subatlasname</span>
+        <span class="n">subdd</span><span class="p">[</span><span class="s1">&#39;brief&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, subnet based on </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subatlasname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">subdd</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subindexes</span><span class="p">)</span>
+        <span class="n">subdd</span><span class="p">[</span><span class="s1">&#39;regions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataop</span><span class="o">.</span><span class="n">sub_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">,</span> <span class="n">subindexes</span><span class="p">)</span>
+        <span class="n">subdd</span><span class="p">[</span><span class="s1">&#39;ticks&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataop</span><span class="o">.</span><span class="n">sub_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ticks</span><span class="p">,</span> <span class="n">subindexes</span><span class="p">)</span>
+        <span class="n">rawsubplotindexes</span> <span class="o">=</span> <span class="n">dataop</span><span class="o">.</span><span class="n">sub_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plotindexes</span><span class="p">,</span> <span class="n">subindexes</span><span class="p">)</span>
+        <span class="n">subdd</span><span class="p">[</span><span class="s1">&#39;plotindexes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">rawsubplotindexes</span><span class="p">)</span>
+        <span class="n">subatlasobj</span> <span class="o">=</span> <span class="n">Atlas</span><span class="p">(</span><span class="n">subdd</span><span class="p">)</span>
+        <span class="n">subatlasobj</span><span class="o">.</span><span class="n">bnvnode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bnvnode</span><span class="o">.</span><span class="n">copy_sub</span><span class="p">(</span><span class="n">subindexes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">subatlasobj</span></div></div>
+
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">atlasname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get an atlasobj with name.</span>
+<span class="sd">    </span>
+<span class="sd">    This is typically what you want when to get a atlas object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">jfilename</span> <span class="o">=</span> <span class="n">atlasname</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span>
+    <span class="n">jfilepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">atlas</span><span class="p">,</span> <span class="n">jfilename</span><span class="p">)</span>
+    <span class="n">atlasconf</span> <span class="o">=</span> <span class="n">loadsave</span><span class="o">.</span><span class="n">load_json</span><span class="p">(</span><span class="n">jfilepath</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Atlas</span><span class="p">(</span><span class="n">atlasconf</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="getbywd"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.getbywd">[docs]</a><span class="k">def</span> <span class="nf">getbywd</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get an atlasobj by working directory.</span>
+
+<span class="sd">    If current working directory is xx/xx/aal, then it will return an aal atlasobj.</span>
+<span class="sd">    Use this when writing processing scripts. It will work regardless of the actual</span>
+<span class="sd">    atlas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">atlasname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">get</span><span class="p">(</span><span class="n">atlasname</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="getbyenv"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.atlas.getbyenv">[docs]</a><span class="k">def</span> <span class="nf">getbyenv</span><span class="p">(</span><span class="n">atlasname_default</span><span class="o">=</span><span class="s1">&#39;aal&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get an atlasobj by environment variable MMDPS_CUR_ATLAS.</span>
+
+<span class="sd">    If there is a environment variable MMDPS_CUR_ATLAS. Return the atlasobj specified</span>
+<span class="sd">    by atlas name. Otherwise return the atlasobj of atlasname_default.</span>
+<span class="sd">    Use this when writing processing scripts that should run in every atlases. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">atlasname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;MMDPS_CUR_ATLAS&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">atlasname</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MMDPS_CUR_ATLAS not set, use default&#39;</span><span class="p">,</span> <span class="n">atlasname_default</span><span class="p">)</span>
+        <span class="n">atlasname</span> <span class="o">=</span> <span class="n">atlasname_default</span>
+    <span class="k">return</span> <span class="n">get</span><span class="p">(</span><span class="n">atlasname</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

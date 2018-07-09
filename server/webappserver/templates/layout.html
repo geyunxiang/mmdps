@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>{% block title %}Welcome{% endblock %} | MMDPS</title>
+</head>
+
+<body>
+
+    <div class=box>
+        <p class=nav>
+		    <a href="{{ url_for('info') }}">info</a> //
+			<a href="{{ url_for('result') }}">result</a> //
+			<a href="{{ url_for('logout') }}">logout</a>
+		</p>
+        {% for message in get_flashed_messages() %}
+        <div class=flash>{{ message }}</div>
+        {% endfor %} 
+		{% block body %}{% endblock %}
+		<p class=footer>
+		    &copy; Copyright {{ current_year }} by MMDP
+		</p>
+    </div>
+
+</body>
+
+</html>

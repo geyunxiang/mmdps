@@ -1,0 +1,18 @@
+{
+    "name": "ProcAllParallel",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "UnAtlased",
+            "typename": "PythonJob",
+            "cmd": "runpara.py",
+            "config": "configpara_dwi.json"
+        },
+        {
+            "name": "Atlased",
+            "typename": "PythonJob",
+            "cmd": "runpara.py",
+            "config": "configpara_atlased_dwi.json"
+        }
+    ]
+}

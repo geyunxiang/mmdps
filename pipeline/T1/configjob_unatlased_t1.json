@@ -1,0 +1,19 @@
+{
+    "name": "BatchJob",
+    "typename": "BatchJob",
+    "config": [
+		{
+			"name": "BetNorm",
+			"typename": "BatchJob",
+			"config": "configjob_t1_betnorm.json"
+		},
+        {
+            "name": "Seg",
+            "typename": "BatchJob",
+            "cmd": "",
+            "config": "configjob_t1_seg.json",
+            "argv": "",
+            "wd": "."
+        }
+    ]
+}

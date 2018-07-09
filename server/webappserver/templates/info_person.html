@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Info | {{ person['name'] }}
+{% endblock %}
+
+{% block body %}
+<h2>{{ self.title() }}</h2>
+
+<hr />
+
+<h3>Person</h3>
+<p>id: {{ person['id'] }}</p>
+<p>name: {{ person['name'] }}</p>
+
+<hr />
+
+<h3>MRIScans</h3>
+{% for mriscan in mriscans %}
+<h4>MRIScan</h4>
+<p>id: {{ mriscan['id'] }}</p>
+<p>date: {{ mriscan['date'] }}</p>
+<table>
+  <tr>
+    <th>modal</th>
+	<th>exist</th>
+	<th>download</th>
+  </tr>
+  <tr>
+    <td>T1</td>
+	<td>{{ mriscan['hasT1'] }}</td>
+	<td><a href={{ url_for('get_mriscan_data', mriscan_id=mriscan['id'], modal='T1.nii.gz') }}>download</a></td>
+  <tr>
+  <tr>
+    <td>T2</td>
+	<td>{{ mriscan['hasT2'] }}</td>
+	<td><a href={{ url_for('get_mriscan_data', mriscan_id=mriscan['id'], modal='T2.nii.gz') }}>download</a></td>
+  <tr>
+  <tr>
+    <td>BOLD</td>
+	<td>{{ mriscan['hasT1'] }}</td>
+	<td><a href={{ url_for('get_mriscan_data', mriscan_id=mriscan['id'], modal='BOLD.nii.gz') }}>download</a></td>
+  <tr>
+  <tr>
+    <td>DWI</td>
+	<td>{{ mriscan['hasT1'] }}</td>
+	<td><a href={{ url_for('get_mriscan_data', mriscan_id=mriscan['id'], modal='DWI.nii.gz') }}>download</a></td>
+  <tr>  
+</table>
+{% endfor %}
+
+<hr />
+
+<h3>Groups</h3>
+{% for group in groups %}
+<h4>Group<h4>
+<p>name: {{ group['name'] }}</p>
+<p>description: {{ group['description'] }}</p>
+{% endfor %}
+
+<hr />
+
+<h3>MotionScores</h3>
+<table>
+  <tr>
+    <th>date</th><th>TSI</th><th>VAS</th><th>Sensory</th><th>WISCI2</th><th>SCIM</th><th>Motor</th><th>MAS</th>
+  </tr>
+  {% for ms in motionscores %}
+  <tr>
+    <td>{{ ms['date'] }}</td><td>{{ ms['scTSI'] }}</td><td>{{ ms['scVAS'] }}</td><td>{{ ms['scSensory'] }}</td><td>{{ ms['scWISCI2'] }}</td><td>{{ ms['scSCIM'] }}<td>{{ ms['scMotor'] }}</td><td>{{ ms['scMAS'] }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<hr />
+
+<h3>StrokeScores</h3>
+<table>
+  <tr>
+    <th>date</th><th>FMA</th><th>ARAT</th><th>WOLF</th>
+  </tr>
+  {% for ss in strokescores %}
+  <tr>
+    <td>{{ ss['date'] }}</td><td>{{ ss['scFMA'] }}</td><td>{{ ss['scARAT'] }}</td><td>{{ ss['scWOLF'] }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+
+{% endblock %}

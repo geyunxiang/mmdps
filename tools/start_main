@@ -1,0 +1,5 @@
+# /bin/sh
+
+source mmdpsvarsall.rc
+python3 ui_main.py
+

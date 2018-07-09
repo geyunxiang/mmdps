@@ -1,0 +1,45 @@
+{
+    "name": "DWIGenNet",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "GenAtlasNative",
+            "typename": "ShellJob",
+            "cmd": "dwi_native_gen_atlas.sh"
+        },
+        {
+            "name": "GenAtlasNormalized",
+            "typename": "ShellJob",
+            "cmd": "dwi_normalized_gen_atlas.sh"
+        },
+        {
+            "name": "TrackGenNetNative",
+            "typename": "PythonJob",
+            "cmd": "dwi_track_gen_net.py",
+            "wd": "nativespace"
+        },
+        {
+            "name": "TrackGenNetNormalized",
+            "typename": "PythonJob",
+            "cmd": "dwi_track_gen_net.py",
+            "wd": "normalizedspace"
+        },
+        {
+            "name": "TrackShowNetNative",
+            "typename": "PythonJob",
+            "cmd": "dwi_track_show_net.py",
+            "wd": "nativespace"
+        },
+        {
+            "name": "TrackShowNetNormalized",
+            "typename": "PythonJob",
+            "cmd": "dwi_track_show_net.py",
+            "wd": "normalizedspace"
+        },
+        {
+            "name": "CalcAttr",
+            "typename": "PythonJob",
+            "cmd": "dwi_calc_attr.py"
+        }
+    ]
+}

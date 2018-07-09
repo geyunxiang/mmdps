@@ -1,0 +1,1541 @@
+INFO:root:New Run: 2018-04-30T22-24-01.639524
+INFO:root:caochangsheng_20161027 convert completed
+INFO:root:caochangsheng_20161114 convert completed
+INFO:root:chenguwen_20150711 convert completed
+INFO:root:chenhua_20150711 convert completed
+INFO:root:chenyifan_20150612 convert completed
+INFO:root:chenyifan_20150629 convert completed
+INFO:root:chenyifan_20150923 convert completed
+INFO:root:cuiwei_20150825 convert completed
+INFO:root:daihuachen_20170323 convert completed
+INFO:root:daihuachen_20170426 convert completed
+INFO:root:daihuachen_20170518 convert completed
+INFO:root:daihuachen_20170927 convert completed
+INFO:root:daishiqin_20180302 convert completed
+INFO:root:fengdaoliang_20160107 convert completed
+INFO:root:fengdaoliang_20160120 convert completed
+INFO:root:fuchenhao_20170602 convert completed
+INFO:root:fuchenhao_20170623 convert completed
+INFO:root:gaohongjin_20170823 convert completed
+INFO:root:gaohongping_20161214 convert completed
+INFO:root:gaohongping_20170122 convert completed
+INFO:root:gaoruifeng_20171011 convert completed
+INFO:root:gaoruifeng_20171116 convert completed
+INFO:root:gufeng_20160412 convert completed
+INFO:root:gufeng_20160426 convert completed
+INFO:root:guojiye_20170324 convert completed
+INFO:root:guojiye_20170426 convert completed
+INFO:root:guojiye_20170526 convert completed
+INFO:root:guojiye_20170629 convert completed
+INFO:root:guojiye_20170728 convert completed
+INFO:root:guojiye_20170906 convert completed
+INFO:root:guojiye_20171129 convert completed
+INFO:root:guoqian_20151010 convert completed
+INFO:root:guoqian_20151023 convert completed
+INFO:root:guoqian_20151127 convert completed
+INFO:root:guoqian_20160401 convert completed
+INFO:root:guoqian_20160420 convert completed
+INFO:root:guozhiyou_20180131 convert completed
+INFO:root:guozhiyou_20180305 convert completed
+INFO:root:guxiaozhou_20150420 convert completed
+INFO:root:guxiaozhou_20150506 convert completed
+WARNING:root:guxiaozhou_20150819 convert failed, 1
+INFO:root:hanjunling_20170309 convert completed
+INFO:root:hanjunling_20170328 convert completed
+INFO:root:hansongnian_20170918 convert completed
+INFO:root:hansongnian_20171026 convert completed
+INFO:root:haocundi_20160707 convert completed
+INFO:root:haocundi_20160722 convert completed
+INFO:root:hechangchuan_20171019 convert completed
+INFO:root:hongqingfeng_20151207 convert completed
+INFO:root:hongqingfeng_20151218 convert completed
+INFO:root:hongqingfeng_20160119 convert completed
+INFO:root:hongqingfeng_20160317 convert completed
+WARNING:root:houxiuyun_20150712 convert failed, 1
+INFO:root:huangweiwen_20170911 convert completed
+INFO:root:huangweiwen_20171102 convert completed
+INFO:root:huangweiwen_20171218 convert completed
+WARNING:root:huangyu_20150712 convert failed, 1
+INFO:root:huguangquan_20170525 convert completed
+INFO:root:huguangquan_20170707 convert completed
+INFO:root:huguangquan_20170808 convert completed
+INFO:root:hushufang_20170331 convert completed
+INFO:root:hushufang_20170421 convert completed
+INFO:root:huwenbin_20150619 convert completed
+INFO:root:jinwenxue_20160104 convert completed
+INFO:root:jinwenxue_20160115 convert completed
+INFO:root:kangcuiping_20150506 convert completed
+INFO:root:kangcuiping_20150522 convert completed
+INFO:root:kangcuiping_20150605 convert completed
+INFO:root:kangcuiping_20150618 convert completed
+INFO:root:kangcuiping_20160408 convert completed
+INFO:root:kangcuiping_20160425 convert completed
+INFO:root:kangjian_20150826 convert completed
+INFO:root:kouguangying_20170313 convert completed
+INFO:root:liangxudong_20161223 convert completed
+INFO:root:liangxudong_20170106 convert completed
+INFO:root:liangxudong_20170120 convert completed
+INFO:root:liangxudong_20170217 convert completed
+INFO:root:lijingqin_20180331 convert completed
+INFO:root:limeihong_20150603 convert completed
+INFO:root:limeihong_20150619 convert completed
+INFO:root:linkuixing_20150712 convert completed
+INFO:root:linlikai_20150712 convert completed
+INFO:root:linlikai_20150827 convert completed
+INFO:root:lirongsheng_20161216 convert completed
+INFO:root:lirongsheng_20170125 convert completed
+INFO:root:liufengshuo_20170721 convert completed
+INFO:root:liufengshuo_20170825 convert completed
+INFO:root:liujinghui_20170418 convert completed
+INFO:root:liujinghui_20170511 convert completed
+INFO:root:liujinhua_20150818 convert completed
+INFO:root:liujinhua_20150901 convert completed
+INFO:root:liujinhua_20151130 convert completed
+INFO:root:liujinli_20161124 convert completed
+INFO:root:liujinli_20161209 convert completed
+INFO:root:liujinli_20161223 convert completed
+INFO:root:liujinli_20170113 convert completed
+INFO:root:liujinli_20170204 convert completed
+INFO:root:liujinli_20170223 convert completed
+INFO:root:liujinli_20170317 convert completed
+INFO:root:liujinli_20170401 convert completed
+INFO:root:liuna_20150420 convert completed
+WARNING:root:liuna_20150506 convert failed, 1
+INFO:root:liuna_20150609 convert completed
+INFO:root:liuxiaochun_20180320 convert completed
+INFO:root:liuyonghua_20170411 convert completed
+INFO:root:liuyonghua_20170603 convert completed
+INFO:root:liuyonghua_20170905 convert completed
+INFO:root:liuyuanjie_20180312 convert completed
+INFO:root:liuyulai_20170713 convert completed
+INFO:root:liuyulai_20170907 convert completed
+INFO:root:liuyulai_20170928 convert completed
+INFO:root:lixueqin_20170512 convert completed
+INFO:root:lixueqin_20170621 convert completed
+INFO:root:liyafen_20170222 convert completed
+INFO:root:liyafen_20170316 convert completed
+INFO:root:liyintong_20170914 convert completed
+INFO:root:liyintong_20171115 convert completed
+INFO:root:longkeming_20171018 convert completed
+INFO:root:longkeming_20171204 convert completed
+INFO:root:machunyue_20150711 convert completed
+INFO:root:mahuibo_20151229 convert completed
+INFO:root:mahuibo_20160115 convert completed
+INFO:root:mahuibo_20160412 convert completed
+INFO:root:mahuibo_20160426 convert completed
+INFO:root:maoli_20160504 convert completed
+INFO:root:maoli_20160519 convert completed
+INFO:root:maxiaoni_20150609 convert completed
+INFO:root:maxiaoni_20150617 convert completed
+INFO:root:mayanjun_20171030 convert completed
+INFO:root:mixiuping_20170322 convert completed
+INFO:root:mixiuping_20170407 convert completed
+INFO:root:mixiuping_20170428 convert completed
+INFO:root:mixiuping_20170516 convert completed
+INFO:root:mixiuping_20170528 convert completed
+INFO:root:mixiuping_20170614 convert completed
+INFO:root:mixiuping_20170628 convert completed
+INFO:root:mixiuping_20170720 convert completed
+INFO:root:mixiuping_20170920 convert completed
+INFO:root:mixiuping_20171130 convert completed
+INFO:root:niuwenxuan_20170417 convert completed
+INFO:root:niuwenxuan_20170517 convert completed
+INFO:root:panqingbin_20161103 convert completed
+INFO:root:panqingbin_20161121 convert completed
+INFO:root:panqingbin_20161208 convert completed
+INFO:root:panqingbin_20170217 convert completed
+INFO:root:panqingbin_20170307 convert completed
+INFO:root:piyongxiang_20161216 convert completed
+INFO:root:piyongxiang_20170117 convert completed
+INFO:root:qiaoyanmei_20170206 convert completed
+WARNING:root:qiaoyanmei_20170308 convert failed, 1
+INFO:root:qiaoyanmei_20170626 convert completed
+INFO:root:qinhongmei_20170528 convert completed
+INFO:root:qiuchunsuo_20150712 convert completed
+INFO:root:qiutongyu_20150605 convert completed
+INFO:root:qiutongyu_20150608 convert completed
+INFO:root:qiutongyu_20150623 convert completed
+INFO:root:qiutongyu_20150728 convert completed
+INFO:root:qiutongyu_20160517 convert completed
+INFO:root:quyuanjie_20170207 convert completed
+INFO:root:renjie_20170811 convert completed
+INFO:root:renjie_20170830 convert completed
+INFO:root:shaolijin_20180328 convert completed
+INFO:root:shenwei_20170327 convert completed
+INFO:root:songxingfen_20170124 convert completed
+INFO:root:songxingfen_20170206 convert completed
+INFO:root:songxingfen_20170412 convert completed
+INFO:root:sunguokun_20150626 convert completed
+INFO:root:sunxinshe_20151126 convert completed
+INFO:root:sunxinshe_20151211 convert completed
+INFO:root:sunxinshe_20160809 convert completed
+INFO:root:sunxinshe_20160825 convert completed
+INFO:root:suoqiufeng_20171010 convert completed
+INFO:root:suoqiufeng_20171113 convert completed
+INFO:root:tanenci_20170601 convert completed
+INFO:root:tanenci_20170706 convert completed
+INFO:root:tanenci_20170814 convert completed
+INFO:root:tanenci_20170922 convert completed
+INFO:root:tanenci_20171117 convert completed
+WARNING:root:tanzengchao_20150827 convert failed, 1
+INFO:root:tanzengchao_20150911 convert completed
+WARNING:root:tanzengchao_20150925 convert failed, 1
+INFO:root:tanzengchao_20151020 convert completed
+INFO:root:tanzengchao_20151204 convert completed
+INFO:root:tuyuanyuan_20150827 convert completed
+INFO:root:wangdongxu_20150711 convert completed
+INFO:root:wangdongxu_20150826 convert completed
+INFO:root:wanghenghua_20171125 convert completed
+INFO:root:wanghenghua_20171208 convert completed
+INFO:root:wangjinguo_20160421 convert completed
+INFO:root:wangjinguo_20160506 convert completed
+INFO:root:wangjingying_20170413 convert completed
+INFO:root:wangjingying_20170606 convert completed
+INFO:root:wangjingying_20170704 convert completed
+INFO:root:wangjingying_20170810 convert completed
+INFO:root:wangjingying_20170921 convert completed
+INFO:root:wangjingying_20171201 convert completed
+INFO:root:wangqiujun_20150612 convert completed
+INFO:root:wangqiujun_20150630 convert completed
+INFO:root:wangshengnan_20171228 convert completed
+INFO:root:wangshengnan_20180201 convert completed
+INFO:root:wangshutian_20160229 convert completed
+INFO:root:wangwei_20171107 convert completed
+INFO:root:wangwei_20171221 convert completed
+INFO:root:wangwei_20180124 convert completed
+INFO:root:wangwei_20180211 convert completed
+INFO:root:wangxiaoxia_20150701 convert completed
+INFO:root:wangxiaoxia_20150715 convert completed
+INFO:root:wangyingwu_20170912 convert completed
+INFO:root:wangyingwu_20171114 convert completed
+INFO:root:weixiaogang_20170915 convert completed
+INFO:root:wuchaolan_20150711 convert completed
+INFO:root:wujiang_20170824 convert completed
+INFO:root:wujiang_20170926 convert completed
+INFO:root:wujiang_20171031 convert completed
+INFO:root:wujiang_20171122 convert completed
+INFO:root:wuqin_20150825 convert completed
+INFO:root:wuxuekun_20170224 convert completed
+INFO:root:wuxuekun_20170315 convert completed
+INFO:root:wuxueli_20180317 convert completed
+INFO:root:xiangyan_20160219 convert completed
+INFO:root:xiangyan_20160304 convert completed
+INFO:root:xiangyan_20160325 convert completed
+INFO:root:xiaoyanqing_20150827 convert completed
+INFO:root:xiaoyixiang_20170627 convert completed
+INFO:root:xiaoyixiang_20170725 convert completed
+INFO:root:xiaoyixiang_20170904 convert completed
+INFO:root:xieqiaogen_20160909 convert completed
+INFO:root:xieqiaogen_20160927 convert completed
+INFO:root:xieqinghua_20170624 convert completed
+INFO:root:xingshiming_20171128 convert completed
+INFO:root:xulin_20151210 convert completed
+INFO:root:xulin_20151224 convert completed
+INFO:root:xuquan_20150826 convert completed
+INFO:root:xuri_20161110 convert completed
+INFO:root:xuxiaowei_20160825 convert completed
+INFO:root:xuxiaowei_20160909 convert completed
+INFO:root:xuxilan_20171013 convert completed
+INFO:root:xuxilan_20171206 convert completed
+INFO:root:xuzhiping_20151224 convert completed
+INFO:root:xuzhiping_20160107 convert completed
+INFO:root:yangli_20160412 convert completed
+INFO:root:yangxiaohui_20150711 convert completed
+INFO:root:yangxiaohui_20150827 convert completed
+INFO:root:yangyubo_20180119 convert completed
+INFO:root:yangyubo_20180208 convert completed
+INFO:root:yanshuyu_20150712 convert completed
+INFO:root:yaojianming_20151203 convert completed
+INFO:root:yeshengnan_20150712 convert completed
+INFO:root:yinbaosheng_20180103 convert completed
+INFO:root:yinbaosheng_20180206 convert completed
+INFO:root:yinbaosheng_20180317 convert completed
+INFO:root:zengajing_20170209 convert completed
+INFO:root:zhangbaolin_20161213 convert completed
+INFO:root:zhangbaolin_20170112 convert completed
+INFO:root:zhangchunwen_20180301 convert completed
+INFO:root:zhangfuhai_20170630 convert completed
+INFO:root:zhangfuhai_20170731 convert completed
+INFO:root:zhangheqing_20171219 convert completed
+INFO:root:zhangheqing_20180122 convert completed
+INFO:root:zhangheqing_20180212 convert completed
+INFO:root:zhangjing_20150711 convert completed
+INFO:root:zhanglibin_20161216 convert completed
+INFO:root:zhanglibin_20161230 convert completed
+INFO:root:zhanglibin_20170119 convert completed
+INFO:root:zhanglibin_20170216 convert completed
+INFO:root:zhanglibin_20170303 convert completed
+INFO:root:zhanglibin_20170317 convert completed
+WARNING:root:zhanglibin_20180104 convert failed, 1
+INFO:root:zhangli_20150711 convert completed
+INFO:root:zhangqingchun_20170828 convert completed
+INFO:root:zhangqingchun_20171017 convert completed
+INFO:root:zhangqingchun_20171211 convert completed
+INFO:root:zhangruotong_20150924 convert completed
+INFO:root:zhangxuchang_20161104 convert completed
+INFO:root:zhangxuchang_20161118 convert completed
+INFO:root:zhangxuchang_20161202 convert completed
+INFO:root:zhangxuchang_20170105 convert completed
+INFO:root:zhangxuchang_20170220 convert completed
+INFO:root:zhangxuchang_20170531 convert completed
+INFO:root:zhangying_20180121 convert completed
+INFO:root:zhangying_20180314 convert completed
+INFO:root:zhangyuzhen_20150609 convert completed
+INFO:root:zhangyuzhen_20150629 convert completed
+INFO:root:zhangzhiwu_20170111 convert completed
+INFO:root:zhangzhiwu_20170210 convert completed
+INFO:root:zhangzhiwu_20170301 convert completed
+INFO:root:zhangzhiwu_20170317 convert completed
+INFO:root:zhaolei_20180212 convert completed
+INFO:root:zhaoxinsheng_20160526 convert completed
+INFO:root:zhaoyaqin_20160721 convert completed
+INFO:root:zhengjia_20150825 convert completed
+INFO:root:zhoubaoguo_20171125 convert completed
+INFO:root:zhoubaoguo_20171213 convert completed
+INFO:root:zhoubaoguo_20180110 convert completed
+INFO:root:zhoushihui_20160812 convert completed
+INFO:root:zhoushihui_20160826 convert completed
+INFO:root:zhoushihui_20160909 convert completed
+INFO:root:zhouxiumin_20170705 convert completed
+INFO:root:zhouxiumin_20170719 convert completed
+INFO:root:zhouxiumin_20170829 convert completed
+INFO:root:zongzhengpei_20160412 convert completed
+INFO:root:zoubenhai_20180312 convert completed
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenhua_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenyifan_20150612
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenyifan_20150629
+WARNING:root:More than one match: *DTI_24_Directions*.nii.gz ['F:/MMDPDatabase/data_rawnii\\chenyifan_20150629\\data_dicom_chenyifan_20150629_Ax_DTI_24_Directions_20150629173557_7.nii.gz', 'F:/MMDPDatabase/data_rawnii\\chenyifan_20150629\\data_dicom_chenyifan_20150629_Ax_DTI_24_Directions_20150629173557_7_Eq_1.nii.gz']: F:/MMDPDatabase/data_rawnii\chenyifan_20150629
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenyifan_20150923
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\cuiwei_20150825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\daihuachen_20170323
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\daihuachen_20170426
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\daihuachen_20170518
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\daihuachen_20170927
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\fengdaoliang_20160107
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\fengdaoliang_20160120
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\fuchenhao_20170623
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\gaohongjin_20170823
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\gaohongping_20161214
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\gaohongping_20170122
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\gaoruifeng_20171116
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\gufeng_20160426
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170426
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170526
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170629
+WARNING:root:More than one match: *OSag_3D_T1BRAVO*.nii.gz ['F:/MMDPDatabase/data_rawnii\\guojiye_20170728\\data_dicom_guojiye_20170728_OSag_3D_T1BRAVO_20170728123346_3.nii.gz', 'F:/MMDPDatabase/data_rawnii\\guojiye_20170728\\data_dicom_guojiye_20170728_OSag_3D_T1BRAVO_20170728123346_5.nii.gz']: F:/MMDPDatabase/data_rawnii\guojiye_20170728
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170728
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170906
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guoqian_20151010
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guoqian_20151023
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guoqian_20151127
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guoqian_20160401
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guoqian_20160420
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:More than one match: *OAx_T2_PROPELLER*.nii.gz ['F:/MMDPDatabase/data_rawnii\\guxiaozhou_20150420\\data_dicom_guxiaozhou_20150420_OAx_T2_PROPELLER_20150420104758_4.nii.gz', 'F:/MMDPDatabase/data_rawnii\\guxiaozhou_20150420\\data_dicom_guxiaozhou_20150420_OAx_T2_PROPELLER_20150420104758_4_Eq_1.nii.gz']: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150506
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150506
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150819
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hanjunling_20170309
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hanjunling_20170328
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hansongnian_20170918
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hansongnian_20171026
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\haocundi_20160722
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hongqingfeng_20151207
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hongqingfeng_20151218
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hongqingfeng_20160119
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hongqingfeng_20160317
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\houxiuyun_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\houxiuyun_20150712
+WARNING:root:No file match: *BOLD-rest*.nii.gz: F:/MMDPDatabase/data_rawnii\houxiuyun_20150712
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\houxiuyun_20150712
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\houxiuyun_20150712
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\houxiuyun_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huangweiwen_20170911
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huangweiwen_20171102
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huangyu_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huguangquan_20170525
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huguangquan_20170707
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huguangquan_20170808
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hushufang_20170331
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hushufang_20170421
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huwenbin_20150619
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\jinwenxue_20160115
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\kangcuiping_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\kangcuiping_20150506
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:More than one match: *BOLD-rest*.nii.gz ['F:/MMDPDatabase/data_rawnii\\kangcuiping_20150522\\data_dicom_kangcuiping_20150522_Ax-BOLD-rest_20150522115105_5.nii.gz', 'F:/MMDPDatabase/data_rawnii\\kangcuiping_20150522\\data_dicom_kangcuiping_20150522_Ax-BOLD-rest_20150522115105_6.nii.gz']: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150605
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\kangcuiping_20150605
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\kangcuiping_20150605
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150618
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20160425
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kangjian_20150826
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kouguangying_20170313
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liangxudong_20161223
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liangxudong_20170106
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liangxudong_20170120
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liangxudong_20170217
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\limeihong_20150603
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\limeihong_20150603
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\limeihong_20150603
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\limeihong_20150603
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\limeihong_20150619
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\linkuixing_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\linlikai_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\linlikai_20150827
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\lirongsheng_20161216
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\lirongsheng_20170125
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liufengshuo_20170721
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liufengshuo_20170825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinghui_20170418
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinghui_20170511
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinhua_20150818
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinhua_20150901
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinhua_20151130
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20161124
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20161209
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20161223
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20170113
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20170223
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20170317
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20170401
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:More than one match: *OAx_T2_PROPELLER*.nii.gz ['F:/MMDPDatabase/data_rawnii\\liuna_20150420\\data_dicom_liuna_20150420_OAx_T2_PROPELLER_20150420144141_4.nii.gz', 'F:/MMDPDatabase/data_rawnii\\liuna_20150420\\data_dicom_liuna_20150420_OAx_T2_PROPELLER_20150420144141_4_Eq_1.nii.gz']: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150506
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150506
+WARNING:root:No file match: *BOLD-rest*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150506
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\liuna_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\liuna_20150506
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150609
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuyonghua_20170411
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuyonghua_20170603
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuyonghua_20170905
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuyulai_20170907
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\lixueqin_20170512
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\lixueqin_20170621
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liyafen_20170222
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liyafen_20170316
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liyintong_20170914
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liyintong_20171115
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\longkeming_20171018
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\machunyue_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mahuibo_20160115
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mahuibo_20160426
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\maoli_20160519
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\maxiaoni_20150609
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\maxiaoni_20150617
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mayanjun_20171030
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170322
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170407
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170428
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170516
+WARNING:root:More than one match: *DTI_24_Directions*.nii.gz ['F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_11.nii.gz', 'F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_14.nii.gz']: F:/MMDPDatabase/data_rawnii\mixiuping_20170614
+WARNING:root:More than one match: *DTI_24_Directions*.bval ['F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_11.bval', 'F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_14.bval']: F:/MMDPDatabase/data_rawnii\mixiuping_20170614
+WARNING:root:More than one match: *DTI_24_Directions*.bvec ['F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_11.bvec', 'F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_14.bvec']: F:/MMDPDatabase/data_rawnii\mixiuping_20170614
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170628
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170720
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170920
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\niuwenxuan_20170517
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\panqingbin_20161103
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\panqingbin_20161121
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\panqingbin_20161208
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\panqingbin_20170217
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\panqingbin_20170307
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\piyongxiang_20161216
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\piyongxiang_20170117
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiaoyanmei_20170206
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiaoyanmei_20170308
+WARNING:root:No file match: *BOLD-rest*.nii.gz: F:/MMDPDatabase/data_rawnii\qiaoyanmei_20170308
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\qiaoyanmei_20170308
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\qiaoyanmei_20170308
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\qiaoyanmei_20170308
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiaoyanmei_20170626
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiuchunsuo_20150712
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20150605
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\qiutongyu_20150605
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\qiutongyu_20150605
+WARNING:root:More than one match: *OSag_3D_T1BRAVO*.nii.gz ['F:/MMDPDatabase/data_rawnii\\qiutongyu_20150608\\data_dicom_qiutongyu_20150608_OSag_3D_T1BRAVO_20150605101750_10.nii.gz', 'F:/MMDPDatabase/data_rawnii\\qiutongyu_20150608\\data_dicom_qiutongyu_20150608_OSag_3D_T1BRAVO_20150608154745_3.nii.gz']: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:More than one match: *BOLD-rest*.nii.gz ['F:/MMDPDatabase/data_rawnii\\qiutongyu_20150608\\data_dicom_qiutongyu_20150608_Ax-BOLD-rest_20150605101750_11.nii.gz', 'F:/MMDPDatabase/data_rawnii\\qiutongyu_20150608\\data_dicom_qiutongyu_20150608_Ax-BOLD-rest_20150608154745_4.nii.gz']: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20150623
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20150728
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20160517
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\quyuanjie_20170207
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\renjie_20170811
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\renjie_20170830
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\shenwei_20170327
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\songxingfen_20170124
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\songxingfen_20170206
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\songxingfen_20170412
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\sunguokun_20150626
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\sunxinshe_20151126
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\sunxinshe_20151211
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\sunxinshe_20160825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\suoqiufeng_20171113
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanenci_20170601
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanenci_20170814
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanenci_20170922
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanenci_20171117
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanzengchao_20150827
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanzengchao_20150911
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanzengchao_20150925
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanzengchao_20151020
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanzengchao_20151204
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tuyuanyuan_20150827
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangdongxu_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangdongxu_20150826
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wanghenghua_20171125
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangjinguo_20160506
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangjingying_20170606
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangjingying_20170704
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangjingying_20170810
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangjingying_20170921
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangqiujun_20150612
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangqiujun_20150630
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangshengnan_20171228
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangwei_20171107
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangxiaoxia_20150701
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangxiaoxia_20150715
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangyingwu_20171114
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\weixiaogang_20170915
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wuchaolan_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wujiang_20171122
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wuqin_20150825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wuxuekun_20170224
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xiangyan_20160304
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xiangyan_20160325
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xiaoyanqing_20150827
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xiaoyixiang_20170627
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xiaoyixiang_20170725
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xieqiaogen_20160909
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xieqiaogen_20160927
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xieqinghua_20170624
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xingshiming_20171128
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xulin_20151210
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xulin_20151224
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuquan_20150826
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuri_20161110
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuxiaowei_20160825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuxiaowei_20160909
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuxilan_20171013
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuzhiping_20160107
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yangxiaohui_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yangxiaohui_20150827
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yangyubo_20180119
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yanshuyu_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yaojianming_20151203
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yeshengnan_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zengajing_20170209
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangbaolin_20161213
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangbaolin_20170112
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangfuhai_20170630
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangjing_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhanglibin_20161216
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhanglibin_20170119
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhanglibin_20170216
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhanglibin_20170317
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangli_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangqingchun_20170828
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangqingchun_20171017
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangruotong_20150924
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangxuchang_20161118
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangxuchang_20161202
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangxuchang_20170220
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangxuchang_20170531
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangyuzhen_20150609
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangyuzhen_20150629
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangyuzhen_20150629
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\zhangyuzhen_20150629
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\zhangyuzhen_20150629
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangzhiwu_20170111
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangzhiwu_20170210
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangzhiwu_20170301
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangzhiwu_20170317
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhaoxinsheng_20160526
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhaoyaqin_20160721
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhengjia_20150825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhoubaoguo_20171125
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhoushihui_20160812
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhoushihui_20160826
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhoushihui_20160909
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhouxiumin_20170705
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhouxiumin_20170719
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhouxiumin_20170829
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zongzhengpei_20160412
+INFO:root:New Run: 2018-05-01T02-13-55.454485
+INFO:root:caochangsheng_20161027 convert completed
+INFO:root:caochangsheng_20161114 convert completed
+INFO:root:chenguwen_20150711 convert completed
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *BOLD-rest*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *BOLD-rest*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+WARNING:root:No file match: *BOLD-rest*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+INFO:root:New Run: 2018-05-01T02-19-36.736005
+INFO:root:caochangsheng_20161027 convert completed
+INFO:root:caochangsheng_20161114 convert completed
+INFO:root:chenguwen_20150711 convert completed
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *BOLD-rest*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *BOLD-rest*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+WARNING:root:No file match: *BOLD-rest*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+INFO:root:New Run: 2018-05-01T02-20-53.648404
+INFO:root:caochangsheng_20161027 convert completed
+INFO:root:caochangsheng_20161114 convert completed
+INFO:root:chenguwen_20150711 convert completed
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+INFO:root:New Run: 2018-05-01T02-23-20.365796
+INFO:root:caochangsheng_20161027 convert completed
+INFO:root:caochangsheng_20161114 convert completed
+INFO:root:chenguwen_20150711 convert completed
+INFO:root:chenhua_20150711 convert completed
+INFO:root:chenyifan_20150612 convert completed
+INFO:root:chenyifan_20150629 convert completed
+INFO:root:chenyifan_20150923 convert completed
+INFO:root:cuiwei_20150825 convert completed
+INFO:root:daihuachen_20170323 convert completed
+INFO:root:daihuachen_20170426 convert completed
+INFO:root:daihuachen_20170518 convert completed
+INFO:root:daihuachen_20170927 convert completed
+INFO:root:daishiqin_20180302 convert completed
+INFO:root:fengdaoliang_20160107 convert completed
+INFO:root:fengdaoliang_20160120 convert completed
+INFO:root:fuchenhao_20170602 convert completed
+INFO:root:fuchenhao_20170623 convert completed
+INFO:root:gaohongjin_20170823 convert completed
+INFO:root:gaohongping_20161214 convert completed
+INFO:root:gaohongping_20170122 convert completed
+INFO:root:gaoruifeng_20171011 convert completed
+INFO:root:gaoruifeng_20171116 convert completed
+INFO:root:gufeng_20160412 convert completed
+INFO:root:gufeng_20160426 convert completed
+INFO:root:guojiye_20170324 convert completed
+INFO:root:guojiye_20170426 convert completed
+INFO:root:guojiye_20170526 convert completed
+INFO:root:guojiye_20170629 convert completed
+INFO:root:guojiye_20170728 convert completed
+INFO:root:guojiye_20170906 convert completed
+INFO:root:guojiye_20171129 convert completed
+INFO:root:guoqian_20151010 convert completed
+INFO:root:guoqian_20151023 convert completed
+INFO:root:guoqian_20151127 convert completed
+INFO:root:guoqian_20160401 convert completed
+INFO:root:guoqian_20160420 convert completed
+INFO:root:guozhiyou_20180131 convert completed
+INFO:root:guozhiyou_20180305 convert completed
+INFO:root:guxiaozhou_20150420 convert completed
+INFO:root:guxiaozhou_20150506 convert completed
+INFO:root:guxiaozhou_20150819 convert completed
+INFO:root:hanjunling_20170309 convert completed
+INFO:root:hanjunling_20170328 convert completed
+INFO:root:hansongnian_20170918 convert completed
+INFO:root:hansongnian_20171026 convert completed
+INFO:root:haocundi_20160707 convert completed
+INFO:root:haocundi_20160722 convert completed
+INFO:root:hechangchuan_20171019 convert completed
+INFO:root:hongqingfeng_20151207 convert completed
+INFO:root:hongqingfeng_20151218 convert completed
+INFO:root:hongqingfeng_20160119 convert completed
+INFO:root:hongqingfeng_20160317 convert completed
+INFO:root:houxiuyun_20150712 convert completed
+INFO:root:huangweiwen_20170911 convert completed
+INFO:root:huangweiwen_20171102 convert completed
+INFO:root:huangweiwen_20171218 convert completed
+INFO:root:huangyu_20150712 convert completed
+INFO:root:huguangquan_20170525 convert completed
+INFO:root:huguangquan_20170707 convert completed
+INFO:root:huguangquan_20170808 convert completed
+INFO:root:hushufang_20170331 convert completed
+INFO:root:hushufang_20170421 convert completed
+INFO:root:huwenbin_20150619 convert completed
+INFO:root:jinwenxue_20160104 convert completed
+INFO:root:jinwenxue_20160115 convert completed
+INFO:root:kangcuiping_20150506 convert completed
+INFO:root:kangcuiping_20150522 convert completed
+INFO:root:kangcuiping_20150605 convert completed
+INFO:root:kangcuiping_20150618 convert completed
+INFO:root:kangcuiping_20160408 convert completed
+INFO:root:kangcuiping_20160425 convert completed
+INFO:root:kangjian_20150826 convert completed
+INFO:root:kouguangying_20170313 convert completed
+INFO:root:liangxudong_20161223 convert completed
+INFO:root:liangxudong_20170106 convert completed
+INFO:root:liangxudong_20170120 convert completed
+INFO:root:liangxudong_20170217 convert completed
+INFO:root:lijingqin_20180331 convert completed
+INFO:root:limeihong_20150603 convert completed
+INFO:root:limeihong_20150619 convert completed
+INFO:root:linkuixing_20150712 convert completed
+INFO:root:linlikai_20150712 convert completed
+INFO:root:linlikai_20150827 convert completed
+INFO:root:lirongsheng_20161216 convert completed
+INFO:root:lirongsheng_20170125 convert completed
+INFO:root:liufengshuo_20170721 convert completed
+INFO:root:liufengshuo_20170825 convert completed
+INFO:root:liujinghui_20170418 convert completed
+INFO:root:liujinghui_20170511 convert completed
+INFO:root:liujinhua_20150818 convert completed
+INFO:root:liujinhua_20150901 convert completed
+INFO:root:liujinhua_20151130 convert completed
+INFO:root:liujinli_20161124 convert completed
+INFO:root:liujinli_20161209 convert completed
+INFO:root:liujinli_20161223 convert completed
+INFO:root:liujinli_20170113 convert completed
+INFO:root:liujinli_20170204 convert completed
+INFO:root:liujinli_20170223 convert completed
+INFO:root:liujinli_20170317 convert completed
+INFO:root:liujinli_20170401 convert completed
+INFO:root:liuna_20150420 convert completed
+INFO:root:liuna_20150506 convert completed
+INFO:root:liuna_20150609 convert completed
+INFO:root:liuxiaochun_20180320 convert completed
+INFO:root:liuyonghua_20170411 convert completed
+INFO:root:liuyonghua_20170603 convert completed
+INFO:root:liuyonghua_20170905 convert completed
+INFO:root:liuyuanjie_20180312 convert completed
+INFO:root:liuyulai_20170713 convert completed
+INFO:root:liuyulai_20170907 convert completed
+INFO:root:liuyulai_20170928 convert completed
+INFO:root:lixueqin_20170512 convert completed
+INFO:root:lixueqin_20170621 convert completed
+INFO:root:liyafen_20170222 convert completed
+INFO:root:liyafen_20170316 convert completed
+INFO:root:liyintong_20170914 convert completed
+INFO:root:liyintong_20171115 convert completed
+INFO:root:longkeming_20171018 convert completed
+INFO:root:longkeming_20171204 convert completed
+INFO:root:machunyue_20150711 convert completed
+INFO:root:mahuibo_20151229 convert completed
+INFO:root:mahuibo_20160115 convert completed
+INFO:root:mahuibo_20160412 convert completed
+INFO:root:mahuibo_20160426 convert completed
+INFO:root:maoli_20160504 convert completed
+INFO:root:maoli_20160519 convert completed
+INFO:root:maxiaoni_20150609 convert completed
+INFO:root:maxiaoni_20150617 convert completed
+INFO:root:mayanjun_20171030 convert completed
+INFO:root:mixiuping_20170322 convert completed
+INFO:root:mixiuping_20170407 convert completed
+INFO:root:mixiuping_20170428 convert completed
+INFO:root:mixiuping_20170516 convert completed
+INFO:root:mixiuping_20170528 convert completed
+INFO:root:mixiuping_20170614 convert completed
+INFO:root:mixiuping_20170628 convert completed
+INFO:root:mixiuping_20170720 convert completed
+INFO:root:mixiuping_20170920 convert completed
+INFO:root:mixiuping_20171130 convert completed
+INFO:root:niuwenxuan_20170417 convert completed
+INFO:root:niuwenxuan_20170517 convert completed
+INFO:root:panqingbin_20161103 convert completed
+INFO:root:panqingbin_20161121 convert completed
+INFO:root:panqingbin_20161208 convert completed
+INFO:root:panqingbin_20170217 convert completed
+INFO:root:panqingbin_20170307 convert completed
+INFO:root:piyongxiang_20161216 convert completed
+INFO:root:piyongxiang_20170117 convert completed
+INFO:root:qiaoyanmei_20170206 convert completed
+INFO:root:qiaoyanmei_20170308 convert completed
+INFO:root:qiaoyanmei_20170626 convert completed
+INFO:root:qinhongmei_20170528 convert completed
+INFO:root:qiuchunsuo_20150712 convert completed
+INFO:root:qiutongyu_20150605 convert completed
+INFO:root:qiutongyu_20150608 convert completed
+INFO:root:qiutongyu_20150623 convert completed
+INFO:root:qiutongyu_20150728 convert completed
+INFO:root:qiutongyu_20160517 convert completed
+INFO:root:quyuanjie_20170207 convert completed
+INFO:root:renjie_20170811 convert completed
+INFO:root:renjie_20170830 convert completed
+INFO:root:shaolijin_20180328 convert completed
+INFO:root:shenwei_20170327 convert completed
+INFO:root:songxingfen_20170124 convert completed
+INFO:root:songxingfen_20170206 convert completed
+INFO:root:songxingfen_20170412 convert completed
+INFO:root:sunguokun_20150626 convert completed
+INFO:root:sunxinshe_20151126 convert completed
+INFO:root:sunxinshe_20151211 convert completed
+INFO:root:sunxinshe_20160809 convert completed
+INFO:root:sunxinshe_20160825 convert completed
+INFO:root:suoqiufeng_20171010 convert completed
+INFO:root:suoqiufeng_20171113 convert completed
+INFO:root:tanenci_20170601 convert completed
+INFO:root:tanenci_20170706 convert completed
+INFO:root:tanenci_20170814 convert completed
+INFO:root:tanenci_20170922 convert completed
+INFO:root:tanenci_20171117 convert completed
+INFO:root:tanzengchao_20150827 convert completed
+INFO:root:tanzengchao_20150911 convert completed
+INFO:root:tanzengchao_20150925 convert completed
+INFO:root:tanzengchao_20151020 convert completed
+INFO:root:tanzengchao_20151204 convert completed
+INFO:root:tuyuanyuan_20150827 convert completed
+INFO:root:wangdongxu_20150711 convert completed
+INFO:root:wangdongxu_20150826 convert completed
+INFO:root:wanghenghua_20171125 convert completed
+INFO:root:wanghenghua_20171208 convert completed
+INFO:root:wangjinguo_20160421 convert completed
+INFO:root:wangjinguo_20160506 convert completed
+INFO:root:wangjingying_20170413 convert completed
+INFO:root:wangjingying_20170606 convert completed
+INFO:root:wangjingying_20170704 convert completed
+INFO:root:wangjingying_20170810 convert completed
+INFO:root:wangjingying_20170921 convert completed
+INFO:root:wangjingying_20171201 convert completed
+INFO:root:wangqiujun_20150612 convert completed
+INFO:root:wangqiujun_20150630 convert completed
+INFO:root:wangshengnan_20171228 convert completed
+INFO:root:wangshengnan_20180201 convert completed
+INFO:root:wangshutian_20160229 convert completed
+INFO:root:wangwei_20171107 convert completed
+INFO:root:wangwei_20171221 convert completed
+INFO:root:wangwei_20180124 convert completed
+INFO:root:wangwei_20180211 convert completed
+INFO:root:wangxiaoxia_20150701 convert completed
+INFO:root:wangxiaoxia_20150715 convert completed
+INFO:root:wangyingwu_20170912 convert completed
+INFO:root:wangyingwu_20171114 convert completed
+INFO:root:weixiaogang_20170915 convert completed
+INFO:root:wuchaolan_20150711 convert completed
+INFO:root:wujiang_20170824 convert completed
+INFO:root:wujiang_20170926 convert completed
+INFO:root:wujiang_20171031 convert completed
+INFO:root:wujiang_20171122 convert completed
+INFO:root:wuqin_20150825 convert completed
+INFO:root:wuxuekun_20170224 convert completed
+INFO:root:wuxuekun_20170315 convert completed
+INFO:root:wuxueli_20180317 convert completed
+INFO:root:xiangyan_20160219 convert completed
+INFO:root:xiangyan_20160304 convert completed
+INFO:root:xiangyan_20160325 convert completed
+INFO:root:xiaoyanqing_20150827 convert completed
+INFO:root:xiaoyixiang_20170627 convert completed
+INFO:root:xiaoyixiang_20170725 convert completed
+INFO:root:xiaoyixiang_20170904 convert completed
+INFO:root:xieqiaogen_20160909 convert completed
+INFO:root:xieqiaogen_20160927 convert completed
+INFO:root:xieqinghua_20170624 convert completed
+INFO:root:xingshiming_20171128 convert completed
+INFO:root:xulin_20151210 convert completed
+INFO:root:xulin_20151224 convert completed
+INFO:root:xuquan_20150826 convert completed
+INFO:root:xuri_20161110 convert completed
+INFO:root:xuxiaowei_20160825 convert completed
+INFO:root:xuxiaowei_20160909 convert completed
+INFO:root:xuxilan_20171013 convert completed
+INFO:root:xuxilan_20171206 convert completed
+INFO:root:xuzhiping_20151224 convert completed
+INFO:root:xuzhiping_20160107 convert completed
+INFO:root:yangli_20160412 convert completed
+INFO:root:yangxiaohui_20150711 convert completed
+INFO:root:yangxiaohui_20150827 convert completed
+INFO:root:yangyubo_20180119 convert completed
+INFO:root:yangyubo_20180208 convert completed
+INFO:root:yanshuyu_20150712 convert completed
+INFO:root:yaojianming_20151203 convert completed
+INFO:root:yeshengnan_20150712 convert completed
+INFO:root:yinbaosheng_20180103 convert completed
+INFO:root:yinbaosheng_20180206 convert completed
+INFO:root:yinbaosheng_20180317 convert completed
+INFO:root:zengajing_20170209 convert completed
+INFO:root:zhangbaolin_20161213 convert completed
+INFO:root:zhangbaolin_20170112 convert completed
+INFO:root:zhangchunwen_20180301 convert completed
+INFO:root:zhangfuhai_20170630 convert completed
+INFO:root:zhangfuhai_20170731 convert completed
+INFO:root:zhangheqing_20171219 convert completed
+INFO:root:zhangheqing_20180122 convert completed
+INFO:root:zhangheqing_20180212 convert completed
+INFO:root:zhangjing_20150711 convert completed
+INFO:root:zhanglibin_20161216 convert completed
+INFO:root:zhanglibin_20161230 convert completed
+INFO:root:zhanglibin_20170119 convert completed
+INFO:root:zhanglibin_20170216 convert completed
+INFO:root:zhanglibin_20170303 convert completed
+INFO:root:zhanglibin_20170317 convert completed
+INFO:root:zhanglibin_20180104 convert completed
+INFO:root:zhangli_20150711 convert completed
+INFO:root:zhangqingchun_20170828 convert completed
+INFO:root:zhangqingchun_20171017 convert completed
+INFO:root:zhangqingchun_20171211 convert completed
+INFO:root:zhangruotong_20150924 convert completed
+INFO:root:zhangxuchang_20161104 convert completed
+INFO:root:zhangxuchang_20161118 convert completed
+INFO:root:zhangxuchang_20161202 convert completed
+INFO:root:zhangxuchang_20170105 convert completed
+INFO:root:zhangxuchang_20170220 convert completed
+INFO:root:zhangxuchang_20170531 convert completed
+INFO:root:zhangying_20180121 convert completed
+INFO:root:zhangying_20180314 convert completed
+INFO:root:zhangyuzhen_20150609 convert completed
+INFO:root:zhangyuzhen_20150629 convert completed
+INFO:root:zhangzhiwu_20170111 convert completed
+INFO:root:zhangzhiwu_20170210 convert completed
+INFO:root:zhangzhiwu_20170301 convert completed
+INFO:root:zhangzhiwu_20170317 convert completed
+INFO:root:zhaolei_20180212 convert completed
+INFO:root:zhaoxinsheng_20160526 convert completed
+INFO:root:zhaoyaqin_20160721 convert completed
+INFO:root:zhengjia_20150825 convert completed
+INFO:root:zhoubaoguo_20171125 convert completed
+INFO:root:zhoubaoguo_20171213 convert completed
+INFO:root:zhoubaoguo_20180110 convert completed
+INFO:root:zhoushihui_20160812 convert completed
+INFO:root:zhoushihui_20160826 convert completed
+INFO:root:zhoushihui_20160909 convert completed
+INFO:root:zhouxiumin_20170705 convert completed
+INFO:root:zhouxiumin_20170719 convert completed
+INFO:root:zhouxiumin_20170829 convert completed
+INFO:root:zongzhengpei_20160412 convert completed
+INFO:root:zoubenhai_20180312 convert completed
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenhua_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenyifan_20150612
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenyifan_20150629
+WARNING:root:More than one match: *DTI_24_Directions*.nii.gz ['F:/MMDPDatabase/data_rawnii\\chenyifan_20150629\\data_dicom_chenyifan_20150629_Ax_DTI_24_Directions_20150629173557_7.nii.gz', 'F:/MMDPDatabase/data_rawnii\\chenyifan_20150629\\data_dicom_chenyifan_20150629_Ax_DTI_24_Directions_20150629173557_7_Eq_1.nii.gz']: F:/MMDPDatabase/data_rawnii\chenyifan_20150629
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenyifan_20150923
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\cuiwei_20150825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\daihuachen_20170323
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\daihuachen_20170426
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\daihuachen_20170518
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\daihuachen_20170927
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\fengdaoliang_20160107
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\fengdaoliang_20160120
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\fuchenhao_20170623
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\gaohongjin_20170823
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\gaohongping_20161214
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\gaohongping_20170122
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\gaoruifeng_20171116
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\gufeng_20160426
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170426
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170526
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170629
+WARNING:root:More than one match: *OSag_3D_T1BRAVO*.nii.gz ['F:/MMDPDatabase/data_rawnii\\guojiye_20170728\\data_dicom_guojiye_20170728_OSag_3D_T1BRAVO_20170728123346_3.nii.gz', 'F:/MMDPDatabase/data_rawnii\\guojiye_20170728\\data_dicom_guojiye_20170728_OSag_3D_T1BRAVO_20170728123346_5.nii.gz']: F:/MMDPDatabase/data_rawnii\guojiye_20170728
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170728
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170906
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guoqian_20151010
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guoqian_20151023
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guoqian_20151127
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guoqian_20160401
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guoqian_20160420
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:More than one match: *OAx_T2_PROPELLER*.nii.gz ['F:/MMDPDatabase/data_rawnii\\guxiaozhou_20150420\\data_dicom_guxiaozhou_20150420_OAx_T2_PROPELLER_20150420104758_4.nii.gz', 'F:/MMDPDatabase/data_rawnii\\guxiaozhou_20150420\\data_dicom_guxiaozhou_20150420_OAx_T2_PROPELLER_20150420104758_4_Eq_1.nii.gz']: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150506
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150506
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150819
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hanjunling_20170309
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hanjunling_20170328
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hansongnian_20170918
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hansongnian_20171026
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\haocundi_20160722
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hongqingfeng_20151207
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hongqingfeng_20151218
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hongqingfeng_20160119
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hongqingfeng_20160317
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\houxiuyun_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huangweiwen_20170911
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huangweiwen_20171102
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huangyu_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huguangquan_20170525
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huguangquan_20170707
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huguangquan_20170808
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hushufang_20170331
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\hushufang_20170421
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\huwenbin_20150619
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\jinwenxue_20160115
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\kangcuiping_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\kangcuiping_20150506
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:More than one match: *BOLD-rest*.nii.gz ['F:/MMDPDatabase/data_rawnii\\kangcuiping_20150522\\data_dicom_kangcuiping_20150522_Ax-BOLD-rest_20150522115105_5.nii.gz', 'F:/MMDPDatabase/data_rawnii\\kangcuiping_20150522\\data_dicom_kangcuiping_20150522_Ax-BOLD-rest_20150522115105_6.nii.gz']: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150605
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\kangcuiping_20150605
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\kangcuiping_20150605
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150618
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20160425
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kangjian_20150826
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kouguangying_20170313
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liangxudong_20161223
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liangxudong_20170106
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liangxudong_20170120
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liangxudong_20170217
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\limeihong_20150603
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\limeihong_20150603
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\limeihong_20150603
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\limeihong_20150603
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\limeihong_20150619
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\linkuixing_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\linlikai_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\linlikai_20150827
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\lirongsheng_20161216
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\lirongsheng_20170125
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liufengshuo_20170721
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liufengshuo_20170825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinghui_20170418
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinghui_20170511
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinhua_20150818
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinhua_20150901
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinhua_20151130
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20161124
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20161209
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20161223
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20170113
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20170223
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20170317
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liujinli_20170401
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:More than one match: *OAx_T2_PROPELLER*.nii.gz ['F:/MMDPDatabase/data_rawnii\\liuna_20150420\\data_dicom_liuna_20150420_OAx_T2_PROPELLER_20150420144141_4.nii.gz', 'F:/MMDPDatabase/data_rawnii\\liuna_20150420\\data_dicom_liuna_20150420_OAx_T2_PROPELLER_20150420144141_4_Eq_1.nii.gz']: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150506
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\liuna_20150506
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\liuna_20150506
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150609
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuyonghua_20170411
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuyonghua_20170603
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuyonghua_20170905
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liuyulai_20170907
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\lixueqin_20170512
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\lixueqin_20170621
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liyafen_20170222
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liyafen_20170316
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liyintong_20170914
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\liyintong_20171115
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\longkeming_20171018
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\machunyue_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mahuibo_20160115
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mahuibo_20160426
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\maoli_20160519
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\maxiaoni_20150609
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\maxiaoni_20150617
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mayanjun_20171030
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170322
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170407
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170428
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170516
+WARNING:root:More than one match: *DTI_24_Directions*.nii.gz ['F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_11.nii.gz', 'F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_14.nii.gz']: F:/MMDPDatabase/data_rawnii\mixiuping_20170614
+WARNING:root:More than one match: *DTI_24_Directions*.bval ['F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_11.bval', 'F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_14.bval']: F:/MMDPDatabase/data_rawnii\mixiuping_20170614
+WARNING:root:More than one match: *DTI_24_Directions*.bvec ['F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_11.bvec', 'F:/MMDPDatabase/data_rawnii\\mixiuping_20170614\\data_dicom_mixiuping_20170614_Ax_DTI_24_Directions_20170614120650_14.bvec']: F:/MMDPDatabase/data_rawnii\mixiuping_20170614
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170628
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170720
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\mixiuping_20170920
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\niuwenxuan_20170517
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\panqingbin_20161103
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\panqingbin_20161121
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\panqingbin_20161208
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\panqingbin_20170217
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\panqingbin_20170307
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\piyongxiang_20161216
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\piyongxiang_20170117
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiaoyanmei_20170206
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiaoyanmei_20170308
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiaoyanmei_20170626
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiuchunsuo_20150712
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20150605
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\qiutongyu_20150605
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\qiutongyu_20150605
+WARNING:root:More than one match: *OSag_3D_T1BRAVO*.nii.gz ['F:/MMDPDatabase/data_rawnii\\qiutongyu_20150608\\data_dicom_qiutongyu_20150608_OSag_3D_T1BRAVO_20150605101750_10.nii.gz', 'F:/MMDPDatabase/data_rawnii\\qiutongyu_20150608\\data_dicom_qiutongyu_20150608_OSag_3D_T1BRAVO_20150608154745_3.nii.gz']: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:More than one match: *BOLD-rest*.nii.gz ['F:/MMDPDatabase/data_rawnii\\qiutongyu_20150608\\data_dicom_qiutongyu_20150608_Ax-BOLD-rest_20150605101750_11.nii.gz', 'F:/MMDPDatabase/data_rawnii\\qiutongyu_20150608\\data_dicom_qiutongyu_20150608_Ax-BOLD-rest_20150608154745_4.nii.gz']: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20150623
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20150728
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20160517
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\quyuanjie_20170207
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\renjie_20170811
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\renjie_20170830
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\shenwei_20170327
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\songxingfen_20170124
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\songxingfen_20170206
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\songxingfen_20170412
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\sunguokun_20150626
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\sunxinshe_20151126
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\sunxinshe_20151211
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\sunxinshe_20160825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\suoqiufeng_20171113
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanenci_20170601
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanenci_20170814
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanenci_20170922
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanenci_20171117
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanzengchao_20150827
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanzengchao_20150911
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanzengchao_20150925
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanzengchao_20151020
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tanzengchao_20151204
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\tuyuanyuan_20150827
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangdongxu_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangdongxu_20150826
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wanghenghua_20171125
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangjinguo_20160506
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangjingying_20170606
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangjingying_20170704
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangjingying_20170810
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangjingying_20170921
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangqiujun_20150612
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangqiujun_20150630
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangshengnan_20171228
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangwei_20171107
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangxiaoxia_20150701
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangxiaoxia_20150715
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wangyingwu_20171114
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\weixiaogang_20170915
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wuchaolan_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wujiang_20171122
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wuqin_20150825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\wuxuekun_20170224
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xiangyan_20160304
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xiangyan_20160325
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xiaoyanqing_20150827
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xiaoyixiang_20170627
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xiaoyixiang_20170725
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xieqiaogen_20160909
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xieqiaogen_20160927
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xieqinghua_20170624
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xingshiming_20171128
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xulin_20151210
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xulin_20151224
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuquan_20150826
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuri_20161110
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuxiaowei_20160825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuxiaowei_20160909
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuxilan_20171013
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\xuzhiping_20160107
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yangxiaohui_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yangxiaohui_20150827
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yangyubo_20180119
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yanshuyu_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yaojianming_20151203
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\yeshengnan_20150712
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zengajing_20170209
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangbaolin_20161213
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangbaolin_20170112
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangfuhai_20170630
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangjing_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhanglibin_20161216
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhanglibin_20170119
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhanglibin_20170216
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhanglibin_20170317
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangli_20150711
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangqingchun_20170828
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangqingchun_20171017
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangruotong_20150924
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangxuchang_20161118
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangxuchang_20161202
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangxuchang_20170220
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangxuchang_20170531
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangyuzhen_20150609
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangyuzhen_20150629
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangyuzhen_20150629
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\zhangyuzhen_20150629
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\zhangyuzhen_20150629
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangzhiwu_20170111
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangzhiwu_20170210
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangzhiwu_20170301
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhangzhiwu_20170317
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhaoxinsheng_20160526
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhaoyaqin_20160721
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhengjia_20150825
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhoubaoguo_20171125
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhoushihui_20160812
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhoushihui_20160826
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhoushihui_20160909
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhouxiumin_20170705
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhouxiumin_20170719
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zhouxiumin_20170829
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\zongzhengpei_20160412
+INFO:root:New Run: 2018-05-01T14-16-36.824614
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\guojiye_20170728
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\guxiaozhou_20150420
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\kangcuiping_20150522
+WARNING:root:No file match: *OSag_3D_T1BRAVO*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\liuna_20150420
+WARNING:root:No file match: *DTI_24_Directions*.nii.gz: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:No file match: *DTI_24_Directions*.bval: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+WARNING:root:No file match: *DTI_24_Directions*.bvec: F:/MMDPDatabase/data_rawnii\qiutongyu_20150608
+INFO:root:New Run: 2018-05-10T20-08-24.657831
+INFO:root:New Run: 2018-05-10T20-11-55.328604
+INFO:root:New Run: 2018-05-10T20-12-32.643870
+INFO:root:New Run: 2018-05-10T20-13-05.778328
+INFO:root:New Run: 2018-05-10T20-17-51.456032
+INFO:root:caochangsheng_20161027 convert completed
+INFO:root:caochangsheng_20161114 convert completed
+INFO:root:New Run: 2018-05-10T20-26-02.379696
+INFO:root:caochangsheng_20161027 convert completed
+INFO:root:caochangsheng_20161114 convert completed
+INFO:root:New Run: 2018-05-10T20-30-44.670193
+INFO:root:caochangsheng_20161027 convert completed
+INFO:root:caochangsheng_20161114 convert completed
+INFO:root:chenguwen_20150711 convert completed
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+INFO:root:New Run: 2018-05-10T20-32-46.907210
+INFO:root:caochangsheng_20161027 convert completed
+INFO:root:caochangsheng_20161114 convert completed
+INFO:root:chenguwen_20150711 convert completed
+INFO:root:chenhua_20150711 convert completed
+INFO:root:chenyifan_20150612 convert completed
+INFO:root:chenyifan_20150629 convert completed
+INFO:root:chenyifan_20150923 convert completed
+INFO:root:cuiwei_20150825 convert completed
+INFO:root:daihuachen_20170323 convert completed
+INFO:root:daihuachen_20170426 convert completed
+INFO:root:daihuachen_20170518 convert completed
+INFO:root:daihuachen_20170927 convert completed
+INFO:root:daishiqin_20180302 convert completed
+INFO:root:fengdaoliang_20160107 convert completed
+INFO:root:fengdaoliang_20160120 convert completed
+INFO:root:fuchenhao_20170602 convert completed
+INFO:root:fuchenhao_20170623 convert completed
+INFO:root:gaohongjin_20170823 convert completed
+INFO:root:gaohongping_20161214 convert completed
+INFO:root:gaohongping_20170122 convert completed
+INFO:root:gaoruifeng_20171011 convert completed
+INFO:root:gaoruifeng_20171116 convert completed
+INFO:root:gufeng_20160412 convert completed
+INFO:root:gufeng_20160426 convert completed
+INFO:root:guojiye_20170324 convert completed
+INFO:root:guojiye_20170426 convert completed
+INFO:root:guojiye_20170526 convert completed
+INFO:root:guojiye_20170629 convert completed
+INFO:root:guojiye_20170728 convert completed
+INFO:root:guojiye_20170906 convert completed
+INFO:root:guojiye_20171129 convert completed
+INFO:root:guoqian_20151010 convert completed
+INFO:root:guoqian_20151023 convert completed
+INFO:root:guoqian_20151127 convert completed
+INFO:root:guoqian_20160401 convert completed
+INFO:root:guoqian_20160420 convert completed
+INFO:root:guozhiyou_20180131 convert completed
+INFO:root:guozhiyou_20180305 convert completed
+INFO:root:guxiaozhou_20150420 convert completed
+INFO:root:guxiaozhou_20150506 convert completed
+INFO:root:guxiaozhou_20150819 convert completed
+INFO:root:hanjunling_20170309 convert completed
+INFO:root:hanjunling_20170328 convert completed
+INFO:root:hansongnian_20170918 convert completed
+INFO:root:hansongnian_20171026 convert completed
+INFO:root:haocundi_20160707 convert completed
+INFO:root:haocundi_20160722 convert completed
+INFO:root:hechangchuan_20171019 convert completed
+INFO:root:hongqingfeng_20151207 convert completed
+INFO:root:hongqingfeng_20151218 convert completed
+INFO:root:hongqingfeng_20160119 convert completed
+INFO:root:hongqingfeng_20160317 convert completed
+INFO:root:houxiuyun_20150712 convert completed
+INFO:root:huangweiwen_20170911 convert completed
+INFO:root:huangweiwen_20171102 convert completed
+INFO:root:huangweiwen_20171218 convert completed
+INFO:root:huangyu_20150712 convert completed
+INFO:root:huguangquan_20170525 convert completed
+INFO:root:huguangquan_20170707 convert completed
+INFO:root:huguangquan_20170808 convert completed
+INFO:root:hushufang_20170331 convert completed
+INFO:root:hushufang_20170421 convert completed
+INFO:root:huwenbin_20150619 convert completed
+INFO:root:jinwenxue_20160104 convert completed
+INFO:root:jinwenxue_20160115 convert completed
+INFO:root:kangcuiping_20150506 convert completed
+INFO:root:kangcuiping_20150522 convert completed
+INFO:root:kangcuiping_20150605 convert completed
+INFO:root:kangcuiping_20150618 convert completed
+INFO:root:kangcuiping_20160408 convert completed
+INFO:root:kangcuiping_20160425 convert completed
+INFO:root:kangjian_20150826 convert completed
+INFO:root:kouguangying_20170313 convert completed
+INFO:root:liangxudong_20161223 convert completed
+INFO:root:liangxudong_20170106 convert completed
+INFO:root:liangxudong_20170120 convert completed
+INFO:root:liangxudong_20170217 convert completed
+INFO:root:lijingqin_20180331 convert completed
+INFO:root:limeihong_20150603 convert completed
+INFO:root:limeihong_20150619 convert completed
+INFO:root:linkuixing_20150712 convert completed
+INFO:root:linlikai_20150712 convert completed
+INFO:root:linlikai_20150827 convert completed
+INFO:root:lirongsheng_20161216 convert completed
+INFO:root:lirongsheng_20170125 convert completed
+INFO:root:liufengshuo_20170721 convert completed
+INFO:root:liufengshuo_20170825 convert completed
+INFO:root:liujinghui_20170418 convert completed
+INFO:root:liujinghui_20170511 convert completed
+INFO:root:liujinhua_20150818 convert completed
+INFO:root:liujinhua_20150901 convert completed
+INFO:root:liujinhua_20151130 convert completed
+INFO:root:liujinli_20161124 convert completed
+INFO:root:liujinli_20161209 convert completed
+INFO:root:liujinli_20161223 convert completed
+INFO:root:liujinli_20170113 convert completed
+INFO:root:liujinli_20170204 convert completed
+INFO:root:liujinli_20170223 convert completed
+INFO:root:liujinli_20170317 convert completed
+INFO:root:liujinli_20170401 convert completed
+INFO:root:liuna_20150420 convert completed
+INFO:root:liuna_20150506 convert completed
+INFO:root:liuna_20150609 convert completed
+INFO:root:liuxiaochun_20180320 convert completed
+INFO:root:liuyonghua_20170411 convert completed
+INFO:root:liuyonghua_20170603 convert completed
+INFO:root:liuyonghua_20170905 convert completed
+INFO:root:liuyuanjie_20180312 convert completed
+INFO:root:liuyulai_20170713 convert completed
+INFO:root:liuyulai_20170907 convert completed
+INFO:root:liuyulai_20170928 convert completed
+INFO:root:lixueqin_20170512 convert completed
+INFO:root:lixueqin_20170621 convert completed
+INFO:root:liyafen_20170222 convert completed
+INFO:root:liyafen_20170316 convert completed
+INFO:root:liyintong_20170914 convert completed
+INFO:root:liyintong_20171115 convert completed
+INFO:root:longkeming_20171018 convert completed
+INFO:root:longkeming_20171204 convert completed
+INFO:root:machunyue_20150711 convert completed
+INFO:root:mahuibo_20151229 convert completed
+INFO:root:mahuibo_20160115 convert completed
+INFO:root:mahuibo_20160412 convert completed
+INFO:root:mahuibo_20160426 convert completed
+INFO:root:maoli_20160504 convert completed
+INFO:root:maoli_20160519 convert completed
+INFO:root:maxiaoni_20150609 convert completed
+INFO:root:maxiaoni_20150617 convert completed
+INFO:root:mayanjun_20171030 convert completed
+INFO:root:mixiuping_20170322 convert completed
+INFO:root:mixiuping_20170407 convert completed
+INFO:root:mixiuping_20170428 convert completed
+INFO:root:mixiuping_20170516 convert completed
+INFO:root:mixiuping_20170528 convert completed
+INFO:root:mixiuping_20170614 convert completed
+INFO:root:mixiuping_20170628 convert completed
+INFO:root:mixiuping_20170720 convert completed
+INFO:root:mixiuping_20170920 convert completed
+INFO:root:mixiuping_20171130 convert completed
+INFO:root:niuwenxuan_20170417 convert completed
+INFO:root:niuwenxuan_20170517 convert completed
+INFO:root:panqingbin_20161103 convert completed
+INFO:root:panqingbin_20161121 convert completed
+INFO:root:panqingbin_20161208 convert completed
+INFO:root:panqingbin_20170217 convert completed
+INFO:root:panqingbin_20170307 convert completed
+INFO:root:piyongxiang_20161216 convert completed
+INFO:root:piyongxiang_20170117 convert completed
+INFO:root:qiaoyanmei_20170206 convert completed
+INFO:root:qiaoyanmei_20170308 convert completed
+INFO:root:qiaoyanmei_20170626 convert completed
+INFO:root:qinhongmei_20170528 convert completed
+INFO:root:qiuchunsuo_20150712 convert completed
+INFO:root:qiutongyu_20150605 convert completed
+INFO:root:qiutongyu_20150608 convert completed
+INFO:root:qiutongyu_20150623 convert completed
+INFO:root:qiutongyu_20150728 convert completed
+INFO:root:qiutongyu_20160517 convert completed
+INFO:root:quyuanjie_20170207 convert completed
+INFO:root:renjie_20170811 convert completed
+INFO:root:renjie_20170830 convert completed
+INFO:root:shaolijin_20180328 convert completed
+INFO:root:shenwei_20170327 convert completed
+INFO:root:songxingfen_20170124 convert completed
+INFO:root:songxingfen_20170206 convert completed
+INFO:root:songxingfen_20170412 convert completed
+INFO:root:sunguokun_20150626 convert completed
+INFO:root:sunxinshe_20151126 convert completed
+INFO:root:sunxinshe_20151211 convert completed
+INFO:root:sunxinshe_20160809 convert completed
+INFO:root:sunxinshe_20160825 convert completed
+INFO:root:suoqiufeng_20171010 convert completed
+INFO:root:suoqiufeng_20171113 convert completed
+INFO:root:tanenci_20170601 convert completed
+INFO:root:tanenci_20170706 convert completed
+INFO:root:tanenci_20170814 convert completed
+INFO:root:tanenci_20170922 convert completed
+INFO:root:tanenci_20171117 convert completed
+INFO:root:tanzengchao_20150827 convert completed
+INFO:root:tanzengchao_20150911 convert completed
+INFO:root:tanzengchao_20150925 convert completed
+INFO:root:tanzengchao_20151020 convert completed
+INFO:root:tanzengchao_20151204 convert completed
+INFO:root:tuyuanyuan_20150827 convert completed
+INFO:root:wangdongxu_20150711 convert completed
+INFO:root:wangdongxu_20150826 convert completed
+INFO:root:wanghenghua_20171125 convert completed
+INFO:root:wanghenghua_20171208 convert completed
+INFO:root:wangjinguo_20160421 convert completed
+INFO:root:wangjinguo_20160506 convert completed
+INFO:root:wangjingying_20170413 convert completed
+INFO:root:wangjingying_20170606 convert completed
+INFO:root:wangjingying_20170704 convert completed
+INFO:root:wangjingying_20170810 convert completed
+INFO:root:wangjingying_20170921 convert completed
+INFO:root:wangjingying_20171201 convert completed
+INFO:root:wangqiujun_20150612 convert completed
+INFO:root:wangqiujun_20150630 convert completed
+INFO:root:wangshengnan_20171228 convert completed
+INFO:root:wangshengnan_20180201 convert completed
+INFO:root:wangshutian_20160229 convert completed
+INFO:root:wangwei_20171107 convert completed
+INFO:root:wangwei_20171221 convert completed
+INFO:root:wangwei_20180124 convert completed
+INFO:root:wangwei_20180211 convert completed
+INFO:root:wangxiaoxia_20150701 convert completed
+INFO:root:wangxiaoxia_20150715 convert completed
+INFO:root:wangyingwu_20170912 convert completed
+INFO:root:wangyingwu_20171114 convert completed
+INFO:root:weixiaogang_20170915 convert completed
+INFO:root:wuchaolan_20150711 convert completed
+INFO:root:wujiang_20170824 convert completed
+INFO:root:wujiang_20170926 convert completed
+INFO:root:wujiang_20171031 convert completed
+INFO:root:wujiang_20171122 convert completed
+INFO:root:wuqin_20150825 convert completed
+INFO:root:wuxuekun_20170224 convert completed
+INFO:root:wuxuekun_20170315 convert completed
+INFO:root:wuxueli_20180317 convert completed
+INFO:root:xiangyan_20160219 convert completed
+INFO:root:xiangyan_20160304 convert completed
+INFO:root:xiangyan_20160325 convert completed
+INFO:root:xiaoyanqing_20150827 convert completed
+INFO:root:xiaoyixiang_20170627 convert completed
+INFO:root:xiaoyixiang_20170725 convert completed
+INFO:root:xiaoyixiang_20170904 convert completed
+INFO:root:xieqiaogen_20160909 convert completed
+INFO:root:xieqiaogen_20160927 convert completed
+INFO:root:xieqinghua_20170624 convert completed
+INFO:root:xingshiming_20171128 convert completed
+INFO:root:xulin_20151210 convert completed
+INFO:root:xulin_20151224 convert completed
+INFO:root:xuquan_20150826 convert completed
+INFO:root:xuri_20161110 convert completed
+INFO:root:xuxiaowei_20160825 convert completed
+INFO:root:xuxiaowei_20160909 convert completed
+INFO:root:xuxilan_20171013 convert completed
+INFO:root:xuxilan_20171206 convert completed
+INFO:root:xuzhiping_20151224 convert completed
+INFO:root:xuzhiping_20160107 convert completed
+INFO:root:yangli_20160412 convert completed
+INFO:root:yangxiaohui_20150711 convert completed
+INFO:root:yangxiaohui_20150827 convert completed
+INFO:root:yangyubo_20180119 convert completed
+INFO:root:yangyubo_20180208 convert completed
+INFO:root:yanshuyu_20150712 convert completed
+INFO:root:yaojianming_20151203 convert completed
+INFO:root:yeshengnan_20150712 convert completed
+INFO:root:yinbaosheng_20180103 convert completed
+INFO:root:yinbaosheng_20180206 convert completed
+INFO:root:yinbaosheng_20180317 convert completed
+INFO:root:zengajing_20170209 convert completed
+INFO:root:zhangbaolin_20161213 convert completed
+INFO:root:zhangbaolin_20170112 convert completed
+INFO:root:zhangchunwen_20180301 convert completed
+INFO:root:zhangfuhai_20170630 convert completed
+INFO:root:zhangfuhai_20170731 convert completed
+INFO:root:zhangheqing_20171219 convert completed
+INFO:root:zhangheqing_20180122 convert completed
+INFO:root:zhangheqing_20180212 convert completed
+INFO:root:zhangjing_20150711 convert completed
+INFO:root:zhanglibin_20161216 convert completed
+INFO:root:zhanglibin_20161230 convert completed
+INFO:root:zhanglibin_20170119 convert completed
+INFO:root:zhanglibin_20170216 convert completed
+INFO:root:zhanglibin_20170303 convert completed
+INFO:root:zhanglibin_20170317 convert completed
+INFO:root:zhanglibin_20180104 convert completed
+INFO:root:zhangli_20150711 convert completed
+INFO:root:zhangqingchun_20170828 convert completed
+INFO:root:zhangqingchun_20171017 convert completed
+INFO:root:zhangqingchun_20171211 convert completed
+INFO:root:zhangruotong_20150924 convert completed
+INFO:root:zhangxuchang_20161104 convert completed
+INFO:root:zhangxuchang_20161118 convert completed
+INFO:root:zhangxuchang_20161202 convert completed
+INFO:root:zhangxuchang_20170105 convert completed
+INFO:root:zhangxuchang_20170220 convert completed
+INFO:root:zhangxuchang_20170531 convert completed
+INFO:root:zhangying_20180121 convert completed
+INFO:root:zhangying_20180314 convert completed
+INFO:root:zhangyuzhen_20150609 convert completed
+INFO:root:zhangyuzhen_20150629 convert completed
+INFO:root:zhangzhiwu_20170111 convert completed
+INFO:root:zhangzhiwu_20170210 convert completed
+INFO:root:zhangzhiwu_20170301 convert completed
+INFO:root:zhangzhiwu_20170317 convert completed
+INFO:root:zhaolei_20180212 convert completed
+INFO:root:zhaoxinsheng_20160526 convert completed
+INFO:root:zhaoyaqin_20160721 convert completed
+INFO:root:zhengjia_20150825 convert completed
+INFO:root:zhoubaoguo_20171125 convert completed
+INFO:root:zhoubaoguo_20171213 convert completed
+INFO:root:zhoubaoguo_20180110 convert completed
+INFO:root:zhoushihui_20160812 convert completed
+INFO:root:zhoushihui_20160826 convert completed
+INFO:root:zhoushihui_20160909 convert completed
+INFO:root:zhouxiumin_20170705 convert completed
+INFO:root:zhouxiumin_20170719 convert completed
+INFO:root:zhouxiumin_20170829 convert completed
+INFO:root:zongzhengpei_20160412 convert completed
+INFO:root:zoubenhai_20180312 convert completed
+INFO:root:New Run: 2018-05-10T22-19-04.048614
+INFO:root:caochangsheng_20161027 convert completed
+INFO:root:caochangsheng_20161114 convert completed
+INFO:root:chenguwen_20150711 convert completed
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711
+INFO:root:New Run: 2018-05-10T22-30-38.763040
+INFO:root:New Run: 2018-05-10T22-30-46.828254
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161027
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\caochangsheng_20161114
+WARNING:root:No file match: *OAx_T2_PROPELLER*.nii.gz: F:/MMDPDatabase/data_rawnii\chenguwen_20150711

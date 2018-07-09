@@ -1,0 +1,8 @@
+['/usr/bin/python3', '/media/LocalDisk_E/MMDPSoftware/mmdps/tools/runpara.py', '--config', '/media/LocalDisk_E/MMDPSoftware/mmdps/pipeline/DWI/configpara_dwi.json']
+
+configpath /media/LocalDisk_E/MMDPSoftware/mmdps/pipeline/DWI/configpara_dwi.json
+Processes count: 5
+Begin proc, 5 cpus, 2 left, start at 2018-06-28T13-22-27.436680
+/media/LocalDisk_E/DataProcessing/DWI/caipingrong_20180413 just finished. 1 left, at 2018-06-28T13-38-35.756337
+/media/LocalDisk_E/DataProcessing/DWI/daishiqin_20180521 just finished. 0 left, at 2018-06-28T13-38-40.384550
+End proc, end at 2018-06-28T13-38-40.384629

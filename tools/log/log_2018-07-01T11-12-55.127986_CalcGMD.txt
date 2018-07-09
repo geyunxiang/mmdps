@@ -1,0 +1,21 @@
+['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\tools\\runpara.py', '--config', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\configpara_atlased_t1.json']
+
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+E:\MMDPSoftware\mmdps\mmdps\proc\job.py:50: UserWarning: Error run "['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']", return code is 1
+  warnings.warn('Error run "{}", return code is {}'.format(str(cmdlist), retcode))
+configpath E:\MMDPSoftware\mmdps\pipeline\T1\configpara_atlased_t1.json
+Processes count: 28
+Begin proc, 28 cpus, 12 left, start at 2018-07-01T11-12-56.190455
+E:/DataProcessing/T1\daishiqin_20180521\bnatlas just finished. 11 left, at 2018-07-01T11-12-57.221702
+E:/DataProcessing/T1\caipinrong_20180412\aal just finished. 10 left, at 2018-07-01T11-12-57.221702
+E:/DataProcessing/T1\daishiqin_20180521\aal2 just finished. 9 left, at 2018-07-01T11-12-57.221702
+E:/DataProcessing/T1\caipinrong_20180412\brodmann_lr just finished. 8 left, at 2018-07-01T11-12-57.221702
+E:/DataProcessing/T1\caipinrong_20180412\bnatlas just finished. 7 left, at 2018-07-01T11-12-57.221702
+E:/DataProcessing/T1\daishiqin_20180521\brodmann_lr just finished. 6 left, at 2018-07-01T11-12-57.221702
+E:/DataProcessing/T1\daishiqin_20180521\aal just finished. 5 left, at 2018-07-01T11-12-57.221702
+E:/DataProcessing/T1\caipinrong_20180412\aal2 just finished. 4 left, at 2018-07-01T11-12-57.221702
+E:/DataProcessing/T1\caipinrong_20180412\aicha just finished. 3 left, at 2018-07-01T11-12-57.237327
+E:/DataProcessing/T1\daishiqin_20180521\aicha just finished. 2 left, at 2018-07-01T11-12-57.252951
+E:/DataProcessing/T1\caipinrong_20180412\brodmann_lrce just finished. 1 left, at 2018-07-01T11-13-00.331065
+E:/DataProcessing/T1\daishiqin_20180521\brodmann_lrce just finished. 0 left, at 2018-07-01T11-13-00.393587
+End proc, end at 2018-07-01T11-13-01.393601

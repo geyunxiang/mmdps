@@ -1,0 +1,8 @@
+['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\tools\\runpara.py', '--config', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\configpara_unatlased_t1.json']
+
+configpath E:\MMDPSoftware\mmdps\pipeline\T1\configpara_unatlased_t1.json
+Processes count: 28
+Begin proc, 28 cpus, 2 left, start at 2018-06-28T11-34-28.180114
+E:/DataProcessing/T1\caipinrong_20180412 just finished. 1 left, at 2018-06-28T11-43-58.382124
+E:/DataProcessing/T1\daishiqin_20180521 just finished. 0 left, at 2018-06-28T11-44-02.554007
+End proc, end at 2018-06-28T11-44-02.554007

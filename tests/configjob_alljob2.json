@@ -1,0 +1,65 @@
+{
+    "name": "BatchJob",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "ShellTest",
+            "typename": "ShellJob",
+            "cmd": "ping",
+            "config": "",
+            "argv": [
+                "-n",
+                "1",
+                "www.baidu.com"
+            ],
+            "wd": "."
+        },
+        {
+            "name": "PythonTest",
+            "typename": "PythonJob",
+            "cmd": "pyecho.py",
+            "config": "test.json",
+            "argv": [
+                "abc",
+                "123",
+                "www.baidu.com"
+            ],
+            "wd": "."
+        },
+        {
+            "name": "MatlabTest",
+            "typename": "MatlabJob",
+            "cmd": "matlabecho('abc', 123, 'def');",
+            "config": "",
+            "argv": "",
+            "wd": "."
+        },
+        {
+            "name": "ExecutableTest",
+            "typename": "ExecutableJob",
+            "cmd": "exeecho.exe",
+            "config": "test.json",
+            "argv": [
+                "def",
+                "456"
+            ],
+            "wd": "."
+        },
+        {
+            "name": "BatchTest_File",
+            "typename": "BatchJob",
+            "cmd": "",
+            "config": "configjob_job.json",
+            "argv": "",
+            "wd": "."
+        },
+        {
+            "name": "BatchTest_File2",
+            "typename": "BatchJob",
+            "cmd": "",
+            "config": "configjob_batchjob.json",
+            "argv": "",
+            "wd": "."
+        }
+    ]
+}

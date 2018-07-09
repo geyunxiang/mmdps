@@ -1,0 +1,20 @@
+['/usr/bin/python3', '/media/LocalDisk_E/MMDPSoftware/mmdps/tools/runpara.py', '--config', '/media/LocalDisk_E/MMDPSoftware/mmdps/pipeline/DWI/configpara_dwi.json']
+
+configpath /media/LocalDisk_E/MMDPSoftware/mmdps/pipeline/DWI/configpara_dwi.json
+Processes count: 10
+Begin proc, 10 cpus, 14 left, start at 2018-06-21T15-06-52.869166
+/media/LocalDisk_E/DataProcessing/DWI/huangyanni_20180517 just finished. 13 left, at 2018-06-21T15-26-01.095327
+/media/LocalDisk_E/DataProcessing/DWI/shiyong_20180525 just finished. 12 left, at 2018-06-21T15-26-27.758808
+/media/LocalDisk_E/DataProcessing/DWI/guozhiyou_20180605 just finished. 11 left, at 2018-06-21T15-26-40.402658
+/media/LocalDisk_E/DataProcessing/DWI/daishiqin_20180521 just finished. 10 left, at 2018-06-21T15-26-42.415290
+/media/LocalDisk_E/DataProcessing/DWI/xiezhihao_20180524 just finished. 9 left, at 2018-06-21T15-26-48.565813
+/media/LocalDisk_E/DataProcessing/DWI/gaolianshi_20180603 just finished. 8 left, at 2018-06-21T15-26-49.655174
+/media/LocalDisk_E/DataProcessing/DWI/wangwei_20180520 just finished. 7 left, at 2018-06-21T15-27-01.154950
+/media/LocalDisk_E/DataProcessing/DWI/caipinrong_20180412 just finished. 6 left, at 2018-06-21T15-27-11.446149
+/media/LocalDisk_E/DataProcessing/DWI/wangzhenjun_20180530 just finished. 5 left, at 2018-06-21T15-27-12.561972
+/media/LocalDisk_E/DataProcessing/DWI/jianghonghui_20180531 just finished. 4 left, at 2018-06-21T15-27-18.650934
+/media/LocalDisk_E/DataProcessing/DWI/zhaomengchun_20180410 just finished. 3 left, at 2018-06-21T15-43-06.778766
+/media/LocalDisk_E/DataProcessing/DWI/yangsongming_20180603 just finished. 2 left, at 2018-06-21T15-43-12.908989
+/media/LocalDisk_E/DataProcessing/DWI/zhaomengchun_20180613 just finished. 1 left, at 2018-06-21T15-43-21.430695
+/media/LocalDisk_E/DataProcessing/DWI/zhaomengchun_20180515 just finished. 0 left, at 2018-06-21T15-43-28.542616
+End proc, end at 2018-06-21T15-43-28.542701

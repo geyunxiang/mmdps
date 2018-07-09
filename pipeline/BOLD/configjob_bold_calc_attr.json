@@ -1,0 +1,11 @@
+{
+    "name": "BoldCalcAttr",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "CalcAttr",
+            "typename": "MatlabJob",
+            "cmd": "netcalc_net_attr"
+        }
+    ]
+}

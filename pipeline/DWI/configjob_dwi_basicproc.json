@@ -1,0 +1,41 @@
+{
+    "name": "DWIBasicProc",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "Preprocess",
+            "typename": "ShellJob",
+            "cmd": "dwi_preprocess.sh"
+        },
+        {
+            "name": "ResliceToISO",
+            "typename": "ShellJob",
+            "cmd": "dwi_reslice_to_iso.sh"
+        },
+        {
+            "name": "dtifit",
+            "typename": "ShellJob",
+            "cmd": "dwi_dtifit.sh"
+        },
+        {
+            "name": "transform",
+            "typename": "ShellJob",
+            "cmd": "dwi_calc_transform.sh"
+        },
+        {
+            "name": "normalize",
+            "typename": "ShellJob",
+            "cmd": "dwi_calc_normalize.sh"
+        },
+        {
+            "name": "reslice attr",
+            "typename": "ShellJob",
+            "cmd": "dwi_reslice_attr.sh"
+        },
+        {
+            "name": "FAAddColor",
+            "typename": "PythonJob",
+            "cmd": "dwi_dtifit_fa_add_color.py"
+        }
+    ]
+}

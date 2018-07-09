@@ -1,0 +1,16 @@
+{
+    "typename": "CompositeField",
+    "name": "Person",
+    "children": [
+        {
+            "typename": "StringField",
+            "name": "id",
+            "value": ""
+        },
+        {
+            "typename": "StringField",
+            "name": "name",
+            "value": ""
+        }
+    ]
+}

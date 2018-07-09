@@ -1,0 +1,11 @@
+{
+    "name": "BetNorm",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "BetNorm",
+            "typename": "MatlabJob",
+            "cmd": "t1_main_betnorm"
+        }
+    ]
+}

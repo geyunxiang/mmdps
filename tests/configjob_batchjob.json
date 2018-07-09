@@ -1,0 +1,17 @@
+{
+    "name": "TestBatch",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "ShellTest",
+            "typename": "ShellJob",
+            "cmd": "ipconfig"
+        },
+        {
+            "name": "Shell2",
+            "typename": "ShellJob",
+            "cmd": "ping",
+            "argv": ["www.baidu.com"]
+        }
+    ]
+}

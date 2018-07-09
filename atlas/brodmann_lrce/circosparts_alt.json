@@ -1,0 +1,66 @@
+{
+    "atlas": "brodmann_lrce",
+    "config": {
+        "left": {
+            "notused": "notused",
+            "sections": [
+                {
+                    "name": "Frontal",
+                    "ticks": ["L11", "L47", "L44", "L45", "L46", "L10", "L9", "L8", "L6", "L4"]
+                },
+                {
+                    "name": "Parietal",
+                    "ticks": ["L3", "L1", "L2", "L5", "L7", "L43", "L40", "L39"]
+                },
+                {
+                    "name": "Temporal",
+                    "ticks": ["L27", "L34", "L28", "L35", "L36", "L41", "L42", "L22", "L21", "L37", "L20", "L38", "L48"]
+                },
+                {
+                    "name": "Occipital",
+                    "ticks": ["L19", "L18", "L17"]
+                },
+                {
+                    "name": "Limbic",
+                    "ticks": ["L25", "L24", "L32", "L23", "L26", "L29", "L30"]
+                },
+                {
+                    "name": "Cerebellum",
+                    "ticks": ["AL91", "AL93", "AL95", "AL97", "AL99", "AL101", "AL103", "AL105",  "AL107", "AL109", "AL111", "AL113", "AL115"]
+                }
+            ]
+        },
+        "right": {
+            "notused": "notused",
+            "sections": [
+                {
+                    "name": "Frontal",
+                    "ticks": ["R11", "R47", "R44", "R45", "R46", "R10", "R9", "R8", "R6", "R4"]
+                },
+                {
+                    "name": "Parietal",
+                    "ticks": ["R3", "R1", "R2", "R5", "R7", "R43", "R40", "R39"]
+                },
+                {
+                    "name": "Temporal",
+                    "ticks": ["R27", "R34", "R28", "R35", "R36", "R41", "R42", "R22", "R21", "R37", "R20", "R38", "R48"]
+                },
+                {
+                    "name": "Occipital",
+                    "ticks": ["R19", "R18", "R17"]
+                },
+                {
+                    "name": "Limbic",
+                    "ticks": ["R25", "R24", "R32", "R23", "R26", "R29", "R30"]
+                },
+                {
+                    "name": "Cerebellum",
+                    "ticks": ["AR92", "AR94", "AR96", "AR98", "AR100", "AR102", "AR104", "AR106", "AR108",  "AR110", "AR112", "AR114", "AR116"]
+                }
+            ]
+        },
+        "center": {
+
+        }
+    }
+}

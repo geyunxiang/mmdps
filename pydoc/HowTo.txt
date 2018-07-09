@@ -1,0 +1,2 @@
+pydoc> sphinx-apidoc --full -o . -H "MMDPS" -A "mmdp" -V "1.0" ..\mmdps\
+pydoc> .\make.bat html

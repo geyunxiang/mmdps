@@ -1,0 +1,102 @@
+['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\tools\\runpara.py', '--config', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\configpara_atlased_t1.json']
+
+configpath E:\MMDPSoftware\mmdps\pipeline\T1\configpara_atlased_t1.json
+Processes count: 15
+Begin proc, 15 cpus, 84 left, start at 2018-06-21T14-26-18.470315
+E:/DataProcessing/T1\guozhiyou_20180605\brodmann_lrce just finished. 83 left, at 2018-06-21T14-26-22.690335
+E:/DataProcessing/T1\huangyanni_20180517\brodmann_lrce just finished. 82 left, at 2018-06-21T14-26-25.324859
+E:/DataProcessing/T1\huangyanni_20180517\brodmann_lr just finished. 81 left, at 2018-06-21T14-26-25.381913
+E:/DataProcessing/T1\daishiqin_20180521\brodmann_lr just finished. 80 left, at 2018-06-21T14-26-25.826339
+E:/DataProcessing/T1\gaolianshi_20180603\brodmann_lrce just finished. 79 left, at 2018-06-21T14-26-25.836350
+E:/DataProcessing/T1\guozhiyou_20180605\brodmann_lr just finished. 78 left, at 2018-06-21T14-26-25.958468
+E:/DataProcessing/T1\gaolianshi_20180603\brodmann_lr just finished. 77 left, at 2018-06-21T14-26-26.287784
+E:/DataProcessing/T1\huangyanni_20180517\aal2 just finished. 76 left, at 2018-06-21T14-26-26.401892
+E:/DataProcessing/T1\caipinrong_20180412\brodmann_lr just finished. 75 left, at 2018-06-21T14-26-26.431920
+E:/DataProcessing/T1\daishiqin_20180521\brodmann_lrce just finished. 74 left, at 2018-06-21T14-26-26.437926
+E:/DataProcessing/T1\guozhiyou_20180605\aal2 just finished. 73 left, at 2018-06-21T14-26-26.726202
+E:/DataProcessing/T1\daishiqin_20180521\aal2 just finished. 72 left, at 2018-06-21T14-26-26.804277
+E:/DataProcessing/T1\caipinrong_20180412\brodmann_lrce just finished. 71 left, at 2018-06-21T14-26-26.807280
+E:/DataProcessing/T1\caipinrong_20180412\aal2 just finished. 70 left, at 2018-06-21T14-26-27.068530
+E:/DataProcessing/T1\gaolianshi_20180603\aal2 just finished. 69 left, at 2018-06-21T14-26-27.239694
+E:/DataProcessing/T1\guozhiyou_20180605\aal just finished. 68 left, at 2018-06-21T14-26-30.516838
+E:/DataProcessing/T1\huangyanni_20180517\aal just finished. 67 left, at 2018-06-21T14-26-31.091389
+E:/DataProcessing/T1\daishiqin_20180521\aal just finished. 66 left, at 2018-06-21T14-26-31.393679
+E:/DataProcessing/T1\guozhiyou_20180605\bnatlas just finished. 65 left, at 2018-06-21T14-26-32.999216
+E:/DataProcessing/T1\caipinrong_20180412\aal just finished. 64 left, at 2018-06-21T14-26-33.506702
+E:/DataProcessing/T1\gaolianshi_20180603\aal just finished. 63 left, at 2018-06-21T14-26-34.032207
+E:/DataProcessing/T1\caipinrong_20180412\bnatlas just finished. 62 left, at 2018-06-21T14-26-35.528642
+E:/DataProcessing/T1\jianghonghui_20180531\brodmann_lr just finished. 61 left, at 2018-06-21T14-26-35.819922
+E:/DataProcessing/T1\gaolianshi_20180603\bnatlas just finished. 60 left, at 2018-06-21T14-26-37.387424
+E:/DataProcessing/T1\huangyanni_20180517\bnatlas just finished. 59 left, at 2018-06-21T14-26-37.397434
+E:/DataProcessing/T1\shiyong_20180525\brodmann_lr just finished. 58 left, at 2018-06-21T14-26-37.865883
+E:/DataProcessing/T1\jianghonghui_20180531\aal2 just finished. 57 left, at 2018-06-21T14-26-37.872889
+E:/DataProcessing/T1\jianghonghui_20180531\brodmann_lrce just finished. 56 left, at 2018-06-21T14-26-37.937953
+E:/DataProcessing/T1\shiyong_20180525\brodmann_lrce just finished. 55 left, at 2018-06-21T14-26-40.426335
+E:/DataProcessing/T1\wangwei_20180520\brodmann_lr just finished. 54 left, at 2018-06-21T14-26-40.516421
+E:/DataProcessing/T1\daishiqin_20180521\bnatlas just finished. 53 left, at 2018-06-21T14-26-40.591494
+E:/DataProcessing/T1\shiyong_20180525\aal2 just finished. 52 left, at 2018-06-21T14-26-41.827681
+E:/DataProcessing/T1\jianghonghui_20180531\aal just finished. 51 left, at 2018-06-21T14-26-41.928777
+E:/DataProcessing/T1\wangwei_20180520\brodmann_lrce just finished. 50 left, at 2018-06-21T14-26-42.182021
+E:/DataProcessing/T1\wangwei_20180520\aal2 just finished. 49 left, at 2018-06-21T14-26-42.323158
+E:/DataProcessing/T1\shiyong_20180525\aal just finished. 48 left, at 2018-06-21T14-26-44.043806
+E:/DataProcessing/T1\gaolianshi_20180603\aicha just finished. 47 left, at 2018-06-21T14-26-44.771504
+E:/DataProcessing/T1\wangzhenjun_20180530\brodmann_lr just finished. 46 left, at 2018-06-21T14-26-46.356024
+E:/DataProcessing/T1\guozhiyou_20180605\aicha just finished. 45 left, at 2018-06-21T14-26-47.013652
+E:/DataProcessing/T1\wangwei_20180520\aal just finished. 44 left, at 2018-06-21T14-26-47.657268
+E:/DataProcessing/T1\caipinrong_20180412\aicha just finished. 43 left, at 2018-06-21T14-26-47.806411
+E:/DataProcessing/T1\daishiqin_20180521\aicha just finished. 42 left, at 2018-06-21T14-26-47.834438
+E:/DataProcessing/T1\huangyanni_20180517\aicha just finished. 41 left, at 2018-06-21T14-26-48.188776
+E:/DataProcessing/T1\wangzhenjun_20180530\brodmann_lrce just finished. 40 left, at 2018-06-21T14-26-48.997554
+E:/DataProcessing/T1\xiezhihao_20180524\brodmann_lr just finished. 39 left, at 2018-06-21T14-26-49.395937
+E:/DataProcessing/T1\wangzhenjun_20180530\aal2 just finished. 38 left, at 2018-06-21T14-26-50.931407
+E:/DataProcessing/T1\wangzhenjun_20180530\aal just finished. 37 left, at 2018-06-21T14-26-52.921314
+E:/DataProcessing/T1\xiezhihao_20180524\brodmann_lrce just finished. 36 left, at 2018-06-21T14-26-53.098486
+E:/DataProcessing/T1\yangsongming_20180603\brodmann_lr just finished. 35 left, at 2018-06-21T14-26-53.709070
+E:/DataProcessing/T1\shiyong_20180525\bnatlas just finished. 34 left, at 2018-06-21T14-26-54.008357
+E:/DataProcessing/T1\yangsongming_20180603\brodmann_lrce just finished. 33 left, at 2018-06-21T14-26-54.092438
+E:/DataProcessing/T1\jianghonghui_20180531\bnatlas just finished. 32 left, at 2018-06-21T14-26-54.106451
+E:/DataProcessing/T1\yangsongming_20180603\aal2 just finished. 31 left, at 2018-06-21T14-26-54.623946
+E:/DataProcessing/T1\xiezhihao_20180524\aal2 just finished. 30 left, at 2018-06-21T14-26-54.822136
+E:/DataProcessing/T1\jianghonghui_20180531\aicha just finished. 29 left, at 2018-06-21T14-26-55.488774
+E:/DataProcessing/T1\xiezhihao_20180524\aal just finished. 28 left, at 2018-06-21T14-26-55.518802
+E:/DataProcessing/T1\wangwei_20180520\bnatlas just finished. 27 left, at 2018-06-21T14-26-55.766041
+E:/DataProcessing/T1\zhaomengchun_20180410\brodmann_lr just finished. 26 left, at 2018-06-21T14-26-58.118297
+E:/DataProcessing/T1\zhaomengchun_20180410\brodmann_lrce just finished. 25 left, at 2018-06-21T14-26-59.052192
+E:/DataProcessing/T1\yangsongming_20180603\aal just finished. 24 left, at 2018-06-21T14-26-59.626743
+E:/DataProcessing/T1\shiyong_20180525\aicha just finished. 23 left, at 2018-06-21T14-26-59.709822
+E:/DataProcessing/T1\wangwei_20180520\aicha just finished. 22 left, at 2018-06-21T14-26-59.969070
+E:/DataProcessing/T1\zhaomengchun_20180515\brodmann_lr just finished. 21 left, at 2018-06-21T14-27-00.070167
+E:/DataProcessing/T1\wangzhenjun_20180530\bnatlas just finished. 20 left, at 2018-06-21T14-27-00.341426
+E:/DataProcessing/T1\zhaomengchun_20180410\aal2 just finished. 19 left, at 2018-06-21T14-27-00.427510
+E:/DataProcessing/T1\zhaomengchun_20180515\brodmann_lrce just finished. 18 left, at 2018-06-21T14-27-00.867929
+E:/DataProcessing/T1\zhaomengchun_20180515\aal2 just finished. 17 left, at 2018-06-21T14-27-01.726755
+E:/DataProcessing/T1\zhaomengchun_20180410\aal just finished. 16 left, at 2018-06-21T14-27-03.128098
+E:/DataProcessing/T1\zhaomengchun_20180613\brodmann_lr just finished. 15 left, at 2018-06-21T14-27-04.070001
+E:/DataProcessing/T1\zhaomengchun_20180613\brodmann_lrce just finished. 14 left, at 2018-06-21T14-27-04.364283
+E:/DataProcessing/T1\zhaomengchun_20180515\aal just finished. 13 left, at 2018-06-21T14-27-04.897794
+E:/DataProcessing/T1\xiezhihao_20180524\bnatlas just finished. 12 left, at 2018-06-21T14-27-04.947842
+E:/DataProcessing/T1\zhaomengchun_20180613\aal2 just finished. 11 left, at 2018-06-21T14-27-04.989883
+E:/DataProcessing/T1\yangsongming_20180603\bnatlas just finished. 10 left, at 2018-06-21T14-27-05.874731
+E:/DataProcessing/T1\wangzhenjun_20180530\aicha just finished. 9 left, at 2018-06-21T14-27-08.515267
+E:/DataProcessing/T1\zhaomengchun_20180410\bnatlas just finished. 8 left, at 2018-06-21T14-27-09.045770
+E:/DataProcessing/T1\zhaomengchun_20180613\aal just finished. 7 left, at 2018-06-21T14-27-09.068792
+E:/DataProcessing/T1\xiezhihao_20180524\aicha just finished. 6 left, at 2018-06-21T14-27-09.577280call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+call_logged ['D:\\app\\Python\\Python35\\python.exe', 'E:\\MMDPSoftware\\mmdps\\pipeline\\T1\\t1_calc_GMD.py']
+
+E:/DataProcessing/T1\zhaomengchun_20180515\bnatlas just finished. 5 left, at 2018-06-21T14-27-10.275948
+E:/DataProcessing/T1\yangsongming_20180603\aicha just finished. 4 left, at 2018-06-21T14-27-10.281955
+E:/DataProcessing/T1\zhaomengchun_20180410\aicha just finished. 3 left, at 2018-06-21T14-27-13.638198
+E:/DataProcessing/T1\zhaomengchun_20180613\bnatlas just finished. 2 left, at 2018-06-21T14-27-13.782336
+E:/DataProcessing/T1\zhaomengchun_20180515\aicha just finished. 1 left, at 2018-06-21T14-27-14.684204
+E:/DataProcessing/T1\zhaomengchun_20180613\aicha just finished. 0 left, at 2018-06-21T14-27-17.649042
+End proc, end at 2018-06-21T14-27-18.649087

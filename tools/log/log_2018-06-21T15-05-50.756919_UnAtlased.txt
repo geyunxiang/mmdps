@@ -1,0 +1,9 @@
+['/usr/bin/python3', '/media/LocalDisk_E/MMDPSoftware/mmdps/tools/runpara.py', '--config', 'configpara_dwi.json']
+
+configpath None
+Traceback (most recent call last):
+  File "/media/LocalDisk_E/MMDPSoftware/mmdps/tools/runpara.py", line 20, in <module>
+    configdict = load_json(configpath)
+  File "/media/LocalDisk_E/MMDPSoftware/mmdps/mmdps/util/loadsave.py", line 21, in load_json
+    with open(jfile, encoding='utf-8') as f:
+TypeError: invalid file: None

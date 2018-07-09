@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Result | {{namedate}}
+{% endblock %}
+
+{% block body %}
+<h2>{{ self.title() }}</h2>
+
+<hr />
+
+{% for atlasname in atlases %}
+  <h3> {{ atlasname }} </h3>
+  
+  <h4> nets </h4>
+  {% for netname in fea['nets'] %}
+    {% set cururl = build_feature_url(mriscan_id, atlasname, netname) %}
+    <img src={{ cururl + '.png' }} alt={{ cururl + ' not found'}} style="width:800px;height:800px;"></img>
+	 &#x25B2 <a href={{cururl + '.csv' }}>data</a> | <a href={{cururl + '_withtick.csv'}}>withtick</a>
+  {% endfor %}
+  
+  <h4> attrs </h4>
+  {% for attrname in fea['attrs'] %}
+    {% set cururl = build_feature_url(mriscan_id, atlasname, attrname) %}
+    <img src={{ cururl + '_bnv.png' }} alt={{ cururl + ' not found'}} style="width:800px;height:500px;"></img>
+	 &#x25B2 <a href={{cururl + '.csv' }}>data</a> | <a href={{cururl + '_withtick.csv'}}>withtick</a>
+  {% endfor %}
+  
+
+  <hr />
+{% endfor %}
+
+{% endblock %}

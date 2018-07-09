@@ -1,0 +1,150 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.util.toolman &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.util.toolman</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;GUI tools management.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">from</span> <span class="nn">..gui</span> <span class="k">import</span> <span class="n">tktools</span>
+<span class="kn">from</span> <span class="nn">..util.loadsave</span> <span class="k">import</span> <span class="n">load_json</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">rootconfig</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">run</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">path</span>
+
+
+<div class="viewcode-block" id="Tool"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.toolman.Tool">[docs]</a><span class="k">class</span> <span class="nc">Tool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Represents one GUI tool.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">pyui</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init use tool name and python ui scripts.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pyui</span> <span class="o">=</span> <span class="n">pyui</span>
+
+<div class="viewcode-block" id="Tool.opentool"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.toolman.Tool.opentool">[docs]</a>    <span class="k">def</span> <span class="nf">opentool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">argv</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open the gui tool.&quot;&quot;&quot;</span>
+        <span class="n">pyui</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">fullfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pyui</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">pyui</span>
+        <span class="n">cmdlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">pyui</span><span class="p">]</span>
+        <span class="n">cmdlist</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+        <span class="n">run</span><span class="o">.</span><span class="n">popen_py</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Tool.build_widget"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.toolman.Tool.build_widget">[docs]</a>    <span class="k">def</span> <span class="nf">build_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">master</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the tool button.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">tktools</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opentool</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="ToolManager"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.toolman.ToolManager">[docs]</a><span class="k">class</span> <span class="nc">ToolManager</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Manages all gui tools.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init manager.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="ToolManager.load"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.toolman.ToolManager.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load all tools in config.&quot;&quot;&quot;</span>
+        <span class="n">toolconfigs</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;tools&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tools</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_toolsdict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">toolconfig</span> <span class="ow">in</span> <span class="n">toolconfigs</span><span class="p">:</span>
+            <span class="n">toolname</span> <span class="o">=</span> <span class="n">toolconfig</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+            <span class="n">pyui</span> <span class="o">=</span> <span class="n">toolconfig</span><span class="p">[</span><span class="s1">&#39;pyui&#39;</span><span class="p">]</span>
+            <span class="n">tool</span> <span class="o">=</span> <span class="n">Tool</span><span class="p">(</span><span class="n">toolname</span><span class="p">,</span> <span class="n">pyui</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tools</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tool</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_toolsdict</span><span class="p">[</span><span class="n">toolname</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">tool</span></div>
+            
+<div class="viewcode-block" id="ToolManager.find"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.toolman.ToolManager.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toolname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Find the tool by name.&quot;&quot;&quot;</span>
+        <span class="n">toolname</span> <span class="o">=</span> <span class="n">toolname</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">tool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toolsdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">toolname</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tool</span></div>
+
+<div class="viewcode-block" id="ToolManager.get"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.toolman.ToolManager.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toolname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the tool by name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toolsdict</span><span class="p">[</span><span class="n">toolname</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span></div>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tools</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;All tools.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tools</span></div>
+    
+<div class="viewcode-block" id="get_default_manager"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.toolman.get_default_manager">[docs]</a><span class="k">def</span> <span class="nf">get_default_manager</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get the default tool manager, configured using tools_config.json.&quot;&quot;&quot;</span>
+    <span class="n">toolsconffile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">tools</span><span class="p">,</span> <span class="s1">&#39;tools_config.json&#39;</span><span class="p">)</span>
+    <span class="n">toolsconf</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">toolsconffile</span><span class="p">)</span>
+    <span class="n">manager</span> <span class="o">=</span> <span class="n">ToolManager</span><span class="p">()</span>
+    <span class="n">manager</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">toolsconf</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">manager</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

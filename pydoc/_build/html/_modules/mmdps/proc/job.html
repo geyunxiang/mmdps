@@ -1,0 +1,386 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.proc.job &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.proc.job</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Job is a processing unit.</span>
+
+<span class="sd">One job is a processing unit. It can run python script, matlab, </span>
+<span class="sd">executable, shell. It can run other jobs, forming a tree.</span>
+<span class="sd">It can also run parallel, forming a project.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">shlex</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">clock</span><span class="p">,</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">rootconfig</span>
+
+<div class="viewcode-block" id="genlogfilename"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.genlogfilename">[docs]</a><span class="k">def</span> <span class="nf">genlogfilename</span><span class="p">(</span><span class="n">info</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate a log file name base on current time and supplied info.&quot;&quot;&quot;</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+    <span class="n">timestr</span> <span class="o">=</span> <span class="n">clock</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s1">&#39;log/log_</span><span class="si">{}</span><span class="s1">_</span><span class="si">{}</span><span class="s1">.txt&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">timestr</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="call_logged2"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.call_logged2">[docs]</a><span class="k">def</span> <span class="nf">call_logged2</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Call the cmdlist and output the log to a file in log folder.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="c1">#</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">ret</span>
+        <span class="n">retcode</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">output</span>
+        <span class="n">retcode</span> <span class="o">=</span> <span class="n">err</span><span class="o">.</span><span class="n">returncode</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Error run &quot;</span><span class="si">{}</span><span class="s1">&quot;, return code is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">),</span> <span class="n">retcode</span><span class="p">))</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">genlogfilename</span><span class="p">(</span><span class="n">info</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">retcode</span></div>
+
+<div class="viewcode-block" id="call_logged"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.call_logged">[docs]</a><span class="k">def</span> <span class="nf">call_logged</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Call the cmdlist and output the log to a file in log folder.&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;call_logged&#39;</span><span class="p">,</span> <span class="n">cmdlist</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">genlogfilename</span><span class="p">(</span><span class="n">info</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+    <span class="n">retcode</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">returncode</span>
+    <span class="k">if</span> <span class="n">retcode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Error run &quot;</span><span class="si">{}</span><span class="s1">&quot;, return code is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">),</span> <span class="n">retcode</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">p</span><span class="o">.</span><span class="n">returncode</span></div>
+
+<div class="viewcode-block" id="call_in_wd"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.call_in_wd">[docs]</a><span class="k">def</span> <span class="nf">call_in_wd</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">,</span> <span class="n">wd</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Call in supplied working directory.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">Chdir</span><span class="p">(</span><span class="n">wd</span><span class="p">):</span>
+        <span class="n">retcode</span> <span class="o">=</span> <span class="n">call_logged</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">retcode</span></div>
+
+<div class="viewcode-block" id="Chdir"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.Chdir">[docs]</a><span class="k">class</span> <span class="nc">Chdir</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Change dir context manager.</span>
+
+<span class="sd">    Change to dir on enter, change back on exit.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chdirto</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init and change to dir chdirto.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oldfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chdirto</span> <span class="o">=</span> <span class="n">chdirto</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;When enter, change dir to.&quot;&quot;&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chdirto</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;When exit, change dir back.&quot;&quot;&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oldfolder</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="Job"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.Job">[docs]</a><span class="k">class</span> <span class="nc">Job</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A job is a processing unit.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wd</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the job with name, cmd, config, argv and wd.</span>
+<span class="sd">        </span>
+<span class="sd">        The config will become --config CONFIG in argv.</span>
+<span class="sd">        wd is the working directory in which should be job run.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">typename</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="n">argv</span> <span class="k">if</span> <span class="n">argv</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">shlex</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">argv</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wd</span> <span class="o">=</span> <span class="n">wd</span>
+
+<div class="viewcode-block" id="Job.from_dict"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.Job.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the job from dict.&quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cmd&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">argv</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;argv&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">wd</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;wd&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">wd</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">o</span></div>
+
+<div class="viewcode-block" id="Job.to_dict"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.Job.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Serialize the job to dict.&quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;typename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">typename</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;cmd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;argv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argv</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;wd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wd</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+
+<div class="viewcode-block" id="Job.build_fullcmd"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.Job.build_fullcmd">[docs]</a>    <span class="k">def</span> <span class="nf">build_fullcmd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build full command.</span>
+<span class="sd">        </span>
+<span class="sd">        If the cmd is not absolute path, search in path for this cmd.</span>
+<span class="sd">        It is similar to matlabpath, so you do not need to specify the</span>
+<span class="sd">        full cmd path. Just make sure to avoid name clash.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">fullfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cmd</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cmd</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span></div>
+
+<div class="viewcode-block" id="Job.build_fullconfig"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.Job.build_fullconfig">[docs]</a>    <span class="k">def</span> <span class="nf">build_fullconfig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build full config.</span>
+<span class="sd">        </span>
+<span class="sd">        Search the config file using path.fullfile.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">fullfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">config</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span></div>
+        
+<div class="viewcode-block" id="Job.build_rootcmd"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.Job.build_rootcmd">[docs]</a>    <span class="k">def</span> <span class="nf">build_rootcmd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the root command.&quot;&quot;&quot;</span>
+        <span class="n">rootcmd</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">build_fullcmd</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="n">rootcmd</span></div>
+    
+<div class="viewcode-block" id="Job.build_cmdlist"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.Job.build_cmdlist">[docs]</a>    <span class="k">def</span> <span class="nf">build_cmdlist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the command list, including rootcmd and argv.&quot;&quot;&quot;</span>
+        <span class="n">cmdlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_rootcmd</span><span class="p">()</span>
+        <span class="n">cmdlist</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">argv</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+            <span class="n">cmdlist</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;--config&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_fullconfig</span><span class="p">()])</span>
+        <span class="k">return</span> <span class="n">cmdlist</span></div>
+    
+<div class="viewcode-block" id="Job.run"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.Job.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build cmd list and run the job in wd.&quot;&quot;&quot;</span>
+        <span class="n">cmdlist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_cmdlist</span><span class="p">()</span>
+        <span class="n">retcode</span> <span class="o">=</span> <span class="n">call_in_wd</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">retcode</span></div></div>
+    
+
+
+<div class="viewcode-block" id="ShellJob"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.ShellJob">[docs]</a><span class="k">class</span> <span class="nc">ShellJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Shell job.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wd</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the shell job.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">wd</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="PythonJob"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.PythonJob">[docs]</a><span class="k">class</span> <span class="nc">PythonJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Python job, run a python script.</span>
+<span class="sd">    </span>
+<span class="sd">    The script may be self-contained. If it use modules in the same directory,</span>
+<span class="sd">    the directory should be added to project path so when run the job in wd,</span>
+<span class="sd">    the python interpreter can import it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wd</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the python job.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">wd</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PythonJob.build_rootcmd"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.PythonJob.build_rootcmd">[docs]</a>    <span class="k">def</span> <span class="nf">build_rootcmd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Override the root cmd to python executable.&quot;&quot;&quot;</span>
+        <span class="n">rootcmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">python</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_fullcmd</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="n">rootcmd</span></div></div>
+
+<div class="viewcode-block" id="MatlabJob"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.MatlabJob">[docs]</a><span class="k">class</span> <span class="nc">MatlabJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Matlab job, run a matlab string, typically a matlab function.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wd</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the matlab job.</span>
+<span class="sd">        </span>
+<span class="sd">        The path.searchpathlist will be added to the matlab path by addpath function</span>
+<span class="sd">        before the matlab command run. If not configured right, the matlab job cannot</span>
+<span class="sd">        find the matlab function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">wd</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MatlabJob.build_matlab_wd"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.MatlabJob.build_matlab_wd">[docs]</a>    <span class="k">def</span> <span class="nf">build_matlab_wd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build wd, for matlab to cd into.&quot;&quot;&quot;</span>
+        <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="n">wd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wd</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wd</span></div>
+
+<div class="viewcode-block" id="MatlabJob.build_matlab_logfile"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.MatlabJob.build_matlab_logfile">[docs]</a>    <span class="k">def</span> <span class="nf">build_matlab_logfile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build matlab log file.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">genlogfilename</span><span class="p">(</span><span class="s1">&#39;matlab_log&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MatlabJob.matlab_path_to_add"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.MatlabJob.matlab_path_to_add">[docs]</a>    <span class="k">def</span> <span class="nf">matlab_path_to_add</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the addpath command to add all paths in path.searchpathlist.&quot;&quot;&quot;</span>
+        <span class="n">pathlist</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">searchpathlist</span><span class="p">()</span>
+        <span class="n">pathstrlist</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pathlist</span><span class="p">]</span>
+        <span class="n">pathmatstr</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pathstrlist</span><span class="p">)</span>
+        <span class="n">finalstr</span> <span class="o">=</span> <span class="s1">&#39;addpath(&#39;</span> <span class="o">+</span> <span class="n">pathmatstr</span> <span class="o">+</span> <span class="s1">&#39;);&#39;</span>
+        <span class="k">return</span> <span class="n">finalstr</span></div>
+        
+<div class="viewcode-block" id="MatlabJob.build_cmdlist"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.MatlabJob.build_cmdlist">[docs]</a>    <span class="k">def</span> <span class="nf">build_cmdlist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the full command line to run the matlab cmd.&quot;&quot;&quot;</span>
+        <span class="n">cmdlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cmdlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rootconfig</span><span class="o">.</span><span class="n">matlab_bin</span><span class="p">)</span>
+        <span class="n">cmdlist</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;-wait&#39;</span><span class="p">,</span> <span class="s1">&#39;-nosplash&#39;</span><span class="p">,</span> <span class="s1">&#39;-minimize&#39;</span><span class="p">,</span> <span class="s1">&#39;-nodesktop&#39;</span><span class="p">,</span> <span class="s1">&#39;-logfile&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">build_matlab_logfile</span><span class="p">(),</span> <span class="s1">&#39;-r&#39;</span><span class="p">])</span>
+        <span class="n">realcmd</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">realcmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+        <span class="n">realcmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matlab_path_to_add</span><span class="p">())</span>
+        <span class="n">realcmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;try, &quot;</span><span class="p">)</span>
+        <span class="n">realcmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;cd(&#39;</span><span class="si">{0}</span><span class="s2">&#39;);&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">build_matlab_wd</span><span class="p">()))</span>
+        <span class="n">realcmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">realcmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; ; catch me, fprintf(&#39;</span><span class="si">%s</span><span class="s2"> / </span><span class="si">%s</span><span class="s2">&#39;, me.identifier, me.message), exit(-1), end, exit;&quot;</span><span class="p">)</span>
+        <span class="n">realcmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+        <span class="n">realcmdstr</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">realcmd</span><span class="p">)</span>
+        <span class="n">cmdlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">realcmdstr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cmdlist</span></div></div>
+
+<div class="viewcode-block" id="ExecutableJob"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.ExecutableJob">[docs]</a><span class="k">class</span> <span class="nc">ExecutableJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Executable job, this should be an executable.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wd</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">wd</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BatchJob"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.BatchJob">[docs]</a><span class="k">class</span> <span class="nc">BatchJob</span><span class="p">(</span><span class="n">Job</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Batch job, this is a list of sequentially run jobs.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wd</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the batch job.</span>
+<span class="sd">        </span>
+<span class="sd">        If config is str, this is a configfile. If config is list, this list</span>
+<span class="sd">        contains the children jobs in place.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">wd</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configtype</span> <span class="o">=</span> <span class="s1">&#39;configfile&#39;</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">configtype</span> <span class="o">=</span> <span class="s1">&#39;joblist&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Config should be a json file or python list&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BatchJob.run_configfile"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.BatchJob.run_configfile">[docs]</a>    <span class="k">def</span> <span class="nf">run_configfile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run config file, use runjob.py.&quot;&quot;&quot;</span>
+        <span class="n">runbatchpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">tools</span><span class="p">,</span> <span class="s1">&#39;runjob.py&#39;</span><span class="p">)</span>
+        <span class="n">cmdlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="n">runbatchpath</span><span class="p">]</span>
+        <span class="n">cmdlist</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">argv</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+            <span class="n">cmdlist</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;--config&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_fullconfig</span><span class="p">()])</span>
+        <span class="n">retcode</span> <span class="o">=</span> <span class="n">call_in_wd</span><span class="p">(</span><span class="n">cmdlist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">retcode</span></div>
+
+<div class="viewcode-block" id="BatchJob.run_joblist"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.BatchJob.run_joblist">[docs]</a>    <span class="k">def</span> <span class="nf">run_joblist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run job list, one by one.&quot;&quot;&quot;</span>
+        <span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">jobconfig</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+            <span class="n">curjob</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="n">jobconfig</span><span class="p">)</span>
+            <span class="n">jobs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curjob</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">curjob</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">:</span>
+            <span class="n">retcode</span> <span class="o">=</span> <span class="n">curjob</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">retcode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">retcode</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+    
+<div class="viewcode-block" id="BatchJob.run"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.BatchJob.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the job. configfile or joblist.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">configtype</span> <span class="o">==</span> <span class="s1">&#39;configfile&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_configfile</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_joblist</span><span class="p">()</span></div></div>
+
+<span class="c1"># All the job classes        </span>
+<span class="n">JobClasses</span> <span class="o">=</span> <span class="p">[</span><span class="n">Job</span><span class="p">,</span> <span class="n">ShellJob</span><span class="p">,</span> <span class="n">PythonJob</span><span class="p">,</span> <span class="n">MatlabJob</span><span class="p">,</span> <span class="n">ExecutableJob</span><span class="p">,</span> <span class="n">BatchJob</span><span class="p">]</span>
+
+<span class="c1"># Class name to class mapping</span>
+<span class="n">JobClassesDict</span> <span class="o">=</span> <span class="p">{</span><span class="n">C</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">C</span> <span class="k">for</span> <span class="n">C</span> <span class="ow">in</span> <span class="n">JobClasses</span><span class="p">}</span>
+
+<div class="viewcode-block" id="create"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.create">[docs]</a><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a job from dict.&quot;&quot;&quot;</span>
+    <span class="n">typename</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;typename&#39;</span><span class="p">]</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">JobClassesDict</span><span class="p">[</span><span class="n">typename</span><span class="p">]</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">o</span></div>
+
+<div class="viewcode-block" id="dump"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.dump">[docs]</a><span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="n">job</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Dump the job to console.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">job</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load a job from dict.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">create</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="runjob"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.job.runjob">[docs]</a><span class="k">def</span> <span class="nf">runjob</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Run the job in folder.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">folder</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">Chdir</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
