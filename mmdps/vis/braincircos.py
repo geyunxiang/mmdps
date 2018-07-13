@@ -192,9 +192,12 @@ class CircosLink:
         
     
 class CircosValue:
-    def __init__(self, attr, valuerange=(-1,1)):
+    def __init__(self, attr, valuerange = None):
         self.brainparts = attr.atlasobj.get_brainparts()
-        self.valuerange = valuerange
+        if valuerange is None:
+            self.valuerange = (np.min(attr.data), np.max(attr.data))
+        else:
+            self.valuerange = valuerange
         self.chrdict = self.brainparts.chrdict
         self.attr = attr
         self.data = self.attr.data
