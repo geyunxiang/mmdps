@@ -92,7 +92,7 @@ class Net:
 
 class DynamicNet:
     """
-    Dynamic net is a collection of net
+    Dynamic net is a collection of nets
     It needs only contain the atlasobj of the net
     """
     def __init__(self, atlasobj, step = 3, windowLength = 100):
