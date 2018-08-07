@@ -1,0 +1,58 @@
+{
+    "atlas": "aal",
+    "config": {
+        "left": {
+            "notused": "notused",
+            "sections": [
+                {
+                    "name": "Frontal",
+                    "ticks": ["L3", "L5", "L7", "L9", "L11", "L13", "L15", "L17", "L23", "L25", "L27", "L29", "L43", "L45", "L47", "L67", "L69"]
+                },
+                {
+                    "name": "Parietal",
+                    "ticks": ["L19", "L57", "L59", "L61", "L63", "L65"]
+                },
+                {
+                    "name": "Temporal",
+                    "ticks": ["L37", "L39", "L41", "L55", "L71", "L73", "L75", "L77", "L79", "L81", "L83", "L85", "L87", "L89"]
+                },
+                {
+                    "name": "Occipital",
+                    "ticks": ["L21", "L31", "L33", "L35", "L49", "L51", "L53"]
+                },
+                {
+                    "name": "Cerebellum",
+                    "ticks": ["L91", "L93", "L95", "L97", "L99", "L101", "L103", "L105", "L107", "L109", "L111", "L113", "L115"]
+                }
+            ]
+        },
+        "right": {
+            "notused": "notused",
+            "sections": [
+                {
+                    "name": "Frontal",
+                    "ticks": ["R4", "R6", "R8", "R10", "R12", "R14", "R16", "R18", "R24", "R26", "R28", "R30", "R44", "R46", "R48", "R68", "R70"]
+                },
+                {
+                    "name": "Parietal",
+                    "ticks": ["R20", "R58", "R60", "R62", "R64", "R66"]
+                },
+                {
+                    "name": "Temporal",
+                    "ticks": ["R38", "R40", "R42", "R56", "R72", "R74", "R76", "R78", "R80", "R82", "R84", "R86", "R88", "R90"]
+                },
+                {
+                    "name": "Occipital",
+                    "ticks": ["R22", "R32", "R34", "R36", "R50", "R52", "R54"]
+                },
+                {
+                    "name": "Cerebellum",
+                    "ticks": ["R92", "R94", "R96", "R98", "R100", "R102", "R104", "R106", "R108", "R110", "R112", "R114", "R116"]
+                }
+            ]
+        },
+        "center": {
+
+        }
+    }
+}

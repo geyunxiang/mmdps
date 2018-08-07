@@ -63,7 +63,7 @@ class BrainParts:
             cchrs = self.build_chromosomes('C_', centerconfig)
             self.chrdict['center'] = cchrs
         self.chrdict['all'] = lchrs + rchrs
-        
+
     def build_chromosomes(self, prefix, config):
         sections = config['sections']
         chromosomes = []
@@ -73,7 +73,6 @@ class BrainParts:
             chromosomes.append(chromo)
         return chromosomes
 
-
 class CircosConfigChromosome:
     def __init__(self, brainparts, colorlist=None):
         self.brainparts = brainparts
@@ -82,7 +81,7 @@ class CircosConfigChromosome:
         if colorlist is None:
             colorlist = ['grey'] * self.atlasobj.count
         self.colorlist = colorlist
-        
+
     def write_karyotype(self, f):
         chrfmt = 'chr - {} {} {} {} {}'  # chr - L_1 L 0 54 green
         for chromosome in self.chrdict['right']:
@@ -91,7 +90,7 @@ class CircosConfigChromosome:
         for chromosome in reversed(self.chrdict['left']):
             chrline = chrfmt.format(chromosome.chrname, chromosome.name, 0, chromosome.count, 'green')
             f.write(chrline + '\n')
-            
+
         bandfmt = 'band {} {} {} {} {} {}'  # band L_1 L1 L1 0 1 grey
         for chromosome in self.chrdict['all']:
             for i in range(chromosome.count):
@@ -111,7 +110,7 @@ class CircosConfigChromosome:
                 atlastick = self.atlasobj.ticks[atlasindex]
                 labelline = labelfmt.format(bandtuple[0], bandtuple[1], bandtuple[2], atlastick)
                 f.write(labelline + '\n')
-        
+
     def write(self, outfolder):
         with open(os.path.join(outfolder, 'karyotype.txt'), 'w') as f:
             self.write_karyotype(f)
@@ -129,7 +128,7 @@ class CircosLink:
         self.brainparts = net.atlasobj.get_brainparts()
         self.chrdict = self.brainparts.chrdict
         self.data = self.net.data
-        
+
     def get_mask(self):
         mask = np.zeros(self.net.data.shape, dtype=bool)
         threshold = self.threshold
@@ -141,7 +140,7 @@ class CircosLink:
         row = chrA.indexes[idxA]
         col = chrB.indexes[idxB]
         return (row, col)
-    
+
     def get_value(self, chrA, idxA, chrB, idxB):
         row, col = self.get_rowcol(chrA, idxA, chrB, idxB)
         bmask = self.mask[row, col]
@@ -158,7 +157,7 @@ class CircosLink:
         a = valuerange[0]
         b = valuerange[1]
         return (value-a) / (b-a)
-        
+
     def get_color(self, chrA, idxA, chrB, idxB):
         value = self.get_value(chrA, idxA, chrB, idxB)
         if value is None:
@@ -167,7 +166,7 @@ class CircosLink:
             value = self.map_value(value)
             color = self.get_cmap()(value, bytes=True)
             return color
-        
+
     def get_line(self, chrA, idxA, chrB, idxB):
         linkfmt = '{} {} {} {} {} {} {}'  # L_1 0 1 L_1 1 2 color=(10,10,10)
         color = self.get_color(chrA, idxA, chrB, idxB)
@@ -189,8 +188,7 @@ class CircosLink:
                             if line:
                                 f.write(line)
                                 f.write('\n')
-        
-    
+
 class CircosValue:
     def __init__(self, attr, valuerange = None):
         self.brainparts = attr.atlasobj.get_brainparts()
@@ -294,7 +292,7 @@ class CircosConfigFile:
 class CircosPlotBuilder:
     def __init__(self, atlasobj, title, outfilepath):
         self.atlasobj = atlasobj
-        self.brainparts = self.atlasobj.get_brainparts()
+        self.brainparts = self.atlasobj.get_brainparts() # circosparts.json file in each atlas's folder
         self.title = title
         if outfilepath[-4:] == '.png':
             outfilepath = outfilepath[:-4]
@@ -305,20 +303,24 @@ class CircosPlotBuilder:
         self.circosconffile = CircosConfigFile()
         self.circoslinks = []
         self.circosvalues = []
-    
+
     def fullpath(self, *p):
         return os.path.join(self.circosfolder, *p)
 
     def add_circosvalue(self, circosvalue):
         self.circosvalues.append(circosvalue)
-        
+
     def add_circoslink(self, circoslink):
         self.circoslinks.append(circoslink)
 
     def get_colorlist(self):
         return ['grey'] * self.atlasobj.count
-    
+
     def write_files(self):
+        """
+        Write net links and attributes to files.
+        self.circosconffile would generate the circos.conf file.
+        """
         for i, circosvalue in enumerate(self.circosvalues):
             curfile = 'attr{}.value.txt'.format(i)
             self.circosconffile.add_plot(curfile)
@@ -330,8 +332,11 @@ class CircosPlotBuilder:
         self.circosconffile.write(self.fullpath())
         circosconfigchr = CircosConfigChromosome(self.brainparts, self.get_colorlist())
         circosconfigchr.write(self.fullpath())
-    
+
     def copy_files(self):
+        """
+        Copy circos basic ideogram config files.
+        """
         configfolder = os.path.join(rootconfig.path.data, 'braincircos', 'simpleconfig')
         configfiles = ['ideogram.conf', 'ticks.conf']
         for file in configfiles:
@@ -344,10 +349,10 @@ class CircosPlotBuilder:
         if os.path.isfile(generatedpng):
             finalpng = self.decorate_figure(generatedpng)
             shutil.copy2(finalpng, self.outfilepath + '.png')
-    
+
     def get_title(self):
         return self.title
-    
+
     def decorate_figure(self, generatedpng):
         img = Image.open(generatedpng)
         padtop = 100
@@ -364,7 +369,7 @@ class CircosPlotBuilder:
         self.copy_files()
         self.write_files()
         self.run_circos()
-    
+
 if __name__ == '__main__':
     netname = 'bold_net'
     title = 'TestCircos'
