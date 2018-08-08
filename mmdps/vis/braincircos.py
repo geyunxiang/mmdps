@@ -259,6 +259,7 @@ class CircosConfigFile:
     def __init__(self):
         self.plotconfs = []
         self.linkconfs = []
+        self.label_size = None
 
     def add_plot(self, file):
         self.plotconfs.append(file)
@@ -269,6 +270,24 @@ class CircosConfigFile:
     def build_circos_conf(self, plotstrs, linkstrs):
         self.circos_template = load_rawtext(os.path.join(CircosConfigFolder, 'circos_template.conf'))
         return self.circos_template.format(plotsstr='\n'.join(plotstrs), linksstr='\n'.join(linkstrs))
+
+    def customizeSize(self, label_size):
+        self.label_size = label_size
+
+    def customized_rewrite(self, outfolder):
+        """
+        Re-generate circos.conf to update parameters
+        """
+        fname = os.path.join(outfolder, 'circos.conf')
+        os.rename(os.path.join(outfolder, 'circos.conf'), os.path.join(outfolder, 'circos.conf.bk'))
+        confFile = open(os.path.join(outfolder, 'circos.conf'), 'w')
+        with open(os.path.join(outfolder, 'circos.conf.bk')) as bk:
+            for line in bk.readlines():
+                if line.find('label_size') != -1:
+                    line = '%s%s\n' % (line[:line.find('=')+2], self.label_size)
+                confFile.write(line)
+        confFile.close()
+        os.remove(os.path.join(outfolder, 'circos.conf.bk'))
 
     def write(self, outfolder):
         plotstrs = []
@@ -303,6 +322,16 @@ class CircosPlotBuilder:
         self.circosconffile = CircosConfigFile()
         self.circoslinks = []
         self.circosvalues = []
+        self.customizedSizes = False
+        self.radius = None
+
+    def customizeSize(self, ideogram_radius, label_size):
+        """
+        input ideogram_radius as a string like '0.80'
+        """
+        self.customizedSizes = True
+        self.radius = ideogram_radius
+        self.circosconffile.customizeSize(label_size)
 
     def fullpath(self, *p):
         return os.path.join(self.circosfolder, *p)
@@ -330,6 +359,8 @@ class CircosPlotBuilder:
             self.circosconffile.add_link(curfile)
             circoslink.write(self.fullpath(curfile))
         self.circosconffile.write(self.fullpath())
+        if self.customizedSizes:
+            self.circosconffile.customized_rewrite(self.fullpath())
         circosconfigchr = CircosConfigChromosome(self.brainparts, self.get_colorlist())
         circosconfigchr.write(self.fullpath())
 
@@ -341,6 +372,17 @@ class CircosPlotBuilder:
         configfiles = ['ideogram.conf', 'ticks.conf']
         for file in configfiles:
             shutil.copy2(os.path.join(configfolder, file), self.fullpath(file))
+        if self.customizedSizes:
+            # adjust ideogram radius
+            os.rename(self.fullpath('ideogram.conf'), self.fullpath('ideogram.conf.bk'))
+            ideogramFile = open(self.fullpath('ideogram.conf'), 'w')
+            with open(self.fullpath('ideogram.conf.bk')) as bk:
+                for line in bk.readlines():
+                    if line.find('radius') != -1 and line.find('=') != -1 and line.find('label_radius') == -1:
+                        line = '%s%sr\n' % (line[:line.find('=') + 2], self.radius)
+                    ideogramFile.write(line)
+            ideogramFile.close()
+            os.remove(self.fullpath('ideogram.conf.bk'))
 
     def run_circos(self):
         j = job.ExecutableJob('circos', rootconfig.path.circos, wd=self.fullpath())
