@@ -10,7 +10,7 @@ import sys
 
 if sys.platform == 'win32':
     # matlab path
-    matlab_bin = 'C:/Program Files/MATLAB/R2016b/bin/matlab.exe'
+    matlab_bin = 'D:/Program Files/MATLAB/R2016b/bin/matlab.exe'
     class path:
         """important paths and tools config."""
         # the mmdps package folder
