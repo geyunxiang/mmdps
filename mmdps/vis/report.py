@@ -2,12 +2,15 @@
 
 """
 
-from . import bnv
-from . import heatmap
-from . import line
-from . import attrprocs
-from . import netprocs
-from ..util import path
+# from . import bnv
+# from . import heatmap
+# from . import line
+# from . import attrprocs
+# from . import netprocs
+# from ..util import path
+
+from mmdps.vis import bnv, heatmap, line, attrprocs, netprocs
+from mmdps.util import path
 
 class PlotAttr:
     """Plot an attr."""

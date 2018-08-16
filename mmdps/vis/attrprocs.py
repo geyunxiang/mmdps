@@ -3,7 +3,8 @@
 Proper scale for plot in bnv.
 """
 
-from . import bnv
+# from . import bnv
+from mmdps.vis import bnv
 
 ##AttrProcsDict = {'interBC': bnv.ScaleProc(0.004).proc,
 ##                 'interLE': bnv.ScaleProc(4).proc,

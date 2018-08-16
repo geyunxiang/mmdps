@@ -9,10 +9,13 @@ to run the plots in parallel.
 import os
 import csv
 import numpy as np
-from ..util import path
-from .. import rootconfig
-from ..proc import job
-from ..proc import netattr
+# from ..util import path
+# from .. import rootconfig
+# from ..proc import job
+# from ..proc import netattr
+from mmdps.util import path
+from mmdps import rootconfig
+from mmdps.proc import job, netattr
 
 # built in mesh
 BuiltinMeshDict = {'ch2cere': 'ch2cere.nv', 'icbm152smoothed': 'icbm152smoothed.nv'}
