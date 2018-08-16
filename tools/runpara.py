@@ -9,18 +9,17 @@ from mmdps.util import path
 
 
 def runpara(para):
-    return para.run()
-    
+	return para.run()
+
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--config', help='para config json file', required=True)
-    args = parser.parse_args()
-    configpath = path.fullfile(args.config)
-    print('configpath', configpath)
-    configdict = load_json(configpath)
-    curpara = proc.para.load(configdict)
-    runpara(curpara)
-    sys.stdin.close()
-    sys.stdout.close()
-    sys.stderr.close()
-    
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--config', help='para config json file', required=True)
+	args = parser.parse_args()
+	configpath = path.fullfile(args.config)
+	print('configpath', configpath)
+	configdict = load_json(configpath)
+	curpara = proc.para.load(configdict)
+	runpara(curpara)
+	sys.stdin.close()
+	sys.stdout.close()
+	sys.stderr.close()
