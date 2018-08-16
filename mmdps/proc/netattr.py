@@ -11,7 +11,7 @@ from pathlib import Path
 # from ..util import dataop, path
 # from ..util.loadsave import save_csvmat, load_csvmat
 from mmdps.util import dataop, path
-from mmdpt.util.loadsave import save_csvmat, load_csvmat
+from mmdps.util.loadsave import save_csvmat, load_csvmat
 
 class Attr:
     """Attr is attribute, it is a one dimensional vector.

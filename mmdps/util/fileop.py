@@ -9,7 +9,7 @@ import shutil
 # from .. import rootconfig
 # from . import toolman, run, path
 from mmdps import rootconfig
-import toolman, run, path
+from mmdps.util import toolman, run, path
 
 def getfirstpart(s):
     """first part before _."""

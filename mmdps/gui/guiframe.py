@@ -7,7 +7,7 @@ You can add action directly to the toolbar.
 
 import tkinter as tk
 # from . import tktools
-import tktools
+from mmdps.gui import tktools
 
 class MainWindow(tk.Frame):
     """The main window."""

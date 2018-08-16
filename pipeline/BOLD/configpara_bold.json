@@ -1,7 +1,7 @@
 {
     "name": "GenBoldNet",
     "MainFolder": "E:/DataProcessing/BOLD",
-    "FolderList": "E:/DataProcessing/newdata/changgeng_temp.txt",
+    "FolderList": "E:/changgeng_20180815_full.txt",
     "Second": true,
     "SecondList": "E:/DataProcessing/atlas_list.txt",
     "JobConfig": "configjob_bold_main.json",

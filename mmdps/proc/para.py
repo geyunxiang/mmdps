@@ -27,9 +27,8 @@ from collections import OrderedDict
 # from ..util import loadsave
 # from ..util import path
 
-import job, parabase
-from mmdps.util import loadsave
-from mmdps.util import path
+from mmdps.proc import job, parabase
+from mmdps.util import loadsave, path
 
 class Para:
 	def __init__(self, name, mainfolder, jobconfig, folderlist, runmode, bsecond=False, secondlist=''):

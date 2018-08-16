@@ -18,7 +18,7 @@ from anytree import Node
 # from . import tktools
 # from .. import rootconfig
 # from ..util import fileop, path
-import tktools
+from mmdps.gui import tktools
 from mmdps import rootconfig
 from mmdps.util import fileop, path
 

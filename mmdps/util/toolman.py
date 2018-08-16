@@ -13,8 +13,7 @@ import subprocess
 from mmdps.gui import tktools
 from mmdps.util.loadsave import load_json
 from mmdps import rootconfig
-from mmdps.util import run
-import path
+from mmdps.util import run, path
 
 class Tool:
     """Represents one GUI tool."""
