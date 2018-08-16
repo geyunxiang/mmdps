@@ -6,8 +6,10 @@ The config is in paraconfigfield.json.
 
 import os
 from collections import OrderedDict
-from ..util.loadsave import load_json_ordered
-from .. import gui
+# from ..util.loadsave import load_json_ordered
+# from .. import gui
+from mmdps.util.loadsave import load_json_ordered
+from mmdps import gui
 
 ThisDir = os.path.dirname(os.path.abspath(__file__))
 

@@ -7,7 +7,8 @@ The config files and cmd files specified are searched in paths, like matlab.
 import os
 import shutil
 
-from .. import rootconfig
+# from .. import rootconfig
+from mmdps import rootconfig
 
 def splitext(file):
     """Split ext.
@@ -78,6 +79,9 @@ def searchpathlist():
     searchpaths.extend(defaultlist)
     searchpaths.extend(pathvarlist)
     searchpaths.extend(builtinlist)
+    searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'DWI'))
+    searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'T1'))
+    searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'BOLD'))
     return searchpaths
 
 def getfilepath(filename):

@@ -5,10 +5,13 @@ Access brain atlases.
 
 import os
 import numpy as np
-from .. import rootconfig
-from ..util import loadsave
-from ..vis import bnv
-from ..util import dataop
+# from .. import rootconfig
+# from ..util import loadsave
+# from ..vis import bnv
+# from ..util import dataop
+from mmdps import rootconfig
+from mmdps.util import loadsave, dataop
+from mmdps.vis import bnv
 
 class Atlas:
     """The brain atlas.

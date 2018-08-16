@@ -6,7 +6,8 @@ You can add action directly to the toolbar.
 """
 
 import tkinter as tk
-from . import tktools
+# from . import tktools
+import tktools
 
 class MainWindow(tk.Frame):
     """The main window."""

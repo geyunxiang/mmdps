@@ -19,7 +19,8 @@ import threading
 import time
 import os
 import queue
-from ..util import clock
+# from ..util import clock
+from mmdps.util import clock
 
 class FWrap:
     """Wrap the function in an object. Put run arg in the q when done."""

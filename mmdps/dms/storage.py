@@ -5,8 +5,8 @@ Access static server.
 
 import shutil
 import requests
-from ..util.path import makedirs_file
-
+# from ..util.path import makedirs_file
+from mmdps.util.path import makedirs_file
 
 class Storage:
     """Storage base class."""

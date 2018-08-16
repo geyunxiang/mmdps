@@ -11,9 +11,12 @@ import subprocess
 import fnmatch
 import logging
 import dicom
-from .. import rootconfig
-from ..util import path, loadsave
-from . import dicominfo
+# from .. import rootconfig
+# from ..util import path, loadsave
+# from . import dicominfo
+from mmdps import rootconfig
+from mmdps.util import path, loadsave
+import dicominfo
 
 def gen_scan_info(infolder, outfolder):
     """Generate scan_info.json file from dicom files.

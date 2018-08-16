@@ -5,12 +5,16 @@
 import os
 import sys
 import subprocess
-from ..gui import tktools
-from ..util.loadsave import load_json
-from .. import rootconfig
-from ..util import run
-from . import path
-
+# from ..gui import tktools
+# from ..util.loadsave import load_json
+# from .. import rootconfig
+# from ..util import run
+# from . import path
+from mmdps.gui import tktools
+from mmdps.util.loadsave import load_json
+from mmdps import rootconfig
+from mmdps.util import run
+import path
 
 class Tool:
     """Represents one GUI tool."""

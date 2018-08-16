@@ -5,8 +5,8 @@ All data are from the api server. Use api to access the server.
 """
 
 import os
-from ..util.loadsave import load_txt
-
+# from ..util.loadsave import load_txt
+from mmdps.util.loadsave import load_txt
 
 class BatchGet:
     """Batch get mridata."""

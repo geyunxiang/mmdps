@@ -6,7 +6,8 @@ Export a MRIScan summary table.
 import os
 import glob
 import csv
-from ..util import path
+# from ..util import path
+from mmdps.util import path
 
 class MRIScanTableExporter:
     """The mriscan table exporter."""

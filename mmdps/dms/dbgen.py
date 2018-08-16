@@ -15,12 +15,15 @@ Change re-create-every-time to update-to-existing.
 import csv
 import datetime
 import os
-from .tables import Base, Person, MRIScan, Group, MotionScore, StrokeScore, MRIMachine
+# from .tables import Base, Person, MRIScan, Group, MotionScore, StrokeScore, MRIMachine
+from tables import Base, Person, MRIScan, Group, MotionScore, StrokeScore, MRIMachine
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from ..util import clock
-from ..util.loadsave import load_txt, load_json
+# from ..util import clock
+# from ..util.loadsave import load_txt, load_json
+from mmdps.util import clock
+from mmdps.util.loadsave import load_txt, load_json
 from mmdps import rootconfig
 
 

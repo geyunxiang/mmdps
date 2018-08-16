@@ -23,10 +23,13 @@ import os
 import functools
 from collections import OrderedDict
 
-from . import job, parabase
-from ..util import loadsave
-from ..util import path
+# from . import job, parabase
+# from ..util import loadsave
+# from ..util import path
 
+import job, parabase
+from mmdps.util import loadsave
+from mmdps.util import path
 
 class Para:
     def __init__(self, name, mainfolder, jobconfig, folderlist, runmode, bsecond=False, secondlist=''):

@@ -15,9 +15,12 @@ import subprocess
 import tkinter as tk
 from anytree import Node
 
-from . import tktools
-from .. import rootconfig
-from ..util import fileop, path
+# from . import tktools
+# from .. import rootconfig
+# from ..util import fileop, path
+import tktools
+from mmdps import rootconfig
+from mmdps.util import fileop, path
 
 class ConnectFieldVar:
     """Field and tkvar connector."""

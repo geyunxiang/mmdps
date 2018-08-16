@@ -12,8 +12,10 @@ import subprocess
 import shlex
 from collections import OrderedDict
 
-from ..util import clock, path
-from .. import rootconfig
+# from ..util import clock, path
+# from .. import rootconfig
+from mmdps.util import clock, path
+from mmdps import rootconfig
 
 def genlogfilename(info=''):
     """Generate a log file name base on current time and supplied info."""

@@ -6,8 +6,8 @@ This module ease their interchange.
 """
 
 from collections import OrderedDict
-from .. import gui
-
+# from .. import gui
+from mmdps import gui
 
 class ConfigFieldConnector:
     """Base class for config and field interchange.

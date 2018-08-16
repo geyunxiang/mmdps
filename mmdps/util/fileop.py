@@ -6,8 +6,10 @@ import os
 import subprocess
 import gzip
 import shutil
-from .. import rootconfig
-from . import toolman, run, path
+# from .. import rootconfig
+# from . import toolman, run, path
+from mmdps import rootconfig
+import toolman, run, path
 
 def getfirstpart(s):
     """first part before _."""

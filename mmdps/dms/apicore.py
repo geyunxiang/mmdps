@@ -7,9 +7,10 @@ Such as the webapp server and Python GUI app.
 
 import shutil
 import requests
-from ..util.path import makedirs_file
-from ..util import clock
-
+# from ..util.path import makedirs_file
+# from ..util import clock
+from mmdps.util.path import makedirs_file
+from mmdps.util import clock
 
 def name_date(s):
     l = s.split('_')

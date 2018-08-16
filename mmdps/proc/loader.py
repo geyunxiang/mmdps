@@ -7,10 +7,12 @@ to config every loader.
 import os
 import csv
 import numpy as np
-from . import netattr
-from ..util.loadsave import load_csvmat, load_txt
-from ..util import path
-
+# from . import netattr
+# from ..util.loadsave import load_csvmat, load_txt
+# from ..util import path
+import netattr
+from mmdps.util.loadsave import load_csvmat, load_txt
+from mmdps.util import path
 
 class Loader:
     """Base class Loader is used to load raw array data."""

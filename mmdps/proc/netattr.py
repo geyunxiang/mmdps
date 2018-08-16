@@ -8,8 +8,10 @@ You can create sub-net or sub-attr, the atlasobj is also subbed.
 import csv, os
 import numpy as np
 from pathlib import Path
-from ..util import dataop, path
-from ..util.loadsave import save_csvmat, load_csvmat
+# from ..util import dataop, path
+# from ..util.loadsave import save_csvmat, load_csvmat
+from mmdps.util import dataop, path
+from mmdpt.util.loadsave import save_csvmat, load_csvmat
 
 class Attr:
     """Attr is attribute, it is a one dimensional vector.

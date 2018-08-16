@@ -23,7 +23,7 @@ class Chromosome:
         self.count = 0
         self.build_bands()
         self.build_bandtuples()
-        
+
     def build_bands(self):
         if 'ticks' in self.configdict:
             self.indexes = self.atlasobj.ticks_to_indexes(self.configdict['ticks'])
@@ -33,14 +33,14 @@ class Chromosome:
             print('Use ticks or indexes to specify brain regions.')
             raise Exception('bad chromosome')
         self.count = len(self.indexes)
-        
+
     def build_bandtuples(self):
         tuples = []
         for i in range(len(self.indexes)):
             t = (self.chrname, i, i+1)
             tuples.append(t)
         self.bandtuples = tuples
-        
+
 class BrainParts:
     def __init__(self, configdict):
         self.configdict = configdict

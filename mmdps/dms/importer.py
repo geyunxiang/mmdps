@@ -6,10 +6,12 @@ Update database.
 
 import os
 import shutil
-from . import converter, exporter
-from ..util.loadsave import load_txt
-from ..util import path
-
+# from . import converter, exporter
+# from ..util.loadsave import load_txt
+# from ..util import path
+import converter, exporter
+from mmdps.util.loadsave import load_txt
+from mmdps.util import path
 
 class MRIScanImporter:
     """MRIScan importer."""
