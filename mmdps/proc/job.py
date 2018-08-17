@@ -54,11 +54,11 @@ def call_logged(cmdlist, info=''):
 
 def call_in_wd(cmdlist, wd, info=''):
 	"""Call in supplied working directory."""
-	with Chdir(wd):
+	with ChangeDirectory(wd):
 		retcode = call_logged(cmdlist, info)
 	return retcode
 
-class Chdir:
+class ChangeDirectory:
 	"""Change dir context manager.
 
 	Change to dir on enter, change back on exit.
@@ -302,7 +302,7 @@ def load(d):
 def runjob(job, folder=None):
 	"""Run the job in folder."""
 	if folder:
-		with Chdir(folder):
+		with ChangeDirectory(folder):
 			return job.run()
 	else:
 		return job.run()

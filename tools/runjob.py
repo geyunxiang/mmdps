@@ -8,7 +8,7 @@ from mmdps.util import path
 
 def runjob(job, folder=None):
 	if folder:
-		with job.Chdir(folder):
+		with job.ChangeDirectory(folder):
 			return job.run()
 	else:
 		return job.run()
