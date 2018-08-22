@@ -1,5 +1,4 @@
 # /bin/sh
-
-source mmdpsvarsall.rc
-python3 ui_main.py
+source environment_setter/mmdpsvarsall.rc
+python3 ui_programs/ui_main.py
 

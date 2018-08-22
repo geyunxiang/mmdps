@@ -69,7 +69,7 @@ class ToolManager:
     
 def get_default_manager():
     """Get the default tool manager, configured using tools_config.json."""
-    toolsconffile = os.path.join(rootconfig.path.tools, 'tools_config.json')
+    toolsconffile = os.path.join(rootconfig.path.tools, 'ui_programs', 'tools_config.json')
     toolsconf = load_json(toolsconffile)
     manager = ToolManager()
     manager.load(toolsconf)

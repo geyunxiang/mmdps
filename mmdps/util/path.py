@@ -47,7 +47,7 @@ def path_tovar(pathlist):
 
 def defaultpathlist():
 	"""The default search path."""
-	return [os.path.abspath('.'), rootconfig.path.tools]
+	return [os.path.abspath('.'), rootconfig.path.tools, os.path.join(rootconfig.path.tools, 'ui_programs')]
 
 def builtinpathlist():
 	"""The built-in search path.
