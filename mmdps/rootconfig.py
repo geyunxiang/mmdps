@@ -38,7 +38,7 @@ if sys.platform == 'win32':
         # api server address, flask
         api = 'http://127.0.0.1:5000'
         # storage server address, nginx
-        storage = 'https://101.6.68.230'
+        storage = 'https://101.6.69.210'
         # feature server address, nginx
         featurestorage = 'https://127.0.0.1'
         

@@ -1,4 +1,5 @@
-__pychache__
+__pychache__/
 *.pyc
 *.log
 log
+server/apiserver/mmdpdb.db

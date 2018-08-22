@@ -4,7 +4,7 @@ The mridata storage and featuredata storage are both served by a static server.
 """
 
 # from . import storage
-import storage
+from mmdps.dms import storage
 
 # Modal to file mapping
 ModalFileDict = {
