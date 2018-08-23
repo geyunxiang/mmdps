@@ -86,7 +86,7 @@ class Para:
 		f = functools.partial(job.runjob, jobobj)
 		return parabase.run(f, folders)
 		#return parabase.run_simple(f, folders)
-		
+
 	def run(self):
 		"""Run the para.
 		finalfolders is the constructed folder in which to run the job in parallel,

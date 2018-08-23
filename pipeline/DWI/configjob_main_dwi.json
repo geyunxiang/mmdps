@@ -6,13 +6,13 @@
             "name": "UnAtlased",
             "typename": "PythonJob",
             "cmd": "runpara.py",
-            "config": "configpara_dwi.json"
+            "config": "configpara_dwi_project.json"
         },
         {
             "name": "Atlased",
             "typename": "PythonJob",
             "cmd": "runpara.py",
-            "config": "configpara_atlased_dwi.json"
+            "config": "configpara_atlased_dwi_project.json"
         }
     ]
 }

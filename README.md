@@ -6,8 +6,8 @@
 
 2. Process
 
-	* T1: `configpara_atlased_t1.json` and `configpara_unatlased_t1.json`
+	* T1: run `configpara_atlased_t1_project.json` and `configpara_unatlased_t1_project.json`. Remember to modify `FolderList`.
 
-	* DWI: `configjob_main_dwi.json`
+	* DWI: run `configjob_main_dwi.json`. Note: one should modify `configpara_dwi_project.json` and `configpara_atlased_dwi_project.json` for the appropriate folder list.
 
-	* BOLD: `configpara_bold.json`
+	* BOLD: run `configpara_bold_project.json`. Remember to modify `FolderList`.

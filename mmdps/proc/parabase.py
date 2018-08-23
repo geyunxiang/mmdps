@@ -32,7 +32,7 @@ class FWrap:
 	def run(self, arg):
 		"""Run the function. Put the run arg to q when finished calling f."""
 		res = self.f(arg)
-		self.q.put(arg)
+		self.q.put('arg: %s, res: %s' % (arg, res))
 		return res
 
 def get_processes(processes):
@@ -82,6 +82,8 @@ def run(f, argvec, processes=None):
 		fwrap = FWrap(f, q)
 		result = p.map_async(fwrap.run, argvec)
 		ntotal = len(argvec)
+		nError = 0
+		errorList = []
 		print('Begin proc, {} cpus, {} left, start at {}'.format(processes, ntotal, clock.now()))
 		nfinished = 0
 		while True:
@@ -94,9 +96,20 @@ def run(f, argvec, processes=None):
 					continue
 				else:
 					nfinished += 1
-					print('{} just finished. {} left, at {}'.format(res, ntotal-nfinished, clock.now()))
-		print('End proc, end at {}'.format(clock.now()))
+					retCode = int(res[res.find('res: ') + 5:])
+					if retCode != 0:
+						nError += 1
+						errorList.append(res)
+						print('{} just finished with error. {} left, at {}'.format(res, ntotal-nfinished, clock.now()))
+					else:
+						print('{} just finished. {} left, at {}'.format(res, ntotal-nfinished, clock.now()))
+		print('End proc, end at {}. {} error.'.format(clock.now(), nError))
+		if nError != 0:
+			print('Listing errs')
+			for err in errorList:
+				print(err)
 		outputs = result.get()
+		# print(outputs) # a list of return codes, should be all zero
 		return outputs
 
 def run_simple(f, argvec, processes=None):

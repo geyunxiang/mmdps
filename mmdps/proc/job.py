@@ -41,8 +41,9 @@ def call_logged2(cmdlist, info=''):
 
 def call_logged(cmdlist, info=''):
 	"""Call the cmdlist and output the log to a file in log folder."""
-	print('call_logged', cmdlist)
-	with open(genlogfilename(info), 'w') as f:
+	logfilePath = genlogfilename(info)
+	print('call_logged %s at %s' % (cmdlist, logfilePath))
+	with open(logfilePath, 'w') as f:
 		f.write(str(cmdlist)+'\n\n')
 		f.flush()
 		p = subprocess.Popen(cmdlist, stdout=f, stderr=f)
