@@ -4,6 +4,6 @@
     "FolderList": "E:/DataProcessing/newdata/data_dicom_all.txt",
     "Second": true,
     "SecondList": "E:/DataProcessing/atlas_list.txt",
-    "JobConfig": "E:/MMDPSoftware/mmdps/pipeline/T1/configjob_atlased_t1_calcgmd.json",
+    "JobConfig": "F:/geyunxiang/mmdps_git/pipeline/T1/configjob_atlased_t1_calcgmd.json",
     "RunMode": "Parallel"
 }

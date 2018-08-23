@@ -13,5 +13,5 @@ if __name__ == '__main__':
 		if os.path.split(dirpath)[1] != 'log':
 			continue
 		for filename in filenames:
-			if os.path.splitext(filename)[1] == '.log':
+			if filename[:4] == 'log_':
 				os.remove(os.path.join(dirpath, filename))
