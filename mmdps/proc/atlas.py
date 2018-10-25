@@ -38,6 +38,8 @@ class Atlas:
         self.regions = self.dd['regions']
         # the ticks list, correspond to regions
         self.ticks = self.dd['ticks']
+        # sub_networks
+        self.sensorimotor_ticks = self.dd['sensory motor ticks']
         # the plotindexes list, n means it is the nth to be ploted.
         self.plotindexes = self.dd['plotindexes']
         # nodefile for use with brainnet viewer.

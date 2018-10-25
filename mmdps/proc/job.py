@@ -252,7 +252,7 @@ class BatchJob(Job):
 
 	def run_configfile(self):
 		"""Run config file, use runjob.py."""
-		runbatchpath = os.path.join(rootconfig.path.tools, 'runjob.py')
+		runbatchpath = os.path.join(rootconfig.path.tools, 'job_runner', 'runjob.py')
 		cmdlist = [sys.executable, runbatchpath]
 		cmdlist.extend(shlex.split(self.argv))
 		if self.config:
