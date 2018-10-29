@@ -76,6 +76,8 @@ def searchpathlist():
 	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'DWI'))
 	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'T1'))
 	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'BOLD'))
+	searchpaths.append(os.path.join(rootconfig.path.root, 'tools', 'helper_tools'))
+	searchpaths.append(os.path.join(rootconfig.path.root, 'tools', 'job_runner'))
 	return searchpaths
 
 def getfilepath(filename):
