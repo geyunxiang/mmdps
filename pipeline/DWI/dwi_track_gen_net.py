@@ -11,7 +11,7 @@ class Struct:
 
 def track_gen_net_work(tracks, img_template):
     labels = img_template.get_data()
-    
+    labels = labels.astype(int)
     M, grouping = utils.connectivity_matrix(tracks, labels, affine=img_template.get_affine(),
                               return_mapping=True, mapping_as_streamlines=True)
 
