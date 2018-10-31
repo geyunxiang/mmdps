@@ -1,0 +1,32 @@
+{
+    "tools": [
+        {
+            "name": "ConfigPara",
+            "pyui": "ui_configpara.py"
+        },        
+        {
+            "name": "ConfigJob",
+            "pyui": "ui_configjob.py"
+        },
+        {
+            "name": "RunPara",
+            "pyui": "ui_runpara.py"
+        },
+        {
+            "name": "RunJob",
+            "pyui": "ui_runjob.py"
+        },
+        {
+            "name": "DMSApp",
+            "pyui": "ui_dmsapp.py"
+        },
+        {
+            "name": "Import",
+            "pyui": "ui_import.py"
+        },
+        {
+            "name": "BatchGet",
+            "pyui": "ui_batchget.py"
+        }
+    ]
+}

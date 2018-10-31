@@ -1,0 +1,42 @@
+{
+    "typename": "CompositeField",
+    "name": "Para",
+    "children": [
+        {
+            "typename": "StringField",
+            "name": "name",
+            "value": "ThePara"
+        },
+        {
+            "typename": "FolderField",
+            "name": "MainFolder",
+            "value": ""
+        },
+        {
+            "typename": "FileEditField",
+            "name": "FolderList",
+            "value": ""
+        },
+        {
+            "typename": "BoolField",
+            "name": "Second",
+            "value": false
+        },
+        {
+            "typename": "FileEditField",
+            "name": "SecondList",
+            "value": ""
+        },
+        {
+            "typename": "FileEditField",
+            "name": "JobConfig",
+            "value": ""
+        },
+        {
+            "typename": "ComboboxField",
+            "name": "RunMode",
+            "value": "Parallel",
+            "values": ["Parallel", "Sequential", "FirstOnly"]
+        }
+    ]
+}

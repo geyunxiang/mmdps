@@ -1,0 +1,17 @@
+{
+    "typename": "CompositeField",
+    "name": "Group",
+    "value": "",
+    "children": [
+        {
+            "typename": "StringField",
+            "name": "name",
+            "value": ""
+        },
+        {
+            "typename": "StringField",
+            "name": "description",
+            "value": ""
+        }
+    ]
+}

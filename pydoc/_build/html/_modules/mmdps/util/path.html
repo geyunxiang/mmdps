@@ -1,0 +1,200 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.util.path &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.util.path</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Path tools.</span>
+
+<span class="sd">The config files and cmd files specified are searched in paths, like matlab.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">rootconfig</span>
+
+<div class="viewcode-block" id="splitext"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.splitext">[docs]</a><span class="k">def</span> <span class="nf">splitext</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Split ext.</span>
+<span class="sd">    </span>
+<span class="sd">    Split file.xx.gz will result .xx.gz.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">file</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;.gz&#39;</span><span class="p">:</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">+</span> <span class="s1">&#39;.gz&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">ext</span></div>
+
+<div class="viewcode-block" id="makedirs_file"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.makedirs_file">[docs]</a><span class="k">def</span> <span class="nf">makedirs_file</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Makedirs for file.</span>
+<span class="sd">    </span>
+<span class="sd">    The dir is extracted use dirname.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="n">makedirs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="makedirs"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.makedirs">[docs]</a><span class="k">def</span> <span class="nf">makedirs</span><span class="p">(</span><span class="n">dirs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Makedirs that use exist_ok=True.&quot;&quot;&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dirs</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="rmtree"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.rmtree">[docs]</a><span class="k">def</span> <span class="nf">rmtree</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove tree.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="path_tolist"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.path_tolist">[docs]</a><span class="k">def</span> <span class="nf">path_tolist</span><span class="p">(</span><span class="n">pathvar</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Path environment variable string split to multiple paths.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pathvar</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="path_tovar"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.path_tovar">[docs]</a><span class="k">def</span> <span class="nf">path_tovar</span><span class="p">(</span><span class="n">pathlist</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Path list joined to path environment variable.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">pathsep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pathlist</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="defaultpathlist"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.defaultpathlist">[docs]</a><span class="k">def</span> <span class="nf">defaultpathlist</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The default search path.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">),</span>
+            <span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">tools</span><span class="p">,</span>
+            <span class="p">]</span></div>
+
+<div class="viewcode-block" id="builtinpathlist"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.builtinpathlist">[docs]</a><span class="k">def</span> <span class="nf">builtinpathlist</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The built-in search path.</span>
+<span class="sd">    </span>
+<span class="sd">    Configured use MMDPS_BUILTINPATH environment variable.</span>
+<span class="sd">    The env is set in mmdpsvarsall.bat or source mmdpsvarsall.rc.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathvar</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;MMDPS_BUILTINPATH&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path_tolist</span><span class="p">(</span><span class="n">pathvar</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="projectpathlist"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.projectpathlist">[docs]</a><span class="k">def</span> <span class="nf">projectpathlist</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The project search path.</span>
+
+<span class="sd">    You should define this env to make your own scripts reachable by name.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathvar</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;MMDPS_PROJECTPATH&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path_tolist</span><span class="p">(</span><span class="n">pathvar</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="searchpathlist"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.searchpathlist">[docs]</a><span class="k">def</span> <span class="nf">searchpathlist</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;The full path list for searching.&quot;&quot;&quot;</span>
+    <span class="n">defaultlist</span> <span class="o">=</span> <span class="n">defaultpathlist</span><span class="p">()</span>
+    <span class="n">builtinlist</span> <span class="o">=</span> <span class="n">builtinpathlist</span><span class="p">()</span>
+    <span class="n">pathvarlist</span> <span class="o">=</span> <span class="n">projectpathlist</span><span class="p">()</span>
+    <span class="n">searchpaths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">searchpaths</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">defaultlist</span><span class="p">)</span>
+    <span class="n">searchpaths</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">pathvarlist</span><span class="p">)</span>
+    <span class="n">searchpaths</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">builtinlist</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">searchpaths</span></div>
+
+<div class="viewcode-block" id="getfilepath"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.getfilepath">[docs]</a><span class="k">def</span> <span class="nf">getfilepath</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Search the file in all search paths, return the full path.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">pathlist</span> <span class="o">=</span> <span class="n">searchpathlist</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">findfile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">pathlist</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="fullfile"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.fullfile">[docs]</a><span class="k">def</span> <span class="nf">fullfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Search the file and return the full path in all search paths.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">getfilepath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="findfile"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.findfile">[docs]</a><span class="k">def</span> <span class="nf">findfile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">pathlist</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find the file in pathlist.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">pathlist</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="cwd"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.cwd">[docs]</a><span class="k">def</span> <span class="nf">cwd</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Current working directory.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="curatlasname"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.curatlasname">[docs]</a><span class="k">def</span> <span class="nf">curatlasname</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Current atlas name by cwd.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">cwd</span><span class="p">()))</span></div>
+
+<div class="viewcode-block" id="curatlas"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.curatlas">[docs]</a><span class="k">def</span> <span class="nf">curatlas</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Current atlas object by cwd.&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">..proc</span> <span class="k">import</span> <span class="n">atlas</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">curatlasname</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">atlas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="curparent"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.curparent">[docs]</a><span class="k">def</span> <span class="nf">curparent</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Current parent dirname.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">cwd</span><span class="p">()))</span></div>
+
+<div class="viewcode-block" id="name_date"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.path.name_date">[docs]</a><span class="k">def</span> <span class="nf">name_date</span><span class="p">(</span><span class="n">mriscan</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Split name date.&quot;&quot;&quot;</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">mriscan</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,58 @@
+{
+    "atlas": "brodmann_lrce",
+    "config": {
+        "left": {
+            "notused": "notused",
+            "sections": [
+                {
+                    "name": "Frontal",
+                    "ticks": ["L4", "L6", "L8", "L9", "L10", "L11", "L24", "L25", "L32", "L44", "L45", "L46", "L47"]
+                },
+                {
+                    "name": "Parietal",
+                    "ticks": ["L1", "L2", "L3", "L5", "L7", "L23", "L39", "L40", "L43"]
+                },
+                {
+                    "name": "Temporal",
+                    "ticks": ["L20", "L21", "L22", "L26", "L27", "L28", "L29", "L30", "L34", "L35", "L36", "L37", "L38", "L41", "L42", "L48"]
+                },
+                {
+                    "name": "Occipital",
+                    "ticks": ["L17", "L18", "L19"]
+                },
+                {
+                    "name": "Cerebellum",
+                    "ticks": ["AL91", "AL93", "AL95", "AL97", "AL99", "AL101", "AL103", "AL105",  "AL107", "AL109", "AL111", "AL113", "AL115"]
+                }
+            ]
+        },
+        "right": {
+            "notused": "notused",
+            "sections": [
+                {
+                    "name": "Frontal",
+                    "ticks": ["R4", "R6", "R8", "R9", "R10", "R11", "R24", "R25", "R32", "R44", "R45", "R46", "R47"]
+                },
+                {
+                    "name": "Parietal",
+                    "ticks": ["R1", "R2", "R3", "R5", "R7", "R23", "R39", "R40", "R43"]
+                },
+                {
+                    "name": "Temporal",
+                    "ticks": ["R20", "R21", "R22", "R26", "R27", "R28", "R29", "R30", "R34", "R35", "R36", "R37", "R38", "R41", "R42", "R48"]
+                },
+                {
+                    "name": "Occipital",
+                    "ticks": ["R17", "R18", "R19"]
+                },
+                {
+                    "name": "Cerebellum",
+                    "ticks": ["AR92", "AR94", "AR96", "AR98", "AR100", "AR102", "AR104", "AR106", "AR108",  "AR110", "AR112", "AR114", "AR116"]
+                }
+            ]
+        },
+        "center": {
+
+        }
+    }
+}

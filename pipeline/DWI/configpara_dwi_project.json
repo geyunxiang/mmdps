@@ -1,0 +1,9 @@
+{
+    "name": "DWIProc",
+    "MainFolder": "/media/LocalDisk_E/DataProcessing/DWI/",
+    "FolderList": "/media/LocalDisk_E/DataProcessing/newdata/data_dicom_all_checked_DWI.txt",
+    "Second": false,
+    "SecondList": "",
+    "JobConfig": "configjob_dwi.json",
+    "RunMode": "Parallel"
+}

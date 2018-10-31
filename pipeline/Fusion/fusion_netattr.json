@@ -1,0 +1,33 @@
+{
+    "nets": {
+        "bold_net": {
+            "modal": "BOLD"
+        },
+        "dwi_net": {
+            "modal": "DWI"
+        }
+    },
+    "attrs": {
+        "bold_interBC": {
+            "modal": "BOLD"
+        },
+        "bold_interCCFS": {
+            "modal": "BOLD"
+        },
+        "bold_interLE": {
+            "modal": "BOLD"
+        },
+        "bold_interWD": {
+            "modal": "BOLD"
+        },
+        "t1_GMD": {
+            "modal": "T1"
+        },
+        "dwi_MD": {
+            "modal": "DWI"
+        },
+        "dwi_FA": {
+            "modal": "DWI"
+        }
+    }
+}

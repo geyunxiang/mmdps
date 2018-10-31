@@ -1,0 +1,9 @@
+{
+    "name": "T1Proc",
+    "MainFolder": "E:/DataProcessing/T1",
+    "FolderList": "E:/DataProcessing/newdata/data_dicom_all.txt",
+    "Second": false,
+    "SecondList": "",
+    "JobConfig": "E:/MMDPSoftware/mmdps/pipeline/T1/configjob_unatlased_t1.json",
+    "RunMode": "Parallel"
+}

@@ -1,0 +1,192 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.proc.dataexport &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.proc.dataexport</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Export all features to feature database.</span>
+
+<span class="sd">Use this exporter to export features from where calculated to feature database.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="kn">from</span> <span class="nn">mmdps.proc</span> <span class="k">import</span> <span class="n">atlas</span>
+<span class="kn">from</span> <span class="nn">mmdps.util.loadsave</span> <span class="k">import</span> <span class="n">load_json_ordered</span><span class="p">,</span> <span class="n">save_json_ordered</span><span class="p">,</span> <span class="n">load_txt</span><span class="p">,</span> <span class="n">save_txt</span>
+<span class="kn">from</span> <span class="nn">mmdps.util</span> <span class="k">import</span> <span class="n">path</span>
+
+
+
+
+<div class="viewcode-block" id="MRIScanProcMRIScanAtlasExporter"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.dataexport.MRIScanProcMRIScanAtlasExporter">[docs]</a><span class="k">class</span> <span class="nc">MRIScanProcMRIScanAtlasExporter</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The feature exporter for mriscan processing.</span>
+<span class="sd">    </span>
+<span class="sd">    Only export for one mriscan and one atlas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">atlasname</span><span class="p">,</span> <span class="n">mainconfig</span><span class="p">,</span> <span class="n">dataconfig</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the exporter.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mriscan</span> <span class="o">=</span> <span class="n">mriscan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atlasname</span> <span class="o">=</span> <span class="n">atlasname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainconfig</span> <span class="o">=</span> <span class="n">mainconfig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataconfig</span> <span class="o">=</span> <span class="n">dataconfig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputrootfolder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainconfig</span><span class="p">[</span><span class="s1">&#39;outputfolder&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputfolders</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainconfig</span><span class="p">[</span><span class="s1">&#39;inputfolders&#39;</span><span class="p">]</span>
+        
+<div class="viewcode-block" id="MRIScanProcMRIScanAtlasExporter.fullinfolder"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.dataexport.MRIScanProcMRIScanAtlasExporter.fullinfolder">[docs]</a>    <span class="k">def</span> <span class="nf">fullinfolder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modal</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;full file for input folder.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasname</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputfolders</span><span class="p">[</span><span class="n">modal</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mriscan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasname</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputfolders</span><span class="p">[</span><span class="n">modal</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mriscan</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MRIScanProcMRIScanAtlasExporter.fulloutfolder"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.dataexport.MRIScanProcMRIScanAtlasExporter.fulloutfolder">[docs]</a>    <span class="k">def</span> <span class="nf">fulloutfolder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;full file for output folder.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasname</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputrootfolder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mriscan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasname</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputrootfolder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mriscan</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="MRIScanProcMRIScanAtlasExporter.run_feature"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.dataexport.MRIScanProcMRIScanAtlasExporter.run_feature">[docs]</a>    <span class="k">def</span> <span class="nf">run_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">featurename</span><span class="p">,</span> <span class="n">featureconfig</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Export one feature.&quot;&quot;&quot;</span>
+        <span class="n">modal</span> <span class="o">=</span> <span class="n">featureconfig</span><span class="p">[</span><span class="s1">&#39;modal&#39;</span><span class="p">]</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">featureconfig</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">files</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">featureconfig</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">filesrc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullinfolder</span><span class="p">(</span><span class="n">modal</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filesrc</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==Not Exist:&#39;</span><span class="p">,</span> <span class="n">filesrc</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filesrc</span><span class="p">)</span>
+            <span class="n">filedst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fulloutfolder</span><span class="p">(</span><span class="n">featurename</span> <span class="o">+</span> <span class="n">ext</span><span class="p">)</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">makedirs_file</span><span class="p">(</span><span class="n">filedst</span><span class="p">)</span>
+            <span class="c1">#print(&#39;Copy:&#39;, filesrc, filedst)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">filesrc</span><span class="p">,</span> <span class="n">filedst</span><span class="p">)</span></div>
+            
+<div class="viewcode-block" id="MRIScanProcMRIScanAtlasExporter.run"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.dataexport.MRIScanProcMRIScanAtlasExporter.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Export all features.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasname</span><span class="p">:</span>
+            <span class="c1"># atlased</span>
+            <span class="k">for</span> <span class="n">netname</span><span class="p">,</span> <span class="n">netconf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataconfig</span><span class="p">[</span><span class="s1">&#39;nets&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run_feature</span><span class="p">(</span><span class="n">netname</span><span class="p">,</span> <span class="n">netconf</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">attrconf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataconfig</span><span class="p">[</span><span class="s1">&#39;attrs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run_feature</span><span class="p">(</span><span class="n">attrname</span><span class="p">,</span> <span class="n">attrconf</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># unatlased</span>
+            <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fileconf</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataconfig</span><span class="p">[</span><span class="s1">&#39;unatlased&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run_feature</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">fileconf</span><span class="p">)</span></div></div>
+        
+<div class="viewcode-block" id="MRIScanProcExporter"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.dataexport.MRIScanProcExporter">[docs]</a><span class="k">class</span> <span class="nc">MRIScanProcExporter</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The feature exporter.</span>
+
+<span class="sd">    Export features in all mriscans.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mainconfig</span><span class="p">,</span> <span class="n">dataconfig</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the exporter using mainconfig and dataconfig.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainconfig</span> <span class="o">=</span> <span class="n">mainconfig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataconfig</span> <span class="o">=</span> <span class="n">dataconfig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atlases</span> <span class="o">=</span> <span class="n">load_txt</span><span class="p">(</span><span class="n">mainconfig</span><span class="p">[</span><span class="s1">&#39;atlaslist&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mriscans</span> <span class="o">=</span> <span class="n">load_txt</span><span class="p">(</span><span class="n">mainconfig</span><span class="p">[</span><span class="s1">&#39;scanslist&#39;</span><span class="p">])</span>
+
+<div class="viewcode-block" id="MRIScanProcExporter.run_mriscan_atlas"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.dataexport.MRIScanProcExporter.run_mriscan_atlas">[docs]</a>    <span class="k">def</span> <span class="nf">run_mriscan_atlas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">atlasname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run one mriscan and one atlas to export.&quot;&quot;&quot;</span>
+        <span class="n">atlas_exporter</span> <span class="o">=</span> <span class="n">MRIScanProcMRIScanAtlasExporter</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">atlasname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainconfig</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataconfig</span><span class="p">)</span>
+        <span class="n">atlas_exporter</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>        </div>
+        
+<div class="viewcode-block" id="MRIScanProcExporter.run"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.dataexport.MRIScanProcExporter.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the export.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">atlasname</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlases</span><span class="p">:</span>
+            <span class="c1"># atlased</span>
+            <span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mriscans</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run_mriscan_atlas</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">atlasname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;unatlased&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataconfig</span><span class="p">:</span>
+            <span class="c1"># unatlased</span>
+            <span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mriscans</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run_mriscan_atlas</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="create_by_files"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.dataexport.create_by_files">[docs]</a><span class="k">def</span> <span class="nf">create_by_files</span><span class="p">(</span><span class="n">mainconfigfile</span><span class="p">,</span> <span class="n">dataconfigfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create exporter by config files.&quot;&quot;&quot;</span>
+    <span class="n">mainconfig</span> <span class="o">=</span> <span class="n">load_json_ordered</span><span class="p">(</span><span class="n">mainconfigfile</span><span class="p">)</span>
+    <span class="n">dataconfig</span> <span class="o">=</span> <span class="n">load_json_ordered</span><span class="p">(</span><span class="n">dataconfigfile</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">MRIScanProcExporter</span><span class="p">(</span><span class="n">mainconfig</span><span class="p">,</span> <span class="n">dataconfig</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="create_by_folder"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.dataexport.create_by_folder">[docs]</a><span class="k">def</span> <span class="nf">create_by_folder</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">configsfolder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create exporter by folder, which should includes the config files.&quot;&quot;&quot;</span>
+    <span class="n">mainconfigfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">configsfolder</span><span class="p">,</span> <span class="s1">&#39;export_mainconf.json&#39;</span><span class="p">)</span>
+    <span class="n">dataconfigfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">configsfolder</span><span class="p">,</span> <span class="s1">&#39;export_dataconf.json&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">create_by_files</span><span class="p">(</span><span class="n">mainconfigfile</span><span class="p">,</span> <span class="n">dataconfigfile</span><span class="p">)</span></div>
+    
+    
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,9 @@
+{
+    "name": "GenBoldNet",
+    "MainFolder": "E:/DataProcessing/BOLD",
+    "FolderList": "E:/changgeng_20180815_full.txt",
+    "Second": true,
+    "SecondList": "E:/DataProcessing/atlas_list.txt",
+    "JobConfig": "configjob_bold_main.json",
+    "RunMode": "Parallel"
+}

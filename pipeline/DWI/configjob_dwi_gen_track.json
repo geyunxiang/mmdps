@@ -1,0 +1,44 @@
+{
+    "name": "DWIGenNet",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "MakedirNative",
+            "typename": "ShellJob",
+            "cmd": "mkdir",
+            "argv": ["-p", "nativespace"]
+        },
+        {
+            "name": "MakedirNormalized",
+            "typename": "ShellJob",
+            "cmd": "mkdir",
+            "argv": ["-p", "normalizedspace"]
+        },
+        {
+            "name": "TractGenModelNative",
+            "typename": "PythonJob",
+            "cmd": "dwi_track_gen_model.py",
+            "argv": ["../iso2.0_nodif_brain_mask.nii.gz", "../iso2.0_pDWI.nii.gz", "../DWI.bval", "../DWI.bvec"],
+            "wd": "nativespace"
+        },
+        {
+            "name": "TrackEudxNative",
+            "typename": "PythonJob",
+            "cmd": "dwi_track_eudx.py",
+            "wd": "nativespace"
+        },
+        {
+            "name": "TractGenModelNormalized",
+            "typename": "PythonJob",
+            "cmd": "dwi_track_gen_model.py",
+            "argv": ["../normalized_mask.nii.gz", "../normalized_pDWI.nii.gz", "../DWI.bval", "../DWI.bvec"],
+            "wd": "normalizedspace"
+        },
+        {
+            "name": "TrackEudxNormalized",
+            "typename": "PythonJob",
+            "cmd": "dwi_track_eudx.py",
+            "wd": "normalizedspace"
+        }
+    ]
+}

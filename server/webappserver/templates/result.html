@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Result
+{% endblock %}
+
+{% block body %}
+<h2>{{ self.title() }}</h2>
+
+<form action="{{ url_for('info') }}" method="POST">
+  <label for="filterstr">Filter</label>
+  <input type="text" id="filterstr" name="filterstr" placeholder="" />
+  <input type="submit" value="Search">
+</form>
+
+<table>
+  <tr>
+    <th>id</th>
+	<th>name</th>
+	<th>info</th>
+  </tr>
+  
+  {% for person in people %}
+  <tr>
+    <td>{{ person['id'] }}</td>
+	<td>{{ person['name'] }}</td>
+	<td><a href={{ url_for('info_person', person_id=person['id']) }}>info</a></td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

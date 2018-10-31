@@ -1,0 +1,18 @@
+{
+    "name": "BatchJob",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "ParaBetNorm",
+            "typename": "PythonJob",
+            "cmd": "runpara.py",
+            "config": "configpara_unatlased_t1.json"
+        },
+        {
+            "name": "CalcGMD",
+            "typename": "PythonJob",
+            "cmd": "runpara.py",
+            "config": "configpara_atlased_t1.json"
+        }
+    ]
+}

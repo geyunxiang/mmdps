@@ -1,0 +1,14 @@
+{
+    "scipatient": {
+        "txtfile": ""
+    },
+    "strokepatient": {
+        "txtfile": ""
+    },
+    "normal": {
+        "txtfile": ""
+    },
+    "entire": {
+        "txtfile": "E:/DataProcessing/newdata/data_dicom_all.txt"
+    }
+}

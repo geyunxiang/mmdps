@@ -1,0 +1,843 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.dms package &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="mmdps.gui package" href="mmdps.gui.html" />
+    <link rel="prev" title="mmdps.common package" href="mmdps.common.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mmdps-dms-package">
+<h1>mmdps.dms package<a class="headerlink" href="#mmdps-dms-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-mmdps.dms.apicore">
+<span id="mmdps-dms-apicore-module"></span><h2>mmdps.dms.apicore module<a class="headerlink" href="#module-mmdps.dms.apicore" title="Permalink to this headline">¶</a></h2>
+<p>Interface that could be used by apps that consume the RESTful API.</p>
+<p>Can be used by Python apps to access the RESTful API.
+Such as the webapp server and Python GUI app.</p>
+<dl class="class">
+<dt id="mmdps.dms.apicore.ApiCore">
+<em class="property">class </em><code class="descclassname">mmdps.dms.apicore.</code><code class="descname">ApiCore</code><span class="sig-paren">(</span><em>urlbase</em>, <em>auth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Access the RESTful API.</p>
+<p>Use requests to send and receive information.</p>
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.download">
+<code class="descname">download</code><span class="sig-paren">(</span><em>urlpath</em>, <em>outfilepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blocking download file to outfilepath.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.feature_full_url">
+<code class="descname">feature_full_url</code><span class="sig-paren">(</span><em>urlpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.feature_full_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.feature_full_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.feature_get">
+<code class="descname">feature_get</code><span class="sig-paren">(</span><em>urlpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.feature_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.feature_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the specified feature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.full_url">
+<code class="descname">full_url</code><span class="sig-paren">(</span><em>urlpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.full_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.full_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>urlpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raw get, return what the requests.get would return.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.get_mriscan_by_namedate">
+<code class="descname">get_mriscan_by_namedate</code><span class="sig-paren">(</span><em>namedate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.get_mriscan_by_namedate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.get_mriscan_by_namedate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get mriscan dict by name_date.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.get_mriscan_data_iter_r">
+<code class="descname">get_mriscan_data_iter_r</code><span class="sig-paren">(</span><em>mriscan_id</em>, <em>modal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.get_mriscan_data_iter_r"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.get_mriscan_data_iter_r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get iterator and request object for downloading data, non-blocking.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.get_namedate_by_mriscanid">
+<code class="descname">get_namedate_by_mriscanid</code><span class="sig-paren">(</span><em>mriscan_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.get_namedate_by_mriscanid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.get_namedate_by_mriscanid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get name_date by mriscan id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.get_person_by_name">
+<code class="descname">get_person_by_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.get_person_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.get_person_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get person object or people list by person name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.getdict">
+<code class="descname">getdict</code><span class="sig-paren">(</span><em>urlpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.getdict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.getdict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dict constructed from the json the server returned.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.getobjdict">
+<code class="descname">getobjdict</code><span class="sig-paren">(</span><em>tablename</em>, <em>objid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.getobjdict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.getobjdict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the object dict in table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.gettabledict">
+<code class="descname">gettabledict</code><span class="sig-paren">(</span><em>tablename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.gettabledict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.gettabledict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the table dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.apicore.ApiCore.valid">
+<code class="descname">valid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#ApiCore.valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.ApiCore.valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test server connection.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.dms.apicore.name_date">
+<code class="descclassname">mmdps.dms.apicore.</code><code class="descname">name_date</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/apicore.html#name_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.apicore.name_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.dms.batchget">
+<span id="mmdps-dms-batchget-module"></span><h2>mmdps.dms.batchget module<a class="headerlink" href="#module-mmdps.dms.batchget" title="Permalink to this headline">¶</a></h2>
+<p>Batch get mridata.</p>
+<p>Batch get multiple mridata.
+All data are from the api server. Use api to access the server.</p>
+<dl class="class">
+<dt id="mmdps.dms.batchget.BatchGet">
+<em class="property">class </em><code class="descclassname">mmdps.dms.batchget.</code><code class="descname">BatchGet</code><span class="sig-paren">(</span><em>api</em>, <em>mriscanstxt</em>, <em>modal</em>, <em>outmainfolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/batchget.html#BatchGet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.batchget.BatchGet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Batch get mridata.</p>
+<dl class="method">
+<dt id="mmdps.dms.batchget.BatchGet.proc_mriscan">
+<code class="descname">proc_mriscan</code><span class="sig-paren">(</span><em>mriscan</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/batchget.html#BatchGet.proc_mriscan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.batchget.BatchGet.proc_mriscan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download one mriscan.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.batchget.BatchGet.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/batchget.html#BatchGet.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.batchget.BatchGet.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Begin download.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.dms.converter">
+<span id="mmdps-dms-converter-module"></span><h2>mmdps.dms.converter module<a class="headerlink" href="#module-mmdps.dms.converter" title="Permalink to this headline">¶</a></h2>
+<p>Converter for dicom and nifti import.</p>
+<p>Convert dicom to nifti. 
+Get the main modals use NiftiGetter, which is based on globbing.
+Inherite NiftiGetter for use with specific converted raw nifti data.</p>
+<dl class="class">
+<dt id="mmdps.dms.converter.NiftiGetter">
+<em class="property">class </em><code class="descclassname">mmdps.dms.converter.</code><code class="descname">NiftiGetter</code><span class="sig-paren">(</span><em>niftifolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/converter.html#NiftiGetter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.converter.NiftiGetter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Get specific modal from converted raw nii files.</p>
+<dl class="method">
+<dt id="mmdps.dms.converter.NiftiGetter.fnmatch_all">
+<code class="descname">fnmatch_all</code><span class="sig-paren">(</span><em>pat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/converter.html#NiftiGetter.fnmatch_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.converter.NiftiGetter.fnmatch_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match all files that match the pattern.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.converter.NiftiGetter.fnmatch_one">
+<code class="descname">fnmatch_one</code><span class="sig-paren">(</span><em>pat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/converter.html#NiftiGetter.fnmatch_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.converter.NiftiGetter.fnmatch_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match exactly one file with pattern.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.converter.NiftiGetter.get_BOLD">
+<code class="descname">get_BOLD</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/converter.html#NiftiGetter.get_BOLD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.converter.NiftiGetter.get_BOLD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get BOLD NIFTI file path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.converter.NiftiGetter.get_DWI">
+<code class="descname">get_DWI</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/converter.html#NiftiGetter.get_DWI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.converter.NiftiGetter.get_DWI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get DWI NIFTI file, bval file and bvec file, in a tuple.</p>
+<p>Validate with all(dwifiles) == True</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.converter.NiftiGetter.get_T1">
+<code class="descname">get_T1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/converter.html#NiftiGetter.get_T1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.converter.NiftiGetter.get_T1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get T1 NIFTI file path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.converter.NiftiGetter.get_T2">
+<code class="descname">get_T2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/converter.html#NiftiGetter.get_T2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.converter.NiftiGetter.get_T2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get T2 NIFTI file path.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.dms.converter.convert_dicom_to_nifti">
+<code class="descclassname">mmdps.dms.converter.</code><code class="descname">convert_dicom_to_nifti</code><span class="sig-paren">(</span><em>infolder</em>, <em>outfolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/converter.html#convert_dicom_to_nifti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.converter.convert_dicom_to_nifti" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert DICOM to raw NIFTI.</p>
+<p>The infolder should be the DICOM folder.
+The outfolder will be the converted NIFTI folder.
+the ret is the conversion program return value. 0 typically indicates success.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.dms.dbgen">
+<span id="mmdps-dms-dbgen-module"></span><h2>mmdps.dms.dbgen module<a class="headerlink" href="#module-mmdps.dms.dbgen" title="Permalink to this headline">¶</a></h2>
+<p>Database generator.</p>
+<p>Generate the database use mritable file, motion score file and stroke 
+score file, and groups.</p>
+<p>Limitation:
+Now limited to a sqlite data file.
+Updated only when import DICOM data.</p>
+<p>TODO:
+Change create_engine to use other RMDBS.
+Change re-create-every-time to update-to-existing.</p>
+<dl class="class">
+<dt id="mmdps.dms.dbgen.DatabaseGenerator">
+<em class="property">class </em><code class="descclassname">mmdps.dms.dbgen.</code><code class="descname">DatabaseGenerator</code><span class="sig-paren">(</span><em>mritablecsv</em>, <em>dbfile='mmdpdb.db'</em>, <em>motionscoretablecsv=None</em>, <em>strokescoretablecsv=None</em>, <em>grouptables=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#DatabaseGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.DatabaseGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Database Generator to update (re-create) the database.</p>
+<dl class="method">
+<dt id="mmdps.dms.dbgen.DatabaseGenerator.insert_grouptable">
+<code class="descname">insert_grouptable</code><span class="sig-paren">(</span><em>grouptable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#DatabaseGenerator.insert_grouptable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.DatabaseGenerator.insert_grouptable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert one configured group.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.dbgen.DatabaseGenerator.insert_grouptables">
+<code class="descname">insert_grouptables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#DatabaseGenerator.insert_grouptables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.DatabaseGenerator.insert_grouptables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert all groups.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.dbgen.DatabaseGenerator.insert_motionscorerow">
+<code class="descname">insert_motionscorerow</code><span class="sig-paren">(</span><em>scan</em>, <em>motionscoredict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#DatabaseGenerator.insert_motionscorerow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.DatabaseGenerator.insert_motionscorerow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert one motion score record.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.dbgen.DatabaseGenerator.insert_motionscoretable">
+<code class="descname">insert_motionscoretable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#DatabaseGenerator.insert_motionscoretable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.DatabaseGenerator.insert_motionscoretable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert the whole motion score records.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.dbgen.DatabaseGenerator.insert_mrirow">
+<code class="descname">insert_mrirow</code><span class="sig-paren">(</span><em>scan</em>, <em>hasT1</em>, <em>hasT2</em>, <em>hasBOLD</em>, <em>hasDWI</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#DatabaseGenerator.insert_mrirow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.DatabaseGenerator.insert_mrirow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert one mriscan record.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.dbgen.DatabaseGenerator.insert_mritable">
+<code class="descname">insert_mritable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#DatabaseGenerator.insert_mritable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.DatabaseGenerator.insert_mritable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert the whole mritable csv file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.dbgen.DatabaseGenerator.insert_strokescorerow">
+<code class="descname">insert_strokescorerow</code><span class="sig-paren">(</span><em>scan</em>, <em>strokescoredict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#DatabaseGenerator.insert_strokescorerow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.DatabaseGenerator.insert_strokescorerow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert one stroke score record.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.dbgen.DatabaseGenerator.insert_strokescoretable">
+<code class="descname">insert_strokescoretable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#DatabaseGenerator.insert_strokescoretable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.DatabaseGenerator.insert_strokescoretable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert the whole stroke score records.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.dbgen.DatabaseGenerator.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#DatabaseGenerator.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.DatabaseGenerator.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run all the insertions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.dms.dbgen.name_date">
+<code class="descclassname">mmdps.dms.dbgen.</code><code class="descname">name_date</code><span class="sig-paren">(</span><em>mriscan</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/dbgen.html#name_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.dbgen.name_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.dms.exporter">
+<span id="mmdps-dms-exporter-module"></span><h2>mmdps.dms.exporter module<a class="headerlink" href="#module-mmdps.dms.exporter" title="Permalink to this headline">¶</a></h2>
+<p>Exporter to export tables.</p>
+<p>Export a MRIScan summary table.</p>
+<dl class="class">
+<dt id="mmdps.dms.exporter.MRIScanTableExporter">
+<em class="property">class </em><code class="descclassname">mmdps.dms.exporter.</code><code class="descname">MRIScanTableExporter</code><span class="sig-paren">(</span><em>mriscansfolder</em>, <em>outcsvname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/exporter.html#MRIScanTableExporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.exporter.MRIScanTableExporter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The mriscan table exporter.</p>
+<dl class="method">
+<dt id="mmdps.dms.exporter.MRIScanTableExporter.add_row">
+<code class="descname">add_row</code><span class="sig-paren">(</span><em>csvwriter</em>, <em>mriscanfolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/exporter.html#MRIScanTableExporter.add_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.exporter.MRIScanTableExporter.add_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add one result row to the csv.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.exporter.MRIScanTableExporter.checkmodals">
+<code class="descname">checkmodals</code><span class="sig-paren">(</span><em>mriscanfolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/exporter.html#MRIScanTableExporter.checkmodals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.exporter.MRIScanTableExporter.checkmodals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the modals, exist or not.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.exporter.MRIScanTableExporter.gen_csv">
+<code class="descname">gen_csv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/exporter.html#MRIScanTableExporter.gen_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.exporter.MRIScanTableExporter.gen_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the csv summary file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.exporter.MRIScanTableExporter.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/exporter.html#MRIScanTableExporter.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.exporter.MRIScanTableExporter.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the generator.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.dms.importer">
+<span id="mmdps-dms-importer-module"></span><h2>mmdps.dms.importer module<a class="headerlink" href="#module-mmdps.dms.importer" title="Permalink to this headline">¶</a></h2>
+<p>Importer to import new data to database.</p>
+<p>Copy raw nifti files to database and rename to proper file name.
+Update database.</p>
+<dl class="class">
+<dt id="mmdps.dms.importer.MRIScanImporter">
+<em class="property">class </em><code class="descclassname">mmdps.dms.importer.</code><code class="descname">MRIScanImporter</code><span class="sig-paren">(</span><em>inmainfolder</em>, <em>outmainfolder</em>, <em>mriscanstxt</em>, <em>db=None</em>, <em>cls_niftigetter=&lt;class 'mmdps.dms.converter.NiftiGetter'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/importer.html#MRIScanImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.importer.MRIScanImporter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MRIScan importer.</p>
+<dl class="method">
+<dt id="mmdps.dms.importer.MRIScanImporter.copy_nifti">
+<code class="descname">copy_nifti</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/importer.html#MRIScanImporter.copy_nifti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.importer.MRIScanImporter.copy_nifti" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy all modals for all mriscans.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.importer.MRIScanImporter.copy_nifti_one">
+<code class="descname">copy_nifti_one</code><span class="sig-paren">(</span><em>mriscan</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/importer.html#MRIScanImporter.copy_nifti_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.importer.MRIScanImporter.copy_nifti_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy all modals for one mriscan.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.importer.MRIScanImporter.copy_nifti_one_modal">
+<code class="descname">copy_nifti_one_modal</code><span class="sig-paren">(</span><em>outfolder</em>, <em>getfunc</em>, <em>newname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/importer.html#MRIScanImporter.copy_nifti_one_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.importer.MRIScanImporter.copy_nifti_one_modal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy one modal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.importer.MRIScanImporter.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/importer.html#MRIScanImporter.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.importer.MRIScanImporter.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run. Copy nifti files and update database.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.importer.MRIScanImporter.update_db">
+<code class="descname">update_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/importer.html#MRIScanImporter.update_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.importer.MRIScanImporter.update_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update database
+TODO: better not use simple re-generate.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.dms.mridata">
+<span id="mmdps-dms-mridata-module"></span><h2>mmdps.dms.mridata module<a class="headerlink" href="#module-mmdps.dms.mridata" title="Permalink to this headline">¶</a></h2>
+<p>Access mridata storage and featuredata storage.</p>
+<p>The mridata storage and featuredata storage are both served by a static server.</p>
+<dl class="class">
+<dt id="mmdps.dms.mridata.FeatureDataAccessor">
+<em class="property">class </em><code class="descclassname">mmdps.dms.mridata.</code><code class="descname">FeatureDataAccessor</code><span class="sig-paren">(</span><em>urlbase</em>, <em>auth</em>, <em>featureroot='FeatureData'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/mridata.html#FeatureDataAccessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.mridata.FeatureDataAccessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Access featuredata static server.</p>
+<dl class="method">
+<dt id="mmdps.dms.mridata.FeatureDataAccessor.build_uri">
+<code class="descname">build_uri</code><span class="sig-paren">(</span><em>mriscanfolder</em>, <em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/mridata.html#FeatureDataAccessor.build_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.mridata.FeatureDataAccessor.build_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build feature uri by mriscan and feature file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.mridata.FeatureDataAccessor.get_iter_r_mriscan">
+<code class="descname">get_iter_r_mriscan</code><span class="sig-paren">(</span><em>mriscanfolder</em>, <em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/mridata.html#FeatureDataAccessor.get_iter_r_mriscan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.mridata.FeatureDataAccessor.get_iter_r_mriscan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get iter and requests object for non-blocking downloading.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.dms.mridata.MRIDataAccessor">
+<em class="property">class </em><code class="descclassname">mmdps.dms.mridata.</code><code class="descname">MRIDataAccessor</code><span class="sig-paren">(</span><em>urlbase</em>, <em>auth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/mridata.html#MRIDataAccessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.mridata.MRIDataAccessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Access mridata static server.</p>
+<dl class="method">
+<dt id="mmdps.dms.mridata.MRIDataAccessor.build_uri">
+<code class="descname">build_uri</code><span class="sig-paren">(</span><em>mriscanfolder</em>, <em>modal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/mridata.html#MRIDataAccessor.build_uri"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.mridata.MRIDataAccessor.build_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build full uri form scan and modal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.mridata.MRIDataAccessor.get_iter_r">
+<code class="descname">get_iter_r</code><span class="sig-paren">(</span><em>mriscanfolder</em>, <em>modal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/mridata.html#MRIDataAccessor.get_iter_r"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.mridata.MRIDataAccessor.get_iter_r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get iter and request object for non-blocking download.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.mridata.MRIDataAccessor.modal_to_file">
+<code class="descname">modal_to_file</code><span class="sig-paren">(</span><em>modal</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/mridata.html#MRIDataAccessor.modal_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.mridata.MRIDataAccessor.modal_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map modal to file.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.dms.storage">
+<span id="mmdps-dms-storage-module"></span><h2>mmdps.dms.storage module<a class="headerlink" href="#module-mmdps.dms.storage" title="Permalink to this headline">¶</a></h2>
+<p>Storage for database.</p>
+<p>Access static server.</p>
+<dl class="class">
+<dt id="mmdps.dms.storage.HTTPStorage">
+<em class="property">class </em><code class="descclassname">mmdps.dms.storage.</code><code class="descname">HTTPStorage</code><span class="sig-paren">(</span><em>urlbase</em>, <em>auth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/storage.html#HTTPStorage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.storage.HTTPStorage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.dms.storage.Storage" title="mmdps.dms.storage.Storage"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.dms.storage.Storage</span></code></a></p>
+<p>Storage based on static HTTP server.</p>
+<dl class="attribute">
+<dt id="mmdps.dms.storage.HTTPStorage.CHUNK_SIZE">
+<code class="descname">CHUNK_SIZE</code><em class="property"> = 10485760</em><a class="headerlink" href="#mmdps.dms.storage.HTTPStorage.CHUNK_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.storage.HTTPStorage.PROGRESSBAR_LENGTH">
+<code class="descname">PROGRESSBAR_LENGTH</code><em class="property"> = 50</em><a class="headerlink" href="#mmdps.dms.storage.HTTPStorage.PROGRESSBAR_LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.storage.HTTPStorage.error">
+<code class="descname">error</code><span class="sig-paren">(</span><em>r</em>, <em>msg=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/storage.html#HTTPStorage.error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.storage.HTTPStorage.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Report access error.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.storage.HTTPStorage.full_url">
+<code class="descname">full_url</code><span class="sig-paren">(</span><em>urlpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/storage.html#HTTPStorage.full_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.storage.HTTPStorage.full_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct full url.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.storage.HTTPStorage.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>urlpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/storage.html#HTTPStorage.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.storage.HTTPStorage.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call requests.get with user auth.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.storage.HTTPStorage.get_file">
+<code class="descname">get_file</code><span class="sig-paren">(</span><em>urlpath</em>, <em>localpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/storage.html#HTTPStorage.get_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.storage.HTTPStorage.get_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get file blocking.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.storage.HTTPStorage.get_file_iter_r">
+<code class="descname">get_file_iter_r</code><span class="sig-paren">(</span><em>urlpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/storage.html#HTTPStorage.get_file_iter_r"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.storage.HTTPStorage.get_file_iter_r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get iter and requests object for non-blocking download.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.storage.HTTPStorage.get_file_progress">
+<code class="descname">get_file_progress</code><span class="sig-paren">(</span><em>urlpath</em>, <em>localpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/storage.html#HTTPStorage.get_file_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.storage.HTTPStorage.get_file_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get file blocking, with a fancy progress bar.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.dms.storage.Storage">
+<em class="property">class </em><code class="descclassname">mmdps.dms.storage.</code><code class="descname">Storage</code><a class="reference internal" href="_modules/mmdps/dms/storage.html#Storage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.storage.Storage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Storage base class.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.dms.tables">
+<span id="mmdps-dms-tables-module"></span><h2>mmdps.dms.tables module<a class="headerlink" href="#module-mmdps.dms.tables" title="Permalink to this headline">¶</a></h2>
+<p>Database sql-alchemy tables.</p>
+<p>Define the database by sql-alchemy tables.
+Can ease the selection of RMDBS, and much more if use ORM properly.</p>
+<dl class="class">
+<dt id="mmdps.dms.tables.BaseModel">
+<em class="property">class </em><code class="descclassname">mmdps.dms.tables.</code><code class="descname">BaseModel</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/tables.html#BaseModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.tables.BaseModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>Base model.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.dms.tables.Group">
+<em class="property">class </em><code class="descclassname">mmdps.dms.tables.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/tables.html#Group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.tables.Group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.dms.tables.BaseModel" title="mmdps.dms.tables.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.dms.tables.BaseModel</span></code></a></p>
+<p>Group.</p>
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Group.description">
+<code class="descname">description</code><a class="headerlink" href="#mmdps.dms.tables.Group.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Group.id">
+<code class="descname">id</code><a class="headerlink" href="#mmdps.dms.tables.Group.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Group.name">
+<code class="descname">name</code><a class="headerlink" href="#mmdps.dms.tables.Group.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Group.people">
+<code class="descname">people</code><a class="headerlink" href="#mmdps.dms.tables.Group.people" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.dms.tables.MRIScan">
+<em class="property">class </em><code class="descclassname">mmdps.dms.tables.</code><code class="descname">MRIScan</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/tables.html#MRIScan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.tables.MRIScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.dms.tables.BaseModel" title="mmdps.dms.tables.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.dms.tables.BaseModel</span></code></a></p>
+<p>MRIScan.</p>
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MRIScan.date">
+<code class="descname">date</code><a class="headerlink" href="#mmdps.dms.tables.MRIScan.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.dms.tables.MRIScan.get_folder">
+<code class="descname">get_folder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/tables.html#MRIScan.get_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.tables.MRIScan.get_folder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MRIScan.hasBOLD">
+<code class="descname">hasBOLD</code><a class="headerlink" href="#mmdps.dms.tables.MRIScan.hasBOLD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MRIScan.hasDWI">
+<code class="descname">hasDWI</code><a class="headerlink" href="#mmdps.dms.tables.MRIScan.hasDWI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MRIScan.hasT1">
+<code class="descname">hasT1</code><a class="headerlink" href="#mmdps.dms.tables.MRIScan.hasT1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MRIScan.hasT2">
+<code class="descname">hasT2</code><a class="headerlink" href="#mmdps.dms.tables.MRIScan.hasT2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MRIScan.id">
+<code class="descname">id</code><a class="headerlink" href="#mmdps.dms.tables.MRIScan.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MRIScan.motionscores">
+<code class="descname">motionscores</code><a class="headerlink" href="#mmdps.dms.tables.MRIScan.motionscores" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MRIScan.person">
+<code class="descname">person</code><a class="headerlink" href="#mmdps.dms.tables.MRIScan.person" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MRIScan.person_id">
+<code class="descname">person_id</code><a class="headerlink" href="#mmdps.dms.tables.MRIScan.person_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MRIScan.strokescores">
+<code class="descname">strokescores</code><a class="headerlink" href="#mmdps.dms.tables.MRIScan.strokescores" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.dms.tables.MotionScore">
+<em class="property">class </em><code class="descclassname">mmdps.dms.tables.</code><code class="descname">MotionScore</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/tables.html#MotionScore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.tables.MotionScore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.dms.tables.BaseModel" title="mmdps.dms.tables.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.dms.tables.BaseModel</span></code></a></p>
+<p>MotionScore.</p>
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.date">
+<code class="descname">date</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.id">
+<code class="descname">id</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.mriscan">
+<code class="descname">mriscan</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.mriscan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.mriscan_id">
+<code class="descname">mriscan_id</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.mriscan_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.person">
+<code class="descname">person</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.person" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.person_id">
+<code class="descname">person_id</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.person_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.scMAS">
+<code class="descname">scMAS</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.scMAS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.scMotor">
+<code class="descname">scMotor</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.scMotor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.scSCIM">
+<code class="descname">scSCIM</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.scSCIM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.scSensory">
+<code class="descname">scSensory</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.scSensory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.scTSI">
+<code class="descname">scTSI</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.scTSI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.scVAS">
+<code class="descname">scVAS</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.scVAS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.MotionScore.scWISCI2">
+<code class="descname">scWISCI2</code><a class="headerlink" href="#mmdps.dms.tables.MotionScore.scWISCI2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.dms.tables.Person">
+<em class="property">class </em><code class="descclassname">mmdps.dms.tables.</code><code class="descname">Person</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/tables.html#Person"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.tables.Person" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.dms.tables.BaseModel" title="mmdps.dms.tables.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.dms.tables.BaseModel</span></code></a></p>
+<p>Person.</p>
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Person.birth">
+<code class="descname">birth</code><a class="headerlink" href="#mmdps.dms.tables.Person.birth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Person.gender">
+<code class="descname">gender</code><a class="headerlink" href="#mmdps.dms.tables.Person.gender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Person.groups">
+<code class="descname">groups</code><a class="headerlink" href="#mmdps.dms.tables.Person.groups" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Person.id">
+<code class="descname">id</code><a class="headerlink" href="#mmdps.dms.tables.Person.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Person.motionscores">
+<code class="descname">motionscores</code><a class="headerlink" href="#mmdps.dms.tables.Person.motionscores" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Person.mriscans">
+<code class="descname">mriscans</code><a class="headerlink" href="#mmdps.dms.tables.Person.mriscans" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Person.name">
+<code class="descname">name</code><a class="headerlink" href="#mmdps.dms.tables.Person.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.Person.strokescores">
+<code class="descname">strokescores</code><a class="headerlink" href="#mmdps.dms.tables.Person.strokescores" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.dms.tables.StrokeScore">
+<em class="property">class </em><code class="descclassname">mmdps.dms.tables.</code><code class="descname">StrokeScore</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/dms/tables.html#StrokeScore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.dms.tables.StrokeScore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.dms.tables.BaseModel" title="mmdps.dms.tables.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.dms.tables.BaseModel</span></code></a></p>
+<p>StrokeScore.</p>
+<dl class="attribute">
+<dt id="mmdps.dms.tables.StrokeScore.date">
+<code class="descname">date</code><a class="headerlink" href="#mmdps.dms.tables.StrokeScore.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.StrokeScore.id">
+<code class="descname">id</code><a class="headerlink" href="#mmdps.dms.tables.StrokeScore.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.StrokeScore.mriscan">
+<code class="descname">mriscan</code><a class="headerlink" href="#mmdps.dms.tables.StrokeScore.mriscan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.StrokeScore.mriscan_id">
+<code class="descname">mriscan_id</code><a class="headerlink" href="#mmdps.dms.tables.StrokeScore.mriscan_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.StrokeScore.person">
+<code class="descname">person</code><a class="headerlink" href="#mmdps.dms.tables.StrokeScore.person" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.StrokeScore.person_id">
+<code class="descname">person_id</code><a class="headerlink" href="#mmdps.dms.tables.StrokeScore.person_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.StrokeScore.scARAT">
+<code class="descname">scARAT</code><a class="headerlink" href="#mmdps.dms.tables.StrokeScore.scARAT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.StrokeScore.scFMA">
+<code class="descname">scFMA</code><a class="headerlink" href="#mmdps.dms.tables.StrokeScore.scFMA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.dms.tables.StrokeScore.scWOLF">
+<code class="descname">scWOLF</code><a class="headerlink" href="#mmdps.dms.tables.StrokeScore.scWOLF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.dms">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mmdps.dms" title="Permalink to this headline">¶</a></h2>
+<p>Subpackage mainly for data management system.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">mmdps.dms package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-mmdps.dms.apicore">mmdps.dms.apicore module</a></li>
+<li><a class="reference internal" href="#module-mmdps.dms.batchget">mmdps.dms.batchget module</a></li>
+<li><a class="reference internal" href="#module-mmdps.dms.converter">mmdps.dms.converter module</a></li>
+<li><a class="reference internal" href="#module-mmdps.dms.dbgen">mmdps.dms.dbgen module</a></li>
+<li><a class="reference internal" href="#module-mmdps.dms.exporter">mmdps.dms.exporter module</a></li>
+<li><a class="reference internal" href="#module-mmdps.dms.importer">mmdps.dms.importer module</a></li>
+<li><a class="reference internal" href="#module-mmdps.dms.mridata">mmdps.dms.mridata module</a></li>
+<li><a class="reference internal" href="#module-mmdps.dms.storage">mmdps.dms.storage module</a></li>
+<li><a class="reference internal" href="#module-mmdps.dms.tables">mmdps.dms.tables module</a></li>
+<li><a class="reference internal" href="#module-mmdps.dms">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="mmdps.html">mmdps package</a><ul>
+      <li>Previous: <a href="mmdps.common.html" title="previous chapter">mmdps.common package</a></li>
+      <li>Next: <a href="mmdps.gui.html" title="next chapter">mmdps.gui package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/mmdps.dms.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/mmdps.dms.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

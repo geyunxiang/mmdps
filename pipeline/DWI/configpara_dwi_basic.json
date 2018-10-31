@@ -1,0 +1,9 @@
+{
+    "name": "DWIProc",
+    "MainFolder": "/media/LocalDisk_F/WangYueheng2/BiShe/MRIScanProc/DWI/",
+    "FolderList": "/media/LocalDisk_F/WangYueheng2/BiShe/MRIScanProc/scanlist.txt",
+    "Second": false,
+    "SecondList": "/media/LocalDisk_F/WangYueheng2/BiShe/MRIScanProc/atlaslist.txt",
+    "JobConfig": "/media/LocalDisk_F/WangYueheng2/BiShe/mmdps/pipeline/DWI/configjob_dwi.json",
+    "RunMode": "Parallel"
+}

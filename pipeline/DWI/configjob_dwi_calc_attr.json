@@ -1,0 +1,6 @@
+{
+    "name": "CalcAttr",
+    "typename": "PythonJob",
+    "cmd": "dwi_calc_attr.py"
+}
+

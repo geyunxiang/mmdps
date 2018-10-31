@@ -1,0 +1,43 @@
+{
+    "typename": "CompositeField",
+    "name": "Job",
+    "children": [
+        {
+            "typename": "StringField",
+            "name": "name",
+            "value": "TheJob"
+        },
+        {
+            "typename": "ComboboxField",
+            "name": "typename",
+            "value": "PythonJob",
+            "values": [
+                "PythonJob",
+                "ShellJob",
+                "ExecutableJob",
+                "MatlabJob",
+                "BatchJob"
+            ]
+        },
+        {
+            "typename": "FileField",
+            "name": "cmd",
+            "value": ""
+        },
+        {
+            "typename": "FileEditField",
+            "name": "config",
+            "value": ""
+        },
+        {
+            "typename": "StringField",
+            "name": "argv",
+            "value": ""
+        },
+        {
+            "typename": "StringField",
+            "name": "wd",
+            "value": "."
+        }
+    ]
+}

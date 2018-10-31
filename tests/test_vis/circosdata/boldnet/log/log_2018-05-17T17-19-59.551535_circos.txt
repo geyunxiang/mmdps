@@ -1,0 +1,41 @@
+['E:\\Software\\Circos\\circos-0.69-6\\bin\\circos.exe']
+
+debuggroup summary 0.19s welcome to circos v0.69-6 31 July 2017 on Perl 5.014002
+debuggroup summary 0.19s current working directory E:/MMDPSoftware/mmdps/tests/test_vis/circosdata/boldnet
+debuggroup summary 0.19s command E:\Software\Circos\circos-0.69-6\bin\circos.exe [no flags]
+debuggroup summary 0.19s guessing configuration file
+debuggroup summary 0.19s found conf file E:\MMDPSoftware\mmdps\tests\test_vis\circosdata\boldnet\circos.conf
+debuggroup summary 0.39s debug will appear for these features: output,summary
+debuggroup summary 0.39s bitmap output image ./.\circos.png
+debuggroup summary 0.39s SVG output image ./.\circos.svg
+debuggroup summary 0.39s parsing karyotype and organizing ideograms
+debuggroup summary 0.40s karyotype has 10 chromosomes of total size 118
+debuggroup summary 0.41s applying global and local scaling
+debuggroup summary 0.41s allocating image, colors and brushes
+debuggroup summary 2.77s drawing 10 ideograms of total size 118
+debuggroup summary 2.77s drawing highlights and ideograms
+debuggroup summary 2.95s found conf file E:\Software\Circos\circos-0.69-6\etc\tracks\link.conf
+debuggroup summary 2.95s process track_0 link E:\MMDPSoftware\mmdps\tests\test_vis\circosdata\boldnet\net0.link.txt
+debuggroup summary 3.01s drawing link track_0 z 0
+debuggroup summary 3.27s found conf file E:\Software\Circos\circos-0.69-6\etc\tracks\text.conf
+debuggroup summary 3.27s found conf file E:\Software\Circos\circos-0.69-6\etc\tracks\heatmap.conf
+debuggroup summary 3.27s found conf file E:\Software\Circos\circos-0.69-6\etc\tracks\heatmap.conf
+debuggroup summary 3.27s found conf file E:\Software\Circos\circos-0.69-6\etc\tracks\heatmap.conf
+debuggroup summary 3.28s processing track_0 text E:\MMDPSoftware\mmdps\tests\test_vis\circosdata\boldnet\atlas.labels.txt
+debuggroup summary 3.30s processing track_1 heatmap E:\MMDPSoftware\mmdps\tests\test_vis\circosdata\boldnet\attr0.value.txt
+debuggroup summary 3.34s processing track_2 heatmap E:\MMDPSoftware\mmdps\tests\test_vis\circosdata\boldnet\attr1.value.txt
+debuggroup summary 3.38s processing track_3 heatmap E:\MMDPSoftware\mmdps\tests\test_vis\circosdata\boldnet\attr2.value.txt
+debuggroup summary 3.42s drawing track_0 text z 0 atlas.labels.txt 
+debuggroup summary 3.43s placing text track atlas.labels.txt
+debuggroup summary 3.43s ... see progress with -debug_group text
+debuggroup summary 3.43s ... see placement summary with -debug_group textplace
+debuggroup summary 3.57s found conf file E:\Software\Circos\circos-0.69-6\etc\tracks\axis.conf
+debuggroup summary 3.71s drawing track_1 heatmap z 0 attr0.value.txt 
+debuggroup summary 3.71s found conf file E:\Software\Circos\circos-0.69-6\etc\tracks\axis.conf
+debuggroup summary 3.82s drawing track_2 heatmap z 0 attr1.value.txt 
+debuggroup summary 3.83s found conf file E:\Software\Circos\circos-0.69-6\etc\tracks\axis.conf
+debuggroup summary 3.96s drawing track_3 heatmap z 0 attr2.value.txt 
+debuggroup summary 3.97s found conf file E:\Software\Circos\circos-0.69-6\etc\tracks\axis.conf
+debuggroup output 4.09s generating output
+debuggroup output 4.73s created PNG image ./.\circos.png (1054 kb)
+debuggroup output 4.75s created SVG image ./.\circos.svg (280 kb)

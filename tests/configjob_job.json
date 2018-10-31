@@ -1,0 +1,6 @@
+{
+    "typename": "BatchJob",
+    "name": "TestBatch",
+    "cmd": "",
+    "config": "configjob_batchjob.json"
+}

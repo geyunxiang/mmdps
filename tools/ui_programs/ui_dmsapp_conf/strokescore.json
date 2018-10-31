@@ -1,0 +1,27 @@
+{
+    "typename": "CompositeField",
+    "name": "StrokeScore",
+    "value": "",
+    "children": [
+        {
+            "typename": "StringField",
+            "name": "date",
+            "value": ""
+        },
+        {
+            "typename": "FloatField",
+            "name": "scFMA",
+            "value": 0.0
+        },
+        {
+            "typename": "FloatField",
+            "name": "scARAT",
+            "value": 0.0
+        },
+        {
+            "typename": "FloatField",
+            "name": "scWOLF",
+            "value": 0.0
+        }
+    ]
+}

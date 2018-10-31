@@ -1,0 +1,230 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.proc.loader &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.proc.loader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Loader is used to load all fusion input.</span>
+
+<span class="sd">The fusion input is loaded by loaders.</span>
+<span class="sd">The loaders are created by fusion constructor. There are config files</span>
+<span class="sd">to config every loader.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">netattr</span>
+<span class="kn">from</span> <span class="nn">..util.loadsave</span> <span class="k">import</span> <span class="n">load_csvmat</span><span class="p">,</span> <span class="n">load_txt</span>
+<span class="kn">from</span> <span class="nn">..util</span> <span class="k">import</span> <span class="n">path</span>
+
+
+<div class="viewcode-block" id="Loader"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader">[docs]</a><span class="k">class</span> <span class="nc">Loader</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Base class Loader is used to load raw array data.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mainfolder</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">foldername</span><span class="p">,</span> <span class="n">csvdict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the loader.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainfolder</span> <span class="o">=</span> <span class="n">mainfolder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlasobj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">foldername</span> <span class="o">=</span> <span class="n">foldername</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csvdict</span> <span class="o">=</span> <span class="n">csvdict</span>
+
+<div class="viewcode-block" id="Loader.names"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.names">[docs]</a>    <span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The feature names in csvdict.&quot;&quot;&quot;</span>
+        <span class="n">thenames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">csvdict</span><span class="p">:</span>
+            <span class="n">thenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">thenames</span></div>
+    
+<div class="viewcode-block" id="Loader.fullfile"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.fullfile">[docs]</a>    <span class="k">def</span> <span class="nf">fullfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Full path for one feature.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainfolder</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Loader.csvfilename"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.csvfilename">[docs]</a>    <span class="k">def</span> <span class="nf">csvfilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the csv filename by feature name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">csvdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">netattrname</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Loader.loadfilepath"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.loadfilepath">[docs]</a>    <span class="k">def</span> <span class="nf">loadfilepath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;File path for one feature.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullfile</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">foldername</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">csvfilename</span><span class="p">(</span><span class="n">netattrname</span><span class="p">))</span></div>
+    
+<div class="viewcode-block" id="Loader.loaddata"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.loaddata">[docs]</a>    <span class="k">def</span> <span class="nf">loaddata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load the feature specified by mriscan and feature name.&quot;&quot;&quot;</span>
+        <span class="n">csvfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadfilepath</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">load_csvmat</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Loader.load"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load Mat, with atlasobj.&quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">)</span>
+        <span class="n">netattrobj</span> <span class="o">=</span> <span class="n">netattr</span><span class="o">.</span><span class="n">Mat</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">netattrobj</span></div>
+
+<div class="viewcode-block" id="Loader.loadvstack"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.loadvstack">[docs]</a>    <span class="k">def</span> <span class="nf">loadvstack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load all data in every mriscan in mriscans.</span>
+
+<span class="sd">        Every feature data for one mriscan is flattened, before vstacked to a matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">datalist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="n">mriscans</span><span class="p">:</span>
+            <span class="n">curdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">)</span>
+            <span class="n">datalist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curdata</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+        <span class="n">datavstack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">datalist</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">datavstack</span></div></div>
+    
+<div class="viewcode-block" id="AttrLoader"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.AttrLoader">[docs]</a><span class="k">class</span> <span class="nc">AttrLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Attribute loader.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AttrLoader.load"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.AttrLoader.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load the attribute object, with atlasobj.&quot;&quot;&quot;</span>
+        <span class="n">attrdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span>
+        <span class="n">attr</span> <span class="o">=</span> <span class="n">netattr</span><span class="o">.</span><span class="n">Attr</span><span class="p">(</span><span class="n">attrdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">attr</span></div></div>
+
+<div class="viewcode-block" id="NetLoader"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.NetLoader">[docs]</a><span class="k">class</span> <span class="nc">NetLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Net loader.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="NetLoader.load"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.NetLoader.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load the net object, with atlasobj.&quot;&quot;&quot;</span>
+        <span class="n">netdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">netattr</span><span class="o">.</span><span class="n">Net</span><span class="p">(</span><span class="n">netdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">net</span></div></div>
+
+<div class="viewcode-block" id="ScoreLoader"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.ScoreLoader">[docs]</a><span class="k">class</span> <span class="nc">ScoreLoader</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Score loader is used to load clinical score data.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scoreconfigdict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the loader. </span>
+<span class="sd">        </span>
+<span class="sd">        After init, there are mriscans, scorenames,</span>
+<span class="sd">        scores_dict[scorename], mriscan_scores_dict[mriscan].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scorecsvfile</span> <span class="o">=</span> <span class="n">scoreconfigdict</span><span class="p">[</span><span class="s1">&#39;csvfile&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_scorecsvfile</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="ScoreLoader.load_scorecsvfile"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.ScoreLoader.load_scorecsvfile">[docs]</a>    <span class="k">def</span> <span class="nf">load_scorecsvfile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load the score csv file.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scorecsvfile</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scorecsvfile</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mriscan_scores_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mriscans</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scorenames</span> <span class="o">=</span> <span class="n">headers</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scores_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">scorename</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorenames</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scores_dict</span><span class="p">[</span><span class="n">scorename</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="n">mriscan</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mriscans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mriscan</span><span class="p">)</span>
+                <span class="n">curscores</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mriscan_scores_dict</span><span class="p">[</span><span class="n">mriscan</span><span class="p">]</span> <span class="o">=</span> <span class="n">curscores</span>
+                <span class="k">for</span> <span class="n">iscore</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">curscores</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scores_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scorenames</span><span class="p">[</span><span class="n">iscore</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curscores</span><span class="p">[</span><span class="n">iscore</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="ScoreLoader.loadvstack"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.ScoreLoader.loadvstack">[docs]</a>    <span class="k">def</span> <span class="nf">loadvstack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load all scores vstacked to a matrix for all mriscans, in order.&quot;&quot;&quot;</span>
+        <span class="n">scoreslist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="n">mriscans</span><span class="p">:</span>
+            <span class="n">curscores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mriscan_scores_dict</span><span class="p">[</span><span class="n">mriscan</span><span class="p">]</span>
+            <span class="n">scoreslist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curscores</span><span class="p">)</span>
+        <span class="n">scoresvstack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">scoreslist</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scoresvstack</span></div></div>
+    
+<div class="viewcode-block" id="GroupLoader"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.GroupLoader">[docs]</a><span class="k">class</span> <span class="nc">GroupLoader</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Group loader is used to load a group.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupconfigdict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the loader using config dict.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mriscanstxt</span> <span class="o">=</span> <span class="n">groupconfigdict</span><span class="p">[</span><span class="s1">&#39;txtfile&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_mriscanstxt</span><span class="p">()</span>
+
+<div class="viewcode-block" id="GroupLoader.load_mriscanstxt"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.GroupLoader.load_mriscanstxt">[docs]</a>    <span class="k">def</span> <span class="nf">load_mriscanstxt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load the mriscans txt file.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mriscanstxt</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mriscans</span> <span class="o">=</span> <span class="n">load_txt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mriscanstxt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">people</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_internals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mriscans</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GroupLoader.build_internals"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.GroupLoader.build_internals">[docs]</a>    <span class="k">def</span> <span class="nf">build_internals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build internals.&quot;&quot;&quot;</span>
+        <span class="n">peopleset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">person_mriscans_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="n">mriscans</span><span class="p">:</span>
+            <span class="n">person</span><span class="p">,</span> <span class="n">mriscandate</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">name_date</span><span class="p">(</span><span class="n">mriscan</span><span class="p">)</span>
+            <span class="n">peopleset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">person_mriscans_dict</span><span class="p">:</span>
+                <span class="n">person_mriscans_dict</span><span class="p">[</span><span class="n">person</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mriscan</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">person_mriscans_dict</span><span class="p">[</span><span class="n">person</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">mriscan</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">person_mriscans_dict</span> <span class="o">=</span> <span class="n">person_mriscans_dict</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">peopleset</span><span class="p">))</span></div>
+    
+<div class="viewcode-block" id="GroupLoader.person_to_mriscans"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.GroupLoader.person_to_mriscans">[docs]</a>    <span class="k">def</span> <span class="nf">person_to_mriscans</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Person to mriscans, in this group.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">person_mriscans_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="p">[])</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

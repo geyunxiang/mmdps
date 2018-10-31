@@ -1,0 +1,18 @@
+{
+    "name": "BasicProcAndUnatlasedGenNet",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "BasicProc",
+            "typename": "PythonJob",
+            "cmd": "runjob.py",
+            "config": "configjob_dwi_basicproc.json"
+        },
+        {
+            "name": "UnatlasedGenNet",
+            "typename": "PythonJob",
+            "cmd": "runjob.py",
+            "config": "configjob_dwi_gen_track.json"
+        }
+    ]
+}

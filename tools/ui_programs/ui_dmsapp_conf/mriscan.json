@@ -1,0 +1,36 @@
+{
+    "typename": "CompositeField",
+    "name": "MRIScan",
+    "children": [
+        {
+            "typename": "StringField",
+            "name": "id",
+            "value": ""
+        },
+        {
+            "typename": "StringField",
+            "name": "date",
+            "value": ""
+        },
+        {
+            "typename": "BoolField",
+            "name": "T1",
+            "value": ""
+        },
+        {
+            "typename": "BoolField",
+            "name": "T2",
+            "value": ""
+        },
+        {
+            "typename": "BoolField",
+            "name": "BOLD",
+            "value": ""
+        },
+        {
+            "typename": "BoolField",
+            "name": "DWI",
+            "value": ""
+        }
+    ]
+}

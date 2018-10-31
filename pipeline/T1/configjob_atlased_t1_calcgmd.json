@@ -1,0 +1,14 @@
+{
+    "name": "BatchJob",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "CalcGMD",
+            "typename": "PythonJob",
+            "cmd": "t1_calc_GMD.py",
+            "config": "",
+            "argv": "",
+            "wd": "."
+        }
+    ]
+}

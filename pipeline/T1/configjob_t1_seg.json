@@ -1,0 +1,24 @@
+{
+    "name": "MRFSeg",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "nii_to_hdrimg",
+            "typename": "PythonJob",
+            "cmd": "nii_to_hdrimg.py",
+            "argv": ["iwc123T1.nii"]
+        },
+        {
+            "name": "MRFSeg",
+            "typename": "ExecutableJob",
+            "cmd": "mrfseg.exe",
+            "argv": ["iwc123T1.hdr", "grey.hdr"]
+        },
+		{
+		    "name": "HdrToNii",
+			"typename": "PythonJob",
+			"cmd": "hdrimg_to_nii.py",
+			"argv": ["grey.hdr"]
+		}
+    ]
+}

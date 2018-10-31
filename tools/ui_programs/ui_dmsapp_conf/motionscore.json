@@ -1,0 +1,47 @@
+{
+    "typename": "CompositeField",
+    "name": "MotionScore",
+    "value": "",
+    "children": [
+        {
+            "typename": "StringField",
+            "name": "date",
+            "value": ""
+        },
+        {
+            "typename": "FloatField",
+            "name": "scTSI",
+            "value": 0.0
+        },
+        {
+            "typename": "FloatField",
+            "name": "scVAS",
+            "value": 0.0
+        },
+        {
+            "typename": "FloatField",
+            "name": "scSensory",
+            "value": 0.0
+        },
+        {
+            "typename": "FloatField",
+            "name": "scWISCI2",
+            "value": 0.0
+        },
+        {
+            "typename": "FloatField",
+            "name": "scSCIM",
+            "value": 0.0
+        },
+        {
+            "typename": "FloatField",
+            "name": "scMotor",
+            "value": 0.0
+        },
+        {
+            "typename": "FloatField",
+            "name": "scMAS",
+            "value": 0.0
+        }
+    ]
+}

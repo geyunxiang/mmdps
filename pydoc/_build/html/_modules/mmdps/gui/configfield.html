@@ -1,0 +1,148 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.gui.configfield &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.gui.configfield</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;config and field.</span>
+
+<span class="sd">Field is the whole primitive gui elements and associated data.</span>
+<span class="sd">Config is the human more readable config dict.</span>
+<span class="sd">This module ease their interchange.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">gui</span>
+
+
+<div class="viewcode-block" id="ConfigFieldConnector"><a class="viewcode-back" href="../../../mmdps.gui.html#mmdps.gui.configfield.ConfigFieldConnector">[docs]</a><span class="k">class</span> <span class="nc">ConfigFieldConnector</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Base class for config and field interchange.</span>
+<span class="sd">    </span>
+<span class="sd">    You can provide your own implementation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="ConfigFieldConnector.config_to_field"><a class="viewcode-back" href="../../../mmdps.gui.html#mmdps.gui.configfield.ConfigFieldConnector.config_to_field">[docs]</a>    <span class="k">def</span> <span class="nf">config_to_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;convert config to field.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConfigFieldConnector.field_to_config"><a class="viewcode-back" href="../../../mmdps.gui.html#mmdps.gui.configfield.ConfigFieldConnector.field_to_config">[docs]</a>    <span class="k">def</span> <span class="nf">field_to_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;convert field to config.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+    
+<div class="viewcode-block" id="find_by_name"><a class="viewcode-back" href="../../../mmdps.gui.html#mmdps.gui.configfield.find_by_name">[docs]</a><span class="k">def</span> <span class="nf">find_by_name</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;find child in children by name.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">child</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DefaultSimpleConnector"><a class="viewcode-back" href="../../../mmdps.gui.html#mmdps.gui.configfield.DefaultSimpleConnector">[docs]</a><span class="k">class</span> <span class="nc">DefaultSimpleConnector</span><span class="p">(</span><span class="n">ConfigFieldConnector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The default config field connector.</span>
+<span class="sd">    </span>
+<span class="sd">    Configured use a initdict. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initdict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Use initdict to configure the connector. See builtin ui for example.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initdict</span> <span class="o">=</span> <span class="n">initdict</span>
+
+<div class="viewcode-block" id="DefaultSimpleConnector.default_config"><a class="viewcode-back" href="../../../mmdps.gui.html#mmdps.gui.configfield.DefaultSimpleConnector.default_config">[docs]</a>    <span class="k">def</span> <span class="nf">default_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;return default config.&quot;&quot;&quot;</span>
+        <span class="n">rootfield</span> <span class="o">=</span> <span class="n">gui</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initdict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_to_config</span><span class="p">(</span><span class="n">rootfield</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DefaultSimpleConnector.config_to_field"><a class="viewcode-back" href="../../../mmdps.gui.html#mmdps.gui.configfield.DefaultSimpleConnector.config_to_field">[docs]</a>    <span class="k">def</span> <span class="nf">config_to_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overrided config to field.&quot;&quot;&quot;</span>
+        <span class="n">rootfield</span> <span class="o">=</span> <span class="n">gui</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initdict</span><span class="p">)</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="n">rootfield</span><span class="o">.</span><span class="n">children</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="n">find_by_name</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">child</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> not exist in children&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">rootfield</span></div>
+
+<div class="viewcode-block" id="DefaultSimpleConnector.field_to_config"><a class="viewcode-back" href="../../../mmdps.gui.html#mmdps.gui.configfield.DefaultSimpleConnector.field_to_config">[docs]</a>    <span class="k">def</span> <span class="nf">field_to_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;overrided field to config.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">field</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_config</span><span class="p">()</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">children</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+            <span class="n">config</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="n">config</span></div></div>
+    
+    
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

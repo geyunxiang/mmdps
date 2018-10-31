@@ -1,0 +1,11 @@
+{
+    "name": "BoldGenNet",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "GenNet",
+            "typename": "PythonJob",
+            "cmd": "bold_gen_net.py"
+        }
+    ]
+}
