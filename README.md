@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Multi-Modal Data Processing System
 
 ## New Data Process Pipeline
