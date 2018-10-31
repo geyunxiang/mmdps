@@ -1,7 +1,0 @@
-mmdps
-=====
-
-.. toctree::
-   :maxdepth: 4
-
-   mmdps
