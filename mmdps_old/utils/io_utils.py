@@ -73,6 +73,7 @@ def loadAllTemporalNets(boldPath, totalTimeCase, template_name = 'brodmann_lr_3'
 		currentPersonScans.append(brain_net.BrainNet(net_config = {'template':template_name}, output_path = os.path.join(boldPath, scan, 'bold_net', template_name)))
 	return ret
 
+
 def loadSpecificNets(boldPath, template_name = 'brodmann_lr_3', timeCase = 1, subjectList = None):
 	"""
 	This function is used to load the first/second/etc scans of patients
