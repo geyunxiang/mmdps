@@ -78,8 +78,8 @@ def run(f, argvec, processes=None):
 	processes = get_processes(processes)
 	with multiprocessing.Pool(processes) as pool:
 		manager = multiprocessing.Manager()
-		queue = manager.Queue()
-		fwrap = FWrap(f, queue)
+		managerQueue = manager.Queue()
+		fwrap = FWrap(f, managerQueue)
 		result = pool.map_async(fwrap.run, argvec)
 		ntotal = len(argvec)
 		nError = 0
@@ -91,7 +91,7 @@ def run(f, argvec, processes=None):
 				break
 			else:
 				try:
-					res = queue.get(timeout=1)
+					res = managerQueue.get(timeout=1)
 				except queue.Empty:
 					continue
 				else:
