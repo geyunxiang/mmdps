@@ -11,3 +11,7 @@
 	* DWI: run `configjob_main_dwi.json`. Note: one should modify `configpara_dwi_project.json` and `configpara_atlased_dwi_project.json` for the appropriate folder list.
 
 	* BOLD: run `configpara_bold_project.json`. Remember to modify `FolderList`.
+
+## Parallel mechanism
+
+* Set env `set MMDPS_CPU_COUNT=n` to force the cpu count to n.

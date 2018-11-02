@@ -59,8 +59,8 @@ class Para:
 		secondlist = d['SecondList']
 		jobconfig = d['JobConfig']
 		runmode = d['RunMode']
-		o = cls(name, mainfolder, jobconfig, folderlist, runmode, bsecond, secondlist)
-		return o
+		paraobj = cls(name, mainfolder, jobconfig, folderlist, runmode, bsecond, secondlist)
+		return paraobj
 
 	def to_dict(self):
 		"""Serialize to dict."""
@@ -82,7 +82,10 @@ class Para:
 				return b
 
 	def run_para(self, jobobj, folders):
-		"""Run all jobs in parallel."""
+		"""
+		Run all jobs in parallel.
+		folders is a list of folder names
+		"""
 		f = functools.partial(job.runjob, jobobj)
 		return parabase.run(f, folders)
 		#return parabase.run_simple(f, folders)
