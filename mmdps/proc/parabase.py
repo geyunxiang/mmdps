@@ -76,11 +76,11 @@ def run1(f, argvec, processes=None):
 def run(f, argvec, processes=None):
 	"""Run function f len(argvec) times, each time use one arg in argvec."""
 	processes = get_processes(processes)
-	with multiprocessing.Pool(processes) as p:
-		m = multiprocessing.Manager()
-		q = m.Queue()
-		fwrap = FWrap(f, q)
-		result = p.map_async(fwrap.run, argvec)
+	with multiprocessing.Pool(processes) as pool:
+		manager = multiprocessing.Manager()
+		managerQueue = manager.Queue()
+		fwrap = FWrap(f, managerQueue)
+		result = pool.map_async(fwrap.run, argvec)
 		ntotal = len(argvec)
 		nError = 0
 		errorList = []
@@ -91,7 +91,7 @@ def run(f, argvec, processes=None):
 				break
 			else:
 				try:
-					res = q.get(timeout=1)
+					res = managerQueue.get(timeout=1)
 				except queue.Empty:
 					continue
 				else:

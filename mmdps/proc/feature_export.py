@@ -1,7 +1,7 @@
 """
 Export all features to feature database.
 
-Use this exporter to export features from where calculated to feature database.
+Use this exporter to export features from the calculation folder to feature database.
 """
 import os
 import shutil

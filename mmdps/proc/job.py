@@ -42,7 +42,7 @@ def call_logged2(cmdlist, info=''):
 def call_logged(cmdlist, info=''):
 	"""Call the cmdlist and output the log to a file in log folder."""
 	logfilePath = genlogfilename(info)
-	print('call_logged %s at %s' % (cmdlist, logfilePath))
+	print('call_logged %s at %s' % (cmdlist, os.path.join(os.getcwd(), logfilePath)))
 	with open(logfilePath, 'w') as f:
 		f.write(str(cmdlist)+'\n\n')
 		f.flush()
@@ -103,8 +103,8 @@ class Job:
 		config = d.get('config', '')
 		argv = d.get('argv', '')
 		wd = d.get('wd', '.')
-		o = cls(name, cmd, config, argv, wd)
-		return o
+		jobobj = cls(name, cmd, config, argv, wd)
+		return jobobj
 
 	def to_dict(self):
 		"""Serialize the job to dict."""
@@ -252,8 +252,8 @@ class BatchJob(Job):
 
 	def run_configfile(self):
 		"""Run config file, use runjob.py."""
-		runbatchpath = os.path.join(rootconfig.path.tools, 'job_runner', 'runjob.py')
-		cmdlist = [sys.executable, runbatchpath]
+		runBatchPath = os.path.join(rootconfig.path.tools, 'job_runner', 'runjob.py')
+		cmdlist = [sys.executable, runBatchPath]
 		cmdlist.extend(shlex.split(self.argv))
 		if self.config:
 			cmdlist.extend(['--config', self.build_fullconfig()])
@@ -264,10 +264,10 @@ class BatchJob(Job):
 		"""Run job list, one by one."""
 		jobs = []
 		for jobconfig in self.config:
-			curjob = create(jobconfig)
-			jobs.append(curjob)
-		for curjob in jobs:
-			retcode = curjob.run()
+			currentJob = create(jobconfig)
+			jobs.append(currentJob)
+		for currentJob in jobs:
+			retcode = currentJob.run()
 			if retcode != 0:
 				return retcode
 		return 0
@@ -286,11 +286,14 @@ JobClasses = [Job, ShellJob, PythonJob, MatlabJob, ExecutableJob, BatchJob]
 JobClassesDict = {C.__name__: C for C in JobClasses}
 
 def create(d):
-	"""Create a job from dict."""
+	"""
+	Create a job from dict. The type of the job is specified in 'typename'.
+	An instance of the corresponding class is created and returned.
+	"""
 	typename = d['typename']
 	C = JobClassesDict[typename]
-	o = C.from_dict(d)
-	return o
+	jobobj = C.from_dict(d)
+	return jobobj
 
 def dump(job):
 	"""Dump the job to console."""
@@ -300,10 +303,10 @@ def load(d):
 	"""Load a job from dict."""
 	return create(d)
 
-def runjob(job, folder=None):
+def runjob(currentJob, folder=None):
 	"""Run the job in folder."""
 	if folder:
 		with ChangeDirectory(folder):
-			return job.run()
+			return currentJob.run()
 	else:
-		return job.run()
+		return currentJob.run()
