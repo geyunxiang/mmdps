@@ -4,7 +4,7 @@ from mmdps import rootconfig
 
 
 DEBUG = True
-SQLALCHEMY_DATABASE_URI = 'sqlite:///E:/MMDPSoftware/mmdps/server/apiserver/mmdpdb.db'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///F:/geyunxiang/mmdps_git/server/apiserver/mmdpdb.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 RESOURCE_METHODS = ['GET', 'POST']
 
