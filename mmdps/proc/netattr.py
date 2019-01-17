@@ -1,7 +1,7 @@
 """Feature data container.
 
 Net is a network feature.
-Attr is a attribute feature.
+Attr is an attribute feature.
 Both have corresponding atlasobj in them.
 You can create sub-net or sub-attr, the atlasobj is also subbed.
 """
