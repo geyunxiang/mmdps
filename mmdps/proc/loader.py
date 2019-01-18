@@ -3,9 +3,6 @@
 The fusion input is loaded by loaders.
 The loaders are created by fusion constructor. There are config files
 to config every loader.
-
-TODO: 
-2. add functionality to load the 1st/2nd... scans from a list of subject names
 """
 import os
 import csv
@@ -126,6 +123,11 @@ class Loader:
 				mriscans.extend(currentScans[:num_scan])
 			else:
 				mriscans.append(currentScans[num_scan-1])
+		# check if some one is missing
+		if accumulate and len(mriscans) != num_scan * len(namelist):
+			print('Loader Warning: no. mriscans found (%d) not equal to no. subjects (%d) times num_scan (%d)' % (len(mriscans), len(namelist), num_scan))
+		elif not accumulate and len(mriscans) != len(namelist):
+			print('Loader Warning: no. mriscans found (%d) not equal to no. subjects (%d)' % (len(mriscans), len(namelist)))
 		return mriscans
 
 class AttrLoader(Loader):
@@ -145,6 +147,8 @@ class AttrLoader(Loader):
 
 		mriscan0 | attr0v attr1v attr2v
 		mriscan1 | attr0v attr1v attr2v
+		- mriscans: a list of scans
+		- attrnames: a list of names
 		"""
 		attrvs = []
 		for attrname in attrnames:
@@ -159,6 +163,13 @@ class NetLoader(Loader):
 		netdata = self.loaddata(mriscan, attrname)
 		net = netattr.Net(netdata, self.atlasobj, mriscan)
 		return net
+
+	def loadvstackmulti(self, mriscans, attrname):
+		"""Load a list of nets"""
+		ret = []
+		for mriscan in mriscans:
+			ret.append(self.load(mriscan, attrname))
+		return ret
 
 class ScoreLoader:
 	"""Score loader is used to load clinical score data."""
@@ -238,4 +249,4 @@ if __name__ == '__main__':
 	from mmdps.proc import atlas
 	atlasobj = atlas.get('brodmann_lr')
 	l = AttrLoader('Z:/ChangGungFeatures/', atlasobj)
-	print(l.generate_mriscans(['zhoubaoguo', 'zhoushihui'], 2, accumulate = True))
+	print(l.generate_mriscans(['wangzemin'], 1, accumulate = True))
