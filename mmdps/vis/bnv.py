@@ -16,6 +16,7 @@ import numpy as np
 from mmdps.util import path
 from mmdps import rootconfig
 from mmdps.proc import job, netattr
+from PIL import Image, ImageDraw, ImageFont
 
 # built in mesh
 BuiltinMeshDict = {'ch2cere': 'ch2cere.nv', 'icbm152smoothed': 'icbm152smoothed.nv'}
@@ -59,6 +60,21 @@ def gen_matlab(nodepath, edgepath, title, outpath, bnv_mesh, bnv_cfg):
 	rows.append('draw_brain_net(nodefile, edgefile, desc, outpath, bnv_mesh, bnv_cfg);')
 	mstr = ''.join(rows)
 	return mstr
+
+def decorate_image(image_path, title):
+	"""
+	Add title to image
+	"""
+	img = Image.open(image_path)
+	padtop = 100
+	newImg = Image.new('RGBA', (img.width, padtop + img.height), (255, 255, 255, 255))
+	newImg.paste(img, (0, padtop, img.width, padtop + img.height))
+	draw = ImageDraw.Draw(newImg)
+	font = ImageFont.truetype('arial.ttf', 72)
+	w, h = draw.textsize(title, font = font)
+	draw.text((img.width/2-w/2, padtop/2-h/2), title, (0, 0, 0), font=font)
+	newpng = image_path[:-4] + '_decorated.png'
+	newImg.save(newpng)
 
 class MatProc:
 	"""Matrix proc."""
@@ -135,8 +151,21 @@ class BNVNode:
 		for irow in range(self.count):
 			self.nodedata[irow][col] = colvalue[irow]
 
+	def change_mocular_according_to_label(self, label_to_change, modular_value):
+		"""
+		This function could be used to change the modular value of nodes according
+		to the label specified in a list. The modular value is further used to 
+		specify node color.
+		"""
+		for irwo in range(self.count):
+			if self.nodedata[irow][5] in label_to_change:
+				self.nodedata[irow][3] = modular_value
+
 	def change_modular(self, modular):
-		"""Change the modular column."""
+		"""
+		Change the modular column.
+		Specify each node's modular value in a list
+		"""
 		self.change_column(3, modular)
 
 	def change_value(self, value):

@@ -106,6 +106,21 @@ class Net:
 		newnet = Net(self.data.copy(), self.atlasobj, self.name)
 		return newnet
 
+	def copySubnetOnly(self, subAreaList):
+		"""
+		Return a copy of current network, but only values associated
+		with the subnetwork specified by areas in the subAreaList argument
+		"""
+		newnet = Net(self.data.copy(), self.atlasobj, self.name)
+		mask = np.zeros(self.data.shape)
+		indexList = [self.atlasobj.ticks.index(area) for area in subAreaList]
+		for xidx in range(self.atlasobj.count):
+			for yidx in range(self.atlasobj.count):
+				if xidx in indexList and yidx in indexList:
+					mask[xidx, yidx] = 1
+		newnet.data = np.multiply(newnet.data, mask)
+		return newnet
+
 	def gensub(self, subatlasname, subindexes):
 		"""Generate a sub net, with proper atlasobj."""
 		subdata = dataop.sub_mat(self.data, subindexes)
