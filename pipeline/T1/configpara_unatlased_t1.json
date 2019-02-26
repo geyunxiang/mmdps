@@ -4,6 +4,6 @@
     "FolderList": "E:/DataProcessing/newdata/data_dicom_all.txt",
     "Second": false,
     "SecondList": "",
-    "JobConfig": "E:/MMDPSoftware/mmdps/pipeline/T1/configjob_unatlased_t1.json",
+    "JobConfig": "F:/geyunxiang/mmdps_git/pipeline/T1/configjob_unatlased_t1.json",
     "RunMode": "Parallel"
 }
