@@ -29,3 +29,5 @@
 * Use this module to load networks/graph metrics or other features of a list of subjects/scans
 
 * `loader.Loader.generate_mriscans` is used to generate a list of mriscans from a list of subject names. This is useful if one want to load all (up to) first/second... scans of some subjects.
+
+* `loader.Loader.loadvstackmulti` is used to load attributes for a list of scans. The returned value is a list of Attrs.

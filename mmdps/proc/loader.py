@@ -164,7 +164,7 @@ class NetLoader(Loader):
 		net = netattr.Net(netdata, self.atlasobj, mriscan)
 		return net
 
-	def loadvstackmulti(self, mriscans, attrname):
+	def loadMulti(self, mriscans, attrname = 'BOLD.net'):
 		"""Load a list of nets"""
 		ret = []
 		for mriscan in mriscans:
@@ -172,45 +172,47 @@ class NetLoader(Loader):
 		return ret
 
 class ScoreLoader:
-	"""Score loader is used to load clinical score data."""
-	def __init__(self, scoreconfigdict):
-		"""Init the loader. 
-
-		After init, there are mriscans, scorenames,
-		scores_dict[scorename], mriscan_scores_dict[mriscan].
+	"""ScoreLoader is used to load clinical score data."""
+	def __init__(self, scoreCsvFile):
 		"""
-		self.scorecsvfile = scoreconfigdict['csvfile']
-		self.load_scorecsvfile()
+		The loader contains
+			- mriscans: a list of scans
+			- scoreNames: a list of scoreNames
+			- scores_dict[scorename]: a list of actual score values
+			- mriscan_scores_dict[mriscan]: a list of all scores related to this scan
+		"""
+		self.scoreCsvFile = scoreCsvFile
+		self.load_scoreCsvFile()
 
-	def load_scorecsvfile(self):
-		"""Load the score csv file."""
-		if not os.path.isfile(self.scorecsvfile):
+	def load_scoreCsvFile(self):
+		"""Load score csv file."""
+		if not os.path.isfile(self.scoreCsvFile):
 			return
-		with open(self.scorecsvfile, newline='') as f:
+		with open(self.scoreCsvFile, newline='') as f:
 			self.mriscan_scores_dict = {}
 			self.mriscans = []
 			reader = csv.reader(f)
 			headers = next(reader)
-			self.scorenames = headers[1:]
+			self.scoreNames = headers[1:]
 			self.scores_dict = {}
-			for scorename in self.scorenames:
+			for scorename in self.scoreNames:
 				self.scores_dict[scorename] = []
 			for row in reader:
 				mriscan = row[0]
 				self.mriscans.append(mriscan)
-				curscores = [float(s) for s in row[1:]]
-				self.mriscan_scores_dict[mriscan] = curscores
-				for iscore, score in enumerate(curscores):
-					self.scores_dict[self.scorenames[iscore]].append(curscores[iscore])
+				currentScores = [float(s) for s in row[1:]]
+				self.mriscan_scores_dict[mriscan] = currentScores
+				for iscore, score in enumerate(currentScores):
+					self.scores_dict[self.scoreNames[iscore]].append(score)
 
 	def loadvstack(self, mriscans):
-		"""Load all scores vstacked to a matrix for all mriscans, in order."""
-		scoreslist = []
+		"""Load all scores and vstack them to a matrix for all mriscans, in order."""
+		scoresList = []
 		for mriscan in mriscans:
-			curscores = self.mriscan_scores_dict[mriscan]
-			scoreslist.append(curscores)
-		scoresvstack = np.vstack(scoreslist)
-		return scoresvstack
+			currentScores = self.mriscan_scores_dict[mriscan]
+			scoresList.append(currentScores)
+		scores_vstack = np.vstack(scoresList)
+		return scores_vstack
 
 class GroupLoader:
 	"""Group loader is used to load a group."""
