@@ -149,6 +149,7 @@ class AttrLoader(Loader):
 		mriscan1 | attr0v attr1v attr2v
 		- mriscans: a list of scans
 		- attrnames: a list of names
+		The return data dimension is len(mriscans) X (len(attrnames) * atlasobj.count)
 		"""
 		attrvs = []
 		for attrname in attrnames:
