@@ -12,7 +12,7 @@ import glob
 from collections import OrderedDict
 # from . import loader
 # from ..util.loadsave import load_json_ordered
-import loader
+from mmdps.proc import loader
 from mmdps.util.loadsave import load_json_ordered
 
 def merge_dicts(*dicts):
