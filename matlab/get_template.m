@@ -7,9 +7,8 @@ thisfilepath = mfilename('fullpath');
 
 atlasfolder = fullfile(mmdpsroot, 'atlas');
 
-niirp = [templatename, '_3.nii']
-
-disp(niirp);
+niirp = [templatename, '_3.nii'];
+fprintf(1, 'Template file: %s\n', niirp);
 
 t.niipath = fullfile(atlasfolder, templatename, niirp);
 

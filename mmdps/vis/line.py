@@ -49,6 +49,10 @@ class OverlappedLinePlot:
 		"""
 
 class CorrPlot:
+	"""
+	This class is used to generate correlation, usually correlation between FC/graph
+	attributes and clinical scores
+	"""
 	def __init__(self, xvec, yvec, xlabel, ylabel, title, outfile):
 		self.xvec = xvec
 		self.yvec = yvec
@@ -56,6 +60,7 @@ class CorrPlot:
 		self.outfile = outfile
 		self.xlabel = xlabel
 		self.ylabel = ylabel
+
 	def plot(self):
 		slope, intercept, rvalue, pvalue, stderr = stats.linregress(self.xvec, self.yvec)
 		fig = plt.figure(figsize=(8, 6))
