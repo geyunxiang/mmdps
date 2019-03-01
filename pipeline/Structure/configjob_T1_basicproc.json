@@ -1,0 +1,16 @@
+{
+    "name": "T1BetNorm",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "T1BetNorm",
+            "typename": "MatlabJob",
+            "cmd": "t1_betnorm"
+        },
+        {
+        	"name": "T1DtConvert",
+        	"typename": "MatlabJob",
+        	"cmd": "t1_convert_datatype"
+        }
+    ]
+}

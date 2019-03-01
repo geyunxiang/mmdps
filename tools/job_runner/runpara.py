@@ -16,7 +16,7 @@ if __name__ == '__main__':
 	parser.add_argument('--config', help='para config json file', required=True)
 	args = parser.parse_args()
 	configpath = path.fullfile(args.config)
-	print('configpath', configpath)
+	print('Runpara: configpath', configpath)
 	configdict = load_json(configpath)
 	curpara = proc.para.load(configdict)
 	runpara(curpara)

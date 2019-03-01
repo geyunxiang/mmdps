@@ -39,24 +39,27 @@ def call_logged2(cmdlist, info=''):
 		f.write(output)
 	return retcode
 
-def call_logged(cmdlist, info=''):
+def call_logged(cmdlist, info='',isShell=False):
 	"""Call the cmdlist and output the log to a file in log folder."""
 	logfilePath = genlogfilename(info)
-	print('call_logged %s at %s' % (cmdlist, os.path.join(os.getcwd(), logfilePath)))
+	print('Call_logged %s at %s' % (cmdlist, os.path.join(os.getcwd(), logfilePath)))
 	with open(logfilePath, 'w') as f:
 		f.write(str(cmdlist)+'\n\n')
 		f.flush()
-		p = subprocess.Popen(cmdlist, stdout=f, stderr=f)
+		if isShell:
+			p = subprocess.Popen(cmdlist, stdout=f, stderr=f, shell=True, executable="/bin/bash")
+		else:
+			p = subprocess.Popen(cmdlist, stdout=f, stderr=f)
 		p.communicate()
 	retcode = p.returncode
 	if retcode != 0:
 		warnings.warn('Error run "{}", return code is {}'.format(str(cmdlist), retcode))
 	return p.returncode
 
-def call_in_wd(cmdlist, wd, info=''):
+def call_in_wd(cmdlist, wd, info='', isShell=False):
 	"""Call in supplied working directory."""
 	with ChangeDirectory(wd):
-		retcode = call_logged(cmdlist, info)
+		retcode = call_logged(cmdlist, info, isShell=isShell)
 	return retcode
 
 class ChangeDirectory:
@@ -166,6 +169,12 @@ class ShellJob(Job):
 		"""Init the shell job."""
 		super().__init__(name, cmd, config, argv, wd)
 
+	def run(self):
+		"""Build cmd list and run the job in wd."""
+		cmdlist = self.build_cmdlist()
+		retcode = call_in_wd(cmdlist, self.wd, self.name, isShell=True)
+		return retcode
+
 class PythonJob(Job):
 	"""Python job, run a python script.
 	
@@ -218,13 +227,13 @@ class MatlabJob(Job):
 		cmdlist.extend(['-wait', '-nosplash', '-minimize', '-nodesktop', '-logfile',
 				self.build_matlab_logfile(), '-r'])
 		realcmd = []
-		realcmd.append('"')
+		#realcmd.append('"')
 		realcmd.append(self.matlab_path_to_add())
 		realcmd.append("try, ")
 		realcmd.append("cd('{0}');".format(self.build_matlab_wd()))
 		realcmd.append(self.cmd)
 		realcmd.append(" ; catch me, fprintf('%s / %s', me.identifier, me.message), exit(-1), end, exit;")
-		realcmd.append('"')
+		#realcmd.append('"')
 		realcmdstr = ''.join(realcmd)
 		cmdlist.append(realcmdstr)
 		return cmdlist

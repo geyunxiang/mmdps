@@ -1,0 +1,16 @@
+{
+    "name": "BasicProcOnT1andT2",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "T1BetNorm",
+            "typename": "BatchJob",
+            "config": "F:/geyunxiang/mmdps_git/pipeline/Structure/configjob_T1_basicproc.json"
+        },
+        {
+            "name": "T2BetCoRegister",
+            "typename": "BatchJob",
+            "config": "F:/geyunxiang/mmdps_git/pipeline/Structure/configjob_T2_basicproc.json"
+        }
+    ]
+}

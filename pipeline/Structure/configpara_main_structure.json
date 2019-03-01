@@ -1,0 +1,9 @@
+{
+    "name": "StructureProc",
+    "MainFolder": "E:/DataProcessing/Structure",
+    "FolderList": "E:/namelist.txt",
+    "Second": false,
+    "SecondList": "",
+    "JobConfig": "F:/geyunxiang/mmdps_git/pipeline/Structure/configjob_structure.json",
+    "RunMode": "Parallel"
+}

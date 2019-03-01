@@ -1,0 +1,16 @@
+{
+    "name": "T2BetCoRegister",
+    "typename": "BatchJob",
+    "config": [
+        {
+        	"name": "T2CoRegister",
+        	"typename": "MatlabJob",
+        	"cmd": "t2_reg"
+        },
+        {
+        	"name": "T2DtConvert",
+        	"typename": "MatlabJob",
+        	"cmd": "t2_convert_datatype"
+        }
+    ]
+}

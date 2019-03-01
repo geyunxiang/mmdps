@@ -16,7 +16,9 @@ AttrProcsDict = {
     'bold_interLE': bnv.ScaleProc(4).proc,
     'bold_interWD': bnv.ScaleProc(0.03).proc,
     'dwi_FA': bnv.ScaleProc(3).proc,
-    'dwi_MD': bnv.ScaleProc(1000).proc
+    'dwi_MD': bnv.ScaleProc(1000).proc,
+    'dwi_AD': bnv.ScaleProc(1000).proc,
+    'dwi_RD': bnv.ScaleProc(1000).proc
     }
 
 

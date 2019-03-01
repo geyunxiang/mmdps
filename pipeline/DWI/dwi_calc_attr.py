@@ -15,4 +15,6 @@ def calc_attr(theattr):
 if __name__ == '__main__':
     calc_attr('FA')
     calc_attr('MD')
+    calc_attr('AD')
+    calc_attr('RD')
     
