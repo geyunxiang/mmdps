@@ -28,10 +28,10 @@ class GroupManager:
 				continue
 			if filename.find('scan') == -1 and filename.find('name') == -1:
 				continue
-			if filename.find('name'):
+			if filename.find('name') != -1:
 				group = filename.split('_')[0]
 				self.nameDict[group] = loadsave.load_txt(os.path.join(self.folderPath, filename))
-			elif filename.find('scan'):
+			elif filename.find('scan') != -1:
 				group = filename.split('_')[0]
 				timeCase = filename[filename.find('-')+1:filename.find('.txt')]
 				self.scanDict[group+timeCase] = loadsave.load_txt(os.path.join(self.folderPath, filename))
@@ -45,3 +45,15 @@ class GroupManager:
 			self.nameDict[group] = []
 			for scan in scanList:
 				self.nameDict[group].append(scan[:scan.find('_')])
+
+	def allScansWithinGroup(self, groupName):
+		"""
+		This function will return all scans belonging to groupName
+		Essentially selecting all entries with keys containing the given key word
+		"""
+		groupName = groupName.lower()
+		ret = []
+		for key, value in self.scanDict:
+			if key.find(groupName) != -1:
+				ret += value
+		return ret

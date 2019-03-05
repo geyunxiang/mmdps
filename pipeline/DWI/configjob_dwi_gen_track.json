@@ -5,14 +5,12 @@
         {
             "name": "MakedirNative",
             "typename": "ShellJob",
-            "cmd": "mkdir",
-            "argv": ["-p", "nativespace"]
+            "cmd": "mkdir -p nativespace"
         },
         {
             "name": "MakedirNormalized",
             "typename": "ShellJob",
-            "cmd": "mkdir",
-            "argv": ["-p", "normalizedspace"]
+            "cmd": "mkdir -p normalizedspace"
         },
         {
             "name": "TractGenModelNative",

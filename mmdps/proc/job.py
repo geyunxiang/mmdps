@@ -44,6 +44,7 @@ def call_logged(cmdlist, info='',isShell=False):
 	logfilePath = genlogfilename(info)
 	print('Call_logged %s at %s' % (cmdlist, os.path.join(os.getcwd(), logfilePath)))
 	with open(logfilePath, 'w') as f:
+		f.write('Command: \n')
 		f.write(str(cmdlist)+'\n\n')
 		f.flush()
 		if isShell:
@@ -86,7 +87,7 @@ class Job:
 		"""Init the job with name, cmd, config, argv and wd.
 		
 		The config will become --config CONFIG in argv.
-		wd is the working directory in which should be job run.
+		wd is the working directory in which the job would be run.
 		"""
 		self.name = name
 		self.typename = type(self).__name__
@@ -99,13 +100,13 @@ class Job:
 		self.wd = wd
 
 	@classmethod
-	def from_dict(cls, d):
+	def from_dict(cls, configDict):
 		"""Create the job from dict."""
-		name = d.get('name', '')
-		cmd = d.get('cmd', '')
-		config = d.get('config', '')
-		argv = d.get('argv', '')
-		wd = d.get('wd', '.')
+		name = configDict.get('name', '')
+		cmd = configDict.get('cmd', '')
+		config = configDict.get('config', '')
+		argv = configDict.get('argv', '')
+		wd = configDict.get('wd', '.')
 		jobobj = cls(name, cmd, config, argv, wd)
 		return jobobj
 
@@ -294,23 +295,23 @@ JobClasses = [Job, ShellJob, PythonJob, MatlabJob, ExecutableJob, BatchJob]
 # Class name to class mapping
 JobClassesDict = {C.__name__: C for C in JobClasses}
 
-def create(d):
+def create(configDict):
 	"""
 	Create a job from dict. The type of the job is specified in 'typename'.
 	An instance of the corresponding class is created and returned.
 	"""
-	typename = d['typename']
-	C = JobClassesDict[typename]
-	jobobj = C.from_dict(d)
+	typename = configDict['typename']
+	JobClass = JobClassesDict[typename]
+	jobobj = JobClass.from_dict(configDict)
 	return jobobj
 
 def dump(job):
 	"""Dump the job to console."""
 	return job.to_dict()
 
-def load(d):
+def load(configDict):
 	"""Load a job from dict."""
-	return create(d)
+	return create(configDict)
 
 def runjob(currentJob, folder=None):
 	"""Run the job in folder."""

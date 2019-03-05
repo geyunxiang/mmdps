@@ -172,3 +172,14 @@ class Mat:
 		self.data = data
 		self.atlasobj = atlasobj
 		self.name = name
+
+
+def averageNets(nets):
+	"""
+	This function takes in a list of Net and return an averaged Net
+	"""
+	data = np.zeros((nets[0].atlasobj.count, nets[0].atlasobj.count))
+	for net in nets:
+		data += net.data
+	data /= len(nets)
+	return Net(data, nets[0].atlasobj, name = 'averaged')
