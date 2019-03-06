@@ -91,8 +91,8 @@ class Loader:
 		"""
 		datalist = []
 		for mriscan in mriscans:
-			curdata = self.loaddata(mriscan, netattrname)
-			datalist.append(curdata.flatten())
+			currentData = self.loaddata(mriscan, netattrname)
+			datalist.append(currentData.flatten())
 		datavstack = np.vstack(datalist)
 		return datavstack
 

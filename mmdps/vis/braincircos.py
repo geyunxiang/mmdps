@@ -12,6 +12,9 @@ from mmdps import rootconfig
 
 CircosConfigFolder = os.path.join(rootconfig.path.data, 'braincircos', 'simpleconfig')
 
+def color_to_str(color):
+	return 'color=({},{},{})'.format(color[0], color[1], color[2])
+
 class Chromosome:
 	def __init__(self, atlasobj, chrname, configdict):
 		self.atlasobj = atlasobj
@@ -116,8 +119,79 @@ class CircosConfigChromosome:
 		with open(os.path.join(outfolder, 'atlas.labels.txt'), 'w') as f:
 			self.write_labels(f)
 
-def color_to_str(color):
-	return 'color=({},{},{})'.format(color[0], color[1], color[2])
+class CircosConfigFile:
+	PlotFmt = """
+	<plot>
+	type = heatmap
+	stroke_thickness = 1p
+	stroke_color = black
+	file = {file}
+	r1 = {r1}
+	r0 = {r0}
+	</plot>
+	"""
+	LinkFmt = """
+	<link>
+	file = {file}
+	radius = {radius}
+	bezier_radius = 0r
+	thickness = {thickness}
+	</link>
+	"""
+	def __init__(self):
+		self.plotconfs = []
+		self.linkconfs = []
+		self.label_size = None
+		self.linkThickness = 2 # default link thickness
+
+	def add_plot(self, file):
+		self.plotconfs.append(file)
+
+	def add_link(self, file):
+		self.linkconfs.append(file)
+
+	def build_circos_conf(self, plotstrs, linkstrs):
+		self.circos_template = load_rawtext(os.path.join(CircosConfigFolder, 'circos_template.conf'))
+		return self.circos_template.format(plotsstr='\n'.join(plotstrs), linksstr='\n'.join(linkstrs))
+
+	def customizeSize(self, label_size, linkThickness):
+		self.label_size = label_size
+		if linkThickness is not None:
+			self.linkThickness = linkThickness
+
+	def customized_rewrite(self, outfolder):
+		"""
+		Re-generate circos.conf to update parameters
+		"""
+		fname = os.path.join(outfolder, 'circos.conf')
+		os.rename(os.path.join(outfolder, 'circos.conf'), os.path.join(outfolder, 'circos.conf.bk'))
+		confFile = open(os.path.join(outfolder, 'circos.conf'), 'w')
+		with open(os.path.join(outfolder, 'circos.conf.bk')) as bk:
+			for line in bk.readlines():
+				if line.find('label_size') != -1:
+					line = '%s%s\n' % (line[:line.find('=')+2], self.label_size)
+				confFile.write(line)
+		confFile.close()
+		os.remove(os.path.join(outfolder, 'circos.conf.bk'))
+
+	def write(self, outfolder):
+		plotstrs = []
+		rfmt = '{:.2f}r'
+		plotwidth = 0.05
+		for iplot, plotconf in enumerate(self.plotconfs):
+			r1f = 0.99 - iplot * plotwidth
+			r0f = r1f - 0.04
+			plotstr = self.PlotFmt.format(file=plotconf, r1=rfmt.format(r1f), r0=rfmt.format(r0f))
+			plotstrs.append(plotstr)
+		nplot = len(self.plotconfs)
+		linkstrs = []
+		for linkconf in self.linkconfs:
+			radius = 1.0 - nplot * plotwidth
+			linkstr = self.LinkFmt.format(file=linkconf, radius=rfmt.format(radius), thickness = self.linkThickness)
+			linkstrs.append(linkstr)
+		finalstring = self.build_circos_conf(plotstrs, linkstrs)
+		fname = os.path.join(outfolder, 'circos.conf')
+		save_rawtext(fname, finalstring)
 
 class CircosLink:
 	def __init__(self, net, threshold=0.6, valuerange=(-1,1)):
@@ -236,77 +310,6 @@ class CircosValue:
 					f.write(line)
 					f.write('\n')
 
-class CircosConfigFile:
-	PlotFmt = """
-	<plot>
-	type = heatmap
-	stroke_thickness = 1p
-	stroke_color = black
-	file = {file}
-	r1 = {r1}
-	r0 = {r0}
-	</plot>
-	"""
-	LinkFmt = """
-	<link>
-	file = {file}
-	radius = {radius}
-	bezier_radius = 0r
-	thickness = 2
-	</link>
-	"""
-	def __init__(self):
-		self.plotconfs = []
-		self.linkconfs = []
-		self.label_size = None
-
-	def add_plot(self, file):
-		self.plotconfs.append(file)
-
-	def add_link(self, file):
-		self.linkconfs.append(file)
-
-	def build_circos_conf(self, plotstrs, linkstrs):
-		self.circos_template = load_rawtext(os.path.join(CircosConfigFolder, 'circos_template.conf'))
-		return self.circos_template.format(plotsstr='\n'.join(plotstrs), linksstr='\n'.join(linkstrs))
-
-	def customizeSize(self, label_size):
-		self.label_size = label_size
-
-	def customized_rewrite(self, outfolder):
-		"""
-		Re-generate circos.conf to update parameters
-		"""
-		fname = os.path.join(outfolder, 'circos.conf')
-		os.rename(os.path.join(outfolder, 'circos.conf'), os.path.join(outfolder, 'circos.conf.bk'))
-		confFile = open(os.path.join(outfolder, 'circos.conf'), 'w')
-		with open(os.path.join(outfolder, 'circos.conf.bk')) as bk:
-			for line in bk.readlines():
-				if line.find('label_size') != -1:
-					line = '%s%s\n' % (line[:line.find('=')+2], self.label_size)
-				confFile.write(line)
-		confFile.close()
-		os.remove(os.path.join(outfolder, 'circos.conf.bk'))
-
-	def write(self, outfolder):
-		plotstrs = []
-		rfmt = '{:.2f}r'
-		plotwidth = 0.05
-		for iplot, plotconf in enumerate(self.plotconfs):
-			r1f = 0.99 - iplot * plotwidth
-			r0f = r1f - 0.04
-			plotstr = self.PlotFmt.format(file=plotconf, r1=rfmt.format(r1f), r0=rfmt.format(r0f))
-			plotstrs.append(plotstr)
-		nplot = len(self.plotconfs)
-		linkstrs = []
-		for linkconf in self.linkconfs:
-			radius = 1.0 - nplot * plotwidth
-			linkstr = self.LinkFmt.format(file=linkconf, radius=rfmt.format(radius))
-			linkstrs.append(linkstr)
-		finalstring = self.build_circos_conf(plotstrs, linkstrs)
-		fname = os.path.join(outfolder, 'circos.conf')
-		save_rawtext(fname, finalstring)
-
 class CircosPlotBuilder:
 	def __init__(self, atlasobj, title, outfilepath):
 		self.atlasobj = atlasobj
@@ -318,19 +321,24 @@ class CircosPlotBuilder:
 		self.outfolder, self.outfilename = os.path.split(outfilepath)
 		self.circosfolder = os.path.join(self.outfolder, 'circosdata', self.outfilename)
 		path.makedirs(self.circosfolder)
-		self.circosconffile = CircosConfigFile()
+		self.circosConfigFile = CircosConfigFile()
 		self.circoslinks = []
 		self.circosvalues = []
 		self.customizedSizes = False
 		self.radius = None
 
-	def customizeSize(self, ideogram_radius, label_size):
+	def customizeSize(self, ideogram_radius, label_size, linkThickness = None):
 		"""
 		input ideogram_radius as a string like '0.80'
+			- ideogram_radius controls the size of the whole ring
+		input label_size as a string like '40p'
+			- label_size controls the font size of the ticks (L1, R2 etc.)
+		input linkThickness as an integer like 20
+			- linkThickness controls the thickness of network links(edges)
 		"""
 		self.customizedSizes = True
 		self.radius = ideogram_radius
-		self.circosconffile.customizeSize(label_size)
+		self.circosConfigFile.customizeSize(label_size, linkThickness)
 
 	def fullpath(self, *p):
 		return os.path.join(self.circosfolder, *p)
@@ -347,19 +355,19 @@ class CircosPlotBuilder:
 	def write_files(self):
 		"""
 		Write net links and attributes to files.
-		self.circosconffile would generate the circos.conf file.
+		self.circosConfigFile would generate the circos.conf file.
 		"""
 		for i, circosvalue in enumerate(self.circosvalues):
-			curfile = 'attr{}.value.txt'.format(i)
-			self.circosconffile.add_plot(curfile)
-			circosvalue.write(self.fullpath(curfile))
+			currentFile = 'attr{}.value.txt'.format(i)
+			self.circosConfigFile.add_plot(currentFile)
+			circosvalue.write(self.fullpath(currentFile))
 		for i, circoslink in enumerate(self.circoslinks):
-			curfile = 'net{}.link.txt'.format(i)
-			self.circosconffile.add_link(curfile)
-			circoslink.write(self.fullpath(curfile))
-		self.circosconffile.write(self.fullpath())
+			currentFile = 'net{}.link.txt'.format(i)
+			self.circosConfigFile.add_link(currentFile)
+			circoslink.write(self.fullpath(currentFile))
+		self.circosConfigFile.write(self.fullpath())
 		if self.customizedSizes:
-			self.circosconffile.customized_rewrite(self.fullpath())
+			self.circosConfigFile.customized_rewrite(self.fullpath())
 		circosconfigchr = CircosConfigChromosome(self.brainparts, self.get_colorlist())
 		circosconfigchr.write(self.fullpath())
 
@@ -427,4 +435,5 @@ if __name__ == '__main__':
 	builder.add_circosvalue(CircosValue(attr, (0, 50)))
 	builder.add_circosvalue(CircosValue(attr, (0, 100)))
 	builder.add_circoslink(CircosLink(net))
+	# builder.customizeSize('0.83r', '40p') # brodmann_lr and brodmann_lrce
 	builder.plot()

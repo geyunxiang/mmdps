@@ -57,3 +57,15 @@ class GroupManager:
 			if key.find(groupName) != -1:
 				ret += value
 		return ret
+
+def genDefaultScan(loader, manager, totalScanNum = 2):
+		"""
+		Generate scanDict from nameDict.
+		Specify total number of scans related to one person in totalScanNum
+		After this function, manager.scanDict will contain <totalScanNum> keys for each group
+			the naming of keys follows this rule: <groupName><totalScanNum> (control1 etc)
+		loader can be a basic loader
+		"""
+		for key, value in manager.nameDict.items():
+			for scanIdx in range(totalScanNum):
+				manager.scanDict[key+'%d' % (scanIdx + 1)] = loader.generate_mriscans(value, num_scan = scanIdx+1)
