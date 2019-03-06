@@ -1,7 +1,7 @@
 {
     "name": "T1Proc",
     "MainFolder": "E:/DataProcessing/T1",
-    "FolderList": "E:/DataProcessing/newdata/data_dicom_all.txt",
+    "FolderList": "E:/namelist.txt",
     "Second": false,
     "SecondList": "",
     "JobConfig": "F:/geyunxiang/mmdps_git/pipeline/T1/configjob_unatlased_t1.json",

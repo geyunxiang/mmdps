@@ -1,7 +1,7 @@
 {
     "name": "DWIProc",
     "MainFolder": "/media/LocalDisk_E/DataProcessing/DWI/",
-    "FolderList": "/media/LocalDisk_E/DataProcessing/newdata/data_dicom_all_checked_DWI.txt",
+    "FolderList": "/media/LocalDisk_E/namelist.txt",
     "Second": true,
     "SecondList": "/media/LocalDisk_E/DataProcessing/atlas_list.txt",
     "JobConfig": "configjob_atlased_dwi_gen_net.json",

@@ -25,11 +25,15 @@ class ExportBOLD:
 			self.run_mriscan(mriscan)
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser(description='Copy preprocessed BOLD to processing folder')
-	parser.add_argument('--mriscanstxt', required=True, help='mriscans list in txt file')
-	parser.add_argument('--outfolder', required=True, help='pBOLD output folder for all mriscans')
-	args = parser.parse_args()
+	# parser = argparse.ArgumentParser(description='Copy preprocessed BOLD to processing folder')
+	# parser.add_argument('--mriscanstxt', required=True, help='mriscans list in txt file')
+	# parser.add_argument('--outfolder', required=True, help='pBOLD output folder for all mriscans')
+	# args = parser.parse_args()
+	# exp = ExportBOLD(r'E:\DataProcessing\BOLDPreprocess\Data\FunRawARWSDCF',
+	# 				 loadsave.load_txt(args.mriscanstxt),
+	# 				 args.outfolder)
+	mriscanstxt = 'E:/namelist.txt'
 	exp = ExportBOLD(r'E:\DataProcessing\BOLDPreprocess\Data\FunRawARWSDCF',
-					 loadsave.load_txt(args.mriscanstxt),
-					 args.outfolder)
+	 				 mriscanstxt,
+	 				 'E:/DataProcessing/BOLD/')
 	exp.run()
