@@ -157,6 +157,7 @@ class BNVNode:
 		to the label specified in a list. The modular value is further used to 
 		specify node color.
 		"""
+		# TODO: fix bugs
 		for irwo in range(self.count):
 			if self.nodedata[irow][5] in label_to_change:
 				self.nodedata[irow][3] = modular_value

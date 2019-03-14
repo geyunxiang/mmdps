@@ -5,8 +5,8 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 from matplotlib import cm
-from mmdps.proc import atlas, netattr, job
-from mmdps.util.loadsave import load_json, load_csvmat, load_rawtext, save_rawtext
+from mmdps.proc import atlas, job
+from mmdps.util.loadsave import load_rawtext, save_rawtext
 from mmdps.util import path
 from mmdps import rootconfig
 
@@ -163,7 +163,6 @@ class CircosConfigFile:
 		"""
 		Re-generate circos.conf to update parameters
 		"""
-		fname = os.path.join(outfolder, 'circos.conf')
 		os.rename(os.path.join(outfolder, 'circos.conf'), os.path.join(outfolder, 'circos.conf.bk'))
 		confFile = open(os.path.join(outfolder, 'circos.conf'), 'w')
 		with open(os.path.join(outfolder, 'circos.conf.bk')) as bk:

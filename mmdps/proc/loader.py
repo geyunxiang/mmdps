@@ -159,7 +159,7 @@ class AttrLoader(Loader):
 
 class NetLoader(Loader):
 	"""Net loader."""
-	def load(self, mriscan, attrname):
+	def load(self, mriscan, attrname = 'BOLD.net'):
 		"""Load the net object, with atlasobj."""
 		netdata = self.loaddata(mriscan, attrname)
 		net = netattr.Net(netdata, self.atlasobj, mriscan)

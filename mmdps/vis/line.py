@@ -1,12 +1,10 @@
 """Line plot."""
 
-import numpy as np
 from scipy import stats
 from matplotlib import pyplot as plt
 
 # from ..proc import atlas
 # from ..util import path
-from mmdps.proc import atlas
 from mmdps.util import path
 
 class LinePlot:

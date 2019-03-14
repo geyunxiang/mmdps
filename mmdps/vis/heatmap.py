@@ -5,7 +5,6 @@ Plot network heatmap.
 import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib.cm
-from mmdps.proc import atlas
 from mmdps.util import path
 
 class HeatmapPlot:
@@ -23,6 +22,7 @@ class HeatmapPlot:
 		self.title = title
 		self.outfilepath = outfilepath
 		self.valuerange = valuerange
+		self.cmap = self.get_cmap()
 
 	def get_cmap(self):
 		"""Get default cmap use valuerange.
@@ -35,12 +35,19 @@ class HeatmapPlot:
 		else:
 			return matplotlib.cm.coolwarm
 
+	def set_cmap(self, cmap):
+		"""
+		cmap should be one of matplotlib.cm.xxx
+		see https://matplotlib.org/gallery/color/colormap_reference.html for a list of cmaps
+		"""
+		self.cmap = cmap
+
 	def plot(self):
 		"""Do the plot."""
 		fig = plt.figure(figsize=(20, 20))
 		netdata_adjusted = self.atlasobj.adjust_mat(self.net.data)
 		netdata_adjusted = np.nan_to_num(netdata_adjusted)
-		axim = plt.imshow(netdata_adjusted, interpolation='none', cmap=self.get_cmap(),
+		axim = plt.imshow(netdata_adjusted, interpolation='none', cmap=self.cmap,
 						  vmin=self.valuerange[0], vmax=self.valuerange[1])
 		nrow, ncol = netdata_adjusted.shape
 		ax = fig.gca()
