@@ -103,8 +103,8 @@ class Atlas:
 		return vec_adjusted
 
 	def adjust_mat(self, sqmat):
-		"""Adjust a matrix according to plotindexes.
-
+		"""
+		Adjust a matrix according to plotindexes.
 		Both columns and rows are adjusted.
 		"""
 		mat1 = np.empty(sqmat.shape)
@@ -154,14 +154,20 @@ class Atlas:
 		return indexes
 
 	def ticks_to_indexes(self, ticks):
-		"""Convert ticks to indexes."""
+		"""
+		Convert ticks to indexes.
+		ticks should be a list of tick, like ['L1', 'R2'] etc
+		"""
 		if not hasattr(self, '_tickindexdict'):
 			self._tickindexdict = dict([(k, i) for i, k in enumerate(self.ticks)])
 		indexes = [self._tickindexdict[tick] for tick in ticks]
 		return indexes
 
 	def indexes_to_ticks(self, indexes):
-		"""Convert indexes to ticks."""
+		"""
+		Convert indexes to ticks.
+		indexes should be a list of index, like [1, 2, 3] etc
+		"""
 		return [self.ticks[index] for index in indexes]
 
 	def build_indexes_fliplr(self):
@@ -193,14 +199,57 @@ class Atlas:
 		subatlasobj.bnvnode = self.bnvnode.copy_sub(subindexes)
 		return subatlasobj
 
+	def adjust_mat_RSN(self, sqmat):
+		"""
+		Adjust a matrix according to RSN config file.
+		Return the adjusted matrix
+		"""
+		if not hasattr(self, 'RSNConfig'):
+			self.RSNConfig = loadsave.load_json(self.fullpath('RSN_%s.json' % self.name))
+		mat1 = np.empty(sqmat.shape)
+		mat2 = np.empty(sqmat.shape)
+		adjustedTicks = []
+		for RSN, nodeList in self.RSNConfig['ticks dict'].items():
+			adjustedTicks += nodeList
+		for i in range(self.count):
+			realpos = self.ticks.index(adjustedTicks[i])
+			mat1[i, :] = sqmat[realpos, :]
+		for i in range(self.count):
+			realpos = self.ticks.index(adjustedTicks[i])
+			mat2[:, i] = mat1[:, realpos]
+		return mat2
+
+	def adjust_ticks_RSN(self):
+		"""
+		Return a tuple.
+		The first element is the adjusted list of ticks according to RSN config file.
+		The second element is a list of no. of nodes in each RSN (used for minor ticks vline and hline)
+		"""
+		if not hasattr(self, 'RSNConfig'):
+			self.RSNConfig = loadsave.load_json(self.fullpath('RSN_%s.json' % self.name))
+		nodeCount = []
+		adjustedTicks = []
+		for RSN, nodeList in self.RSNConfig['ticks dict'].items():
+			nodeCount.append(len(nodeList))
+			adjustedTicks += nodeList
+		return (adjustedTicks, nodeCount)
+
+	def get_RSN_list(self):
+		"""
+		Return a list of RSN strs
+		"""
+		if not hasattr(self, 'RSNConfig'):
+			self.RSNConfig = loadsave.load_json(self.fullpath('RSN_%s.json' % self.name))
+		return self.RSNConfig['RSN order']
+
 def get(atlasname):
 	"""Get an atlasobj with name.
 	
 	This is typically what you want when to get a atlas object.
 	"""
-	jfilename = atlasname + '.json'
-	jfilepath = os.path.join(rootconfig.path.atlas, jfilename)
-	atlasconf = loadsave.load_json(jfilepath)
+	jsonFileName = atlasname + '.json'
+	jsonFilePath = os.path.join(rootconfig.path.atlas, jsonFileName)
+	atlasconf = loadsave.load_json(jsonFilePath)
 	return Atlas(atlasconf)
 
 def getbywd():

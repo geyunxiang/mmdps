@@ -51,16 +51,85 @@ class HeatmapPlot:
 						  vmin=self.valuerange[0], vmax=self.valuerange[1])
 		nrow, ncol = netdata_adjusted.shape
 		ax = fig.gca()
+
+		ax.set_xlim(-0.5, ncol-0.5)
+		ax.set_ylim(nrow-0.5, -0.5)
+
+		# set ticks
 		ax.set_xticks(range(self.count))
 		ax.set_xticklabels(self.atlasobj.ticks_adjusted, rotation=90)
 		ax.set_yticks(range(self.count))
 		ax.set_yticklabels(self.atlasobj.ticks_adjusted)
-		ax.set_xlim(-0.5, ncol-0.5)
-		ax.set_ylim(nrow-0.5, -0.5)
-		fig.colorbar(axim, fraction=0.046, pad=0.04)
+
+		# set colorbar
+		cbar = fig.colorbar(axim, fraction=0.046, pad=0.04)
+		# change colorbar ticks font size
+		# see https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.tick_params
+		# and https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.tick_params.html#matplotlib.axes.Axes.tick_params
+		cbar.ax.tick_params(labelsize = 25, length = 5, width = 5)
+
+		# save fig
 		plt.title(self.title, fontsize=24)
 		path.makedirs_file(self.outfilepath)
-		plt.savefig(self.outfilepath, dpi=100)
+		plt.savefig(self.outfilepath, dpi=200)
+		plt.close()
+
+	def plotRSN(self):
+		"""
+		Similar as plot(), but plot the heatmap according to RSN config file
+		and use black lines to separate RSNs
+		"""
+		fig = plt.figure(figsize=(20, 20))
+		netdata_adjusted = self.atlasobj.adjust_mat_RSN(self.net.data)
+		netdata_adjusted = np.nan_to_num(netdata_adjusted)
+		axim = plt.imshow(netdata_adjusted, interpolation='none', cmap=self.cmap,
+						  vmin=self.valuerange[0], vmax=self.valuerange[1])
+		nrow, ncol = netdata_adjusted.shape
+		ax = fig.gca()
+
+		ax.set_xlim(-0.5, ncol-0.5)
+		ax.set_ylim(nrow-0.5, -0.5)
+
+		# set ticks
+		ticks_adjusted, nodeCount = self.atlasobj.adjust_ticks_RSN()
+		ax.set_xticks(range(self.count))
+		ax.set_xticklabels(ticks_adjusted, rotation=90)
+		ax.set_yticks(range(self.count))
+		ax.set_yticklabels(ticks_adjusted)
+
+		# plot horizontal and vertical lines
+		plotIdx = -0.5
+		ax.vlines(plotIdx, -0.5, self.count, linewidths = 5) # vposition, start, end
+		ax.hlines(plotIdx, -0.5, self.count, linewidths = 5) # hposition, start, end
+		border = [0] # the border of each RSN, including 0 and max
+		for idx in range(len(nodeCount)):
+			netCount = nodeCount[idx]
+			plotIdx += netCount
+			ax.vlines(plotIdx, -0.5, self.count, linewidths = 5) # vposition, start, end
+			ax.hlines(plotIdx, -0.5, self.count, linewidths = 5) # hposition, start, end
+			border.append(border[-1] + netCount)
+
+		# add ticks for RSN
+		minorTicks = []
+		for idx in range(len(border) - 1):
+			minorTicks.append((border[idx] + border[idx+1])/2.0)
+		ax.set_xticks(minorTicks, minor=True)
+		ax.set_yticks(minorTicks, minor=True)
+		ax.tick_params(which="minor", bottom=False, left=False, pad=35, labelsize = 30) # make minor ticks invisible
+		ax.set_xticklabels(self.atlasobj.get_RSN_list(), minor = True)
+		ax.set_yticklabels(self.atlasobj.get_RSN_list(), minor = True)
+
+		# set colorbar
+		cbar = fig.colorbar(axim, fraction=0.046, pad=0.04)
+		# change colorbar ticks font size
+		# see https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.tick_params
+		# and https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.tick_params.html#matplotlib.axes.Axes.tick_params
+		cbar.ax.tick_params(labelsize = 25, length = 5, width = 5)
+
+		# save fig
+		plt.title(self.title, fontsize=24)
+		path.makedirs_file(self.outfilepath)
+		plt.savefig(self.outfilepath, dpi=200)
 		plt.close()
 
 class HeatmapPlotRows:

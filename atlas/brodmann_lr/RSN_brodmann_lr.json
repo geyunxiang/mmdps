@@ -1,0 +1,18 @@
+{
+	"brief": "RSN config brodmann_lr", 
+	"RSN order": ["DMN", "SMN", "AUN", "VSN", "OTH"],
+	"RSN brief dict": {
+		"DMN": "Default Mode Network", 
+		"SMN": "Sensory Motor Network", 
+		"AUN": "Auditory Network", 
+		"VSN": "Visual Network", 
+		"OTH": "Other"
+	}, 
+	"ticks dict": {
+		"DMN": ["L9", "L10", "L21", "L23", "L24", "L28", "L29", "L30", "L32", "L36", "L39", "L40", "R9", "R10", "R21", "R23", "R24", "R28", "R29", "R30", "R32", "R36", "R39", "R40"], 
+		"SMN": ["L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"], 
+		"AUN": ["L22", "L41", "L42", "R22", "R41", "R42"], 
+		"VSN": ["L17", "L18", "L19", "R17", "R18", "R19"], 
+		"OTH": ["L11", "L20", "L25", "L26", "L27", "L34", "L35", "L37", "L38", "L43", "L44", "L45", "L46", "L47", "L48", "R11", "R20", "R25", "R26", "R27", "R34", "R35", "R37", "R38", "R43", "R44", "R45", "R46", "R47", "R48"]
+	}
+}
