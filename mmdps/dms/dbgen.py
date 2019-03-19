@@ -1,15 +1,15 @@
 """Database generator. 
 
-Generate the database use mritable file, motion score file and stroke 
+Generate the database using mritable file, motion score file and stroke 
 score file, and groups.
 
 Limitation:
 Now limited to a sqlite data file.
-Updated only when import DICOM data.
+Updated only when importing DICOM data.
 
 TODO:
-Change create_engine to use other RMDBS.
-Change re-create-every-time to update-to-existing.
+Change create_engine to use other RDBMS.
+Update existing database when importing other than re-create the database
 """
 
 import csv
@@ -25,7 +25,6 @@ from sqlalchemy.orm import sessionmaker
 from mmdps.util import clock
 from mmdps.util.loadsave import load_txt, load_json
 from mmdps import rootconfig
-
 
 def name_date(mriscan):
 	l = mriscan.split('_')

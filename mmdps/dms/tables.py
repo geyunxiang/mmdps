@@ -1,7 +1,7 @@
 """Database sql-alchemy tables.
 
 Define the database by sql-alchemy tables.
-Can ease the selection of RMDBS, and much more if use ORM properly.
+Can ease the selection of RDBMS, and much more if use ORM properly.
 """
 
 import datetime
@@ -11,16 +11,16 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
-class BaseModel(Base):
-	"""Base model."""
-	__abstract__ = True
-
 # table for many to many relationship
 association_table_group_person = Table(
 	'association_group_person', Base.metadata,
 	Column('group_id', Integer, ForeignKey('groups.id')),
 	Column('person_id', Integer, ForeignKey('people.id'))
 )
+
+class BaseModel(Base):
+	"""Base model."""
+	__abstract__ = True
 
 class Person(BaseModel):
 	"""Person."""
