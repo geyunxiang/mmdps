@@ -38,11 +38,13 @@ class Person(BaseModel):
 	gender = Column(String)
 	birth = Column(DateTime)
 	weight = Column(Integer)
+
 	# relationships
 	mriscans = relationship('MRIScan', back_populates='person')
 	motionscores = relationship('MotionScore', back_populates='person')
 	strokescores = relationship('StrokeScore', back_populates='person')
 	groups = relationship('Group', secondary=association_table_group_person, back_populates='people')
+
 	def __repr__(self):
 		return "<Person(name='{}', gender='{}', birth='{}', weight='{}'>".format(self.name, self.gender, self.birth, self.weight)
 
@@ -54,8 +56,10 @@ class MRIMachine(BaseModel):
 	institution = Column(String)
 	manufacturer = Column(String)
 	modelname = Column(String)
+
 	# relationships
 	mriscans = relationship('MRIScan', back_populates='mrimachine')
+
 	def __repr__(self):
 		return "<MRIMachine(institution='{}', manufacturer='{}', modelname='{}'>".format(self.institution, self.manufacturer, self.modelname)
 
@@ -64,6 +68,7 @@ class MRIScan(BaseModel):
 	__tablename__ = 'mriscans'
 	# columns
 	id = Column(Integer, primary_key=True)
+	filename = Column(String)
 	person_id = Column(Integer, ForeignKey('people.id'))
 	mrimachine_id = Column(Integer, ForeignKey('mrimachines.id'))
 	group_id = Column(Integer, ForeignKey('groups.id'), nullable = True)
@@ -72,14 +77,17 @@ class MRIScan(BaseModel):
 	hasT2 = Column(Boolean)
 	hasBOLD = Column(Boolean)
 	hasDWI = Column(Boolean)
+
 	# relationships
 	person = relationship('Person', back_populates='mriscans')
 	mrimachine = relationship('MRIMachine', back_populates='mriscans')
 	motionscores = relationship('MotionScore', back_populates='mriscan')
 	strokescores = relationship('StrokeScore', back_populates='mriscan')
 	group = relationship('Group', back_populates = 'scans')
+
 	def __repr__(self):
 		return "<MRIScan(person_id='{}', date='{}', hasT1='{}', hasT2='{}', hasBOLD='{}', hasDWI='{}'>".format(self.person_id, self.date, self.hasT1, self.hasT2, self.hasBOLD, self.hasDWI)
+
 	def get_folder(self):
 		return "{}_{}".format(self.person.name, datetime.datetime.strftime(self.date, '%Y%m%d'))
 
@@ -128,6 +136,7 @@ class Group(BaseModel):
 	id = Column(Integer, primary_key=True)
 	name = Column(String)
 	description = Column(String)
+
 	# relationships
 	people = relationship('Person', secondary=association_table_group_person, back_populates='groups')
 	scans = relationship('MRIScan', back_populates = 'group')

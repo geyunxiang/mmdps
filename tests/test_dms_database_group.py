@@ -20,7 +20,7 @@ def main():
 		db_group.people.append(person)
 	scans = loadsave.load_txt('E:/Changgung works/20180409_tDCS_14/score_info/control_scanlist-2.txt')
 	for scan in scans:
-		db_scan = session.query(tables.MRIScan).filter_by(id = 10).one()
+		db_scan = session.query(tables.MRIScan).filter_by(filename = scan).one()
 		db_group.scans.append(db_scan)
 	session.commit()
 

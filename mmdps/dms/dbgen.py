@@ -84,7 +84,7 @@ class DatabaseGenerator:
 		machine = self.add_and_get_mrimachine(scaninfo['Machine'])
 		name, date = name_date(scan)
 		dateobj = clock.simple_to_time(date)
-		db_mriscan = MRIScan(date=dateobj, hasT1=hasT1, hasT2=hasT2, hasBOLD=hasBOLD, hasDWI=hasDWI)
+		db_mriscan = MRIScan(date=dateobj, hasT1=hasT1, hasT2=hasT2, hasBOLD=hasBOLD, hasDWI=hasDWI, filename = scan)
 		machine.mriscans.append(db_mriscan)
 		if name not in self.db_people:
 			db_person = self.build_person(name, scaninfo)
