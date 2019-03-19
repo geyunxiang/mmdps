@@ -4,6 +4,8 @@ Used to manage group name/scan list.
 """
 import os
 from mmdps.util import loadsave
+from mmdps.dms import tables
+import sqlalchemy
 
 class GroupManager:
 	"""
@@ -57,6 +59,98 @@ class GroupManager:
 			if key.find(groupName) != -1:
 				ret += value
 		return ret
+
+class DatabaseGroupManager:
+	"""
+	This is an implementation of group manager using mmdpdb
+	"""
+	def __init__(self, db):
+		self.db = db
+		self.session = self.db.new_session()
+
+	def getScansInGroup(self, groupName):
+		group = self.session.query(tables.Group).filter_by(name = groupName).one()
+		return group.scans
+
+	def getNamesInGroup(self, groupName):
+		group = self.session.query(tables.Group).filter_by(name = groupName).one()
+		return group.people
+
+	def getAllGroups(self):
+		"""
+		Return a list of all groups in this database
+		"""
+		return self.session.query(tables.Group).all()
+
+	def newGroupByScans(self, groupName, scanList, desc = None):
+		"""
+		Initialize a group by a list of scans
+		"""
+		group = tables.Group(name = groupName, description = desc)
+		# check if group already exist
+		try:
+			self.session.query(tables.Group).filter_by(name = groupName).one()
+		except sqlalchemy.orm.exc.NoResultFound:
+			# alright
+			for scan in scanList:
+				db_scan = self.session.query(tables.MRIScan).filter_by(filename = scan).one()
+				group.scans.append(db_scan)
+				group.people.append(db_scan.person)
+			self.session.add(group)
+			self.session.commit()
+			return
+		except sqlalchemy.orm.exc.MultipleResultsFound:
+			# more than one record found
+			raise Exception("More than one %s group found!" % groupName)
+		# found one existing record
+		raise Exception("%s group already exist" % groupName)
+
+	def newGroupByNames(self, groupName, nameList, scanNum, desc = None, accumulateScan = False):
+		"""
+		Initialize a group by a list of names. The scans are generated automatically. 
+		scanNum - which scan (first/second/etc)
+		accumulateScan - whether keep former scans in this group
+		"""
+		group = tables.Group(name = groupName, description = desc)
+		try:
+			self.session.query(tables.Group).filter_by(name = groupName).one()
+		except sqlalchemy.orm.exc.NoResultFound:
+			for name in nameList:
+				db_person = self.session.query(tables.Person).filter_by(name = name).one()
+				group.people.append(db_person)
+				if accumulateScan:
+					group.scans += db_person.mriscans[:scanNum]
+				else:
+					group.scans.append(db_person.mriscans[scanNum - 1])
+			self.session.add(group)
+			self.session.commit()
+			return
+		except sqlalchemy.orm.exc.MultipleResultsFound:
+			# more than one record found
+			raise Exception("More than one %s group found!" % groupName)
+		# found one existing record
+		raise Exception("%s group already exist" % groupName)
+
+	def newGroupByNamesAndScans(self, groupName, nameList, scanList, desc = None):
+		"""
+		Initialize a group by giving both name and scans
+		"""
+		group = tables.Group(name = groupName, description = desc)
+		for name in nameList:
+			db_person = self.session.query(tables.Person).filter_by(name = name).one()
+			group.people.append(db_person)
+		for scan in scanList:
+			db_scan = self.session.query(tables.MRIScan).filter_by(filename = scan).one()
+			group.scans.append(db_scan)
+		self.session.add(group)
+		self.commit()
+
+	def deleteGroupByName(self, groupName):
+		group = self.session.query(tables.Group).filter_by(name = groupName).first()
+		if group is None:
+			raise Exception("%s group does not exist!" % groupName)
+		self.session.delete(group)
+		self.session.commit()
 
 def genDefaultScan(loader, manager, totalScanNum = 2):
 		"""
