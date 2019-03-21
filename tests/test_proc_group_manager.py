@@ -19,7 +19,7 @@ def test_newGroupByNames(groupManager):
 	groupManager.newGroupByNames('test name 5', ['guojiye'], 5)
 
 def test_deleteGroupByName(groupManager):
-	groupManager.deleteGroupByName('test name 4')
+	groupManager.deleteGroupByName('test name 5')
 
 def main():
 	db = mmdpdb.MMDPDatabase('E:/mmdpdb.db')

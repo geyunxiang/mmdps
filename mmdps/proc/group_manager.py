@@ -119,9 +119,9 @@ class DatabaseGroupManager:
 				db_person = self.session.query(tables.Person).filter_by(name = name).one()
 				group.people.append(db_person)
 				if accumulateScan:
-					group.scans += db_person.mriscans[:scanNum]
+					group.scans += sorted(db_person.mriscans, key = lambda x: x.filename)[:scanNum]
 				else:
-					group.scans.append(db_person.mriscans[scanNum - 1])
+					group.scans.append(sorted(db_person.mriscans, key = lambda x: x.filename)[scanNum - 1])
 			self.session.add(group)
 			self.session.commit()
 			return
@@ -146,10 +146,11 @@ class DatabaseGroupManager:
 		self.commit()
 
 	def deleteGroupByName(self, groupName):
-		group = self.session.query(tables.Group).filter_by(name = groupName).first()
-		if group is None:
-			raise Exception("%s group does not exist!" % groupName)
-		self.session.delete(group)
+		groupList = self.session.query(tables.Group).filter_by(name = groupName).all()
+		# if group is None:
+		# 	raise Exception("%s group does not exist!" % groupName)
+		for group in groupList:
+			self.session.delete(group)
 		self.session.commit()
 
 def genDefaultScan(loader, manager, totalScanNum = 2):
