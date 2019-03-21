@@ -4,7 +4,7 @@ Used to manage group name/scan list.
 """
 import os
 from mmdps.util import loadsave
-from mmdps.dms import tables
+from mmdps.dms import tables, mmdpdb
 import sqlalchemy
 
 class GroupManager:
@@ -64,7 +64,7 @@ class DatabaseGroupManager:
 	"""
 	This is an implementation of group manager using mmdpdb
 	"""
-	def __init__(self, db):
+	def __init__(self, db = mmdpdb.MMDPDatabase()):
 		self.db = db
 		self.session = self.db.new_session()
 
