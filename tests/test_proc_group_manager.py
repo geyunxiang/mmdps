@@ -19,16 +19,21 @@ def test_newGroupByNames(groupManager):
 	groupManager.newGroupByNames('test name 5', ['guojiye'], 5)
 
 def test_deleteGroupByName(groupManager):
-	groupManager.deleteGroupByName('test name 5')
+	groupManager.deleteGroupByName('test multi 2')
+
+def test_multipleScanMultipleGroup(groupManager):
+	groupManager.newGroupByScans('test multi 1', ['chenhua_20150711', 'cuichenhao_20180704'])
+	groupManager.newGroupByScans('test multi 2', ['chenhua_20150711', 'daihuachen_20170927'])
 
 def main():
-	db = mmdpdb.MMDPDatabase('E:/mmdpdb.db')
+	db = mmdpdb.MMDPDatabase()
 	groupManager = group_manager.DatabaseGroupManager(db)
 	test_getAllGroups(groupManager)
 
 	test_deleteGroupByName(groupManager)
 	# test_newGroupByScans(groupManager)
 	# test_newGroupByNames(groupManager)
+	# test_multipleScanMultipleGroup(groupManager)
 
 	test_getAllGroups(groupManager)
 	# scans = groupManager.getScansInGroup('test name 5')

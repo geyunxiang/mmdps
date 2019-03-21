@@ -18,11 +18,11 @@ association_table_group_person = Table(
 	Column('person_id', Integer, ForeignKey('people.id'))
 )
 
-# association_table_group_scan = Table(
-# 	'association_group_scan', Base.metadata, 
-# 	Column('group_id', Integer, ForeignKey('groups.id')), 
-# 	Column('scan_id', Integer, ForeignKey('mriscans.id'))
-# )
+association_table_group_scan = Table(
+	'association_group_scan', Base.metadata, 
+	Column('group_id', Integer, ForeignKey('groups.id')), 
+	Column('scan_id', Integer, ForeignKey('mriscans.id'))
+)
 
 class BaseModel(Base):
 	"""Base model."""
@@ -71,7 +71,6 @@ class MRIScan(BaseModel):
 	filename = Column(String)
 	person_id = Column(Integer, ForeignKey('people.id'))
 	mrimachine_id = Column(Integer, ForeignKey('mrimachines.id'))
-	group_id = Column(Integer, ForeignKey('groups.id'), nullable = True)
 	date = Column(DateTime)
 	hasT1 = Column(Boolean)
 	hasT2 = Column(Boolean)
@@ -83,7 +82,7 @@ class MRIScan(BaseModel):
 	mrimachine = relationship('MRIMachine', back_populates='mriscans')
 	motionscores = relationship('MotionScore', back_populates='mriscan')
 	strokescores = relationship('StrokeScore', back_populates='mriscan')
-	group = relationship('Group', back_populates = 'scans')
+	groups = relationship('Group', secondary = association_table_group_scan, back_populates = 'scans')
 
 	def __repr__(self):
 		return "<MRIScan(person_id='{}', date='{}', hasT1='{}', hasT2='{}', hasBOLD='{}', hasDWI='{}'>".format(self.person_id, self.date, self.hasT1, self.hasT2, self.hasBOLD, self.hasDWI)
@@ -138,8 +137,8 @@ class Group(BaseModel):
 	description = Column(String)
 
 	# relationships
-	people = relationship('Person', secondary=association_table_group_person, back_populates='groups')
-	scans = relationship('MRIScan', back_populates = 'group')
+	people = relationship('Person', secondary = association_table_group_person, back_populates = 'groups')
+	scans = relationship('MRIScan', secondary = association_table_group_scan, back_populates = 'groups')
 
 	def __repr__(self):
 		return "<Group(name='{}', description='{}'>".format(self.name, self.description)
