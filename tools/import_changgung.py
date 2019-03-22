@@ -94,13 +94,13 @@ if __name__ == '__main__':
 	##         ('scipatient', 'SCI patients.', apppath('rawtable/patient_peopleorder.txt')),
 	##         ('strokepatient', 'Stroke patients.', apppath('rawtable/jixieshou.txt'))]
 
-	db = dbgen.DatabaseGenerator(
+	db_generator = dbgen.DatabaseGenerator(
 		apppath('rawtable/ChanggengMRITable.csv'),
-		apppath('mmdpdb.db'),
+		rootconfig.dms.mmdpdb_filepath,
 		csv_motionscores,
 		csv_strokescores,
 		groupconflist
 		)
 	cls_niftigetter = ChanggungNiftiGetter
-	imp = importer.MRIScanImporter(outniftiMainFolder, outMainFolder, mriscanstxt, db, cls_niftigetter)
+	imp = importer.MRIScanImporter(outniftiMainFolder, outMainFolder, mriscanstxt, db_generator, cls_niftigetter)
 	imp.run()

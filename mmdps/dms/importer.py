@@ -16,15 +16,15 @@ from mmdps.util import path
 
 class MRIScanImporter:
 	"""MRIScan importer."""
-	def __init__(self, inMainFolder, outMainFolder, mriscanstxt, db=None, cls_niftigetter=converter.NiftiGetter):
+	def __init__(self, inMainFolder, outMainFolder, mriscanstxt, db_generator=None, cls_niftigetter=converter.NiftiGetter):
 		"""
 		Import from inMainFolder to outMainFolder, for mriscans from mriscanstxt.
-		Update database db. Use NiftiGetter class from cls_niftigetter.
+		Update database. Use NiftiGetter class from cls_niftigetter.
 		"""
 		self.inMainFolder = inMainFolder
 		self.outMainFolder = outMainFolder
 		self.mriscans = load_txt(mriscanstxt)
-		self.db = db
+		self.db_generator = db_generator
 		self.cls_niftigetter = cls_niftigetter
 
 	def copy_one_nifti_modal(self, outfolder, getfunc, newname):
@@ -35,13 +35,13 @@ class MRIScanImporter:
 		if type(path_Modal) == str:
 			shutil.copy2(path_Modal, os.path.join(outfolder, newname))
 		else:
-			for curfile in path_Modal:
-				if curfile[-7:] == '.nii.gz':
+			for currentFile in path_Modal:
+				if currentFile[-7:] == '.nii.gz':
 					curnewname = newname + '.nii.gz'
 				else:
-					_, ext = os.path.splitext(curfile)
+					_, ext = os.path.splitext(currentFile)
 					curnewname = newname + ext
-				shutil.copy2(curfile, os.path.join(outfolder, curnewname))
+				shutil.copy2(currentFile, os.path.join(outfolder, curnewname))
 
 	def copy_one_nifti(self, mriscan):
 		"""Copy all modals for one mriscan."""
@@ -64,9 +64,9 @@ class MRIScanImporter:
 		"""Update database
 		TODO: better not simply re-generate db.
 		"""
-		exp = exporter.MRIScanTableExporter(self.outMainFolder, self.db.mritablecsv)
+		exp = exporter.MRIScanTableExporter(self.outMainFolder, self.db_generator.mritablecsv)
 		exp.run()
-		self.db.run()
+		self.db_generator.run()
 
 	def run(self):
 		"""Run. Copy nifti files and update database."""

@@ -1,4 +1,5 @@
-"""Database generator. 
+"""
+Database generator. 
 
 Generate the database using mritable file, motion score file and stroke 
 score file, and groups.
@@ -17,8 +18,9 @@ import datetime
 import os
 # from .tables import Base, Person, MRIScan, Group, MotionScore, StrokeScore, MRIMachine
 from mmdps.dms.tables import Base, Person, MRIScan, Group, MotionScore, StrokeScore, MRIMachine
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, exists
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import MultipleResultsFound
 
 # from ..util import clock
 # from ..util.loadsave import load_txt, load_json
@@ -32,21 +34,21 @@ def name_date(mriscan):
 
 class DatabaseGenerator:
 	"""Database Generator to update (re-create) the database."""
-	def __init__(self, mritablecsv, dbfile='mmdpdb.db', motionscoretablecsv=None,
-				 strokescoretablecsv=None, grouptables=None):
-		"""Init use various table csv file. will update the mmdpdb.db database by default."""
+	def __init__(self, mritablecsv = None, dbfile = rootconfig.dms.mmdpdb_filepath, motionscoretablecsv = None,
+				 strokescoretablecsv = None, grouptables = None, recreate = False):
+		"""Init using various table csv file. will update the mmdpdb.db database by default."""
 		self.mritablecsv = mritablecsv
 		self.motionscoretablecsv = motionscoretablecsv
 		self.strokescoretablecsv = strokescoretablecsv
 		self.grouptables = grouptables
-		if os.path.isfile(dbfile):
+		if recreate ==True and os.path.isfile(dbfile):
 			os.remove(dbfile)
 		engine = create_engine('sqlite:///' + dbfile)
 		Base.metadata.create_all(engine)
 		self.db_people = {}
 		self.db_mriscans = {}
 		self.db_mrimachines = []
-		Session = sessionmaker(bind=engine)
+		Session = sessionmaker(bind = engine)
 		self.session = Session()
 
 	def parse_scan_datetime(self, s):
@@ -79,6 +81,15 @@ class DatabaseGenerator:
 
 	def insert_mrirow(self, scan, hasT1, hasT2, hasBOLD, hasDWI):
 		"""Insert one mriscan record."""
+		# check if scan already exist
+		try:
+			ret = self.session.query(exists().where(MRIScan.filename == scan)).scalar()
+			if ret:
+				# record exists
+				return 0
+		except MultipleResultsFound:
+			print('Error when importing: multiple scan records found for %s' % scan)
+			return 1
 		mrifolder = rootconfig.dms.folder_mridata
 		scaninfo = load_json(os.path.join(mrifolder, scan, 'scan_info.json'))
 		machine = self.add_and_get_mrimachine(scaninfo['Machine'])
@@ -86,11 +97,19 @@ class DatabaseGenerator:
 		dateobj = clock.simple_to_time(date)
 		db_mriscan = MRIScan(date=dateobj, hasT1=hasT1, hasT2=hasT2, hasBOLD=hasBOLD, hasDWI=hasDWI, filename = scan)
 		machine.mriscans.append(db_mriscan)
-		if name not in self.db_people:
-			db_person = self.build_person(name, scaninfo)
-			self.db_people[name] = db_person
-			self.session.add(db_person)
+		try:
+			ret = self.session.query(exists().where(Person.name == name, Person.patientid == scaninfo['Patient']['ID'])).scalar()
+			if ret:
+				print('Old patient new scan %s inserted' % scan)
+				return 0
+		except MultipleResultsFound:
+			print('Error when importing: multiple person records found for %s' % name)
+			return 2
+		db_person = self.build_person(name, scaninfo)
+		self.db_people[name] = db_person
+		self.session.add(db_person)
 		self.db_people[name].mriscans.append(db_mriscan)
+		print('New patient new scan %s inserted' % scan)
 
 	def insert_mritable(self):
 		"""Insert the whole mritable csv file."""

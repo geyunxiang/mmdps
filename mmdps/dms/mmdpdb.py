@@ -42,8 +42,8 @@ def updateDatabase(newDBFilePath, currentDBFilePath = rootconfig.dms.mmdpdb_file
 	for person in allNewPeople:
 		# find if this person is in current session
 		try:
-			ret = currentSession.query(exists().where(tables.Person.name == person.name, tables.Person.patientid == person.id))
-			if ret is None:
+			ret = currentSession.query(exists().where(tables.Person.name == person.name, tables.Person.patientid == person.id)).scalar()
+			if not ret:
 				currentSession.add(person)
 		except MultipleResultsFound:
 			print('Multiple same person found!')
@@ -52,8 +52,8 @@ def updateDatabase(newDBFilePath, currentDBFilePath = rootconfig.dms.mmdpdb_file
 	allNewScans = newSession.query(tables.MRIScan).all()
 	for scan in allNewScans:
 		try:
-			ret = currentSession.query(exists().where(tables.MRIScan.filename == scan.filename))
-			if ret is None:
+			ret = currentSession.query(exists().where(tables.MRIScan.filename == scan.filename)).scalar()
+			if not ret:
 				currentSession.add(scan)
 		except MultipleResultsFound:
 			print('Multiple same scans found!')
