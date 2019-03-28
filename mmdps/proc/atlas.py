@@ -12,6 +12,7 @@ import numpy as np
 from mmdps import rootconfig
 from mmdps.util import loadsave, dataop
 from mmdps.vis import bnv
+import nibabel as nib
 
 class Atlas:
 	"""The brain atlas.
@@ -274,3 +275,68 @@ def getbyenv(atlasname_default='aal'):
 		print('MMDPS_CUR_ATLAS not set, use default', atlasname_default)
 		atlasname = atlasname_default
 	return get(atlasname)
+
+def color_atlas_region(atlasobj, regions, colors, outfilepath, resolution = '1mm'):
+	"""
+	This function is used to color one or several regions in an atlas.
+	An nii file is saved where the specified region is set to 1 and other areas to 0
+	Input 
+		- regions: a string or a list of strings
+		- colors: int or a list of int
+	Note: if both regions and colors are lists, these two must have the same length
+	"""
+	if type(regions) is list and type(colors) is list and len(regions) != len(colors):
+		print('You must specify colors for each regions to label, or specify a single color')
+		raise Exception('Number of colors and regions not match')
+	atlasImg = loadsave.load_nii(atlasobj.get_volume(resolution)['niifile'])
+	atlasData = atlasImg.get_data()
+	newAtlasData = atlasData.copy()
+	if type(regions) is list and type(colors) is list:
+		# each color for each region
+		newAtlasData = np.zeros(newAtlasData.shape)
+		for region, color in zip(regions, colors):
+			regionMask = atlasData.copy()
+			regionMask[regionMask != atlasobj.regions[atlasobj.ticks.index(region)]] = 0
+			regionMask[regionMask == atlasobj.regions[atlasobj.ticks.index(region)]] = color
+			newAtlasData += regionMask
+	elif type(regions) is list and type(colors) is int:
+		# one color for each region
+		newAtlasData = np.zeros(newAtlasData.shape)
+		for region in regions:
+			regionMask = atlasData.copy()
+			regionMask[regionMask != atlasobj.regions[atlasobj.ticks.index(region)]] = 0
+			regionMask[regionMask == atlasobj.regions[atlasobj.ticks.index(region)]] = colors
+			newAtlasData += regionMask
+	elif type(regions) is str and type(colors) is int:
+		# one color for one region
+		newAtlasData[newAtlasData != atlasobj.regions[atlasobj.ticks.index(regions)]] = 0
+		newAtlasData[newAtlasData == atlasobj.regions[atlasobj.ticks.index(regions)]] = colors
+	else:
+		raise Exception('Unsupported combinations. regions as %s, colors as %s.' % (type(regions), type(colors)))
+	newAtlasImg = nib.Nifti1Image(newAtlasData, atlasImg.affine, atlasImg.header)
+	nib.save(newAtlasImg, outfilepath)
+
+def region_overlap_report(regionName, atlasBase, atlasTarget):
+	"""
+	This function is used to generate a region overlap report. It is used to find which regions a given
+	area in an atlas (base) correspond to in another atlas (target). 
+	The returned list is sorted according to overlap ratio. Each element is a tuple with the region name, counts and ratio
+	"""
+	regionData = atlasBase.regions[atlasBase.ticks.index(regionName)]
+	atlasBaseImg = loadsave.load_nii(atlasBase.get_volume('1mm')['niifile'])
+	atlasTargetImg = loadsave.load_nii(atlasTarget.get_volume('1mm')['niifile'])
+	atlasBaseData = atlasBaseImg.get_data()
+	atlasTargetData = atlasTargetImg.get_data()
+	maskMatrix = atlasTargetData.copy()
+	maskMatrix[atlasBaseData == regionData] = 1
+	maskMatrix[atlasBaseData != regionData] = 0
+	maskedTargetMatrix = np.multiply(atlasTargetData, maskMatrix)
+	unique, counts = np.unique(maskedTargetMatrix, return_counts = True)
+	resultList = []
+	for areaData, count in zip(unique, counts):
+		if areaData == 0:
+			continue
+		descriptionTuple = (atlasTarget.ticks[atlasTarget.regions.index(areaData)], '%d/%s' % (count, atlasTarget.get_volume('1mm')['regioncounts'][atlasTarget.regions.index(areaData)]), float(count)/int(atlasTarget.get_volume('1mm')['regioncounts'][atlasTarget.regions.index(areaData)]))
+		resultList.append(descriptionTuple)
+	resultList = sorted(resultList, key = lambda x: x[2], reverse = True)
+	return resultList
