@@ -2,6 +2,9 @@
 	"BOLD.BC": "bold_interBC.csv", 
 	"BOLD.CCFS": "bold_interCCFS.csv", 
 	"BOLD.LE": "bold_interLE.csv", 
-	"BOLD.WD": "bold_interWD.csv",
-	"BOLD.net": "bold_net.csv"
+	"BOLD.WD": "bold_interWD.csv", 
+	"BOLD.net": "bold_net.csv", 
+	"DWI.FA": "dwi_FA.csv", 
+	"DWI.MD": "dwi_MD.csv", 
+	"DWI.net": "dwi_net.csv"
 }
