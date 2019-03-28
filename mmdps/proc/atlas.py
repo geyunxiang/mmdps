@@ -338,5 +338,5 @@ def region_overlap_report(regionName, atlasBase, atlasTarget):
 			continue
 		descriptionTuple = (atlasTarget.ticks[atlasTarget.regions.index(areaData)], '%d/%s' % (count, atlasTarget.get_volume('1mm')['regioncounts'][atlasTarget.regions.index(areaData)]), float(count)/int(atlasTarget.get_volume('1mm')['regioncounts'][atlasTarget.regions.index(areaData)]))
 		resultList.append(descriptionTuple)
-	resultList = sorted(resultList, key = lambda x: x[2], reverse = True)
+	resultList = sorted(resultList, key = lambda x: int(x[1].split('/')[0]), reverse = True)
 	return resultList

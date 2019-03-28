@@ -7,7 +7,8 @@ def main():
 	atlasBase = atlas.get('aicha')
 	atlasTarget = atlas.get('brodmann_lr')
 	regionTick = 'S_Precentral-1-L'
-	atlas.region_overlap_report(regionTick, atlasBase, atlasTarget)
+	report = atlas.region_overlap_report(regionTick, atlasBase, atlasTarget)
+	print(report)
 
 if __name__ == '__main__':
 	main()
