@@ -56,6 +56,22 @@ if sys.platform == 'win32':
 		# the mmdpdb file path
 		mmdpdb_filepath = 'I:/MMDPDatabase/mmdpdb.db'
 
+elif sys.platform == 'darwin':
+	# macOS
+	class path:
+		"""important paths and tools config."""
+		# the mmdps package folder
+		pyroot = os.path.dirname(os.path.abspath(__file__))
+		# the root MMDPS folder
+		root = os.path.abspath(os.path.join(pyroot, '..'))
+		tools = os.path.join(root, 'tools')
+		proc = os.path.join(pyroot, 'proc')
+		atlas = os.path.join(root, 'atlas')
+		data = os.path.join(root, 'data')
+		bnvdata = os.path.join(data, 'bnv')
+	class dms:
+		mmdpdb_filepath = '/Users/andy/workshop/MMDPDatabase/mmdpdb.db'
+
 else:
 	matlab_bin = '/usr/local/bin/matlab'
 	class path:
