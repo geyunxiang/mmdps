@@ -151,14 +151,14 @@ class BNVNode:
 		for irow in range(self.count):
 			self.nodedata[irow][col] = colvalue[irow]
 
-	def change_mocular_according_to_label(self, label_to_change, modular_value):
+	def change_modular_according_to_label(self, label_to_change, modular_value):
 		"""
 		This function could be used to change the modular value of nodes according
 		to the label specified in a list. The modular value is further used to 
 		specify node color.
 		"""
 		# TODO: fix bugs
-		for irwo in range(self.count):
+		for irow in range(self.count):
 			if self.nodedata[irow][5] in label_to_change:
 				self.nodedata[irow][3] = modular_value
 
@@ -204,7 +204,15 @@ class BNVEdge:
 	def write(self, outedgefile):
 		"""Write the edge file."""
 		path.makedirs_file(outedgefile)
-		np.savetxt(outedgefile, self.net.data, delimiter=' ')
+		np.savetxt(outedgefile, self.net.data, delimiter='\t')
+
+	@staticmethod
+	def readNet(inEdgeFile, atlasobj):
+		"""
+		Read in an edge file and return a net
+		"""
+		data = np.loadtxt(inEdgeFile, delimiter = '\t')
+		return netattr.Net(data, atlasobj)
 
 class BNVPlot:
 	"""BNV plot is used to init one bnv plot, and run the plot."""
