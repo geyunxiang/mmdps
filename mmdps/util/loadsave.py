@@ -47,9 +47,9 @@ def load_nii(niifile):
     canonical_img = nib.as_closest_canonical(img)
     return canonical_img
 
-def load_csvmat(matfile):
+def load_csvmat(matfile, delimiter = ','):
     """Load csv array in csv file."""
-    return np.loadtxt(matfile, delimiter=',')
+    return np.loadtxt(matfile, delimiter = delimiter)
 
 def save_csvmat(matfile, mat, delimiter = ','):
     """Save csv array in csv file."""

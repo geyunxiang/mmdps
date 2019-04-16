@@ -34,6 +34,6 @@ if __name__ == '__main__':
 	# 				 args.outfolder)
 	mriscanstxt = 'E:/namelist.txt'
 	exp = ExportBOLD(r'E:\DataProcessing\BOLDPreprocess\Data\FunRawARWSDCF',
-	 				 mriscanstxt,
+	 				 loadsave.load_txt(mriscanstxt),
 	 				 'E:/DataProcessing/BOLD/')
 	exp.run()
