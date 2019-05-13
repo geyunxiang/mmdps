@@ -7,17 +7,16 @@ Inherite NiftiGetter to use with specific converted raw nifti data.
 """
 
 import os
-import shutil
 import subprocess
 import fnmatch
 import logging
-import dicom
+import pydicom
 # from .. import rootconfig
 # from ..util import path, loadsave
 # from . import dicominfo
 from mmdps import rootconfig
 from mmdps.util import path, loadsave
-import dicominfo
+from mmdps.dms import dicominfo
 
 def gen_scan_info(infolder, outfolder):
 	"""
@@ -30,7 +29,7 @@ def gen_scan_info(infolder, outfolder):
 		if not found:
 			for filename in filenames:
 				try:
-					dicom.read_file(os.path.join(dirpath, filename))
+					pydicom.read_file(os.path.join(dirpath, filename))
 					found = True
 				except:
 					pass
