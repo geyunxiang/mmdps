@@ -144,6 +144,22 @@ class Net:
 					currow.extend(datarow)
 					writer.writerow(currow)
 
+	def threshold(self, threshold):
+		"""
+		Return a copy of current network, with values thresholded
+		abs(FC) < threshold --> FC = 0
+		"""
+		newnet = Net(self.data.copy(), self.atlasobj, self.name)
+		for xidx in range(self.atlasobj.count):
+			for yidx in range(self.atlasobj.count):
+				if abs(self.data[xidx, yidx]) < threshold:
+					newnet.data[xidx, yidx] = 0
+		return newnet
+
+	def setValueAtTicks(self, xtick, ytick, value):
+		self.data[self.atlasobj.ticks.index(xtick), self.atlasobj.ticks.index(ytick)] = value
+		self.data[self.atlasobj.ticks.index(ytick), self.atlasobj.ticks.index(xtick)] = value
+
 class DynamicNet:
 	"""
 	Dynamic net is a collection of nets
@@ -172,7 +188,6 @@ class Mat:
 		self.data = data
 		self.atlasobj = atlasobj
 		self.name = name
-
 
 def averageNets(nets):
 	"""

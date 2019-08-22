@@ -247,9 +247,44 @@ class GroupLoader:
 		"""Person to mriscans, in this group."""
 		return self.person_mriscans_dict.get(person, [])
 
-if __name__ == '__main__':
-	# test space
-	from mmdps.proc import atlas
-	atlasobj = atlas.get('brodmann_lr')
-	l = AttrLoader('Z:/ChangGungFeatures/', atlasobj)
-	print(l.generate_mriscans(['wangzemin'], 1, accumulate = True))
+def load_dynamic_nets(rootFolder, scans, atlasobj, windowLength, stepSize):
+	"""
+	This function loads dynamic networks for each scan into a dict
+	The key of the dict is the scan name
+		value is a list of dynamic networks
+	Dynamic networks are saved as corrcoef-<start>.<end>.csv at bold_net/dynamic <stepSize> <windowLength>/ folder
+	"""
+	ret = {}
+	for scan in scans:
+		ret[scan] = []
+		start = 0
+		dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net', 'dynamic %d %d' % (stepSize, windowLength))
+		while True:
+			dynamic_net_filepath = os.path.join(dynamic_foler_path, 'corrcoef-%d.%d.csv' % (start, start+windowLength))
+			if os.path.exists(dynamic_net_filepath):
+				ret[scan].append(netattr.Net(load_csvmat(dynamic_net_filepath), atlasobj, '%d.%d' % (start, start+windowLength)))
+				start += stepSize
+			else:
+				# print('loaded %d nets for %s' % (len(ret[scan]), scan))
+				break
+	return ret
+
+def load_dynamic_attrs(rootFolder, scans, atlasobj, attrname, windowLength, stepSize):
+	"""
+	Dynamic features are saved as inter-region_<feature>-<start>.<end>.csv at bold_net_attr/dynamic <stepSize> <windowLength>/ folder
+	Specify attrname as 'inter-region_BC' etc.
+	"""
+	ret = {}
+	for scan in scans:
+		ret[scan] = []
+		start = 0
+		dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
+		while True:
+			dynamic_attr_filepath = os.path.join(dynamic_foler_path, '%s-%d.%d.csv' % (attrname, start, start+windowLength))
+			if os.path.exists(dynamic_attr_filepath):
+				ret[scan].append(netattr.Attr(load_csvmat(dynamic_attr_filepath), atlasobj, '%d.%d' % (start, start+windowLength)))
+				start += stepSize
+			else:
+				# print('loaded %d attrs for %s' % (len(ret[scan]), scan))
+				break
+	return ret

@@ -23,8 +23,7 @@ class LinePlot:
 		self.outfilepath = outfilepath
 		
 	def plot(self):
-		"""Do the plot."""
-		fig = plt.figure(figsize=(20, 6))
+		plt.figure(figsize=(20, 6))
 		# plt.hold(True)
 		for attr in self.attrs:
 			attrdata_adjusted = self.atlasobj.adjust_vec(attr.data)
@@ -37,14 +36,34 @@ class LinePlot:
 		plt.savefig(self.outfilepath, dpi=100)
 		plt.close()
 
-class OverlappedLinePlot:
+class DynamicLinePlot:
 	"""
-	Multiple line plot to show changes of attributes belonging to one brain region.
+	This class is used to plot the time series of dynamic features.
 	"""
-	def __init__(self, attrs, title, outfilepath):
+	def __init__(self, attrs, regionIdx, stepSize, title, outfilepath):
 		"""
-		attrs - A list of lists. Each list contains
+		Attrs should be a dict of lists of attrs
+		Only attrs related to region is plotted
+		The key of attrs are taken as labels
 		"""
+		self.attrs = attrs
+		self.regionIdx = regionIdx
+		self.stepSize = stepSize
+		self.title = title
+		self.outfilepath = outfilepath
+
+	def plot(self):
+		plt.figure(figsize = (20, 6))
+		for key in self.attrs:
+			self.count = len(self.attrs[key])
+			plt.plot(range(1, self.count+1), [attr.data[self.regionIdx] for attr in self.attrs[key]], '.-', label = key)
+		plt.xlim([0, self.count+1])
+		plt.xticks(range(1, self.count+1), range(1, self.count*self.stepSize, self.stepSize))
+		plt.grid(True)
+		plt.legend()
+		plt.title(self.title, fontsize = 20)
+		plt.savefig(self.outfilepath, dpi = 100)
+		plt.close()
 
 class CorrPlot:
 	"""
