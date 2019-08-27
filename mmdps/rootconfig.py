@@ -56,6 +56,8 @@ if sys.platform == 'win32':
 		folder_mridata = r'F:/MMDPDatabase/Data/MRIData'
 		# the mmdpdb file path
 		mmdpdb_filepath = 'I:/MMDPDatabase/mmdpdb.db'
+		# CD driver path
+		CD_dicom_path = 'G:/DICOM/'
 
 else:
 	matlab_bin = '/usr/local/bin/matlab'
