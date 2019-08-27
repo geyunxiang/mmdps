@@ -14,14 +14,15 @@ from mmdps.util import path
 
 class MRIScanImporter:
 	"""MRIScan importer."""
-	def __init__(self, inMainFolder, outMainFolder, mriscanstxt, db_generator=None, cls_niftigetter=converter.NiftiGetter):
+	def __init__(self, inMainFolder, outMainFolder, mriscanstxt = None, db_generator=None, cls_niftigetter=converter.NiftiGetter):
 		"""
 		Import from inMainFolder to outMainFolder, for mriscans from mriscanstxt.
 		Update database. Use NiftiGetter class from cls_niftigetter.
 		"""
 		self.inMainFolder = inMainFolder
 		self.outMainFolder = outMainFolder
-		self.mriscans = load_txt(mriscanstxt)
+		if mriscanstxt is not None:
+			self.mriscans = load_txt(mriscanstxt)
 		self.db_generator = db_generator
 		self.cls_niftigetter = cls_niftigetter
 

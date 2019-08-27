@@ -14,9 +14,12 @@ from mmdps import rootconfig
 from mmdps.dms import converter, importer, dbgen
 from mmdps.util import clock
 
-
 def copy_dicom_from_CD(scan_folder_name):
-	shutil.copy2(rootconfig.dms.CD_dicom_path, os.path.join(rootconfig.dms.folder_dicom, scan_folder_name))
+	try:
+		shutil.copytree(rootconfig.dms.CD_dicom_path, os.path.join(rootconfig.dms.folder_dicom, scan_folder_name))
+	except FileExistsError as e:
+		logging.error('Destination already exists.\n%s' % e)
+		exit()
 	logging.info('Dicom copied.')
 
 def convert_dicom_to_raw_nii(scan_folder_name):
@@ -27,7 +30,7 @@ def convert_dicom_to_raw_nii(scan_folder_name):
 		logging.error('Error converting scan %s with return code %d' % (scan_folder_name, ret))
 
 def extract_modalities(scan_folder_name):
-	worker = importer.MRIScanImporter(os.path.join(rootconfig.dms.folder_rawnii), os.path.join(rootconfig.dms.folder_mridata), None, cls_niftigetter = converter.ChanggungNiftiGetter)
+	worker = importer.MRIScanImporter(os.path.join(rootconfig.dms.folder_rawnii), os.path.join(rootconfig.dms.folder_mridata), cls_niftigetter = converter.ChanggungNiftiGetter)
 	logging.info('Extracting modalities...')
 	modalities_coverage = worker.copy_one_nifti(scan_folder_name)
 	logging.info('Extracting modalities finished with coverage: %s' % modalities_coverage)
@@ -53,11 +56,8 @@ def main():
 	args = parser.parse_args()
 	subject_name = args.name
 	scan_date = args.date
-
 	scan_folder_name = '%s_%s' % (subject_name, scan_date)
-	dicom_path = os.path.join(rootconfig.dms.folder_dicom, scan_folder_name)
-	if os.path.isdir(dicom_path) is False:
-		os.makedirs(dicom_path)
+
 	copy_dicom_from_CD(scan_folder_name)
 	convert_dicom_to_raw_nii(scan_folder_name)
 	modalities_coverage = extract_modalities(scan_folder_name)
