@@ -50,6 +50,36 @@ class Attr:
 				for tick, value in zip(self.atlasobj.ticks, self.data):
 					writer.writerow((tick, value))
 
+class DynamicAttr:
+	"""
+	DynamicAttr is the dynamic version of Attr.
+	In static context, an Attr represents one kind of attributes of one person, containing single value for multiple
+	brain regions and resulting in a 1-D vector.
+	In dynamic context, a DynamicAttr represents one kind of dynamic attributes of one person, containing multiple
+	values for multiple brain regions and resulting in a 2-D matrix. (num_regions X num_time_points)
+	"""
+	def __init__(self, atlasobj):
+		self.atlasobj = atlasobj
+		self.data = None
+		self.T = 0
+
+	def append_one_slice(self, data):
+		"""
+		This function appends one slice of attributes to current dynamic attributes.
+		The appended slice should align with current data, or be used to create original data.
+		:param data: a np (n,) array
+		:return: nothing
+		"""
+		data = np.reshape(data, (data.shape[0], 1))
+		if self.data is None:
+			self.data = data
+		else:
+			self.data = np.concatenate((self.data, data), axis = 1)
+
+	def get_dynamic_at_tick(self, tick):
+		tickIdx = self.atlasobj.ticks.index(tick)
+		return self.data[tickIdx, :]
+
 class Net:
 	"""Net is network, it is a two dimensional sqaure matrix.
 

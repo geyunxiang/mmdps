@@ -48,7 +48,10 @@ def load_nii(niifile):
     return canonical_img
 
 def load_csvmat(matfile, delimiter = ','):
-    """Load csv array in csv file."""
+    """
+    Load csv array in csv file.
+    The return value is a (n,) np array for 1-D vector or a (m, n) np array for 2-D matrix
+    """
     return np.loadtxt(matfile, delimiter = delimiter)
 
 def save_csvmat(matfile, mat, delimiter = ','):

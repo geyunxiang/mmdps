@@ -8,9 +8,7 @@ import os
 import csv
 import json
 import numpy as np
-# from . import netattr
-# from ..util.loadsave import load_csvmat, load_txt
-# from ..util import path
+
 from mmdps import rootconfig
 from mmdps.proc import netattr
 from mmdps.util.loadsave import load_csvmat, load_txt
@@ -267,6 +265,36 @@ def load_dynamic_nets(rootFolder, scans, atlasobj, windowLength, stepSize):
 			else:
 				# print('loaded %d nets for %s' % (len(ret[scan]), scan))
 				break
+	return ret
+
+def load_single_dynamic_attr(rootFolder, scan, atlasobj, attrname, windowLength, stepSize):
+	dynamic_attr = netattr.DynamicAttr(atlasobj)
+	start = 0
+	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
+	while True:
+		dynamic_attr_filepath = os.path.join(dynamic_foler_path, '%s-%d.%d.csv' % (attrname, start, start + windowLength))
+		if os.path.exists(dynamic_attr_filepath):
+			dynamic_attr.append_one_slice(load_csvmat(dynamic_attr_filepath))
+			start += stepSize
+		else:
+			# print('loaded %d attrs for %s' % (len(ret[scan]), scan))
+			break
+	return dynamic_attr
+
+def load_dynamic_attr(rootFolder, scans, atlasobj, attrname, windowLength, stepSize):
+	"""
+	Newer version of dynamic attr loader. Return a list of DynamicAttr
+	:param rootFolder:
+	:param scans:
+	:param atlasobj:
+	:param attrname:
+	:param windowLength:
+	:param stepSize:
+	:return:
+	"""
+	ret = []
+	for scan in scans:
+		ret.append(load_single_dynamic_attr(rootFolder, scan, atlasobj, attrname, windowLength, stepSize))
 	return ret
 
 def load_dynamic_attrs(rootFolder, scans, atlasobj, attrname, windowLength, stepSize):

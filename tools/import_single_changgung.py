@@ -6,6 +6,7 @@ This program imports a single person's data from CD to data storage. The steps a
 4. generate(update) info database
 """
 import argparse
+import json
 import logging
 import os
 import shutil
@@ -28,6 +29,9 @@ def convert_dicom_to_raw_nii(scan_folder_name):
 		logging.info('Successfully converted %s' % scan_folder_name)
 	else:
 		logging.error('Error converting scan %s with return code %d' % (scan_folder_name, ret))
+	with open(os.path.join(rootconfig.dms.folder_rawnii, scan_folder_name, 'scan_info.json')) as f:
+		jsonObject = json.load(f)
+		print('Subject ID: %s' % jsonObject['Patient']['ID'])
 
 def extract_modalities(scan_folder_name):
 	worker = importer.MRIScanImporter(os.path.join(rootconfig.dms.folder_rawnii), os.path.join(rootconfig.dms.folder_mridata), cls_niftigetter = converter.ChanggungNiftiGetter)
