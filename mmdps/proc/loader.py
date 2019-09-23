@@ -140,6 +140,19 @@ class AttrLoader(Loader):
 		attr = netattr.Attr(attrdata, self.atlasobj, mriscan)
 		return attr
 
+	def load_multiple_attrs(self, mriscans, attrname):
+		"""
+		Load a list of netattr.Attr for each scan in mriscans
+		attrname = 'BOLD.BC' etc...
+		:param mriscans:
+		:param attrname:
+		:return:
+		"""
+		attr_list = []
+		for mriscan in mriscans:
+			attr_list.append(self.load(mriscan, attrname))
+		return attr_list
+
 	def loadvstackmulti(self, mriscans, attrnames):
 		"""Load all data in every mriscans in mriscans, and every attr in attrnames.
 
@@ -316,3 +329,7 @@ def load_dynamic_attrs(rootFolder, scans, atlasobj, attrname, windowLength, step
 				# print('loaded %d attrs for %s' % (len(ret[scan]), scan))
 				break
 	return ret
+
+def load_network(mainfolder, atlasobj, mriscan):
+	l = NetLoader(mainfolder, atlasobj)
+	return l.load(mriscan)

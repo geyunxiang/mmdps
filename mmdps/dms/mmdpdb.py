@@ -26,6 +26,11 @@ class MMDPDatabase:
 			personIDs.append(person.id)
 		return personIDs
 
+	def get_all_scans_of_person(self, person_name):
+		session = self.new_session()
+		one_person = session.query(tables.Person).filter_by(name = person_name).one()
+		return session.query(tables.MRIScan).filter_by(person_id = one_person.id)
+
 	def deleteScan(self, session, mriscanFilename):
 		db_scan = session.query(tables.MRIScan).filter_by(filename = mriscanFilename).one()
 		session.delete(db_scan)

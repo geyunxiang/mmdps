@@ -89,9 +89,17 @@ class CorrPlot:
 		x0 = xlim[0]
 		x1 = xlim[1]
 		plt.plot(xlim, [a*x0+b, a*x1+b])
-		plt.title(self.title + ' r:{:0.5} p:{:0.5}'.format(rvalue, pvalue))
+		plt.title(self.title + ' r:{:0.4} p:{:0.4}'.format(rvalue, pvalue))
 		plt.xlabel(self.xlabel)
 		plt.ylabel(self.ylabel)
 		path.makedirs_file(self.outfile)
 		fig.savefig(self.outfile)
 		plt.close()
+
+def plot_correlation(xvec, yvec, xlabel, ylabel, title, outfile):
+	plotter = CorrPlot(xvec, yvec, xlabel, ylabel, title, outfile)
+	plotter.plot()
+
+def plot_attr_lines(attrs, title, outfilepath):
+	plotter = LinePlot(attrs, title, outfilepath)
+	plotter.plot()
