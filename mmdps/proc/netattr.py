@@ -18,7 +18,7 @@ class Attr:
 
 	The dimension of the vector is atlasobj.count.
 	"""
-	def __init__(self, data, atlasobj, name='attr'):
+	def __init__(self, data, atlasobj, name = None):
 		"""Init the attr, using data, atlasobj, and name.
 
 		The name can be any string that can be useful.
@@ -50,6 +50,13 @@ class Attr:
 				for tick, value in zip(self.atlasobj.ticks, self.data):
 					writer.writerow((tick, value))
 
+	def normalize(self):
+		if np.max(self.data) < 1.1:
+			# already normalized
+			return
+		for idx in range(self.data.shape[0]):
+			self.data[idx] = normalize_feature(self.data[idx], self.name, self.atlasobj)
+
 class DynamicAttr:
 	"""
 	DynamicAttr is the dynamic version of Attr.
@@ -58,10 +65,19 @@ class DynamicAttr:
 	In dynamic context, a DynamicAttr represents one kind of dynamic attributes of one person, containing multiple
 	values for multiple brain regions and resulting in a 2-D matrix. (num_regions X num_time_points)
 	"""
-	def __init__(self, atlasobj):
+	def __init__(self, atlasobj, name = None):
 		self.atlasobj = atlasobj
 		self.data = None
+		self.name = name
 		self.T = 0
+
+	def normalize(self):
+		if np.max(self.data) < 1.1:
+			# already normalized
+			return
+		for xidx in range(self.data.shape[0]):
+			for yidx in range(self.data.shape[1]):
+				self.data[xidx, yidx] = normalize_feature(self.data[xidx, yidx], self.name, self.atlasobj)
 
 	def append_one_slice(self, data):
 		"""
@@ -228,3 +244,24 @@ def averageNets(nets):
 		data += net.data
 	data /= len(nets)
 	return Net(data, nets[0].atlasobj, name = 'averaged')
+
+def normalize_feature(feature_value, feature_name, atlasobj):
+	if feature_name == 'BOLD.BC':
+		return float(feature_value)/((atlasobj.count-1)*(atlasobj.count-2))
+	elif feature_name == 'BOLD.WD':
+		return float(feature_value)/(atlasobj.count - 1)
+	else:
+		return feature_value
+
+def normalize_features(feature_list, feature_name, atlasobj):
+	"""
+	Input a list of actual values
+	:param feature_list:
+	:param feature_name:
+	:param atlasobj:
+	:return:
+	"""
+	normalized_feature = []
+	for feat in feature_list:
+		normalized_feature.append(normalize_feature(feat, feature_name, atlasobj))
+	return normalized_feature

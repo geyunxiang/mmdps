@@ -89,7 +89,7 @@ class CorrPlot:
 		x0 = xlim[0]
 		x1 = xlim[1]
 		plt.plot(xlim, [a*x0+b, a*x1+b])
-		plt.title(self.title + ' r:{:0.4} p:{:0.4}'.format(rvalue, pvalue))
+		plt.title(self.title + ' r:{:0.3} p:{:0.3}'.format(rvalue, pvalue))
 		plt.xlabel(self.xlabel)
 		plt.ylabel(self.ylabel)
 		path.makedirs_file(self.outfile)

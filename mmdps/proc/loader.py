@@ -43,16 +43,21 @@ class Loader:
 		"""Get the csv filename by feature name."""
 		return self.csvdict.get(netattrname, '')
 
-	def loadfilepath(self, mriscan, netattrname):
+	def loadfilepath(self, mriscan, netattrname, csvfilename = None):
 		"""File path for one feature."""
+		if csvfilename is not None:
+			return self.fullfile(mriscan, csvfilename)
 		return self.fullfile(mriscan, self.csvfilename(netattrname))
 
-	def loaddata(self, mriscan, netattrname):
+	def loaddata(self, mriscan, netattrname, csvfilename = None):
 		"""Load the feature specified by mriscan and feature name.
 
 		Use set_preproc to set a pre-processing function.
 		"""
-		csvfile = self.loadfilepath(mriscan, netattrname)
+		if csvfilename is not None:
+			csvfile = self.loadfilepath(mriscan, netattrname, csvfilename)
+		else:
+			csvfile = self.loadfilepath(mriscan, netattrname)
 		resmat = load_csvmat(csvfile)
 		if type(self.f_preproc) is dict:
 			if mriscan in self.f_preproc:
@@ -130,27 +135,35 @@ class Loader:
 
 class AttrLoader(Loader):
 	"""Attribute loader."""
-	def load(self, mriscan, attrname):
+	def load(self, mriscan, attrname, csvfilename = None):
 		"""
 		Load the attribute object, with atlasobj.
 		- mriscan: specify which scan to load from
 		- attrname: the name of the attr to load
+		- csvfilename: the name of the attr file name. Specify this parameter to override filename
 		"""
-		attrdata = self.loaddata(mriscan, attrname)
-		attr = netattr.Attr(attrdata, self.atlasobj, mriscan)
+		if csvfilename is not None:
+			attrdata = self.loaddata(mriscan, attrname, csvfilename)
+		else:
+			attrdata = self.loaddata(mriscan, attrname)
+		attr = netattr.Attr(attrdata, self.atlasobj, attrname)
 		return attr
 
-	def load_multiple_attrs(self, mriscans, attrname):
+	def load_multiple_attrs(self, mriscans, attrname, csvfilename = None):
 		"""
 		Load a list of netattr.Attr for each scan in mriscans
 		attrname = 'BOLD.BC' etc...
 		:param mriscans:
 		:param attrname:
+		:param attrname: the name of the attr file name. Specify this parameter to override filename
 		:return:
 		"""
 		attr_list = []
 		for mriscan in mriscans:
-			attr_list.append(self.load(mriscan, attrname))
+			if csvfilename is not None:
+				attr_list.append(self.load(mriscan, attrname, csvfilename))
+			else:
+				attr_list.append(self.load(mriscan, attrname))
 		return attr_list
 
 	def loadvstackmulti(self, mriscans, attrnames):
@@ -258,6 +271,19 @@ class GroupLoader:
 		"""Person to mriscans, in this group."""
 		return self.person_mriscans_dict.get(person, [])
 
+def load_features(rootFolder, scans, atlasobj, attrname, csvfilename = None):
+	"""
+	Load static features as a list
+	:param rootFolder:
+	:param scans:
+	:param atlasobj:
+	:return:
+	"""
+	l = AttrLoader(rootFolder, atlasobj)
+	if csvfilename is not None:
+		return l.load_multiple_attrs(scans, attrname, csvfilename)
+	return l.load_multiple_attrs(scans, attrname)
+
 def load_dynamic_nets(rootFolder, scans, atlasobj, windowLength, stepSize):
 	"""
 	This function loads dynamic networks for each scan into a dict
@@ -281,7 +307,7 @@ def load_dynamic_nets(rootFolder, scans, atlasobj, windowLength, stepSize):
 	return ret
 
 def load_single_dynamic_attr(rootFolder, scan, atlasobj, attrname, windowLength, stepSize):
-	dynamic_attr = netattr.DynamicAttr(atlasobj)
+	dynamic_attr = netattr.DynamicAttr(atlasobj, attrname)
 	start = 0
 	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
 	while True:
