@@ -359,3 +359,40 @@ def load_dynamic_attrs(rootFolder, scans, atlasobj, attrname, windowLength, step
 def load_network(mainfolder, atlasobj, mriscan):
 	l = NetLoader(mainfolder, atlasobj)
 	return l.load(mriscan)
+
+def generate_mriscans(root_folder, namelist, num_scan = 1, accumulate = False):
+	"""Load specific scans of subjects in namelist. Specify scan number (1st, 2nd, ...)
+	namelist is a list of subject names (str)
+	Set accumulate = True to load all scans up to (including) num_scan
+	"""
+	mriscans = []
+	lastName = None
+	currentScans = []
+	for scan in sorted(os.listdir(root_folder)):
+		name = scan[:scan.find('_')]
+		try:
+			if name != lastName:
+				if lastName in namelist:
+					if accumulate:
+						mriscans.extend(currentScans[:num_scan])
+					else:
+						mriscans.append(currentScans[num_scan-1])
+				lastName = name
+				currentScans = []
+		except IndexError:
+			# some one might not have corresponding scans
+			print('Loader Warning: Index error')
+			lastName = name
+			currentScans = []
+		currentScans.append(scan)
+	if lastName in namelist:
+		if accumulate:
+			mriscans.extend(currentScans[:num_scan])
+		else:
+			mriscans.append(currentScans[num_scan-1])
+	# check if some one is missing
+	if accumulate and len(mriscans) != num_scan * len(namelist):
+		print('Loader Warning: no. mriscans found (%d) not equal to no. subjects (%d) times num_scan (%d)' % (len(mriscans), len(namelist), num_scan))
+	elif not accumulate and len(mriscans) != len(namelist):
+		print('Loader Warning: no. mriscans found (%d) not equal to no. subjects (%d)' % (len(mriscans), len(namelist)))
+	return mriscans
