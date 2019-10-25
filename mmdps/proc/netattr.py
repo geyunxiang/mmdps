@@ -235,6 +235,12 @@ class Mat:
 		self.atlasobj = atlasobj
 		self.name = name
 
+def zero_net(atlasobj):
+	return Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
+
+def zero_attr(atlasobj):
+	return Attr(np.zeros(atlasobj.count), atlasobj)
+
 def averageNets(nets):
 	"""
 	This function takes in a list of Net and return an averaged Net
@@ -244,6 +250,13 @@ def averageNets(nets):
 		data += net.data
 	data /= len(nets)
 	return Net(data, nets[0].atlasobj, name = 'averaged')
+
+def averageAttr(attr_list):
+	atlasobj = attr_list[0].atlasobj
+	result = zero_attr(atlasobj)
+	for idx in range(atlasobj.count):
+		result.data[idx] = np.average([attr.data[idx] for attr in attr_list])
+	return result
 
 def normalize_feature(feature_value, feature_name, atlasobj):
 	if feature_name == 'BOLD.BC':
@@ -265,3 +278,20 @@ def normalize_features(feature_list, feature_name, atlasobj):
 	for feat in feature_list:
 		normalized_feature.append(normalize_feature(feat, feature_name, atlasobj))
 	return normalized_feature
+
+def networks_comparisons(network_list_A, network_list_B, comparison_method):
+	"""
+	comparison_method should be stats_utils.twoSampleTTest or stats_utils.pairedTTest
+	"""
+	atlasobj = network_list_A[0].atlasobj
+	stat_network = Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
+	p_network = Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
+	for xidx in range(atlasobj.count):
+		for yidx in range(xidx, atlasobj.count):
+			t, tp = comparison_method([net.data[xidx, yidx] for net in network_list_A], 
+									  [net.data[xidx, yidx] for net in network_list_B])
+			stat_network.data[xidx, yidx] = t
+			stat_network.data[yidx, xidx] = t
+			p_network.data[xidx, yidx] = tp
+			p_network.data[yidx, xidx] = tp
+	return stat_network, p_network
