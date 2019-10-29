@@ -18,7 +18,7 @@ class Attr:
 
 	The dimension of the vector is atlasobj.count.
 	"""
-	def __init__(self, data, atlasobj, name='attr'):
+	def __init__(self, data, atlasobj, name = None):
 		"""Init the attr, using data, atlasobj, and name.
 
 		The name can be any string that can be useful.
@@ -49,6 +49,52 @@ class Attr:
 				writer.writerow(('Region', 'Value'))
 				for tick, value in zip(self.atlasobj.ticks, self.data):
 					writer.writerow((tick, value))
+
+	def normalize(self):
+		if np.max(self.data) < 1.1:
+			# already normalized
+			return
+		for idx in range(self.data.shape[0]):
+			self.data[idx] = normalize_feature(self.data[idx], self.name, self.atlasobj)
+
+class DynamicAttr:
+	"""
+	DynamicAttr is the dynamic version of Attr.
+	In static context, an Attr represents one kind of attributes of one person, containing single value for multiple
+	brain regions and resulting in a 1-D vector.
+	In dynamic context, a DynamicAttr represents one kind of dynamic attributes of one person, containing multiple
+	values for multiple brain regions and resulting in a 2-D matrix. (num_regions X num_time_points)
+	"""
+	def __init__(self, atlasobj, name = None):
+		self.atlasobj = atlasobj
+		self.data = None
+		self.name = name
+		self.T = 0
+
+	def normalize(self):
+		if np.max(self.data) < 1.1:
+			# already normalized
+			return
+		for xidx in range(self.data.shape[0]):
+			for yidx in range(self.data.shape[1]):
+				self.data[xidx, yidx] = normalize_feature(self.data[xidx, yidx], self.name, self.atlasobj)
+
+	def append_one_slice(self, data):
+		"""
+		This function appends one slice of attributes to current dynamic attributes.
+		The appended slice should align with current data, or be used to create original data.
+		:param data: a np (n,) array
+		:return: nothing
+		"""
+		data = np.reshape(data, (data.shape[0], 1))
+		if self.data is None:
+			self.data = data
+		else:
+			self.data = np.concatenate((self.data, data), axis = 1)
+
+	def get_dynamic_at_tick(self, tick):
+		tickIdx = self.atlasobj.ticks.index(tick)
+		return self.data[tickIdx, :]
 
 class Net:
 	"""Net is network, it is a two dimensional sqaure matrix.
@@ -144,6 +190,22 @@ class Net:
 					currow.extend(datarow)
 					writer.writerow(currow)
 
+	def threshold(self, threshold):
+		"""
+		Return a copy of current network, with values thresholded
+		abs(FC) < threshold --> FC = 0
+		"""
+		newnet = Net(self.data.copy(), self.atlasobj, self.name)
+		for xidx in range(self.atlasobj.count):
+			for yidx in range(self.atlasobj.count):
+				if abs(self.data[xidx, yidx]) < threshold:
+					newnet.data[xidx, yidx] = 0
+		return newnet
+
+	def setValueAtTicks(self, xtick, ytick, value):
+		self.data[self.atlasobj.ticks.index(xtick), self.atlasobj.ticks.index(ytick)] = value
+		self.data[self.atlasobj.ticks.index(ytick), self.atlasobj.ticks.index(xtick)] = value
+
 class DynamicNet:
 	"""
 	Dynamic net is a collection of nets
@@ -173,6 +235,11 @@ class Mat:
 		self.atlasobj = atlasobj
 		self.name = name
 
+def zero_net(atlasobj):
+	return Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
+
+def zero_attr(atlasobj):
+	return Attr(np.zeros(atlasobj.count), atlasobj)
 
 def averageNets(nets):
 	"""
@@ -183,3 +250,59 @@ def averageNets(nets):
 		data += net.data
 	data /= len(nets)
 	return Net(data, nets[0].atlasobj, name = 'averaged')
+
+def averageAttr(attr_list):
+	atlasobj = attr_list[0].atlasobj
+	result = zero_attr(atlasobj)
+	for idx in range(atlasobj.count):
+		result.data[idx] = np.average([attr.data[idx] for attr in attr_list])
+	return result
+
+def normalize_feature(feature_value, feature_name, atlasobj):
+	if feature_name == 'BOLD.BC':
+		return float(feature_value)/((atlasobj.count-1)*(atlasobj.count-2))
+	elif feature_name == 'BOLD.WD':
+		return float(feature_value)/(atlasobj.count - 1)
+	else:
+		return feature_value
+
+def normalize_features(feature_list, feature_name, atlasobj):
+	"""
+	Input a list of actual values
+	:param feature_list:
+	:param feature_name:
+	:param atlasobj:
+	:return:
+	"""
+	normalized_feature = []
+	for feat in feature_list:
+		normalized_feature.append(normalize_feature(feat, feature_name, atlasobj))
+	return normalized_feature
+
+def networks_comparisons(network_list_A, network_list_B, comparison_method):
+	"""
+	comparison_method should be stats_utils.twoSampleTTest or stats_utils.pairedTTest
+	"""
+	atlasobj = network_list_A[0].atlasobj
+	stat_network = zero_net(atlasobj)
+	p_network = zero_net(atlasobj)
+	for xidx in range(atlasobj.count):
+		for yidx in range(xidx, atlasobj.count):
+			t, tp = comparison_method([net.data[xidx, yidx] for net in network_list_A], 
+									  [net.data[xidx, yidx] for net in network_list_B])
+			stat_network.data[xidx, yidx] = t
+			stat_network.data[yidx, xidx] = t
+			p_network.data[xidx, yidx] = tp
+			p_network.data[yidx, xidx] = tp
+	return stat_network, p_network
+
+def attr_comparisons(attr_list_A, attr_list_B, comparison_method):
+	atlasobj = attr_list_A[0].atlasobj
+	stat_attr = zero_attr(atlasobj)
+	p_attr = zero_attr(atlasobj)
+	for idx in range(atlasobj.count):
+		t, tp = comparison_method([attr.data[idx] for attr in attr_list_A], 
+								  [attr.data[idx] for attr in attr_list_B])
+		stat_attr.data[idx] = t
+		p_attr.data[idx] = tp
+	return stat_attr, p_attr

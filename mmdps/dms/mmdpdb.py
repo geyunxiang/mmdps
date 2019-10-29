@@ -4,7 +4,7 @@ This module deals with mmdpdb related actions
 from mmdps.dms import tables
 from mmdps import rootconfig
 
-from sqlalchemy import create_engine, exists
+from sqlalchemy import create_engine, exists, and_
 from sqlalchemy.orm import sessionmaker
 
 from sqlalchemy.orm.exc import MultipleResultsFound
@@ -26,6 +26,16 @@ class MMDPDatabase:
 			personIDs.append(person.id)
 		return personIDs
 
+	def get_all_scans_of_person(self, person_name):
+		session = self.new_session()
+		one_person = session.query(tables.Person).filter_by(name = person_name).one()
+		return session.query(tables.MRIScan).filter_by(person_id = one_person.id)
+
+	def deleteScan(self, session, mriscanFilename):
+		db_scan = session.query(tables.MRIScan).filter_by(filename = mriscanFilename).one()
+		session.delete(db_scan)
+		session.commit()
+
 def updateDatabase(newDBFilePath, currentDBFilePath = rootconfig.dms.mmdpdb_filepath):
 	"""
 	This function is used to update people/mriscans in current database
@@ -42,7 +52,7 @@ def updateDatabase(newDBFilePath, currentDBFilePath = rootconfig.dms.mmdpdb_file
 	for person in allNewPeople:
 		# find if this person is in current session
 		try:
-			ret = currentSession.query(exists().where(tables.Person.name == person.name, tables.Person.patientid == person.id)).scalar()
+			ret = currentSession.query(exists().where(and_(tables.Person.name == person.name, tables.Person.patientid == person.id))).scalar()
 			if not ret:
 				currentSession.add(person)
 		except MultipleResultsFound:

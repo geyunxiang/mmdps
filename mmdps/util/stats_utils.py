@@ -37,12 +37,30 @@ def twoSampleTTest(a, b):
 	t, p = scipy.stats.ttest_ind(a, b)
 	return (t, p)
 
+def non_parametric_two_sample_test(a, b):
+	"""
+	https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html
+	"""
+	stat, p = scipy.stats.mannwhitneyu(a, b)
+	return stat, p
+
+def non_parametric_paired_test(a, b):
+	"""
+	https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.wilcoxon.html
+	"""
+	stat, p = scipy.stats.wilcoxon(a, b)
+	return stat, p
+
 def pairedTTest(a, b):
 	"""
 	https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_rel.html
 	"""
 	t, p = scipy.stats.ttest_rel(a, b)
 	return (t, p)
+
+def FDR_correction(p_list, sigLevel = 0.05):
+	reject, pvals_corrected, _, _ = multitest.multipletests(p_list, sigLevel, method='fdr_bh')
+	return reject, pvals_corrected
 
 def filter_sigdiff_connections(netListA, netListB, sigLevel = 0.05):
 	"""

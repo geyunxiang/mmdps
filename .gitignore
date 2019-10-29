@@ -3,4 +3,4 @@ __pychache__/
 *.log
 log
 server/apiserver/mmdpdb.db
-
+.idea

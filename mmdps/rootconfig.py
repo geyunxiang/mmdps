@@ -11,7 +11,7 @@ import sys
 
 if sys.platform == 'win32':
 	# matlab path
-	matlab_bin = 'D:/Program Files/MATLAB/R2016a/bin/matlab.exe'
+	matlab_bin = 'C:/Program Files/MATLAB/R2016b/bin/matlab.exe'
 	class path:
 		"""important paths and tools config."""
 		# the mmdps package folder
@@ -30,7 +30,8 @@ if sys.platform == 'win32':
 		# nii viewer to view nii file
 		niiviewer = 'D:/Program Files (x86)/mricron/mricron.exe'
 		# dicom to nifti converter, it's in mricron-gl distribution. Use custom compiled pigz if hangs.
-		dcm2nii = 'D:/Software/mricrogl/dcm2niix.exe'
+		# dcm2nii = 'D:/Software/mricrogl/dcm2niix.exe'
+		dcm2nii = 'E:/PC/mricron/dcm2nii.exe'
 		# circos executable path
 		circos = 'E:/PC/circos-0.69-6/bin/circos.exe'
 
@@ -55,6 +56,8 @@ if sys.platform == 'win32':
 		folder_mridata = r'F:/MMDPDatabase/Data/MRIData'
 		# the mmdpdb file path
 		mmdpdb_filepath = 'I:/MMDPDatabase/mmdpdb.db'
+		# CD driver path
+		CD_dicom_path = 'G:/DICOM/'
 
 else:
 	matlab_bin = '/usr/local/bin/matlab'

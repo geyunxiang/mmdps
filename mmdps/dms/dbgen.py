@@ -18,7 +18,7 @@ import datetime
 import os
 # from .tables import Base, Person, MRIScan, Group, MotionScore, StrokeScore, MRIMachine
 from mmdps.dms.tables import Base, Person, MRIScan, Group, MotionScore, StrokeScore, MRIMachine
-from sqlalchemy import create_engine, exists
+from sqlalchemy import create_engine, exists, and_
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import MultipleResultsFound
 
@@ -98,8 +98,11 @@ class DatabaseGenerator:
 		db_mriscan = MRIScan(date=dateobj, hasT1=hasT1, hasT2=hasT2, hasBOLD=hasBOLD, hasDWI=hasDWI, filename = scan)
 		machine.mriscans.append(db_mriscan)
 		try:
-			ret = self.session.query(exists().where(Person.name == name, Person.patientid == scaninfo['Patient']['ID'])).scalar()
+			ret = self.session.query(exists().where(and_(Person.name == name, Person.patientid == scaninfo['Patient']['ID']))).scalar()
 			if ret:
+				self.session.add(db_mriscan)
+				person = self.session.query(Person).filter_by(name = name).one()
+				person.mriscans.append(db_mriscan)
 				print('Old patient new scan %s inserted' % scan)
 				return 0
 		except MultipleResultsFound:
