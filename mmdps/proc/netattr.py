@@ -284,8 +284,8 @@ def networks_comparisons(network_list_A, network_list_B, comparison_method):
 	comparison_method should be stats_utils.twoSampleTTest or stats_utils.pairedTTest
 	"""
 	atlasobj = network_list_A[0].atlasobj
-	stat_network = Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
-	p_network = Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
+	stat_network = zero_net(atlasobj)
+	p_network = zero_net(atlasobj)
 	for xidx in range(atlasobj.count):
 		for yidx in range(xidx, atlasobj.count):
 			t, tp = comparison_method([net.data[xidx, yidx] for net in network_list_A], 
@@ -295,3 +295,14 @@ def networks_comparisons(network_list_A, network_list_B, comparison_method):
 			p_network.data[xidx, yidx] = tp
 			p_network.data[yidx, xidx] = tp
 	return stat_network, p_network
+
+def attr_comparisons(attr_list_A, attr_list_B, comparison_method):
+	atlasobj = attr_list_A[0].atlasobj
+	stat_attr = zero_attr(atlasobj)
+	p_attr = zero_attr(atlasobj)
+	for idx in range(atlasobj.count):
+		t, tp = comparison_method([attr.data[idx] for attr in attr_list_A], 
+								  [attr.data[idx] for attr in attr_list_B])
+		stat_attr.data[idx] = t
+		p_attr.data[idx] = tp
+	return stat_attr, p_attr
