@@ -2,6 +2,7 @@
 
 import os
 import json
+import csv
 from collections import OrderedDict
 import nibabel as nib
 import numpy as np
@@ -47,9 +48,12 @@ def load_nii(niifile):
     canonical_img = nib.as_closest_canonical(img)
     return canonical_img
 
-def load_csvmat(matfile):
-    """Load csv array in csv file."""
-    return np.loadtxt(matfile, delimiter=',')
+def load_csvmat(matfile, delimiter = ','):
+    """
+    Load csv array in csv file.
+    The return value is a (n,) np array for 1-D vector or a (m, n) np array for 2-D matrix
+    """
+    return np.loadtxt(matfile, delimiter = delimiter)
 
 def save_csvmat(matfile, mat, delimiter = ','):
     """Save csv array in csv file."""
@@ -63,4 +67,16 @@ def load_rawtext(textfile):
 def save_rawtext(textfile, s):
     with open(textfile, 'w') as f:
         f.write(s)
-        
+
+def save_list_to_csv(list_data, outfile):
+    """
+    save a list of dicts to a csv file
+    :param list_data: a list of dicts
+    :param outfile:
+    :return:
+    """
+    with open(outfile, 'w', newline = '') as f:
+        writer = csv.DictWriter(f, list_data[0].keys(), delimiter = ',')
+        writer.writeheader()
+        for itm in list_data:
+            writer.writerow(itm)

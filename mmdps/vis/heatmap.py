@@ -23,6 +23,14 @@ class HeatmapPlot:
 		self.outfilepath = outfilepath
 		self.valuerange = valuerange
 		self.cmap = self.get_cmap()
+		self.title_font_size = 24
+		self.show_ticks = True
+
+	def set_title_font_size(self, font_size):
+		self.title_font_size = font_size
+
+	def set_show_ticks(self, is_showing):
+		self.show_ticks = is_showing
 
 	def get_cmap(self):
 		"""Get default cmap use valuerange.
@@ -56,10 +64,11 @@ class HeatmapPlot:
 		ax.set_ylim(nrow-0.5, -0.5)
 
 		# set ticks
-		ax.set_xticks(range(self.count))
-		ax.set_xticklabels(self.atlasobj.ticks_adjusted, rotation=90)
-		ax.set_yticks(range(self.count))
-		ax.set_yticklabels(self.atlasobj.ticks_adjusted)
+		if self.show_ticks:
+			ax.set_xticks(range(self.count))
+			ax.set_xticklabels(self.atlasobj.ticks_adjusted, rotation=90)
+			ax.set_yticks(range(self.count))
+			ax.set_yticklabels(self.atlasobj.ticks_adjusted)
 
 		# set colorbar
 		cbar = fig.colorbar(axim, fraction=0.046, pad=0.04)
@@ -69,9 +78,9 @@ class HeatmapPlot:
 		cbar.ax.tick_params(labelsize = 25, length = 5, width = 5)
 
 		# save fig
-		plt.title(self.title, fontsize=24)
+		plt.title(self.title, fontsize = self.title_font_size)
 		path.makedirs_file(self.outfilepath)
-		plt.savefig(self.outfilepath, dpi=200)
+		plt.savefig(self.outfilepath, dpi = 200)
 		plt.close()
 
 	def plotRSN(self):
@@ -92,10 +101,11 @@ class HeatmapPlot:
 
 		# set ticks
 		ticks_adjusted, nodeCount = self.atlasobj.adjust_ticks_RSN()
-		ax.set_xticks(range(self.count))
-		ax.set_xticklabels(ticks_adjusted, rotation=90)
-		ax.set_yticks(range(self.count))
-		ax.set_yticklabels(ticks_adjusted)
+		if self.show_ticks:
+			ax.set_xticks(range(self.count))
+			ax.set_xticklabels(ticks_adjusted, rotation=90)
+			ax.set_yticks(range(self.count))
+			ax.set_yticklabels(ticks_adjusted)
 
 		# plot horizontal and vertical lines
 		plotIdx = -0.5
@@ -127,7 +137,7 @@ class HeatmapPlot:
 		cbar.ax.tick_params(labelsize = 25, length = 5, width = 5)
 
 		# save fig
-		plt.title(self.title, fontsize=24)
+		plt.title(self.title, fontsize = self.title_font_size)
 		path.makedirs_file(self.outfilepath)
 		plt.savefig(self.outfilepath, dpi=200)
 		plt.close()

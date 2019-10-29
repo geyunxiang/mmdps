@@ -1,8 +1,7 @@
-import os
-import dicom
+import pydicom
 import datetime
 from collections import OrderedDict
-from mmdps.util import clock, loadsave
+from mmdps.util import loadsave
 
 def parse_date_space_time(s):
     return datetime.datetime.strptime(s, '%Y-%m-%d %H:%M:%S')
@@ -16,7 +15,7 @@ def date_only_str(dt):
 class DicomInfo:
     def __init__(self, dicomfile):
         self.dicomfile = dicomfile
-        self.plan = dicom.read_file(dicomfile)
+        self.plan = pydicom.read_file(dicomfile)
 
     def studydate(self):
         thedate = self.plan.StudyDate
@@ -31,7 +30,7 @@ class DicomInfo:
         return str(self.plan.Manufacturer)
 
     def modelname(self):
-        return str(self.plan.ManufacturersModelName)
+        return str(self.plan.ManufacturerModelName)
 
     def patient(self):
         d = OrderedDict()

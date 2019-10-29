@@ -8,9 +8,7 @@ import os
 import csv
 import json
 import numpy as np
-# from . import netattr
-# from ..util.loadsave import load_csvmat, load_txt
-# from ..util import path
+
 from mmdps import rootconfig
 from mmdps.proc import netattr
 from mmdps.util.loadsave import load_csvmat, load_txt
@@ -45,16 +43,21 @@ class Loader:
 		"""Get the csv filename by feature name."""
 		return self.csvdict.get(netattrname, '')
 
-	def loadfilepath(self, mriscan, netattrname):
+	def loadfilepath(self, mriscan, netattrname, csvfilename = None):
 		"""File path for one feature."""
+		if csvfilename is not None:
+			return self.fullfile(mriscan, csvfilename)
 		return self.fullfile(mriscan, self.csvfilename(netattrname))
 
-	def loaddata(self, mriscan, netattrname):
+	def loaddata(self, mriscan, netattrname, csvfilename = None):
 		"""Load the feature specified by mriscan and feature name.
 
 		Use set_preproc to set a pre-processing function.
 		"""
-		csvfile = self.loadfilepath(mriscan, netattrname)
+		if csvfilename is not None:
+			csvfile = self.loadfilepath(mriscan, netattrname, csvfilename)
+		else:
+			csvfile = self.loadfilepath(mriscan, netattrname)
 		resmat = load_csvmat(csvfile)
 		if type(self.f_preproc) is dict:
 			if mriscan in self.f_preproc:
@@ -132,15 +135,36 @@ class Loader:
 
 class AttrLoader(Loader):
 	"""Attribute loader."""
-	def load(self, mriscan, attrname):
+	def load(self, mriscan, attrname, csvfilename = None):
 		"""
 		Load the attribute object, with atlasobj.
 		- mriscan: specify which scan to load from
 		- attrname: the name of the attr to load
+		- csvfilename: the name of the attr file name. Specify this parameter to override filename
 		"""
-		attrdata = self.loaddata(mriscan, attrname)
-		attr = netattr.Attr(attrdata, self.atlasobj, mriscan)
+		if csvfilename is not None:
+			attrdata = self.loaddata(mriscan, attrname, csvfilename)
+		else:
+			attrdata = self.loaddata(mriscan, attrname)
+		attr = netattr.Attr(attrdata, self.atlasobj, attrname)
 		return attr
+
+	def load_multiple_attrs(self, mriscans, attrname, csvfilename = None):
+		"""
+		Load a list of netattr.Attr for each scan in mriscans
+		attrname = 'BOLD.BC' etc...
+		:param mriscans:
+		:param attrname:
+		:param attrname: the name of the attr file name. Specify this parameter to override filename
+		:return:
+		"""
+		attr_list = []
+		for mriscan in mriscans:
+			if csvfilename is not None:
+				attr_list.append(self.load(mriscan, attrname, csvfilename))
+			else:
+				attr_list.append(self.load(mriscan, attrname))
+		return attr_list
 
 	def loadvstackmulti(self, mriscans, attrnames):
 		"""Load all data in every mriscans in mriscans, and every attr in attrnames.
@@ -247,9 +271,128 @@ class GroupLoader:
 		"""Person to mriscans, in this group."""
 		return self.person_mriscans_dict.get(person, [])
 
-if __name__ == '__main__':
-	# test space
-	from mmdps.proc import atlas
-	atlasobj = atlas.get('brodmann_lr')
-	l = AttrLoader('Z:/ChangGungFeatures/', atlasobj)
-	print(l.generate_mriscans(['wangzemin'], 1, accumulate = True))
+def load_features(rootFolder, scans, atlasobj, attrname, csvfilename = None):
+	"""
+	Load static features as a list
+	:param rootFolder:
+	:param scans:
+	:param atlasobj:
+	:return:
+	"""
+	l = AttrLoader(rootFolder, atlasobj)
+	if csvfilename is not None:
+		return l.load_multiple_attrs(scans, attrname, csvfilename)
+	return l.load_multiple_attrs(scans, attrname)
+
+def load_dynamic_nets(rootFolder, scans, atlasobj, windowLength, stepSize):
+	"""
+	This function loads dynamic networks for each scan into a dict
+	The key of the dict is the scan name
+		value is a list of dynamic networks
+	Dynamic networks are saved as corrcoef-<start>.<end>.csv at bold_net/dynamic <stepSize> <windowLength>/ folder
+	"""
+	ret = {}
+	for scan in scans:
+		ret[scan] = []
+		start = 0
+		dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net', 'dynamic %d %d' % (stepSize, windowLength))
+		while True:
+			dynamic_net_filepath = os.path.join(dynamic_foler_path, 'corrcoef-%d.%d.csv' % (start, start+windowLength))
+			if os.path.exists(dynamic_net_filepath):
+				ret[scan].append(netattr.Net(load_csvmat(dynamic_net_filepath), atlasobj, '%d.%d' % (start, start+windowLength)))
+				start += stepSize
+			else:
+				# print('loaded %d nets for %s' % (len(ret[scan]), scan))
+				break
+	return ret
+
+def load_single_dynamic_attr(rootFolder, scan, atlasobj, attrname, windowLength, stepSize):
+	dynamic_attr = netattr.DynamicAttr(atlasobj, attrname)
+	start = 0
+	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
+	while True:
+		dynamic_attr_filepath = os.path.join(dynamic_foler_path, '%s-%d.%d.csv' % (attrname, start, start + windowLength))
+		if os.path.exists(dynamic_attr_filepath):
+			dynamic_attr.append_one_slice(load_csvmat(dynamic_attr_filepath))
+			start += stepSize
+		else:
+			# print('loaded %d attrs for %s' % (len(ret[scan]), scan))
+			break
+	return dynamic_attr
+
+def load_dynamic_attr(rootFolder, scans, atlasobj, attrname, windowLength, stepSize):
+	"""
+	Newer version of dynamic attr loader. Return a list of DynamicAttr
+	:param rootFolder:
+	:param scans:
+	:param atlasobj:
+	:param attrname:
+	:param windowLength:
+	:param stepSize:
+	:return:
+	"""
+	ret = []
+	for scan in scans:
+		ret.append(load_single_dynamic_attr(rootFolder, scan, atlasobj, attrname, windowLength, stepSize))
+	return ret
+
+def load_dynamic_attrs(rootFolder, scans, atlasobj, attrname, windowLength, stepSize):
+	"""
+	Dynamic features are saved as inter-region_<feature>-<start>.<end>.csv at bold_net_attr/dynamic <stepSize> <windowLength>/ folder
+	Specify attrname as 'inter-region_BC' etc.
+	"""
+	ret = {}
+	for scan in scans:
+		ret[scan] = []
+		start = 0
+		dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
+		while True:
+			dynamic_attr_filepath = os.path.join(dynamic_foler_path, '%s-%d.%d.csv' % (attrname, start, start+windowLength))
+			if os.path.exists(dynamic_attr_filepath):
+				ret[scan].append(netattr.Attr(load_csvmat(dynamic_attr_filepath), atlasobj, '%d.%d' % (start, start+windowLength)))
+				start += stepSize
+			else:
+				# print('loaded %d attrs for %s' % (len(ret[scan]), scan))
+				break
+	return ret
+
+def load_network(mainfolder, atlasobj, mriscan):
+	l = NetLoader(mainfolder, atlasobj)
+	return l.load(mriscan)
+
+def generate_mriscans(root_folder, namelist, num_scan = 1, accumulate = False):
+	"""Load specific scans of subjects in namelist. Specify scan number (1st, 2nd, ...)
+	namelist is a list of subject names (str)
+	Set accumulate = True to load all scans up to (including) num_scan
+	"""
+	mriscans = []
+	lastName = None
+	currentScans = []
+	for scan in sorted(os.listdir(root_folder)):
+		name = scan[:scan.find('_')]
+		try:
+			if name != lastName:
+				if lastName in namelist:
+					if accumulate:
+						mriscans.extend(currentScans[:num_scan])
+					else:
+						mriscans.append(currentScans[num_scan-1])
+				lastName = name
+				currentScans = []
+		except IndexError:
+			# some one might not have corresponding scans
+			print('Loader Warning: Index error')
+			lastName = name
+			currentScans = []
+		currentScans.append(scan)
+	if lastName in namelist:
+		if accumulate:
+			mriscans.extend(currentScans[:num_scan])
+		else:
+			mriscans.append(currentScans[num_scan-1])
+	# check if some one is missing
+	if accumulate and len(mriscans) != num_scan * len(namelist):
+		print('Loader Warning: no. mriscans found (%d) not equal to no. subjects (%d) times num_scan (%d)' % (len(mriscans), len(namelist), num_scan))
+	elif not accumulate and len(mriscans) != len(namelist):
+		print('Loader Warning: no. mriscans found (%d) not equal to no. subjects (%d)' % (len(mriscans), len(namelist)))
+	return mriscans

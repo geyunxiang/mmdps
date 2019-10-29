@@ -24,6 +24,12 @@ association_table_group_scan = Table(
 	Column('scan_id', Integer, ForeignKey('mriscans.id'))
 )
 
+association_table_group_study = Table(
+	'association_group_study', Base.metadata,
+	Column('group_id', Integer, ForeignKey('groups.id')),
+	Column('study_id', Integer, ForeignKey('researchstudy.id'))
+)
+
 class BaseModel(Base):
 	"""Base model."""
 	__abstract__ = True
@@ -85,7 +91,7 @@ class MRIScan(BaseModel):
 	groups = relationship('Group', secondary = association_table_group_scan, back_populates = 'scans')
 
 	def __repr__(self):
-		return "<MRIScan(person_id='{}', date='{}', hasT1='{}', hasT2='{}', hasBOLD='{}', hasDWI='{}'>".format(self.person_id, self.date, self.hasT1, self.hasT2, self.hasBOLD, self.hasDWI)
+		return "<MRIScan(person_id='{}', filename='{}', hasT1='{}', hasT2='{}', hasBOLD='{}', hasDWI='{}'>".format(self.person_id, self.filename, self.hasT1, self.hasT2, self.hasBOLD, self.hasDWI)
 
 	def get_folder(self):
 		return "{}_{}".format(self.person.name, datetime.datetime.strftime(self.date, '%Y%m%d'))
@@ -139,6 +145,30 @@ class Group(BaseModel):
 	# relationships
 	people = relationship('Person', secondary = association_table_group_person, back_populates = 'groups')
 	scans = relationship('MRIScan', secondary = association_table_group_scan, back_populates = 'groups')
+	studies = relationship('ResearchStudy', secondary = association_table_group_study, back_populates = 'groups')
 
 	def __repr__(self):
 		return "<Group(name='{}', description='{}'>".format(self.name, self.description)
+
+class ResearchStudy(BaseModel):
+	"""
+	A ResearchStudy stands for a specific research. It includes multiple groups.
+	"""
+	__tablename__ = 'researchstudy'
+	# columns
+	id = Column(Integer, primary_key=True)
+	name = Column(String)
+	description = Column(String)
+	alias = Column(String)
+
+	# relationships
+	groups = relationship('Group', secondary = association_table_group_study, back_populates = 'studies')
+
+	def __repr__(self):
+		return "<Study(name='{}', description='{}', alias='{}')>".format(self.name, self.description, self.alias)
+
+	def getGroupContainingName(self, name_string):
+		for gp in self.groups:
+			if name_string in gp.name:
+				return gp
+		return None

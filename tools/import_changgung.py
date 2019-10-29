@@ -1,5 +1,4 @@
 import os
-import sys
 import argparse
 import logging
 from mmdps.dms import converter, importer, dbgen
@@ -7,7 +6,7 @@ from mmdps.util.loadsave import load_txt
 from mmdps import rootconfig
 from mmdps.util import clock
 
-logging.basicConfig(filename='import_changgung.log', level=logging.DEBUG)
+logging.basicConfig(filename = 'import_changgung.log', level = logging.DEBUG)
 logging.info('New Run: {}'.format(clock.now()))
 
 def apppath(s):
@@ -88,11 +87,6 @@ if __name__ == '__main__':
 	csv_motionscores = None
 	csv_strokescores = None
 	groupconflist = []
-	##    csv_motionscores = apppath('rawtable/scipatient_motionscores.csv')
-	##    csv_strokescores = apppath('rawtable/jixieshou_BCI+Jixieshou_scores.csv')
-	##    groupconflist = [('normal', 'Healthy normal people.', apppath('rawtable/normal_peopleorder.txt')),
-	##         ('scipatient', 'SCI patients.', apppath('rawtable/patient_peopleorder.txt')),
-	##         ('strokepatient', 'Stroke patients.', apppath('rawtable/jixieshou.txt'))]
 
 	db_generator = dbgen.DatabaseGenerator(
 		apppath('rawtable/ChanggengMRITable.csv'),

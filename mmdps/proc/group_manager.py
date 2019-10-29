@@ -3,6 +3,7 @@ Group manager.
 Used to manage group name/scan list.
 """
 import os
+
 from mmdps.util import loadsave
 from mmdps.dms import tables, mmdpdb
 import sqlalchemy
@@ -164,3 +165,8 @@ def genDefaultScan(loader, manager, totalScanNum = 2):
 		for key, value in manager.nameDict.items():
 			for scanIdx in range(totalScanNum):
 				manager.scanDict[key+'%d' % (scanIdx + 1)] = loader.generate_mriscans(value, num_scan = scanIdx+1)
+
+def getResearchStudy(alias):
+	db = mmdpdb.MMDPDatabase()
+	session = db.new_session()
+	return session.query(tables.ResearchStudy).filter_by(alias = alias).one()

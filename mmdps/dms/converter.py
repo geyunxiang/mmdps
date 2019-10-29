@@ -7,17 +7,14 @@ Inherite NiftiGetter to use with specific converted raw nifti data.
 """
 
 import os
-import shutil
 import subprocess
 import fnmatch
 import logging
-import dicom
-# from .. import rootconfig
-# from ..util import path, loadsave
-# from . import dicominfo
+import pydicom
+
 from mmdps import rootconfig
 from mmdps.util import path, loadsave
-import dicominfo
+from mmdps.dms import dicominfo
 
 def gen_scan_info(infolder, outfolder):
 	"""
@@ -30,7 +27,7 @@ def gen_scan_info(infolder, outfolder):
 		if not found:
 			for filename in filenames:
 				try:
-					dicom.read_file(os.path.join(dirpath, filename))
+					pydicom.read_file(os.path.join(dirpath, filename))
 					found = True
 				except:
 					pass
@@ -110,3 +107,26 @@ class NiftiGetter:
 	def get_ScanInfo(self):
 		"""Get scan info dict."""
 		return os.path.join(self.niftifolder, 'scan_info.json')
+
+class ChanggungNiftiGetter(NiftiGetter):
+	def __init__(self, niftifolder):
+		super().__init__(niftifolder)
+
+	def get_T1(self):
+		return self.fnmatch_one('*OSag_3D_T1BRAVO*.nii.gz')
+
+	def get_T2(self):
+		return self.fnmatch_one('*OAx_T2_PROPELLER*.nii.gz')
+
+	def get_BOLD(self):
+		return self.fnmatch_one('*BOLD-rest*.nii.gz')
+
+	def get_DWI(self):
+		nii = self.fnmatch_one('*DTI_24_Directions*.nii.gz')
+		bval = self.fnmatch_one('*DTI_24_Directions*.bval')
+		bvec = self.fnmatch_one('*DTI_24_Directions*.bvec')
+		dwifiles = (nii, bval, bvec)
+		if all(dwifiles):
+			return dwifiles
+		else:
+			return None
