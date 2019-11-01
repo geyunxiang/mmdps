@@ -147,6 +147,9 @@ class Group(BaseModel):
 	scans = relationship('MRIScan', secondary = association_table_group_scan, back_populates = 'groups')
 	studies = relationship('ResearchStudy', secondary = association_table_group_study, back_populates = 'groups')
 
+	def getScanStrList(self):
+		return [scan.filename for scan in self.scans]
+
 	def __repr__(self):
 		return "<Group(name='{}', description='{}'>".format(self.name, self.description)
 
