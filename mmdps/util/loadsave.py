@@ -80,3 +80,14 @@ def save_list_to_csv(list_data, outfile):
         writer.writeheader()
         for itm in list_data:
             writer.writerow(itm)
+
+def load_csv_to_list(outfile):
+    """
+    load csv file as a list of dicts
+    """
+    ret = []
+    with open(outfile, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            ret.append(row)
+    return ret

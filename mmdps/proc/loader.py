@@ -30,10 +30,10 @@ class Loader:
 
 	def names(self):
 		"""The feature names in csvdict."""
-		thenames = []
-		for name in self.csvdict:
-			thenames.append(name)
-		return thenames
+		filenames = []
+		for feat in self.csvdict:
+			filenames.append(feat['filename'])
+		return filenames
 
 	def fullfile(self, mriscan, *p):
 		"""Full path for one feature."""
@@ -41,7 +41,7 @@ class Loader:
 
 	def csvfilename(self, netattrname):
 		"""Get the csv filename by feature name."""
-		return self.csvdict.get(netattrname, '')
+		return self.csvdict.get(netattrname).get('filename')
 
 	def loadfilepath(self, mriscan, netattrname, csvfilename = None):
 		"""File path for one feature."""
@@ -271,6 +271,11 @@ class GroupLoader:
 		"""Person to mriscans, in this group."""
 		return self.person_mriscans_dict.get(person, [])
 
+def get_BOLD_feature_name():
+	with open(os.path.join(rootconfig.path.proc, 'attr_dict.json')) as f:
+		csvdict = json.load(f)
+		return [csvdict[feat]['feat_name'] for feat in csvdict if feat.find('BOLD') != -1 and feat.find('net') == -1]
+
 def load_features(scans, atlasobj, attrname, rootFolder = rootconfig.path.feature_root, csvfilename = None):
 	"""
 	Load static features as a list
@@ -284,7 +289,7 @@ def load_features(scans, atlasobj, attrname, rootFolder = rootconfig.path.featur
 		return l.load_multiple_attrs(scans, attrname, csvfilename)
 	return l.load_multiple_attrs(scans, attrname)
 
-def load_dynamic_nets(scans, atlasobj, windowLength, stepSize, rootFolder = rootconfig.path.feature_root):
+def load_dynamic_nets(scans, atlasobj, dynamic_conf, rootFolder = rootconfig.path.feature_root):
 	"""
 	This function loads dynamic networks for each scan into a dict
 	The key of the dict is the scan name
@@ -292,6 +297,8 @@ def load_dynamic_nets(scans, atlasobj, windowLength, stepSize, rootFolder = root
 	Dynamic networks are saved as corrcoef-<start>.<end>.csv at bold_net/dynamic <stepSize> <windowLength>/ folder
 	"""
 	ret = {}
+	windowLength = dynamic_conf[0]
+	stepSize = dynamic_conf[1]
 	for scan in scans:
 		ret[scan] = []
 		start = 0
@@ -306,8 +313,10 @@ def load_dynamic_nets(scans, atlasobj, windowLength, stepSize, rootFolder = root
 				break
 	return ret
 
-def load_single_dynamic_attr(scan, atlasobj, attrname, windowLength, stepSize, rootFolder = rootconfig.path.feature_root):
+def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder = rootconfig.path.feature_root):
 	dynamic_attr = netattr.DynamicAttr(atlasobj, attrname)
+	windowLength = dynamic_conf[0]
+	stepSize = dynamic_conf[1]
 	start = 0
 	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
 	while True:
@@ -320,7 +329,7 @@ def load_single_dynamic_attr(scan, atlasobj, attrname, windowLength, stepSize, r
 			break
 	return dynamic_attr
 
-def load_dynamic_attr(scans, atlasobj, attrname, windowLength, stepSize, rootFolder = rootconfig.path.feature_root):
+def load_dynamic_attr(scans, atlasobj, attrname, dynamic_conf, rootFolder = rootconfig.path.feature_root):
 	"""
 	Newer version of dynamic attr loader. Return a list of DynamicAttr
 	:param rootFolder:
@@ -333,15 +342,17 @@ def load_dynamic_attr(scans, atlasobj, attrname, windowLength, stepSize, rootFol
 	"""
 	ret = []
 	for scan in scans:
-		ret.append(load_single_dynamic_attr(scan, atlasobj, attrname, windowLength, stepSize, rootFolder))
+		ret.append(load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder))
 	return ret
 
-def load_dynamic_attrs(scans, atlasobj, attrname, windowLength, stepSize, rootFolder = rootconfig.path.feature_root):
+def load_dynamic_attrs(scans, atlasobj, attrname, dynamic_conf, rootFolder = rootconfig.path.feature_root):
 	"""
 	Dynamic features are saved as inter-region_<feature>-<start>.<end>.csv at bold_net_attr/dynamic <stepSize> <windowLength>/ folder
 	Specify attrname as 'inter-region_BC' etc.
 	"""
 	ret = {}
+	windowLength = dynamic_conf[0]
+	stepSize = dynamic_conf[1]
 	for scan in scans:
 		ret[scan] = []
 		start = 0

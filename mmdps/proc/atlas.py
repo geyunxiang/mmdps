@@ -14,6 +14,8 @@ from mmdps.util import loadsave, dataop
 from mmdps.vis import bnv
 import nibabel as nib
 
+atlas_list = ['brodmann_lr', 'brodmann_lrce', 'aal', 'aicha', 'bnatlas']
+
 class Atlas:
 	"""The brain atlas.
 
