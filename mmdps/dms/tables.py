@@ -170,8 +170,17 @@ class ResearchStudy(BaseModel):
 	def __repr__(self):
 		return "<Study(name='{}', description='{}', alias='{}')>".format(self.name, self.description, self.alias)
 
-	def getGroupContainingName(self, name_string):
+	def getGroup(self, name_string):
 		for gp in self.groups:
 			if name_string in gp.name:
 				return gp
 		return None
+
+	def getScansOfSubject(self, subject_name):
+		scan_list = []
+		for gp in self.groups:
+			for scan in gp.scans:
+				if scan.person.name == subject_name:
+					scan_list.append(scan)
+		scan_list = sorted(scan_list, key = lambda x: x.date)
+		return scan_list
