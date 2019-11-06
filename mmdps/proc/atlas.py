@@ -89,59 +89,6 @@ class Atlas:
 		"""Get one volume using volumename."""
 		return self.volumes[volumename]
 
-	def adjust_ticks(self):
-		"""Adjust ticks according to plotindexes."""
-		adjticks = [None] * self.count
-		for i in range(self.count):
-			realpos = self.plotindexes[i]
-			adjticks[i] = self.ticks[realpos]
-		return adjticks
-
-	def adjust_vec(self, vec):
-		"""Adjust a vector according to plotindexes."""
-		vec_adjusted = np.zeros(vec.shape)
-		for i in range(self.count):
-			realpos = self.plotindexes[i]
-			vec_adjusted[i] = vec[realpos]
-		return vec_adjusted
-
-	def adjust_mat(self, sqmat):
-		"""
-		Adjust a matrix according to plotindexes.
-		Both columns and rows are adjusted.
-		"""
-		mat1 = np.empty(sqmat.shape)
-		mat2 = np.empty(sqmat.shape)
-		for i in range(self.count):
-			realpos = self.plotindexes[i]
-			mat1[i, :] = sqmat[realpos, :]
-		for i in range(self.count):
-			realpos = self.plotindexes[i]
-			mat2[:, i] = mat1[:, realpos]
-		return mat2
-
-	def adjust_mat_col(self, mat):
-		"""Adjust matrix columns according to plotindexes.
-
-		Only columns are adjusted, rows not adjusted.
-		"""
-		mat1 = np.empty(mat.shape)
-		for i in range(self.count):
-			realpos = self.plotindexes[i]
-			mat1[:, i] = mat[:, realpos]
-		return mat1
-
-	def adjust_mat_row(self, mat):
-		"""Adjust matrix rows according to plotindexes.
-		
-		Only rows are adjusted, columns not adjusted.
-		"""
-		mat1 = np.empty(mat.shape)
-		for i in range(self.count):
-			realpos = self.plotindexes[i]
-			mat1[i, :] = mat[realpos, :]
-		return mat1
-
 	def ticks_to_regions(self, ticks):
 		"""Convert ticks to regions."""
 		if not hasattr(self, '_tickregiondict'):
@@ -202,13 +149,69 @@ class Atlas:
 		subatlasobj.bnvnode = self.bnvnode.copy_sub(subindexes)
 		return subatlasobj
 
+	def adjust_ticks(self):
+		"""Adjust ticks according to plotindexes."""
+		adjticks = [None] * self.count
+		for i in range(self.count):
+			realpos = self.plotindexes[i]
+			adjticks[i] = self.ticks[realpos]
+		return adjticks
+
+	def adjust_vec(self, vec):
+		"""Adjust a vector according to plotindexes."""
+		vec_adjusted = np.zeros(vec.shape)
+		for i in range(self.count):
+			realpos = self.plotindexes[i]
+			vec_adjusted[i] = vec[realpos]
+		return vec_adjusted
+
+	def adjust_mat(self, sqmat):
+		"""
+		Adjust a matrix according to plotindexes.
+		Both columns and rows are adjusted.
+		"""
+		mat1 = np.empty(sqmat.shape)
+		mat2 = np.empty(sqmat.shape)
+		for i in range(self.count):
+			realpos = self.plotindexes[i]
+			mat1[i, :] = sqmat[realpos, :]
+		for i in range(self.count):
+			realpos = self.plotindexes[i]
+			mat2[:, i] = mat1[:, realpos]
+		return mat2
+
+	def adjust_mat_col(self, mat):
+		"""Adjust matrix columns according to plotindexes.
+
+		Only columns are adjusted, rows not adjusted.
+		"""
+		mat1 = np.empty(mat.shape)
+		for i in range(self.count):
+			realpos = self.plotindexes[i]
+			mat1[:, i] = mat[:, realpos]
+		return mat1
+
+	def adjust_mat_row(self, mat):
+		"""Adjust matrix rows according to plotindexes.
+		
+		Only rows are adjusted, columns not adjusted.
+		"""
+		mat1 = np.empty(mat.shape)
+		for i in range(self.count):
+			realpos = self.plotindexes[i]
+			mat1[i, :] = mat[realpos, :]
+		return mat1
+
+	def check_RSN(self):
+		if not hasattr(self, 'RSNConfig'):
+			self.RSNConfig = loadsave.load_json(self.fullpath('RSN_%s.json' % self.name))
+
 	def adjust_mat_RSN(self, sqmat):
 		"""
 		Adjust a matrix according to RSN config file.
 		Return the adjusted matrix
 		"""
-		if not hasattr(self, 'RSNConfig'):
-			self.RSNConfig = loadsave.load_json(self.fullpath('RSN_%s.json' % self.name))
+		self.check_RSN()
 		mat1 = np.empty(sqmat.shape)
 		mat2 = np.empty(sqmat.shape)
 		adjustedTicks = []
@@ -228,8 +231,7 @@ class Atlas:
 		The first element is the adjusted list of ticks according to RSN config file.
 		The second element is a list of no. of nodes in each RSN (used for minor ticks vline and hline)
 		"""
-		if not hasattr(self, 'RSNConfig'):
-			self.RSNConfig = loadsave.load_json(self.fullpath('RSN_%s.json' % self.name))
+		self.check_RSN()
 		nodeCount = []
 		adjustedTicks = []
 		for RSN, nodeList in self.RSNConfig['ticks dict'].items():
@@ -237,13 +239,34 @@ class Atlas:
 			adjustedTicks += nodeList
 		return (adjustedTicks, nodeCount)
 
+	def adjust_vec_RSN(self, vec):
+		"""
+		Return the adjusted vector.
+		Adjust order of data in vec according to RSN
+		"""
+		self.check_RSN()
+		vec_adjusted = np.zeros(vec.shape)
+		adjustedTicks, _ = self.adjust_ticks_RSN()
+		for i in range(self.count):
+			realpos = self.ticks.index(adjustedTicks[i])
+			vec_adjusted[i] = vec[realpos]
+		return vec_adjusted
+
 	def get_RSN_list(self):
 		"""
 		Return a list of RSN strs
 		"""
-		if not hasattr(self, 'RSNConfig'):
-			self.RSNConfig = loadsave.load_json(self.fullpath('RSN_%s.json' % self.name))
+		self.check_RSN()
 		return self.RSNConfig['RSN order']
+
+	def adjust_vec_Circos(self, vec):
+		vec_adjusted = np.zeros(vec.shape)
+		self.set_brainparts('default')
+		adjustedTicks = self.brainparts.get_region_list()
+		for i in range(self.count):
+			realpos = self.ticks.index(adjustedTicks[i])
+			vec_adjusted[i] = vec[realpos]
+		return vec_adjusted
 
 def get(atlasname):
 	"""Get an atlasobj with name.

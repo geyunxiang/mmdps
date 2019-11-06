@@ -25,19 +25,27 @@ class LinePlot:
 		self.count = self.atlasobj.count
 		self.title = title
 		self.outfilepath = outfilepath
+		self.sig_positions = None
+		self.plot_ticks = None
 	
-	def add_markers(self, positions):
+	def add_markers(self):
 		"""
 		positions - a list of index
 		"""
-		for p in positions:
-			plot_p = self.atlasobj.plotindexes.index(p)
-			h = np.max([attr.data[p] for attr in self.attrs])
+		for plot_p, sig_flag in enumerate(self.sig_positions):
+			if sig_flag != 1:
+				continue
+			h = np.max([attr.data[plot_p] for attr in self.attrs])
 			if self.H - h > 0.2 * self.H:
 				plt.plot([plot_p, plot_p], [h + 0.05 * self.H, self.H], color = 'g')
 			plt.text(plot_p - 0.5, self.H, '*', fontsize = 20)
 
-	def add_text(self, sig_positions, stat_list):
+	def add_text(self, stat_list):
+		"""
+		sig_positions is a np.array with length = atlasobj.count
+		The value at each index is 0 or 1, with 1 representing significance
+		stat_list is a list of zipped value (stat, p). The length = atlasobj.count
+		"""
 		image = Image.open(self.outfilepath)
 		width, height = image.size
 		# find text height
@@ -45,7 +53,8 @@ class LinePlot:
 		draw = ImageDraw.Draw(new_im)
 		font = ImageFont.truetype('arial.ttf', 16)
 		w, h = draw.textsize(' p = 1.234   ', font = font)
-		new_im = Image.new('RGB', (width, height + h * len(stat_list)), 'white')
+		y_maximum = 4 # how many records per column
+		new_im = Image.new('RGB', (width, height + int(h * y_maximum)), 'white')
 		draw = ImageDraw.Draw(new_im)
 		# paste old image
 		x_offset = 0
@@ -54,12 +63,13 @@ class LinePlot:
 		text_x_offset = 0.13 * width # experiment result magic number offset
 		x_offset = text_x_offset
 		y_offset = height
-		y_maximum = 4 # how many records per column
 		y_count = 0
 		x_shift = 0
 		for idx, stat in enumerate(stat_list):
+			if stat[1] > 0.05:
+				continue
 			y_count += 1
-			draw.text((x_offset, y_offset), '* %s' % self.atlasobj.ticks[sig_positions[idx]], (0, 0, 0), font = font)
+			draw.text((x_offset, y_offset), '* %s' % self.atlasobj.ticks[idx], (0, 0, 0), font = font)
 			x_offset += (w-10) # magic
 			x_shift += (w-10)
 			draw.text((x_offset, y_offset), 't = %1.3f' % (stat[0]), (0, 0, 0), font = font)
@@ -76,27 +86,63 @@ class LinePlot:
 			x_shift = 0
 		os.remove(self.outfilepath)
 		new_im.save(self.outfilepath)
-		# new_im.save(self.outfilepath[:self.outfilepath.rfind('.')] + '_decorated' + self.outfilepath[self.outfilepath.rfind('.'):])
 
-
-	def plot(self, sig_positions = None, stat_list = None):
-		plt.figure(figsize=(20, 6))
-		# plt.hold(True)
+	def adjust_plot_index(self, sig_positions = None):
+		"""
+		adjust data and ticks according to plot_index
+		return nothing, data, ticks and sig_positions are stored as local attributes
+		"""
+		self.plot_ticks = self.atlasobj.adjust_ticks()
 		for attr in self.attrs:
-			attrdata_adjusted = self.atlasobj.adjust_vec(attr.data)
-			plt.plot(range(self.count), attrdata_adjusted, '.-', label=attr.name)
+			attr.data = self.atlasobj.adjust_vec(attr.data)
+		if sig_positions is not None:
+			self.sig_positions = self.atlasobj.adjust_vec(sig_positions)
+
+	def adjust_RSN(self, sig_positions = None):
+		"""
+		adjust data and ticks according to RSN
+		"""
+		self.plot_ticks, _ = self.atlasobj.adjust_ticks_RSN()
+		for attr in self.attrs:
+			attr.data = self.atlasobj.adjust_vec_RSN(attr.data)
+		if sig_positions is not None:
+			self.sig_positions = self.atlasobj.adjust_vec_RSN(sig_positions)
+
+	def adjust_circos(self, sig_positions = None):
+		self.atlasobj.set_brainparts('default')
+		self.plot_ticks = self.atlasobj.brainparts.get_region_list()
+		for attr in self.attrs:
+			attr.data = self.atlasobj.adjust_vec_Circos(attr.data)
+		if sig_positions is not None:
+			self.sig_positions = self.atlasobj.adjust_vec_Circos(sig_positions)		
+
+	def plot(self, sig_positions = None, stat_list = None, adjust_method = None):
+		"""
+		sig_positions should be a vector of 0 and 1, where 1 stands for significance
+		specify adjust_method as a string ('RSN', 'circos'). Defaults to plot_index
+		"""
+		plt.figure(figsize=(20, 6))
+		if adjust_method == 'RSN':
+			self.adjust_RSN(sig_positions)
+		elif adjust_method == 'circos':
+			self.adjust_circos(sig_positions)
+		else:
+			self.adjust_plot_index(sig_positions)
+		for attr in self.attrs:
+			plt.plot(range(self.count), attr.data, '.-', label = attr.name)
 		plt.xlim([0, self.count-1])
 		plt.ylim([0 - 0.1*self.H, self.H * 1.1])
-		plt.xticks(range(self.count), self.atlasobj.ticks_adjusted, rotation=60)
+		plt.xticks(range(self.count), self.plot_ticks, rotation=60)
 		if sig_positions is not None:
-			self.add_markers(sig_positions)
+			self.add_markers()
 		plt.grid(True)
 		plt.legend()
 		plt.title(self.title, fontsize=20)
 		plt.savefig(self.outfilepath, dpi=100)
-		if stat_list is not None:
-			self.add_text(sig_positions, stat_list)
 		plt.close()
+		if stat_list is not None:
+			# add text goes AFTER the image is saved
+			self.add_text(stat_list)
 
 class DynamicLinePlot:
 	"""
@@ -162,6 +208,6 @@ def plot_correlation(xvec, yvec, xlabel, ylabel, title, outfile):
 	plotter = CorrPlot(xvec, yvec, xlabel, ylabel, title, outfile)
 	plotter.plot()
 
-def plot_attr_lines(attrs, title, outfilepath, sig_positions = None, stat_list = None):
+def plot_attr_lines(attrs, title, outfilepath, sig_positions = None, stat_list = None, adjust_method = None):
 	plotter = LinePlot(attrs, title, outfilepath)
-	plotter.plot(sig_positions, stat_list)
+	plotter.plot(sig_positions, stat_list, adjust_method)
