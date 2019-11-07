@@ -4,6 +4,7 @@ import os
 from scipy import stats
 import numpy as np
 from matplotlib import pyplot as plt
+import matplotlib.patches as patches
 from PIL import Image, ImageDraw, ImageFont
 
 # from ..proc import atlas
@@ -25,6 +26,8 @@ class LinePlot:
 		self.count = self.atlasobj.count
 		self.title = title
 		self.outfilepath = outfilepath
+		self.xlim = (0, self.count - 1)
+		self.ylim = (0 - 0.1*self.H, self.H * 1.1)
 		self.sig_positions = None
 		self.plot_ticks = None
 	
@@ -98,23 +101,34 @@ class LinePlot:
 		if sig_positions is not None:
 			self.sig_positions = self.atlasobj.adjust_vec(sig_positions)
 
-	def adjust_RSN(self, sig_positions = None):
+	def adjust_RSN(self, ax, sig_positions = None):
 		"""
 		adjust data and ticks according to RSN
 		"""
-		self.plot_ticks, _ = self.atlasobj.adjust_ticks_RSN()
+		self.plot_ticks, num_nodes = self.atlasobj.adjust_ticks_RSN()
+		self.plot_rectangle_background(ax, num_nodes)
 		for attr in self.attrs:
 			attr.data = self.atlasobj.adjust_vec_RSN(attr.data)
 		if sig_positions is not None:
 			self.sig_positions = self.atlasobj.adjust_vec_RSN(sig_positions)
 
-	def adjust_circos(self, sig_positions = None):
+	def adjust_circos(self, ax, sig_positions = None):
 		self.atlasobj.set_brainparts('default')
-		self.plot_ticks = self.atlasobj.brainparts.get_region_list()
+		self.plot_ticks, num_nodes = self.atlasobj.brainparts.get_region_list()
+		self.plot_rectangle_background(ax, num_nodes)
 		for attr in self.attrs:
 			attr.data = self.atlasobj.adjust_vec_Circos(attr.data)
 		if sig_positions is not None:
 			self.sig_positions = self.atlasobj.adjust_vec_Circos(sig_positions)		
+
+	def plot_rectangle_background(self, ax, num_nodes):
+		accumulator = 0
+		for idx, count in enumerate(num_nodes):
+			accumulator += count
+			if idx % 2 != 0:
+				continue
+			rect = patches.Rectangle((self.xlim[0] + accumulator - count, self.ylim[0]), count-1, self.ylim[1] - self.ylim[0], alpha = 0.2, color = 'c')
+			ax.add_patch(rect)
 
 	def plot(self, sig_positions = None, stat_list = None, adjust_method = None):
 		"""
@@ -122,16 +136,18 @@ class LinePlot:
 		specify adjust_method as a string ('RSN', 'circos'). Defaults to plot_index
 		"""
 		plt.figure(figsize=(20, 6))
+		plt.xlim(self.xlim)
+		plt.ylim(self.ylim)
+		ax = plt.gca()
 		if adjust_method == 'RSN':
-			self.adjust_RSN(sig_positions)
+			self.adjust_RSN(ax, sig_positions)
 		elif adjust_method == 'circos':
-			self.adjust_circos(sig_positions)
+			self.adjust_circos(ax, sig_positions)
 		else:
 			self.adjust_plot_index(sig_positions)
 		for attr in self.attrs:
 			plt.plot(range(self.count), attr.data, '.-', label = attr.name)
-		plt.xlim([0, self.count-1])
-		plt.ylim([0 - 0.1*self.H, self.H * 1.1])
+		
 		plt.xticks(range(self.count), self.plot_ticks, rotation=60)
 		if sig_positions is not None:
 			self.add_markers()

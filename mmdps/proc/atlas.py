@@ -262,7 +262,7 @@ class Atlas:
 	def adjust_vec_Circos(self, vec):
 		vec_adjusted = np.zeros(vec.shape)
 		self.set_brainparts('default')
-		adjustedTicks = self.brainparts.get_region_list()
+		adjustedTicks, nodeCount = self.brainparts.get_region_list()
 		for i in range(self.count):
 			realpos = self.ticks.index(adjustedTicks[i])
 			vec_adjusted[i] = vec[realpos]

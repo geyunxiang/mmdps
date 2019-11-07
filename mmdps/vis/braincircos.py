@@ -80,16 +80,19 @@ class BrainParts:
 		"""
 		Return a list of regions in order plotted by circos
 		Left and right regions are interleaved
+		Also return the second element as a list of no. of nodes in each lobe
 		"""
 		leftconfig = self.configdict['config'].get('left')
 		rightconfig = self.configdict['config'].get('right')
 		region_list = []
+		nodeCount = []
 		for secIdx, section in enumerate(leftconfig['sections']):
+			nodeCount.append(len(section['ticks'] * 2))
 			for tickIdx, tick in enumerate(section['ticks']):
 				# left first
 				region_list.append(tick)
 				region_list.append(rightconfig['sections'][secIdx]['ticks'][tickIdx])
-		return region_list
+		return (region_list, nodeCount)
 
 class CircosConfigChromosome:
 	def __init__(self, brainparts, colorlist=None):
