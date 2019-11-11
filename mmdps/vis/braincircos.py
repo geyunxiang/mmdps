@@ -211,10 +211,13 @@ class CircosConfigFile:
 		save_rawtext(fname, finalstring)
 
 class CircosLink:
-	def __init__(self, net, threshold=0.6, valuerange=(-1,1)):
+	def __init__(self, net, threshold=0.6, valuerange = None):
 		self.net = net
 		self.threshold = threshold
-		self.valuerange = valuerange
+		if valuerange is None:
+			self.valuerange = (np.min(net.data), np.max(net.data))
+		else:
+			self.valuerange = valuerange
 		self.brainparts = net.atlasobj.get_brainparts()
 		self.chrdict = self.brainparts.chrdict
 		self.data = self.net.data
@@ -289,6 +292,7 @@ class CircosValue:
 		self.chrdict = self.brainparts.chrdict
 		self.attr = attr
 		self.data = self.attr.data
+		self.cmap = cm.Reds
 
 	def get_index(self, chro, idx):
 		return chro.indexes[idx]
@@ -296,13 +300,16 @@ class CircosValue:
 	def get_value(self, chro, idx):
 		return self.data[self.get_index(chro, idx)]
 
-	def get_cmap(self):
-		return cm.Reds
+	def set_cmap(self, cmap_str):
+		if cmap_str == 'blue':
+			self.cmap = cm.Blues
+		else:
+			self.cmap = cm.Reds
 	
 	def get_color(self, chro, idx):
 		value = self.get_value(chro, idx)
 		value = self.map_value(value)
-		color = self.get_cmap()(value, bytes=True)
+		color = self.cmap(value, bytes=True)
 		return color
 	
 	def map_value(self, value):
@@ -343,14 +350,18 @@ class CircosPlotBuilder:
 		self.circosvalues = []
 		self.customizedSizes = False
 		self.radius = None
+		if atlasobj.name == 'bnatlas':
+			self.customizeSize(label_size = '20p', linkThickness = '10p')
+		elif atlasobj.name == 'aicha':
+			self.customizeSize(label_size = '10p', linkThickness = '5p')
 
-	def customizeSize(self, ideogram_radius, label_size, linkThickness = None):
+	def customizeSize(self, ideogram_radius = '0.8r', label_size = '40p', linkThickness = '20p'):
 		"""
-		input ideogram_radius as a string like '0.80'
+		input ideogram_radius as a string like '0.80r'
 			- ideogram_radius controls the size of the whole ring
 		input label_size as a string like '40p'
 			- label_size controls the font size of the ticks (L1, R2 etc.)
-		input linkThickness as an integer like 20
+		input linkThickness as an integer like 20p
 			- linkThickness controls the thickness of network links(edges)
 		"""
 		self.customizedSizes = True
