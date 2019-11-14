@@ -150,6 +150,9 @@ class Group(BaseModel):
 	def getScanStrList(self):
 		return [scan.filename for scan in self.scans]
 
+	def getSubjectNameList(self):
+		return [person.name for person in self.people]
+
 	def __repr__(self):
 		return "<Group(name='{}', description='{}'>".format(self.name, self.description)
 
@@ -169,6 +172,12 @@ class ResearchStudy(BaseModel):
 
 	def __repr__(self):
 		return "<Study(name='{}', description='{}', alias='{}')>".format(self.name, self.description, self.alias)
+
+	def listGroups(self):
+		res = []
+		for gp in self.groups:
+			res.append(gp.name)
+		return res
 
 	def getGroup(self, name_string):
 		for gp in self.groups:
