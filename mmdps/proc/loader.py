@@ -11,7 +11,7 @@ import numpy as np
 
 from mmdps import rootconfig
 from mmdps.proc import netattr
-from mmdps.util.loadsave import load_csvmat, load_txt
+from mmdps.util.loadsave import load_csvmat, load_txt, load_csv_to_list
 from mmdps.util import path
 
 class Loader:
@@ -20,18 +20,18 @@ class Loader:
 		"""
 		Init the loader.
 		- mainfolder: the folder containing all scans
-		- csvdict: contains mapping from attr name to file name
+		- attr_config_dict: contains mapping from attr name to file name
 		"""
 		self.mainfolder = mainfolder
 		self.atlasobj = atlasobj
 		with open(os.path.join(rootconfig.path.proc, 'attr_dict.json')) as f:
-			self.csvdict = json.load(f)
+			self.attr_config_dict = json.load(f)
 		self.f_preproc = None
 
-	def names(self):
-		"""The feature names in csvdict."""
+	def get_feature_filenames(self):
+		"""The feature filenames in attr_config_dict."""
 		filenames = []
-		for feat in self.csvdict:
+		for feat in self.attr_config_dict:
 			filenames.append(feat['filename'])
 		return filenames
 
@@ -41,7 +41,7 @@ class Loader:
 
 	def csvfilename(self, netattrname):
 		"""Get the csv filename by feature name."""
-		return self.csvdict.get(netattrname).get('filename')
+		return self.attr_config_dict.get(netattrname).get('filename')
 
 	def loadfilepath(self, mriscan, netattrname, csvfilename = None):
 		"""File path for one feature."""
@@ -50,8 +50,9 @@ class Loader:
 		return self.fullfile(mriscan, self.csvfilename(netattrname))
 
 	def loaddata(self, mriscan, netattrname, csvfilename = None):
-		"""Load the feature specified by mriscan and feature name.
-
+		"""
+		Load the feature data specified by mriscan and feature name.
+		Return a np mat or vec
 		Use set_preproc to set a pre-processing function.
 		"""
 		if csvfilename is not None:
@@ -68,7 +69,7 @@ class Loader:
 			resmat = self.f_preproc(resmat)
 		return resmat
 
-	def load(self, mriscan, netattrname):
+	def loadSingle(self, mriscan, netattrname):
 		"""Load Mat, with atlasobj."""
 		data = self.loaddata(mriscan, netattrname)
 		netattrobj = netattr.Mat(data, self.atlasobj, mriscan)
@@ -99,43 +100,9 @@ class Loader:
 		datavstack = np.vstack(datalist)
 		return datavstack
 
-	def generate_mriscans(self, namelist, num_scan = 1, accumulate = False):
-		"""Load specific scans of subjects in namelist. Specify scan number (1st, 2nd, ...)
-		namelist is a list of subject names (str)
-		Set accumulate = True to load all scans up to (including) num_scan
-		"""
-		mriscans = []
-		lastName = None
-		occurrence = 0
-		currentScans = []
-		for scan in sorted(os.listdir(self.mainfolder)):
-			name = scan[:scan.find('_')]
-			if name != lastName:
-				if lastName in namelist:
-					if accumulate:
-						mriscans.extend(currentScans[:num_scan])
-					else:
-						mriscans.append(currentScans[num_scan-1])
-				lastName = name
-				occurrence = 0
-				currentScans = []
-			occurrence += 1
-			currentScans.append(scan)
-		if lastName in namelist:
-			if accumulate:
-				mriscans.extend(currentScans[:num_scan])
-			else:
-				mriscans.append(currentScans[num_scan-1])
-		# check if some one is missing
-		if accumulate and len(mriscans) != num_scan * len(namelist):
-			print('Loader Warning: no. mriscans found (%d) not equal to no. subjects (%d) times num_scan (%d)' % (len(mriscans), len(namelist), num_scan))
-		elif not accumulate and len(mriscans) != len(namelist):
-			print('Loader Warning: no. mriscans found (%d) not equal to no. subjects (%d)' % (len(mriscans), len(namelist)))
-		return mriscans
-
 class AttrLoader(Loader):
 	"""Attribute loader."""
-	def load(self, mriscan, attrname, csvfilename = None):
+	def loadSingle(self, mriscan, attrname, csvfilename = None):
 		"""
 		Load the attribute object, with atlasobj.
 		- mriscan: specify which scan to load from
@@ -161,9 +128,9 @@ class AttrLoader(Loader):
 		attr_list = []
 		for mriscan in mriscans:
 			if csvfilename is not None:
-				attr_list.append(self.load(mriscan, attrname, csvfilename))
+				attr_list.append(self.loadSingle(mriscan, attrname, csvfilename))
 			else:
-				attr_list.append(self.load(mriscan, attrname))
+				attr_list.append(self.loadSingle(mriscan, attrname))
 			attr_list[-1].name = mriscan
 		return attr_list
 
@@ -184,7 +151,7 @@ class AttrLoader(Loader):
 
 class NetLoader(Loader):
 	"""Net loader."""
-	def load(self, mriscan, attrname = 'BOLD.net'):
+	def loadSingle(self, mriscan, attrname = 'BOLD.net'):
 		"""Load the net object, with atlasobj."""
 		netdata = self.loaddata(mriscan, attrname)
 		net = netattr.Net(netdata, self.atlasobj, mriscan)
@@ -194,42 +161,30 @@ class NetLoader(Loader):
 		"""Load a list of nets"""
 		ret = []
 		for mriscan in mriscans:
-			ret.append(self.load(mriscan, attrname))
+			ret.append(self.loadSingle(mriscan, attrname))
 		return ret
 
 class ScoreLoader:
-	"""ScoreLoader is used to load clinical score data."""
-	def __init__(self, scoreCsvFile):
-		"""
-		The loader contains
-			- mriscans: a list of scans
-			- scoreNames: a list of scoreNames
-			- scores_dict[scorename]: a list of actual score values
-			- mriscan_scores_dict[mriscan]: a list of all scores related to this scan
-		"""
+	"""
+	ScoreLoader is used to load clinical score data.
+	The scoreCsvFile should contain a column named 'Name' that specifies the name of subjects.
+	Other columns are considered as clinical scores.
+	The loader stores scores in a dict, with key = person name and value = dict of scores
+		- person 1 : dict(score1, score2, ...)
+	"""
+	def __init__(self, scoreCsvFile, name_column = 'Name'):
 		self.scoreCsvFile = scoreCsvFile
+		self.name_column = name_column
+		self.scoreDict = dict()
 		self.load_scoreCsvFile()
 
 	def load_scoreCsvFile(self):
 		"""Load score csv file."""
 		if not os.path.isfile(self.scoreCsvFile):
 			return
-		with open(self.scoreCsvFile, newline='') as f:
-			self.mriscan_scores_dict = {}
-			self.mriscans = []
-			reader = csv.reader(f)
-			headers = next(reader)
-			self.scoreNames = headers[1:]
-			self.scores_dict = {}
-			for scorename in self.scoreNames:
-				self.scores_dict[scorename] = []
-			for row in reader:
-				mriscan = row[0]
-				self.mriscans.append(mriscan)
-				currentScores = [float(s) for s in row[1:]]
-				self.mriscan_scores_dict[mriscan] = currentScores
-				for iscore, score in enumerate(currentScores):
-					self.scores_dict[self.scoreNames[iscore]].append(score)
+		scoreCsvList = load_csv_to_list(self.scoreCsvFile)
+		for row in scoreCsvList:
+			self.scoreDict[row.pop(self.name_column)] = row
 
 	def loadvstack(self, mriscans):
 		"""Load all scores and vstack them to a matrix for all mriscans, in order."""
@@ -239,6 +194,15 @@ class ScoreLoader:
 			scoresList.append(currentScores)
 		scores_vstack = np.vstack(scoresList)
 		return scores_vstack
+
+	def __getitem__(self, index):
+		ret = self.scoreDict[index]
+		for key, itm in ret.items():
+			try:
+				ret[key] = float(ret[key])
+			except:
+				pass
+		return ret
 
 class GroupLoader:
 	"""Group loader is used to load a group."""
@@ -274,12 +238,12 @@ class GroupLoader:
 
 def get_BOLD_feature_name():
 	with open(os.path.join(rootconfig.path.proc, 'attr_dict.json')) as f:
-		csvdict = json.load(f)
-		return [csvdict[feat]['feat_name'] for feat in csvdict if feat.find('BOLD') != -1 and feat.find('net') == -1]
+		attr_config_dict = json.load(f)
+		return [attr_config_dict[feat]['feat_name'] for feat in attr_config_dict if feat.find('BOLD') != -1 and feat.find('net') == -1]
 
-def load_features(scans, atlasobj, attrname, rootFolder = rootconfig.path.feature_root, csvfilename = None):
+def load_attrs(scans, atlasobj, attrname, rootFolder = rootconfig.path.feature_root, csvfilename = None):
 	"""
-	Load static features as a list
+	Load static attrs as a list
 	:param rootFolder:
 	:param scans:
 	:param atlasobj:
@@ -290,31 +254,10 @@ def load_features(scans, atlasobj, attrname, rootFolder = rootconfig.path.featur
 		return l.load_multiple_attrs(scans, attrname, csvfilename)
 	return l.load_multiple_attrs(scans, attrname)
 
-def load_dynamic_nets(scans, atlasobj, dynamic_conf, rootFolder = rootconfig.path.feature_root):
-	"""
-	This function loads dynamic networks for each scan into a dict
-	The key of the dict is the scan name
-		value is a list of dynamic networks
-	Dynamic networks are saved as corrcoef-<start>.<end>.csv at bold_net/dynamic <stepSize> <windowLength>/ folder
-	"""
-	ret = {}
-	windowLength = dynamic_conf[0]
-	stepSize = dynamic_conf[1]
-	for scan in scans:
-		ret[scan] = []
-		start = 0
-		dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net', 'dynamic %d %d' % (stepSize, windowLength))
-		while True:
-			dynamic_net_filepath = os.path.join(dynamic_foler_path, 'corrcoef-%d.%d.csv' % (start, start+windowLength))
-			if os.path.exists(dynamic_net_filepath):
-				ret[scan].append(netattr.Net(load_csvmat(dynamic_net_filepath), atlasobj, '%d.%d' % (start, start+windowLength)))
-				start += stepSize
-			else:
-				# print('loaded %d nets for %s' % (len(ret[scan]), scan))
-				break
-	return ret
-
 def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder = rootconfig.path.feature_root):
+	"""
+	Return a DynamicAttr (attr.data[tickIdx, timeIdx])
+	"""
 	dynamic_attr = netattr.DynamicAttr(atlasobj, attrname)
 	windowLength = dynamic_conf[0]
 	stepSize = dynamic_conf[1]
@@ -332,7 +275,7 @@ def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder 
 
 def load_dynamic_attr(scans, atlasobj, attrname, dynamic_conf, rootFolder = rootconfig.path.feature_root):
 	"""
-	Newer version of dynamic attr loader. Return a list of DynamicAttr
+	Newer version of dynamic attr loader. Return a list of DynamicAttr (attr.data[tickIdx, timeIdx])
 	:param rootFolder:
 	:param scans:
 	:param atlasobj:
@@ -368,9 +311,36 @@ def load_dynamic_attrs(scans, atlasobj, attrname, dynamic_conf, rootFolder = roo
 				break
 	return ret
 
-def load_network(atlasobj, mriscan, mainfolder = rootconfig.path.feature_root):
+def load_single_network(atlasobj, mriscan, mainfolder = rootconfig.path.feature_root):
+	"""
+	Load a single network
+	"""
 	l = NetLoader(atlasobj, mainfolder)
-	return l.load(mriscan)
+	return l.loadSingle(mriscan)
+
+def load_dynamic_nets(scans, atlasobj, dynamic_conf, rootFolder = rootconfig.path.feature_root):
+	"""
+	This function loads dynamic networks for each scan into a dict
+	The key of the dict is the scan name
+		value is a list of networks
+	Dynamic networks are saved as corrcoef-<start>.<end>.csv at bold_net/dynamic <stepSize> <windowLength>/ folder
+	"""
+	ret = {}
+	windowLength = dynamic_conf[0]
+	stepSize = dynamic_conf[1]
+	for scan in scans:
+		ret[scan] = []
+		start = 0
+		dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net', 'dynamic %d %d' % (stepSize, windowLength))
+		while True:
+			dynamic_net_filepath = os.path.join(dynamic_foler_path, 'corrcoef-%d.%d.csv' % (start, start+windowLength))
+			if os.path.exists(dynamic_net_filepath):
+				ret[scan].append(netattr.Net(load_csvmat(dynamic_net_filepath), atlasobj, '%d.%d' % (start, start+windowLength)))
+				start += stepSize
+			else:
+				# print('loaded %d nets for %s' % (len(ret[scan]), scan))
+				break
+	return ret
 
 def generate_mriscans(namelist, root_folder = rootconfig.path.feature_root, num_scan = 1, accumulate = False):
 	"""Load specific scans of subjects in namelist. Specify scan number (1st, 2nd, ...)
