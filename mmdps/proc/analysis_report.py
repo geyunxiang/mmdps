@@ -3,14 +3,19 @@ Analysis and Report
 """
 
 from mmdps.proc import loader, netattr
+from mmdps.dms import mmdpdb, tables
 
 class GroupAnalysisAssistant():
 	"""docstring for GroupAnalysisAssistant"""
-	def __init__(self, study, atlasobj):
+	def __init__(self, study_name, atlasobj):
 		"""
+		Specify study_name and the assistant will load a ResearchStudy instance, 
+		as well as storing the session in order to avoid sqlalchemy.orm.exc.DetachedInstanceError
 		self.group_nets stores networks of a group in a dict, with key = group name
 		"""
-		self.study = study
+		db = mmdpdb.MMDPDatabase()
+		self.session = db.new_session()
+		self.study = self.session.query(tables.ResearchStudy).filter_by(alias = study_name).one()
 		self.atlasobj = atlasobj
 		self.group_nets = dict()
 

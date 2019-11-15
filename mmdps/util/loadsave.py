@@ -7,6 +7,8 @@ from collections import OrderedDict
 import nibabel as nib
 import numpy as np
 
+from mmdps.util import path
+
 def load_txt(txtfile):
     """Load txt list file, line by line."""
     with open(txtfile, 'r') as f:
@@ -75,6 +77,7 @@ def save_list_to_csv(list_data, outfile):
     :param outfile:
     :return:
     """
+    path.makedirs_file(outfile)
     with open(outfile, 'w', newline = '') as f:
         writer = csv.DictWriter(f, list_data[0].keys(), delimiter = ',')
         writer.writeheader()
