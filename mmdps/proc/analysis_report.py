@@ -53,7 +53,16 @@ class GroupAnalysisAssistant():
 					corr_p_network.data[yidx, xidx] = p
 		return r_network, corr_p_network
 
-	def generate_result_csv(self, stats_network, comp_p_network, r_network, corr_p_network):
+	def generate_result_comp(self, stats_network, comp_p_network):
+		result_list = []
+		for xidx, xtick in enumerate(self.atlasobj.ticks):
+			for yidx in range(xidx, self.atlasobj.count):
+				ytick = self.atlasobj.ticks[yidx]
+				if comp_p_network.data[xidx, yidx] < 0.05:
+					result_list.append(dict(area1 = xtick, area2 = ytick, stat = stats_network.data[xidx, yidx], p_val = comp_p_network.data[xidx, yidx]))
+		return result_list
+
+	def generate_result_comp_corr(self, stats_network, comp_p_network, r_network, corr_p_network):
 		result_list = []
 		for xidx, xtick in enumerate(self.atlasobj.ticks):
 			for yidx in range(xidx, self.atlasobj.count):
