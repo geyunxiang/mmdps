@@ -103,6 +103,7 @@ class DatabaseGenerator:
 				self.session.add(db_mriscan)
 				person = self.session.query(Person).filter_by(name = name).one()
 				person.mriscans.append(db_mriscan)
+				self.session.commit()
 				print('Old patient new scan %s inserted' % scan)
 				return 0
 		except MultipleResultsFound:
@@ -112,6 +113,7 @@ class DatabaseGenerator:
 		self.db_people[name] = db_person
 		self.session.add(db_person)
 		self.db_people[name].mriscans.append(db_mriscan)
+		self.session.commit()
 		print('New patient new scan %s inserted' % scan)
 
 	def insert_mritable(self):
