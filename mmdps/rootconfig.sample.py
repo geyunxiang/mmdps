@@ -34,8 +34,6 @@ if sys.platform == 'win32':
 		dcm2nii = 'E:/PC/mricron/dcm2nii.exe'
 		# circos executable path
 		circos = 'E:/PC/circos-0.69-6/bin/circos.exe'
-		# feature root
-		feature_root = 'Z:/ChangGungFeatures/'
 
 	class server:
 		"""server address configs"""

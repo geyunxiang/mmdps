@@ -167,6 +167,10 @@ def genDefaultScan(loader, manager, totalScanNum = 2):
 				manager.scanDict[key+'%d' % (scanIdx + 1)] = loader.generate_mriscans(value, num_scan = scanIdx+1)
 
 def getResearchStudy(alias):
+	"""
+	This function might cause sqlalchemy.orm.exc.DetachedInstanceError
+	Use analysis_report to set ResearchStudy instead
+	"""
 	db = mmdpdb.MMDPDatabase()
 	session = db.new_session()
 	return session.query(tables.ResearchStudy).filter_by(alias = alias).one()

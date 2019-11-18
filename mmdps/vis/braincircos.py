@@ -76,6 +76,24 @@ class BrainParts:
 			chromosomes.append(chromo)
 		return chromosomes
 
+	def get_region_list(self):
+		"""
+		Return a list of regions in order plotted by circos
+		Left and right regions are interleaved
+		Also return the second element as a list of no. of nodes in each lobe
+		"""
+		leftconfig = self.configdict['config'].get('left')
+		rightconfig = self.configdict['config'].get('right')
+		region_list = []
+		nodeCount = []
+		for secIdx, section in enumerate(leftconfig['sections']):
+			nodeCount.append(len(section['ticks'] * 2))
+			for tickIdx, tick in enumerate(section['ticks']):
+				# left first
+				region_list.append(tick)
+				region_list.append(rightconfig['sections'][secIdx]['ticks'][tickIdx])
+		return (region_list, nodeCount)
+
 class CircosConfigChromosome:
 	def __init__(self, brainparts, colorlist=None):
 		self.brainparts = brainparts
@@ -193,10 +211,18 @@ class CircosConfigFile:
 		save_rawtext(fname, finalstring)
 
 class CircosLink:
-	def __init__(self, net, threshold=0.6, valuerange=(-1,1)):
+	def __init__(self, net, threshold = 0, valuerange = None):
 		self.net = net
 		self.threshold = threshold
-		self.valuerange = valuerange
+		if valuerange is None:
+			# check for all same value
+			unique = np.unique(net.data)
+			if len(unique) == 1:
+				self.valuerange = (0, 1)
+			else:
+				self.valuerange = (np.min(net.data), np.max(net.data))
+		else:
+			self.valuerange = valuerange
 		self.brainparts = net.atlasobj.get_brainparts()
 		self.chrdict = self.brainparts.chrdict
 		self.data = self.net.data
@@ -208,27 +234,15 @@ class CircosLink:
 		mask = np.triu(mask, 1)
 		return mask
 
-	def get_rowcol(self, chrA, idxA, chrB, idxB):
-		row = chrA.indexes[idxA]
-		col = chrB.indexes[idxB]
-		return (row, col)
-
-	def get_value(self, chrA, idxA, chrB, idxB):
-		row, col = self.get_rowcol(chrA, idxA, chrB, idxB)
-		bmask = self.mask[row, col]
-		if bmask:
-			return self.data[row, col]
-		else:
+	def get_line(self, chrA, idxA, chrB, idxB):
+		linkfmt = '{} {} {} {} {} {} {}'  # L_1 0 1 L_1 1 2 color=(10,10,10)
+		color = self.get_color(chrA, idxA, chrB, idxB)
+		if color is None:
 			return None
-
-	def get_cmap(self):
-		return cm.coolwarm
-
-	def map_value(self, value):
-		valuerange = self.valuerange
-		a = valuerange[0]
-		b = valuerange[1]
-		return (value-a) / (b-a)
+		else:
+			colorstr = color_to_str(color)
+			linkline = linkfmt.format(*chrA.bandtuples[idxA], *chrB.bandtuples[idxB], colorstr)
+			return linkline
 
 	def get_color(self, chrA, idxA, chrB, idxB):
 		value = self.get_value(chrA, idxA, chrB, idxB)
@@ -239,15 +253,27 @@ class CircosLink:
 			color = self.get_cmap()(value, bytes=True)
 			return color
 
-	def get_line(self, chrA, idxA, chrB, idxB):
-		linkfmt = '{} {} {} {} {} {} {}'  # L_1 0 1 L_1 1 2 color=(10,10,10)
-		color = self.get_color(chrA, idxA, chrB, idxB)
-		if color is None:
-			return None
+	def get_value(self, chrA, idxA, chrB, idxB):
+		row, col = self.get_rowcol(chrA, idxA, chrB, idxB)
+		bmask = self.mask[row, col]
+		if bmask:
+			return self.data[row, col]
 		else:
-			colorstr = color_to_str(color)
-			linkline = linkfmt.format(*chrA.bandtuples[idxA], *chrB.bandtuples[idxB], colorstr)
-			return linkline
+			return None
+
+	def get_rowcol(self, chrA, idxA, chrB, idxB):
+		row = chrA.indexes[idxA]
+		col = chrB.indexes[idxB]
+		return (row, col)
+
+	def map_value(self, value):
+		valuerange = self.valuerange
+		a = valuerange[0]
+		b = valuerange[1]
+		return (value-a) / (b-a)
+
+	def get_cmap(self):
+		return cm.coolwarm
 
 	def write(self, outfullpath):
 		with open(outfullpath, 'w') as f:
@@ -271,28 +297,8 @@ class CircosValue:
 		self.chrdict = self.brainparts.chrdict
 		self.attr = attr
 		self.data = self.attr.data
+		self.cmap = cm.Reds
 
-	def get_index(self, chro, idx):
-		return chro.indexes[idx]
-	
-	def get_value(self, chro, idx):
-		return self.data[self.get_index(chro, idx)]
-
-	def get_cmap(self):
-		return cm.Reds
-	
-	def get_color(self, chro, idx):
-		value = self.get_value(chro, idx)
-		value = self.map_value(value)
-		color = self.get_cmap()(value, bytes=True)
-		return color
-	
-	def map_value(self, value):
-		valuerange = self.valuerange
-		a = valuerange[0]
-		b = valuerange[1]
-		return (value-a) / (b-a)
-	
 	def get_line(self, chro, idx):
 		valuefmt = '{} {} {} {} {}'  # L_1 0 1 0.312 color=(10,10,10)
 		value = self.get_value(chro, idx)
@@ -300,7 +306,30 @@ class CircosValue:
 		colorstr = color_to_str(color)
 		valueline = valuefmt.format(*chro.bandtuples[idx], value, colorstr)
 		return valueline
+
+	def get_value(self, chro, idx):
+		return self.data[self.get_index(chro, idx)]
+
+	def get_index(self, chro, idx):
+		return chro.indexes[idx]
 	
+	def get_color(self, chro, idx):
+		value = self.get_value(chro, idx)
+		value = self.map_value(value)
+		color = self.cmap(value, bytes=True)
+		return color
+	
+	def map_value(self, value):
+		a = self.valuerange[0]
+		b = self.valuerange[1]
+		return (value-a) / (b-a)
+
+	def set_cmap(self, cmap_str):
+		if cmap_str == 'blue':
+			self.cmap = cm.Blues
+		else:
+			self.cmap = cm.Reds
+
 	def write(self, outfullpath):
 		with open(outfullpath, 'w') as f:
 			for chro in self.chrdict['all']:
@@ -325,14 +354,18 @@ class CircosPlotBuilder:
 		self.circosvalues = []
 		self.customizedSizes = False
 		self.radius = None
+		if atlasobj.name == 'bnatlas':
+			self.customizeSize(label_size = '20p', linkThickness = '10p')
+		elif atlasobj.name == 'aicha':
+			self.customizeSize(label_size = '10p', linkThickness = '5p')
 
-	def customizeSize(self, ideogram_radius, label_size, linkThickness = None):
+	def customizeSize(self, ideogram_radius = '0.8r', label_size = '40p', linkThickness = '20p'):
 		"""
-		input ideogram_radius as a string like '0.80'
+		input ideogram_radius as a string like '0.80r'
 			- ideogram_radius controls the size of the whole ring
 		input label_size as a string like '40p'
 			- label_size controls the font size of the ticks (L1, R2 etc.)
-		input linkThickness as an integer like 20
+		input linkThickness as an integer like 20p
 			- linkThickness controls the thickness of network links(edges)
 		"""
 		self.customizedSizes = True
@@ -343,6 +376,12 @@ class CircosPlotBuilder:
 		return os.path.join(self.circosfolder, *p)
 
 	def add_circosvalue(self, circosvalue):
+		"""
+		Check unique value amount. If all values are the same, do not add this value 
+		since circos will crash when plotting same values
+		"""
+		if len(np.unique(circosvalue.attr.data)) == 1:
+			return
 		self.circosvalues.append(circosvalue)
 
 	def add_circoslink(self, circoslink):
@@ -350,25 +389,6 @@ class CircosPlotBuilder:
 
 	def get_colorlist(self):
 		return ['grey'] * self.atlasobj.count
-
-	def write_files(self):
-		"""
-		Write net links and attributes to files.
-		self.circosConfigFile would generate the circos.conf file.
-		"""
-		for i, circosvalue in enumerate(self.circosvalues):
-			currentFile = 'attr{}.value.txt'.format(i)
-			self.circosConfigFile.add_plot(currentFile)
-			circosvalue.write(self.fullpath(currentFile))
-		for i, circoslink in enumerate(self.circoslinks):
-			currentFile = 'net{}.link.txt'.format(i)
-			self.circosConfigFile.add_link(currentFile)
-			circoslink.write(self.fullpath(currentFile))
-		self.circosConfigFile.write(self.fullpath())
-		if self.customizedSizes:
-			self.circosConfigFile.customized_rewrite(self.fullpath())
-		circosconfigchr = CircosConfigChromosome(self.brainparts, self.get_colorlist())
-		circosconfigchr.write(self.fullpath())
 
 	def copy_files(self):
 		"""
@@ -390,33 +410,106 @@ class CircosPlotBuilder:
 			ideogramFile.close()
 			os.remove(self.fullpath('ideogram.conf.bk'))
 
+	def write_files(self):
+		"""
+		Write net links and attributes to files.
+		self.circosConfigFile would generate the circos.conf file.
+		"""
+		for i, circosvalue in enumerate(self.circosvalues):
+			currentFile = 'attr{}.value.txt'.format(i)
+			self.circosConfigFile.add_plot(currentFile)
+			circosvalue.write(self.fullpath(currentFile))
+		for i, circoslink in enumerate(self.circoslinks):
+			currentFile = 'net{}.link.txt'.format(i)
+			self.circosConfigFile.add_link(currentFile)
+			circoslink.write(self.fullpath(currentFile))
+		self.circosConfigFile.write(self.fullpath())
+		if self.customizedSizes:
+			self.circosConfigFile.customized_rewrite(self.fullpath())
+		circosconfigchr = CircosConfigChromosome(self.brainparts, self.get_colorlist())
+		circosconfigchr.write(self.fullpath())
+
 	def run_circos(self):
 		j = job.ExecutableJob('circos', rootconfig.path.circos, wd=self.fullpath())
 		j.run()
-		generatedpng = self.fullpath('circos.png')
-		if os.path.isfile(generatedpng):
-			finalpng = self.decorate_figure(generatedpng)
-			shutil.copy2(finalpng, self.outfilepath + '.png')
 
-	def get_title(self):
-		return self.title
-
-	def decorate_figure(self, generatedpng):
-		img = Image.open(generatedpng)
-		padtop = 100
-		imgn = Image.new('RGBA', (img.width, padtop + img.height), (255, 255, 255, 255))
-		imgn.paste(img, (0, padtop, img.width, padtop + img.height))
-		draw = ImageDraw.Draw(imgn)
-		font = ImageFont.truetype('arial.ttf', 72)
-		draw.text((50, 50), self.get_title(), (0, 0, 0), font=font)
-		newpng = generatedpng[:-4] + '_decorated.png'
-		imgn.save(newpng)
-		return newpng
-
-	def plot(self):
+	def plot(self, top_left = None, top_right = None, bottom_left = None, bottom_right = None):
 		self.copy_files()
 		self.write_files()
 		self.run_circos()
+		generatedpng = self.fullpath('circos.png')
+		if os.path.isfile(generatedpng):
+			decorator = CircosPlotDecorator(generatedpng, self.outfilepath, self.title, top_left, top_right, bottom_left, bottom_right)
+			finalpng = decorator.decorate_figure()
+			shutil.copy2(finalpng, self.outfilepath + '.png')
+
+class CircosPlotDecorator():
+	"""
+	CircosPlotDecorator is used to add titles and detailed information on four corners of circos plot
+	"""
+	def __init__(self, infilepath, outfilepath, title, top_left = None, top_right = None, bottom_left = None, bottom_right = None):
+		"""
+		Specify detailed information (strings) to be added in a list and pass arguments to the appropriate position
+		"""
+		self.infilepath = infilepath
+		self.outfilepath = outfilepath
+		self.title = title
+		self.top_left = top_left
+		self.top_right = top_right
+		self.bottom_left = bottom_left
+		self.bottom_right = bottom_right
+		self.new_image = None
+
+	def decorate_figure(self):
+		img = Image.open(self.infilepath)
+		padtop = 200
+		self.new_image = Image.new('RGBA', (img.width, img.height + padtop), (255, 255, 255, 255))
+		self.new_image.paste(img, (0, padtop))
+		
+		self.add_title()
+		self.decorate_corner()
+		
+		newpng = self.infilepath[:-4] + '_decorated.png'
+		self.new_image.save(newpng)
+		return newpng
+
+	def add_title(self):
+		draw = ImageDraw.Draw(self.new_image)
+		font = ImageFont.truetype('arial.ttf', 100)
+		w, h = draw.textsize(self.title, font = font)
+		width, height = self.new_image.size
+		draw.text(((width - w)/2, h/2), self.title, (0, 0, 0), font = font)
+
+	def decorate_corner(self):
+		width, height = self.new_image.size
+		draw = ImageDraw.Draw(self.new_image)
+		font = ImageFont.truetype('arial.ttf', 48)
+		if self.top_left is not None:
+			h_cursor = 0
+			for info in self.top_left:
+				w, h = draw.textsize(info, font = font)
+				draw.text((0, h_cursor + h/2), info, (0, 0, 0), font = font)
+				h_cursor += h
+		if self.top_right is not None:
+			h_cursor = 0
+			for info in self.top_right:
+				w, h = draw.textsize(info, font = font)
+				draw.text((width - w, h_cursor + h/2), info, (0, 0, 0), font = font)
+				h_cursor += h
+		if self.bottom_left is not None:
+			w, h = draw.textsize('test text', font = font)
+			h_cursor = height - len(self.bottom_left) * h - h
+			for info in self.bottom_left:
+				w, h = draw.textsize(info, font = font)
+				draw.text((0, h_cursor + h/2), info, (0, 0, 0), font = font)
+				h_cursor += h
+		if self.bottom_right is not None:
+			w, h = draw.textsize('test text', font = font)
+			h_cursor = height - len(self.bottom_right) * h - h
+			for info in self.bottom_right:
+				w, h = draw.textsize(info, font = font)
+				draw.text((width - w, h_cursor + h/2), info, (0, 0, 0), font = font)
+				h_cursor += h
 
 if __name__ == '__main__':
 	netname = 'bold_net'

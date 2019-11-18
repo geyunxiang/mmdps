@@ -24,7 +24,7 @@ def copy_dicom_from_CD(scan_folder_name):
 	logging.info('Dicom copied.')
 
 def convert_dicom_to_raw_nii(scan_folder_name):
-	ret = converter.convert_dicom_to_nifti(os.path.join(rootconfig.dms.folder_rawnii, scan_folder_name), os.path.join(rootconfig.dms.folder_rawnii, scan_folder_name))
+	ret = converter.convert_dicom_to_nifti(os.path.join(rootconfig.dms.folder_dicom, scan_folder_name), os.path.join(rootconfig.dms.folder_rawnii, scan_folder_name))
 	if ret == 0:
 		logging.info('Successfully converted %s' % scan_folder_name)
 	else:

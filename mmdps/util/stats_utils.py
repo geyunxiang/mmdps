@@ -3,7 +3,6 @@ stats utils
 """
 import numpy as np
 import scipy, scipy.stats
-from sklearn import svm
 from statsmodels.stats import multitest
 
 def row_wise_ttest(net1, net2, sigLevel = 0.05):
@@ -57,6 +56,18 @@ def pairedTTest(a, b):
 	"""
 	t, p = scipy.stats.ttest_rel(a, b)
 	return (t, p)
+
+def correlation_Pearson(a, b):
+	pr, prp = scipy.stats.pearsonr(a, b)
+	return pr, prp
+
+def correlation_Spearman(a, b):
+	sr, srp = scipy.stats.spearmanr(a, b)
+	return sr, srp
+
+def correlation_Kendall(a, b):
+	tao, taop = scipy.stats.kendalltau(a, b)
+	return tao, taop
 
 def FDR_correction(p_list, sigLevel = 0.05):
 	reject, pvals_corrected, _, _ = multitest.multipletests(p_list, sigLevel, method='fdr_bh')

@@ -1,10 +1,34 @@
 {
-	"BOLD.BC": "bold_interBC.csv", 
-	"BOLD.CCFS": "bold_interCCFS.csv", 
-	"BOLD.LE": "bold_interLE.csv", 
-	"BOLD.WD": "bold_interWD.csv", 
-	"BOLD.net": "bold_net.csv", 
-	"DWI.FA": "dwi_FA.csv", 
-	"DWI.MD": "dwi_MD.csv", 
-	"DWI.net": "dwi_net.csv"
+	"BOLD.BC": {
+		"filename": "bold_interBC.csv", 
+		"feat_name": "BC"
+	},
+	"BOLD.CCFS": {
+		"filename": "bold_interCCFS.csv", 
+		"feat_name": "CCFS"
+	},
+	"BOLD.LE": {
+		"filename": "bold_interLE.csv", 
+		"feat_name": "LE"
+	},
+	"BOLD.WD": {
+		"filename": "bold_interWD.csv", 
+		"feat_name": "WD"
+	},
+	"BOLD.net": {
+		"filename": "bold_net.csv", 
+		"feat_name": "net"
+	},
+	"DWI.FA": {
+		"filename": "dwi_FA.csv", 
+		"feat_name": "FA"
+	},
+	"DWI.MD": {
+		"filename": "dwi_MD.csv", 
+		"feat_name": "MD"
+	},
+	"DWI.net": {
+		"filename": "dwi_net.csv", 
+		"feat_name": "net"
+	}
 }
