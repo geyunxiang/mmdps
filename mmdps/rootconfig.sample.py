@@ -34,8 +34,6 @@ if sys.platform == 'win32':
 		dcm2nii = 'E:/PC/mricron/dcm2nii.exe'
 		# circos executable path
 		circos = 'E:/PC/circos-0.69-6/bin/circos.exe'
-		# feature root
-		feature_root = 'Z:/ChangGungFeatures/'
 
 	class server:
 		"""server address configs"""
@@ -60,22 +58,6 @@ if sys.platform == 'win32':
 		mmdpdb_filepath = 'I:/MMDPDatabase/mmdpdb.db'
 		# CD driver path
 		CD_dicom_path = 'G:/DICOM/'
-
-elif sys.platform == 'darwin':
-	# macOS
-	class path:
-		"""important paths and tools config."""
-		# the mmdps package folder
-		pyroot = os.path.dirname(os.path.abspath(__file__))
-		# the root MMDPS folder
-		root = os.path.abspath(os.path.join(pyroot, '..'))
-		tools = os.path.join(root, 'tools')
-		proc = os.path.join(pyroot, 'proc')
-		atlas = os.path.join(root, 'atlas')
-		data = os.path.join(root, 'data')
-		bnvdata = os.path.join(data, 'bnv')
-	class dms:
-		mmdpdb_filepath = '/Users/andy/workshop/MMDPDatabase/mmdpdb.db'
 
 else:
 	matlab_bin = '/usr/local/bin/matlab'

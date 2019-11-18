@@ -5,3 +5,4 @@ log
 server/apiserver/mmdpdb.db
 .DS*
 .idea
+rootconfig.py

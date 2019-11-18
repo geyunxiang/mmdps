@@ -238,6 +238,9 @@ class Mat:
 def zero_net(atlasobj):
 	return Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
 
+def one_net(atlasobj):
+	return Net(np.ones((atlasobj.count, atlasobj.count)), atlasobj)
+
 def zero_attr(atlasobj):
 	return Attr(np.zeros(atlasobj.count), atlasobj)
 
@@ -285,9 +288,10 @@ def networks_comparisons(network_list_A, network_list_B, comparison_method):
 	"""
 	atlasobj = network_list_A[0].atlasobj
 	stat_network = zero_net(atlasobj)
-	p_network = zero_net(atlasobj)
+	p_network = one_net(atlasobj)
 	for xidx in range(atlasobj.count):
-		for yidx in range(xidx, atlasobj.count):
+		for yidx in range(xidx+1, atlasobj.count):
+			# print(atlasobj.ticks[xidx], atlasobj.ticks[yidx]) 'L32' - 'L32'
 			t, tp = comparison_method([net.data[xidx, yidx] for net in network_list_A], 
 									  [net.data[xidx, yidx] for net in network_list_B])
 			stat_network.data[xidx, yidx] = t

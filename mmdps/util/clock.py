@@ -1,12 +1,13 @@
-"""Clock and time related utils.
-
+"""
+Clock and time related utils.
 """
 
 import datetime
 from datetime import date
 
 def add_years(d, years):
-    """Return a date that's `years` years after the date (or datetime)
+    """
+    Return a date that's `years` years after the date (or datetime)
     object `d`. Return the same calendar date (month and day) in the
     destination year, if it exists, otherwise use the following day
     (thus changing February 29 to March 1).
@@ -18,12 +19,17 @@ def add_years(d, years):
         return d + (date(d.year + years, 1, 1) - date(d.year, 1, 1))
     
 def now():
-    """Time string represents now().
+    """
+    Time string represents now().
     
-    No : in the string, can be used in filename.
+    No ':' in the string, can be used in filename.
     The iso time string cannot be used in filename.
     """
     return datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S.%f')
+
+def now_str():
+    """A more reader-friendly format"""
+    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 def isofmt():
     """ISO time fmt."""
