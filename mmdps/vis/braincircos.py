@@ -390,21 +390,6 @@ class CircosPlotBuilder:
 	def get_colorlist(self):
 		return ['grey'] * self.atlasobj.count
 
-	def get_title(self):
-		return self.title
-
-	def decorate_figure(self, generatedpng):
-		img = Image.open(generatedpng)
-		padtop = 100
-		imgn = Image.new('RGBA', (img.width, padtop + img.height), (255, 255, 255, 255))
-		imgn.paste(img, (0, padtop, img.width, padtop + img.height))
-		draw = ImageDraw.Draw(imgn)
-		font = ImageFont.truetype('arial.ttf', 72)
-		draw.text((50, 50), self.get_title(), (0, 0, 0), font=font)
-		newpng = generatedpng[:-4] + '_decorated.png'
-		imgn.save(newpng)
-		return newpng
-
 	def copy_files(self):
 		"""
 		Copy circos basic ideogram config files.
@@ -447,15 +432,84 @@ class CircosPlotBuilder:
 	def run_circos(self):
 		j = job.ExecutableJob('circos', rootconfig.path.circos, wd=self.fullpath())
 		j.run()
-		generatedpng = self.fullpath('circos.png')
-		if os.path.isfile(generatedpng):
-			finalpng = self.decorate_figure(generatedpng)
-			shutil.copy2(finalpng, self.outfilepath + '.png')
 
-	def plot(self):
+	def plot(self, top_left = None, top_right = None, bottom_left = None, bottom_right = None):
 		self.copy_files()
 		self.write_files()
 		self.run_circos()
+		generatedpng = self.fullpath('circos.png')
+		if os.path.isfile(generatedpng):
+			decorator = CircosPlotDecorator(generatedpng, self.outfilepath, self.title, top_left, top_right, bottom_left, bottom_right)
+			finalpng = decorator.decorate_figure()
+			shutil.copy2(finalpng, self.outfilepath + '.png')
+
+class CircosPlotDecorator():
+	"""
+	CircosPlotDecorator is used to add titles and detailed information on four corners of circos plot
+	"""
+	def __init__(self, infilepath, outfilepath, title, top_left = None, top_right = None, bottom_left = None, bottom_right = None):
+		"""
+		Specify detailed information (strings) to be added in a list and pass arguments to the appropriate position
+		"""
+		self.infilepath = infilepath
+		self.outfilepath = outfilepath
+		self.title = title
+		self.top_left = top_left
+		self.top_right = top_right
+		self.bottom_left = bottom_left
+		self.bottom_right = bottom_right
+		self.new_image = None
+
+	def decorate_figure(self):
+		img = Image.open(self.infilepath)
+		padtop = 200
+		self.new_image = Image.new('RGBA', (img.width, img.height + padtop), (255, 255, 255, 255))
+		self.new_image.paste(img, (0, padtop))
+		
+		self.add_title()
+		self.decorate_corner()
+		
+		newpng = self.infilepath[:-4] + '_decorated.png'
+		self.new_image.save(newpng)
+		return newpng
+
+	def add_title(self):
+		draw = ImageDraw.Draw(self.new_image)
+		font = ImageFont.truetype('arial.ttf', 100)
+		w, h = draw.textsize(self.title, font = font)
+		width, height = self.new_image.size
+		draw.text(((width - w)/2, h/2), self.title, (0, 0, 0), font = font)
+
+	def decorate_corner(self):
+		width, height = self.new_image.size
+		draw = ImageDraw.Draw(self.new_image)
+		font = ImageFont.truetype('arial.ttf', 48)
+		if self.top_left is not None:
+			h_cursor = 0
+			for info in self.top_left:
+				w, h = draw.textsize(info, font = font)
+				draw.text((0, h_cursor + h/2), info, (0, 0, 0), font = font)
+				h_cursor += h
+		if self.top_right is not None:
+			h_cursor = 0
+			for info in self.top_right:
+				w, h = draw.textsize(info, font = font)
+				draw.text((width - w, h_cursor + h/2), info, (0, 0, 0), font = font)
+				h_cursor += h
+		if self.bottom_left is not None:
+			w, h = draw.textsize('test text', font = font)
+			h_cursor = height - len(self.bottom_left) * h - h
+			for info in self.bottom_left:
+				w, h = draw.textsize(info, font = font)
+				draw.text((0, h_cursor + h/2), info, (0, 0, 0), font = font)
+				h_cursor += h
+		if self.bottom_right is not None:
+			w, h = draw.textsize('test text', font = font)
+			h_cursor = height - len(self.bottom_right) * h - h
+			for info in self.bottom_right:
+				w, h = draw.textsize(info, font = font)
+				draw.text((width - w, h_cursor + h/2), info, (0, 0, 0), font = font)
+				h_cursor += h
 
 if __name__ == '__main__':
 	netname = 'bold_net'
