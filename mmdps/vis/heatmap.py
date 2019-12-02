@@ -23,7 +23,7 @@ class HeatmapPlot:
 		self.outfilepath = outfilepath
 		self.valuerange = valuerange
 		self.cmap = self.get_cmap()
-		self.title_font_size = 24
+		self.title_font_size = 36
 		self.show_ticks = True
 
 	def set_title_font_size(self, font_size):
@@ -69,6 +69,9 @@ class HeatmapPlot:
 			ax.set_xticklabels(self.atlasobj.ticks_adjusted, rotation=90)
 			ax.set_yticks(range(self.count))
 			ax.set_yticklabels(self.atlasobj.ticks_adjusted)
+		else:
+			ax.set_xticks([])
+			ax.set_yticks([])
 
 		# set colorbar
 		cbar = fig.colorbar(axim, fraction=0.046, pad=0.04)
@@ -106,6 +109,9 @@ class HeatmapPlot:
 			ax.set_xticklabels(ticks_adjusted, rotation=90)
 			ax.set_yticks(range(self.count))
 			ax.set_yticklabels(ticks_adjusted)
+		else:
+			ax.set_xticks([])
+			ax.set_yticks([])
 
 		# plot horizontal and vertical lines
 		plotIdx = -0.5
@@ -189,3 +195,7 @@ class HeatmapPlotRows:
 		path.makedirs_file(self.outfilepath)
 		plt.savefig(self.outfilepath, dpi=100)
 		plt.close()
+
+def plot_net_RSN(net, title, outfilepath):
+	plotter = HeatmapPlot(net, title, outfilepath)
+	plotter.plotRSN()

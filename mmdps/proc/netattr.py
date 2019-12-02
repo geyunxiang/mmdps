@@ -164,7 +164,7 @@ class Net:
 			for yidx in range(self.atlasobj.count):
 				if xidx in indexList and yidx in indexList:
 					mask[xidx, yidx] = 1
-		newnet.data = np.multiply(newnet.data, mask)
+		newnet.data = np.multiply(self.data, mask)
 		return newnet
 
 	def gensub(self, subatlasname, subindexes):
