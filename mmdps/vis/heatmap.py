@@ -25,12 +25,16 @@ class HeatmapPlot:
 		self.cmap = self.get_cmap()
 		self.title_font_size = 36
 		self.show_ticks = True
+		self.show_colorbar = True
 
 	def set_title_font_size(self, font_size):
 		self.title_font_size = font_size
 
 	def set_show_ticks(self, is_showing):
 		self.show_ticks = is_showing
+
+	def set_show_colorbar(self, is_showing):
+		self.show_colorbar = is_showing
 
 	def get_cmap(self):
 		"""Get default cmap use valuerange.
@@ -74,11 +78,12 @@ class HeatmapPlot:
 			ax.set_yticks([])
 
 		# set colorbar
-		cbar = fig.colorbar(axim, fraction=0.046, pad=0.04)
-		# change colorbar ticks font size
-		# see https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.tick_params
-		# and https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.tick_params.html#matplotlib.axes.Axes.tick_params
-		cbar.ax.tick_params(labelsize = 25, length = 5, width = 5)
+		if self.show_colorbar:
+			cbar = fig.colorbar(axim, fraction=0.046, pad=0.04)
+			# change colorbar ticks font size
+			# see https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.tick_params
+			# and https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.tick_params.html#matplotlib.axes.Axes.tick_params
+			cbar.ax.tick_params(labelsize = 25, length = 5, width = 5)
 
 		# save fig
 		plt.title(self.title, fontsize = self.title_font_size)
@@ -136,11 +141,12 @@ class HeatmapPlot:
 		ax.set_yticklabels(self.atlasobj.get_RSN_list(), minor = True)
 
 		# set colorbar
-		cbar = fig.colorbar(axim, fraction=0.046, pad=0.04)
-		# change colorbar ticks font size
-		# see https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.tick_params
-		# and https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.tick_params.html#matplotlib.axes.Axes.tick_params
-		cbar.ax.tick_params(labelsize = 25, length = 5, width = 5)
+		if self.show_colorbar:
+			cbar = fig.colorbar(axim, fraction=0.046, pad=0.04)
+			# change colorbar ticks font size
+			# see https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.tick_params
+			# and https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.tick_params.html#matplotlib.axes.Axes.tick_params
+			cbar.ax.tick_params(labelsize = 25, length = 5, width = 5)
 
 		# save fig
 		plt.title(self.title, fontsize = self.title_font_size)

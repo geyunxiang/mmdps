@@ -131,7 +131,6 @@ class AttrLoader(Loader):
 				attr_list.append(self.loadSingle(mriscan, attrname, csvfilename))
 			else:
 				attr_list.append(self.loadSingle(mriscan, attrname))
-			attr_list[-1].name = mriscan
 		return attr_list
 
 	def loadvstackmulti(self, mriscans, attrnames):
