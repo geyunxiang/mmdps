@@ -132,7 +132,8 @@ class Atlas:
 		return indexes
 
 	def create_sub(self, subatlasname, subindexes):
-		"""Create a sub atlas using specified sub indexes.
+		"""
+		Create a sub atlas using specified sub indexes.
 		
 		Create a sub atlas with name and sub indexes. The new sub atlas can be used
 		just like a normal atlas.
@@ -143,8 +144,9 @@ class Atlas:
 		subdd['count'] = len(subindexes)
 		subdd['regions'] = dataop.sub_list(self.regions, subindexes)
 		subdd['ticks'] = dataop.sub_list(self.ticks, subindexes)
-		rawsubplotindexes = dataop.sub_list(self.plotindexes, subindexes)
-		subdd['plotindexes'] = np.argsort(rawsubplotindexes)
+		# rawsubplotindexes = dataop.sub_list(self.plotindexes, subindexes)
+		# subdd['plotindexes'] = np.argsort(rawsubplotindexes)
+		subdd['plotindexes'] = range(len(subindexes))
 		subatlasobj = Atlas(subdd)
 		subatlasobj.bnvnode = self.bnvnode.copy_sub(subindexes)
 		return subatlasobj

@@ -201,6 +201,17 @@ class CorrPlot:
 		self.outfile = outfile
 		self.xlabel = xlabel
 		self.ylabel = ylabel
+		self.labelsize = None
+		self.title_show_corr = True
+
+	def adjust_tick_label_size(self, labelsize):
+		self.labelsize = labelsize
+
+	def set_title_show_corr(self, flag):
+		"""
+		flag = True/False. Controls whether append correlation and p value to title
+		"""
+		self.title_show_corr = flag
 
 	def plot(self):
 		slope, intercept, rvalue, pvalue, stderr = stats.linregress(self.xvec, self.yvec)
@@ -209,15 +220,22 @@ class CorrPlot:
 		plt.hold(True)
 		a = slope
 		b = intercept
-		xlim = plt.gca().get_xlim()
+		ax = plt.gca()
+		# adjust tick size
+		if self.labelsize is not None:
+			ax.tick_params(labelsize = self.labelsize)
+		xlim = ax.get_xlim()
 		x0 = xlim[0]
 		x1 = xlim[1]
 		plt.plot(xlim, [a*x0+b, a*x1+b])
-		plt.title(self.title + ' r:{:0.3} p:{:0.3}'.format(rvalue, pvalue))
+		if self.title_show_corr:
+			plt.title(self.title + ' r:{:0.3} p:{:0.3}'.format(rvalue, pvalue))
+		else:
+			plt.title(self.title)
 		plt.xlabel(self.xlabel)
 		plt.ylabel(self.ylabel)
 		path.makedirs_file(self.outfile)
-		fig.savefig(self.outfile)
+		fig.savefig(self.outfile, dpi = 300)
 		plt.close()
 
 def plot_correlation(xvec, yvec, xlabel, ylabel, title, outfile):
