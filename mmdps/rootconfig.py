@@ -74,6 +74,7 @@ elif sys.platform == 'darwin':
 		atlas = os.path.join(root, 'atlas')
 		data = os.path.join(root, 'data')
 		bnvdata = os.path.join(data, 'bnv')
+		feature_root = None
 	class dms:
 		mmdpdb_filepath = '/Users/andy/workshop/MMDPDatabase/mmdpdb.db'
 
