@@ -40,7 +40,7 @@ def extract_modalities(scan_folder_name):
 	logging.info('Extracting modalities finished with coverage: %s' % modalities_coverage)
 	return modalities_coverage
 
-def update_database(scan_folder_name, modalities_coverage):
+def update_sql_database(scan_folder_name, modalities_coverage):
 	"""
 	:param scan_folder_name:
 	:param modalities_coverage: a tuple containing bool values (hasT1, hasT2, hasBOLD, has DWI)
@@ -65,7 +65,7 @@ def main():
 	copy_dicom_from_CD(scan_folder_name)
 	convert_dicom_to_raw_nii(scan_folder_name)
 	modalities_coverage = extract_modalities(scan_folder_name)
-	update_database(scan_folder_name, modalities_coverage)
+	update_sql_database(scan_folder_name, modalities_coverage)
 
 if __name__ == '__main__':
 	main()

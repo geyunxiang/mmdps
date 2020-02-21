@@ -1,4 +1,4 @@
-from mmdps.proc import feature_export
+import feature_export
 from mmdps.util import path
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ import tkinter as tk
 from mmdps.gui import guiframe, tktools, field
 from mmdps import rootconfig
 from mmdps.util import run
-from mmdps.dms import batchget, apicore
+from mmdps.remote_service import batchget, apicore
 
 class Application(guiframe.MainWindow):
     def __init__(self, master=None, **kw):
