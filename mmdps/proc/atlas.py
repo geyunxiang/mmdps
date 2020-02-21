@@ -11,7 +11,7 @@ import numpy as np
 # from ..util import dataop
 from mmdps import rootconfig
 from mmdps.util import loadsave, dataop
-from mmdps.vis import bnv
+from mmdps.vis.bnv import BNVNode
 import nibabel as nib
 
 atlas_list = ['brodmann_lr', 'brodmann_lrce', 'aal', 'aicha', 'bnatlas']
@@ -48,7 +48,7 @@ class Atlas:
 		# nodefile for use with brainnet viewer.
 		if 'nodefile' in self.dd:
 			self.nodefile = self.fullpath(self.dd['nodefile'])
-			self.bnvnode = bnv.BNVNode(self.nodefile)
+			self.bnvnode = BNVNode(self.nodefile)
 		# ticks_adjusted is the ticks list, adjusted using plotindexes.
 		self.ticks_adjusted = self.adjust_ticks()
 		# leftrightindexes in the indexes split into left and right.
@@ -68,7 +68,7 @@ class Atlas:
 		return os.path.join(self.atlasfolder, *p)
 
 	def set_brainparts(self, name):
-		from ..vis import braincircos
+		from mmdps.vis import braincircos
 		circosfile = 'circosparts_{}.json'.format(name)
 		self.brainparts = braincircos.BrainParts(loadsave.load_json(os.path.join(self.circosfolder, circosfile)))
 	

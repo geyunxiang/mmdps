@@ -16,7 +16,6 @@ import numpy as np
 from mmdps.util import path
 from mmdps import rootconfig
 from mmdps.proc import job, netattr
-from PIL import Image, ImageDraw, ImageFont
 
 # built in mesh
 BuiltinMeshDict = {'ch2cere': 'ch2cere.nv', 'icbm152smoothed': 'icbm152smoothed.nv'}
@@ -65,6 +64,7 @@ def decorate_image(image_path, title):
 	"""
 	Add title to image
 	"""
+	from PIL import Image, ImageDraw, ImageFont
 	img = Image.open(image_path)
 	padtop = 100
 	newImg = Image.new('RGBA', (img.width, padtop + img.height), (255, 255, 255, 255))
