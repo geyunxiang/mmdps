@@ -2,7 +2,6 @@ from eve_sqlalchemy.config import DomainConfig, ResourceConfig
 from mmdps.dms.tables import Person, MRIScan, MotionScore, StrokeScore, Group, MRIMachine
 from mmdps import rootconfig
 
-
 DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///F:/geyunxiang/mmdps_git/server/apiserver/mmdpdb.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -18,12 +17,12 @@ DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'
 #SQLALCHEMY_RECORD_QUERIES = True
 
 DOMAIN = DomainConfig({
-    'people': ResourceConfig(Person),
-    'mriscans': ResourceConfig(MRIScan),
-    'motionscores': ResourceConfig(MotionScore),
-    'strokescores': ResourceConfig(StrokeScore),
-    'groups': ResourceConfig(Group),
-    'mrinachines': ResourceConfig(MRIMachine)
+	'people': ResourceConfig(Person),
+	'mriscans': ResourceConfig(MRIScan),
+	'motionscores': ResourceConfig(MotionScore),
+	'strokescores': ResourceConfig(StrokeScore),
+	'groups': ResourceConfig(Group),
+	'mrinachines': ResourceConfig(MRIMachine)
 }).render()
 
 # custom settings
