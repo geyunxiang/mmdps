@@ -54,6 +54,24 @@ class Person(BaseModel):
 	def __repr__(self):
 		return "<Person(name='{}', gender='{}', birth='{}', weight='{}'>".format(self.name, self.gender, self.birth, self.weight)
 
+	@classmethod
+	def build_person(cls, name, scaninfo):
+		"""
+		Used when new person is introduced
+		"""
+		from mmdps.util import clock
+		patient_dict = scaninfo['Patient']
+		patientid = patient_dict.get('ID', '')
+		gender = patient_dict.get('Gender', 'U')
+		weight = patient_dict.get('Weight', '0')
+		if 'Birth' in patient_dict:
+			birth = datetime.datetime.strptime(patient_dict['Birth'], '%Y-%m-%d')
+		else:
+			ageraw = patient_dict.get('AgeRaw', 0)
+			scandate = datetime.datetime.strptime(scaninfo['StudyDate'], '%Y-%m-%d %H:%M:%S') # parse scan datetime
+			birth = clock.add_years(scandate, -ageraw)
+		return Person(name = name, patientid = patientid, gender = gender, weight = weight, birth = birth)
+
 class MRIMachine(BaseModel):
 	"""MRIMachine."""
 	__tablename__ = 'mrimachines'
