@@ -34,6 +34,8 @@ if sys.platform == 'win32':
 		dcm2nii = 'E:/PC/mricron/dcm2nii.exe'
 		# circos executable path
 		circos = 'E:/PC/circos-0.69-6/bin/circos.exe'
+		# feature root
+		feature_root = 'Z:/ChangGungFeatures/'
 
 	class server:
 		"""server address configs"""
@@ -73,6 +75,8 @@ else:
 		python = sys.executable
 		niiviewer = '/usr/local/bin/mricron'
 		dcm2nii = ''
+		# feature root
+		feature_root = ''
 
 	class server:
 		api = 'http://127.0.0.1:5000'
@@ -84,3 +88,4 @@ else:
 		folder_dicom = r'F:/MMDPDatabase/data_dicom'
 		folder_rawnii = r'F:/MMDPDatabase/data_rawnii'
 		folder_mridata = r'F:/MMDPDatabase/Data/MRIData'
+		mmdpdb_filepath = ''
