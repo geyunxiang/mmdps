@@ -3,7 +3,7 @@ import functools
 import tkinter as tk
 import tkinter.simpledialog
 from mmdps.gui import guiframe, tktools, field
-from mmdps.dms import apicore
+from mmdps.remote_service import apicore
 from mmdps.util.loadsave import load_json
 from mmdps import rootconfig
 from mmdps.proc import parabase

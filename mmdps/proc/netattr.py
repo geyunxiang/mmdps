@@ -164,7 +164,7 @@ class Net:
 			for yidx in range(self.atlasobj.count):
 				if xidx in indexList and yidx in indexList:
 					mask[xidx, yidx] = 1
-		newnet.data = np.multiply(newnet.data, mask)
+		newnet.data = np.multiply(self.data, mask)
 		return newnet
 
 	def gensub(self, subatlasname, subindexes):
@@ -200,6 +200,16 @@ class Net:
 			for yidx in range(self.atlasobj.count):
 				if abs(self.data[xidx, yidx]) < threshold:
 					newnet.data[xidx, yidx] = 0
+		return newnet
+
+	def binarize(self, threshold):
+		"""
+		Return a copy of current network, with values binarized
+		abs(FC) < threshold --> FC = 0
+		abs(FC) >= threshold --> FC = 1
+		"""
+		newnet = Net(self.data.copy(), self.atlasobj, self.name)
+		newnet.data = (np.abs(newnet.data) >= threshold).astype(int)
 		return newnet
 
 	def setValueAtTicks(self, xtick, ytick, value):

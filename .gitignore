@@ -3,6 +3,7 @@ __pychache__/
 *.log
 log
 server/apiserver/mmdpdb.db
+.DS*
 .idea
 rootconfig.py
 .DS_Store

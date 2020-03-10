@@ -174,3 +174,10 @@ def getResearchStudy(alias):
 	db = mmdpdb.MMDPDatabase()
 	session = db.new_session()
 	return session.query(tables.ResearchStudy).filter_by(alias = alias).one()
+
+def getHealthyGroup():
+	"""
+	"""
+	db = mmdpdb.MMDPDatabase()
+	session = db.new_session()
+	return session.query(tables.Group).filter_by(name = 'Changgung HC').one()

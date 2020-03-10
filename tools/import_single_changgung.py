@@ -12,7 +12,7 @@ import os
 import shutil
 
 from mmdps import rootconfig
-from mmdps.dms import converter, importer, dbgen
+from mmdps.dms import data_customs, dbgen
 from mmdps.util import clock
 
 def copy_dicom_from_CD(scan_folder_name):
@@ -24,7 +24,7 @@ def copy_dicom_from_CD(scan_folder_name):
 	logging.info('Dicom copied.')
 
 def convert_dicom_to_raw_nii(scan_folder_name):
-	ret = converter.convert_dicom_to_nifti(os.path.join(rootconfig.dms.folder_dicom, scan_folder_name), os.path.join(rootconfig.dms.folder_rawnii, scan_folder_name))
+	ret = data_customs.convert_dicom_to_nifti(os.path.join(rootconfig.dms.folder_dicom, scan_folder_name), os.path.join(rootconfig.dms.folder_rawnii, scan_folder_name))
 	if ret == 0:
 		logging.info('Successfully converted %s' % scan_folder_name)
 	else:
@@ -34,13 +34,13 @@ def convert_dicom_to_raw_nii(scan_folder_name):
 		print('Subject ID: %s' % jsonObject['Patient']['ID'])
 
 def extract_modalities(scan_folder_name):
-	worker = importer.MRIScanImporter(os.path.join(rootconfig.dms.folder_rawnii), os.path.join(rootconfig.dms.folder_mridata), cls_niftigetter = converter.ChanggungNiftiGetter)
+	worker = data_customs.MRIScanImporter(os.path.join(rootconfig.dms.folder_rawnii), os.path.join(rootconfig.dms.folder_mridata), cls_niftigetter = data_customs.ChanggungNiftiGetter)
 	logging.info('Extracting modalities...')
 	modalities_coverage = worker.copy_one_nifti(scan_folder_name)
 	logging.info('Extracting modalities finished with coverage: %s' % modalities_coverage)
 	return modalities_coverage
 
-def update_database(scan_folder_name, modalities_coverage):
+def update_sql_database(scan_folder_name, modalities_coverage):
 	"""
 	:param scan_folder_name:
 	:param modalities_coverage: a tuple containing bool values (hasT1, hasT2, hasBOLD, has DWI)
@@ -65,7 +65,7 @@ def main():
 	copy_dicom_from_CD(scan_folder_name)
 	convert_dicom_to_raw_nii(scan_folder_name)
 	modalities_coverage = extract_modalities(scan_folder_name)
-	update_database(scan_folder_name, modalities_coverage)
+	update_sql_database(scan_folder_name, modalities_coverage)
 
 if __name__ == '__main__':
 	main()

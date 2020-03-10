@@ -1,7 +1,6 @@
 import os
 import tkinter as tk
-from mmdps.gui import guiframe, tktools
-from mmdps.proc import jobconfigfield
+from mmdps.gui import guiframe, tktools, jobconfigfield
 from mmdps.util.loadsave import load_json_ordered, save_json_ordered
 
 class Application(guiframe.MainWindow):

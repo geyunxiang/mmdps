@@ -26,7 +26,7 @@ def load_json(jfile):
 
 def save_json(jfile, d):
     """Save dict to json file."""
-    with open(jfile, encoding='utf-8') as f:
+    with open(jfile, 'w', encoding='utf-8') as f:
         json.dump(d, f, indent=4, ensure_ascii=False)
 
 def load_json_ordered(jfile):

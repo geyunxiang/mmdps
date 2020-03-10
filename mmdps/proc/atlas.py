@@ -11,7 +11,7 @@ import numpy as np
 # from ..util import dataop
 from mmdps import rootconfig
 from mmdps.util import loadsave, dataop
-from mmdps.vis import bnv
+from mmdps.vis.bnv import BNVNode
 import nibabel as nib
 
 atlas_list = ['brodmann_lr', 'brodmann_lrce', 'aal', 'aicha', 'bnatlas']
@@ -48,7 +48,7 @@ class Atlas:
 		# nodefile for use with brainnet viewer.
 		if 'nodefile' in self.dd:
 			self.nodefile = self.fullpath(self.dd['nodefile'])
-			self.bnvnode = bnv.BNVNode(self.nodefile)
+			self.bnvnode = BNVNode(self.nodefile)
 		# ticks_adjusted is the ticks list, adjusted using plotindexes.
 		self.ticks_adjusted = self.adjust_ticks()
 		# leftrightindexes in the indexes split into left and right.
@@ -68,7 +68,7 @@ class Atlas:
 		return os.path.join(self.atlasfolder, *p)
 
 	def set_brainparts(self, name):
-		from ..vis import braincircos
+		from mmdps.vis import braincircos
 		circosfile = 'circosparts_{}.json'.format(name)
 		self.brainparts = braincircos.BrainParts(loadsave.load_json(os.path.join(self.circosfolder, circosfile)))
 	
@@ -132,7 +132,8 @@ class Atlas:
 		return indexes
 
 	def create_sub(self, subatlasname, subindexes):
-		"""Create a sub atlas using specified sub indexes.
+		"""
+		Create a sub atlas using specified sub indexes.
 		
 		Create a sub atlas with name and sub indexes. The new sub atlas can be used
 		just like a normal atlas.
@@ -143,8 +144,9 @@ class Atlas:
 		subdd['count'] = len(subindexes)
 		subdd['regions'] = dataop.sub_list(self.regions, subindexes)
 		subdd['ticks'] = dataop.sub_list(self.ticks, subindexes)
-		rawsubplotindexes = dataop.sub_list(self.plotindexes, subindexes)
-		subdd['plotindexes'] = np.argsort(rawsubplotindexes)
+		# rawsubplotindexes = dataop.sub_list(self.plotindexes, subindexes)
+		# subdd['plotindexes'] = np.argsort(rawsubplotindexes)
+		subdd['plotindexes'] = range(len(subindexes))
 		subatlasobj = Atlas(subdd)
 		subatlasobj.bnvnode = self.bnvnode.copy_sub(subindexes)
 		return subatlasobj
