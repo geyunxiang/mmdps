@@ -1,4 +1,5 @@
-"""Brain atlas tools.
+"""
+Brain atlas tools.
 
 Access brain atlases.
 """
@@ -17,7 +18,8 @@ import nibabel as nib
 atlas_list = ['brodmann_lr', 'brodmann_lrce', 'aal', 'aicha', 'bnatlas']
 
 class Atlas:
-	"""The brain atlas.
+	"""
+	The brain atlas.
 
 	Init use a description desc, check atlas folder for example.
 	Can be used without actual atlas nii. If do have nii, it is in atlasfolder.
@@ -270,7 +272,30 @@ class Atlas:
 			vec_adjusted[i] = vec[realpos]
 		return vec_adjusted
 
-def get(atlasname):
+brodmann_lr = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'brodmann_lr.json')))
+brodmann_lrce = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'brodmann_lrce.json')))
+aal = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aal.json')))
+aicha = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aicha.json')))
+bnatlas = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'bnatlas.json')))
+
+def get(atlasname, suppress = False):
+	if not suppress:
+		print('You are using atlas.get() to obtain an atlasobj\nYou can use mmdps.proc.atlas.%s directly. \nfrom mmdps.proc import atlas\natlas.%s' % (atlasname, atlasname))
+	if atlasname == 'brodmann_lr':
+		return brodmann_lr
+	elif atlasname == 'brodmann_lrce':
+		return brodmann_lrce
+	elif atlasname == 'aal':
+		return aal
+	elif atlasname == 'aicha':
+		return aicha
+	elif atlasname == 'bnatlas':
+		return bnatlas
+	else:
+		print('Unknown atlasname = %s' % atlasname)
+		raise Exception()
+
+def get_old(atlasname):
 	"""Get an atlasobj with name.
 	
 	This is typically what you want when to get a atlas object.
