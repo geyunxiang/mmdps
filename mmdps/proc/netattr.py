@@ -1,4 +1,5 @@
-"""Feature data container.
+"""
+Feature data container.
 
 Net is a network feature.
 Attr is an attribute feature.
@@ -10,22 +11,43 @@ import numpy as np
 from pathlib import Path
 # from ..util import dataop, path
 # from ..util.loadsave import save_csvmat, load_csvmat
+from mmdps.proc import atlas
 from mmdps.util import dataop, path
 from mmdps.util.loadsave import save_csvmat, load_csvmat
 
-class Attr:
-	"""Attr is attribute, it is a one dimensional vector.
+class Mat:
+	"""
+	Mat is a general array data of any dimension, with an atlasobj and a name.
+	This is the core of Attr, Net, DynamicAttr and DynamicNet
+	"""
+	def __init__(self, data, atlasobj, name = 'mat'):
+		"""
+		Init the mat.
+		"""
+		self.data = data
+		if type(atlasobj) is str:
+			self.atlasobj = atlas.get(atlasobj)
+		else:
+			self.atlasobj = atlasobj
+		self.name = name
+
+class Attr(Mat):
+	"""
+	Attr is an attribute. It is a one dimensional vector.
 
 	The dimension of the vector is atlasobj.count.
+
+	In static context, an Attr represents one kind of attributes of one person, 
+	containing single value for multiple brain regions and resulting in a 1-D 
+	vector.
 	"""
 	def __init__(self, data, atlasobj, name = None):
-		"""Init the attr, using data, atlasobj, and name.
+		"""
+		Init the attr, using data, atlasobj, and name.
 
 		The name can be any string that can be useful.
 		"""
-		self.data = data
-		self.atlasobj = atlasobj
-		self.name = name
+		super().__init__(data, atlasobj, name)
 
 	def copy(self):
 		"""Copy the attr."""
@@ -57,19 +79,18 @@ class Attr:
 		for idx in range(self.data.shape[0]):
 			self.data[idx] = normalize_feature(self.data[idx], self.name, self.atlasobj)
 
-class DynamicAttr:
+class DynamicAttr(Mat):
 	"""
 	DynamicAttr is the dynamic version of Attr.
-	In static context, an Attr represents one kind of attributes of one person, containing single value for multiple
-	brain regions and resulting in a 1-D vector.
-	In dynamic context, a DynamicAttr represents one kind of dynamic attributes of one person, containing multiple
-	values for multiple brain regions and resulting in a 2-D matrix. (num_regions X num_time_points)
+	
+	In dynamic context, a DynamicAttr represents one kind of dynamic attributes 
+	of one person, containing multiple values for multiple brain regions and 
+	resulting in a 2-D matrix. (num_regions X num_time_points)
 	"""
-	def __init__(self, atlasobj, name = None):
-		self.atlasobj = atlasobj
-		self.data = None
-		self.name = name
-		self.T = 0
+	def __init__(self, data, atlasobj, windowLength, stepSize, name = None):
+		super().__init__(data, atlasobj, name)
+		self.windowLength = windowLength
+		self.stepSize = stepSize
 
 	def normalize(self):
 		if np.max(self.data) < 1.1:
@@ -96,19 +117,19 @@ class DynamicAttr:
 		tickIdx = self.atlasobj.ticks.index(tick)
 		return self.data[tickIdx, :]
 
-class Net:
-	"""Net is network, it is a two dimensional sqaure matrix.
-
-	The dimension of the vector is (atlasobj.count, atlasobj.count).
+class Net(Mat):
 	"""
-	def __init__(self, data, atlasobj, name='net'):
-		"""Init the net, using data, atlasobj, and name.
+	Net is a network. It is a two dimensional sqaure symmetric matrix.
+
+	The dimension of the matrix is (atlasobj.count, atlasobj.count).
+	"""
+	def __init__(self, data, atlasobj, name = 'net'):
+		"""
+		Init the net, using data, atlasobj, and name.
 
 		The name can be any string that can be useful.
 		""" 
-		self.data = data # np array
-		self.atlasobj = atlasobj
-		self.name = name
+		super().__init__(data, atlasobj, name)
 
 	def uniqueValueAsList(self, selectedAreas = None):
 		"""
@@ -216,16 +237,16 @@ class Net:
 		self.data[self.atlasobj.ticks.index(xtick), self.atlasobj.ticks.index(ytick)] = value
 		self.data[self.atlasobj.ticks.index(ytick), self.atlasobj.ticks.index(xtick)] = value
 
-class DynamicNet:
+class DynamicNet(Mat):
 	"""
-	Dynamic net is a collection of nets
-	It needs only contain the atlasobj of the net
+	DynamicNet is the dynamic version of Net. It is stored as a 3-dimensional
+	data array (time, loc x, loc y). One can obtain the network at a given time
+	slice by using data[idx, :, :]
 	"""
-	def __init__(self, atlasobj, step = 3, windowLength = 100):
-		self.atlasobj = atlasobj
-		self.stepSize = step
+	def __init__(self, data, atlasobj, windowLength, stepSize, name = None):
+		super().__init__(data, atlasobj, name)
+		self.stepSize = stepSize
 		self.windowLength = windowLength
-		self.dynamic_nets = []
 
 	def loadDynamicNets(self, loadPath):
 		start = 0
@@ -236,14 +257,6 @@ class DynamicNet:
 			else:
 				break
 			start += self.stepSize
-
-class Mat:
-	"""Mat is a general array data of any dimension, with an atlasobj and a name."""
-	def __init__(self, data, atlasobj, name='mat'):
-		"""Init the mat."""
-		self.data = data
-		self.atlasobj = atlasobj
-		self.name = name
 
 def zero_net(atlasobj):
 	return Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
