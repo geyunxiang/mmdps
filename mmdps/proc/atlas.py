@@ -278,7 +278,7 @@ aal = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aal.json')))
 aicha = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aicha.json')))
 bnatlas = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'bnatlas.json')))
 
-def get(atlasname, suppress = False):
+def get(atlasname, suppress = True):
 	if not suppress:
 		print('You are using atlas.get() to obtain an atlasobj\nYou can use mmdps.proc.atlas.%s directly. \nfrom mmdps.proc import atlas\natlas.%s' % (atlasname, atlasname))
 	if atlasname == 'brodmann_lr':
