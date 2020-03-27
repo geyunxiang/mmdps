@@ -41,13 +41,14 @@ class Attr(Mat):
 	containing single value for multiple brain regions and resulting in a 1-D 
 	vector.
 	"""
-	def __init__(self, data, atlasobj, name = None):
+	def __init__(self, data, atlasobj, subject_name = None, attr_name = None):
 		"""
-		Init the attr, using data, atlasobj, and name.
+		Init the attr, using data, atlasobj, and subject_name.
 
-		The name can be any string that can be useful.
+		The subject_name can be any string that can be useful.
 		"""
-		super().__init__(data, atlasobj, name)
+		super().__init__(data, atlasobj, subject_name)
+		self.attr_name = attr_name
 
 	def copy(self):
 		"""Copy the attr."""
@@ -87,10 +88,11 @@ class DynamicAttr(Mat):
 	of one person, containing multiple values for multiple brain regions and 
 	resulting in a 2-D matrix. (num_regions X num_time_points)
 	"""
-	def __init__(self, data, atlasobj, windowLength, stepSize, name = None):
-		super().__init__(data, atlasobj, name)
+	def __init__(self, data, atlasobj, windowLength, stepSize, subject_name = None, attr_name = None):
+		super().__init__(data, atlasobj, subject_name)
 		self.windowLength = windowLength
 		self.stepSize = stepSize
+		self.attr_name = attr_name
 
 	def normalize(self):
 		if np.max(self.data) < 1.1:
