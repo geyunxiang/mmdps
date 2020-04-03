@@ -20,7 +20,7 @@ class Mat:
 	Mat is a general array data of any dimension, with an atlasobj and a name.
 	This is the core of Attr, Net, DynamicAttr and DynamicNet
 	"""
-	def __init__(self, data, atlasobj, name = 'mat'):
+	def __init__(self, data, atlasobj, scan = None, feature_name = None):
 		"""
 		Init the mat.
 		"""
@@ -29,7 +29,8 @@ class Mat:
 			self.atlasobj = atlas.get(atlasobj)
 		else:
 			self.atlasobj = atlasobj
-		self.name = name
+		self.scan = scan
+		self.feature_name = feature_name
 
 class Attr(Mat):
 	"""
@@ -41,18 +42,17 @@ class Attr(Mat):
 	containing single value for multiple brain regions and resulting in a 1-D 
 	vector.
 	"""
-	def __init__(self, data, atlasobj, subject_name = None, attr_name = None):
+	def __init__(self, data, atlasobj, scan = None, feature_name = None):
 		"""
-		Init the attr, using data, atlasobj, and subject_name.
+		Init the attr, using data, atlasobj, and scan.
 
-		The subject_name can be any string that can be useful.
+		The scan can be any string that can be useful.
 		"""
-		super().__init__(data, atlasobj, subject_name)
-		self.attr_name = attr_name
+		super().__init__(data, atlasobj, scan, feature_name)
 
 	def copy(self):
 		"""Copy the attr."""
-		newattr = Attr(self.data.copy(), self.atlasobj, self.name)
+		newattr = Attr(self.data.copy(), self.atlasobj, self.scan, self.feature_name)
 		return newattr
 
 	def gensub(self, subatlasname, subindexes):
@@ -88,11 +88,10 @@ class DynamicAttr(Mat):
 	of one person, containing multiple values for multiple brain regions and 
 	resulting in a 2-D matrix. (num_regions X num_time_points)
 	"""
-	def __init__(self, data, atlasobj, windowLength, stepSize, subject_name = None, attr_name = None):
-		super().__init__(data, atlasobj, subject_name)
+	def __init__(self, data, atlasobj, windowLength, stepSize, scan = None, feature_name = None):
+		super().__init__(data, atlasobj, scan, feature_name)
 		self.windowLength = windowLength
 		self.stepSize = stepSize
-		self.attr_name = attr_name
 
 	def normalize(self):
 		if np.max(self.data) < 1.1:
@@ -125,13 +124,13 @@ class Net(Mat):
 
 	The dimension of the matrix is (atlasobj.count, atlasobj.count).
 	"""
-	def __init__(self, data, atlasobj, name = 'net'):
+	def __init__(self, data, atlasobj, scan = None, feature_name = 'BOLD.net'):
 		"""
-		Init the net, using data, atlasobj, and name.
+		Init the net, using data, atlasobj, and scan.
 
-		The name can be any string that can be useful.
+		The scan can be any string that can be useful.
 		""" 
-		super().__init__(data, atlasobj, name)
+		super().__init__(data, atlasobj, scan, feature_name)
 
 	def uniqueValueAsList(self, selectedAreas = None):
 		"""
@@ -245,8 +244,8 @@ class DynamicNet(Mat):
 	data array (time, loc x, loc y). One can obtain the network at a given time
 	slice by using data[idx, :, :]
 	"""
-	def __init__(self, data, atlasobj, windowLength, stepSize, name = None):
-		super().__init__(data, atlasobj, name)
+	def __init__(self, data, atlasobj, windowLength, stepSize, scan = None, feature_name = 'BOLD.net'):
+		super().__init__(data, atlasobj, scan, feature_name)
 		self.stepSize = stepSize
 		self.windowLength = windowLength
 

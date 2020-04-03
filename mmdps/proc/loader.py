@@ -113,7 +113,7 @@ class AttrLoader(Loader):
 			attrdata = self.loaddata(mriscan, attrname, csvfilename)
 		else:
 			attrdata = self.loaddata(mriscan, attrname)
-		attr = netattr.Attr(attrdata, self.atlasobj, attrname)
+		attr = netattr.Attr(attrdata, self.atlasobj, mriscan, attrname)
 		return attr
 
 	def load_multiple_attrs(self, mriscans, attrname, csvfilename = None):
@@ -153,7 +153,7 @@ class NetLoader(Loader):
 	def loadSingle(self, mriscan, attrname = 'BOLD.net'):
 		"""Load the net object, with atlasobj."""
 		netdata = self.loaddata(mriscan, attrname)
-		net = netattr.Net(netdata, self.atlasobj, mriscan)
+		net = netattr.Net(netdata, self.atlasobj, mriscan, attrname)
 		return net
 
 	def loadMulti(self, mriscans, attrname = 'BOLD.net'):
@@ -259,7 +259,7 @@ def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder 
 	"""
 	windowLength = dynamic_conf[0]
 	stepSize = dynamic_conf[1]
-	dynamic_attr = netattr.DynamicAttr(None, atlasobj, windowLength, stepSize, subject_name = scan, attr_name = attrname)
+	dynamic_attr = netattr.DynamicAttr(None, atlasobj, windowLength, stepSize, scan = scan, feature_name = attrname)
 	start = 0
 	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
 	while True:
@@ -312,7 +312,7 @@ def load_dynamic_attrs(scans, atlasobj, attrname, dynamic_conf, rootFolder = roo
 				break
 	return ret
 
-def load_single_network(atlasobj, mriscan, mainfolder = rootconfig.path.feature_root):
+def load_single_network(mriscan, atlasobj, mainfolder = rootconfig.path.feature_root):
 	"""
 	Load a single network
 	"""
@@ -328,7 +328,7 @@ def load_single_dynamic_network(scan, atlasobj, dynamic_conf, rootFolder = rootc
 	start = 0
 	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net', 'dynamic %d %d' % (stepSize, windowLength))
 	time_slice_count = len(list(os.listdir(dynamic_foler_path))) - 1 # get rid of timeseries.csv
-	dynamic_net = netattr.DynamicNet(np.zeros((time_slice_count, atlasobj.count, atlasobj.count)), atlasobj, windowLength, stepSize, name = scan)
+	dynamic_net = netattr.DynamicNet(np.zeros((time_slice_count, atlasobj.count, atlasobj.count)), atlasobj, windowLength, stepSize, scan = scan, feature_name = 'BOLD.net')
 	timeIdx = 0
 	while True:
 		dynamic_net_filepath = os.path.join(dynamic_foler_path, 'corrcoef-%d.%d.csv' % (start, start+windowLength))
