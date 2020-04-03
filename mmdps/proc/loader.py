@@ -257,9 +257,9 @@ def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder 
 	"""
 	Return a DynamicAttr (attr.data[tickIdx, timeIdx])
 	"""
-	dynamic_attr = netattr.DynamicAttr(atlasobj, attrname)
 	windowLength = dynamic_conf[0]
 	stepSize = dynamic_conf[1]
+	dynamic_attr = netattr.DynamicAttr(None, atlasobj, windowLength, stepSize, subject_name = scan, attr_name = attrname)
 	start = 0
 	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
 	while True:
@@ -274,7 +274,8 @@ def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder 
 
 def load_dynamic_attr(scans, atlasobj, attrname, dynamic_conf, rootFolder = rootconfig.path.feature_root):
 	"""
-	Newer version of dynamic attr loader. Return a list of DynamicAttr (attr.data[tickIdx, timeIdx])
+	Return a list of DynamicAttr (attr.data[tickIdx, timeIdx])
+	Newer version of dynamic attr loader.
 	:param rootFolder:
 	:param scans:
 	:param atlasobj:
@@ -290,6 +291,7 @@ def load_dynamic_attr(scans, atlasobj, attrname, dynamic_conf, rootFolder = root
 
 def load_dynamic_attrs(scans, atlasobj, attrname, dynamic_conf, rootFolder = rootconfig.path.feature_root):
 	"""
+	Return a dict of lists of Attrs as dynamic attr
 	Dynamic features are saved as inter-region_<feature>-<start>.<end>.csv at bold_net_attr/dynamic <stepSize> <windowLength>/ folder
 	Specify attrname as 'inter-region_BC' etc.
 	"""
@@ -317,7 +319,29 @@ def load_single_network(atlasobj, mriscan, mainfolder = rootconfig.path.feature_
 	l = NetLoader(atlasobj, mainfolder)
 	return l.loadSingle(mriscan)
 
-def load_dynamic_nets(scans, atlasobj, dynamic_conf, rootFolder = rootconfig.path.feature_root):
+def load_single_dynamic_network(scan, atlasobj, dynamic_conf, rootFolder = rootconfig.path.feature_root):
+	"""
+	Return a DynamicNet (net.data[timeIdx, tickIdx, tickIdx])
+	"""
+	windowLength = dynamic_conf[0]
+	stepSize = dynamic_conf[1]
+	start = 0
+	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net', 'dynamic %d %d' % (stepSize, windowLength))
+	time_slice_count = len(list(os.listdir(dynamic_foler_path))) - 1 # get rid of timeseries.csv
+	dynamic_net = netattr.DynamicNet(np.zeros((time_slice_count, atlasobj.count, atlasobj.count)), atlasobj, windowLength, stepSize, name = scan)
+	timeIdx = 0
+	while True:
+		dynamic_net_filepath = os.path.join(dynamic_foler_path, 'corrcoef-%d.%d.csv' % (start, start+windowLength))
+		if os.path.exists(dynamic_net_filepath):
+			time_slice_net = load_csvmat(dynamic_net_filepath)
+			dynamic_net.data[timeIdx, :, :] = time_slice_net
+			timeIdx += 1
+			start += stepSize
+		else:
+			break
+	return dynamic_net
+
+def load_dynamic_networks(scans, atlasobj, dynamic_conf, rootFolder = rootconfig.path.feature_root):
 	"""
 	This function loads dynamic networks for each scan into a dict
 	The key of the dict is the scan name
