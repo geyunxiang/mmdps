@@ -140,7 +140,12 @@ def convert_dicom_to_nifti(infolder, outfolder):
 	"""
 	path.rmtree(outfolder)
 	path.makedirs(outfolder)
-	gen_scan_info(infolder, outfolder)
+	try:
+		# try to generate scan info, processing date-time etc
+		# will fail on non-Changgung data folder structure
+		gen_scan_info(infolder, outfolder)
+	except Exception:
+		pass
 	ret = subprocess.call([rootconfig.path.dcm2nii, '-z', 'y', '-o', outfolder, infolder],
 		cwd=os.path.dirname(rootconfig.path.dcm2nii))
 	print(outfolder, ret)
