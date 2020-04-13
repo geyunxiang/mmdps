@@ -10,7 +10,7 @@ import json
 import numpy as np
 
 from mmdps import rootconfig
-from mmdps.proc import netattr
+from mmdps.proc import netattr, atlas
 from mmdps.util.loadsave import load_csvmat, load_txt, load_csv_to_list
 from mmdps.util import path
 
@@ -248,6 +248,8 @@ def load_attrs(scans, atlasobj, attrname, rootFolder = rootconfig.path.feature_r
 	:param atlasobj:
 	:return:
 	"""
+	if type(atlasobj) is str:
+		atlasobj = atlas.get(atlasobj)
 	l = AttrLoader(atlasobj, rootFolder)
 	if csvfilename is not None:
 		return l.load_multiple_attrs(scans, attrname, csvfilename)
@@ -257,6 +259,8 @@ def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder 
 	"""
 	Return a DynamicAttr (attr.data[tickIdx, timeIdx])
 	"""
+	if type(atlasobj) is str:
+		atlasobj = atlas.get(atlasobj)
 	windowLength = dynamic_conf[0]
 	stepSize = dynamic_conf[1]
 	dynamic_attr = netattr.DynamicAttr(None, atlasobj, windowLength, stepSize, scan = scan, feature_name = attrname)
@@ -284,6 +288,8 @@ def load_dynamic_attr(scans, atlasobj, attrname, dynamic_conf, rootFolder = root
 	:param stepSize:
 	:return:
 	"""
+	if type(atlasobj) is str:
+		atlasobj = atlas.get(atlasobj)
 	ret = []
 	for scan in scans:
 		ret.append(load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder))
@@ -295,6 +301,8 @@ def load_dynamic_attrs(scans, atlasobj, attrname, dynamic_conf, rootFolder = roo
 	Dynamic features are saved as inter-region_<feature>-<start>.<end>.csv at bold_net_attr/dynamic <stepSize> <windowLength>/ folder
 	Specify attrname as 'inter-region_BC' etc.
 	"""
+	if type(atlasobj) is str:
+		atlasobj = atlas.get(atlasobj)
 	ret = {}
 	windowLength = dynamic_conf[0]
 	stepSize = dynamic_conf[1]
@@ -316,6 +324,8 @@ def load_single_network(mriscan, atlasobj, mainfolder = rootconfig.path.feature_
 	"""
 	Load a single network
 	"""
+	if type(atlasobj) is str:
+		atlasobj = atlas.get(atlasobj)
 	l = NetLoader(atlasobj, mainfolder)
 	return l.loadSingle(mriscan)
 
@@ -323,6 +333,8 @@ def load_single_dynamic_network(scan, atlasobj, dynamic_conf, rootFolder = rootc
 	"""
 	Return a DynamicNet (net.data[timeIdx, tickIdx, tickIdx])
 	"""
+	if type(atlasobj) is str:
+		atlasobj = atlas.get(atlasobj)
 	windowLength = dynamic_conf[0]
 	stepSize = dynamic_conf[1]
 	start = 0
@@ -348,6 +360,8 @@ def load_dynamic_networks(scans, atlasobj, dynamic_conf, rootFolder = rootconfig
 		value is a list of networks
 	Dynamic networks are saved as corrcoef-<start>.<end>.csv at bold_net/dynamic <stepSize> <windowLength>/ folder
 	"""
+	if type(atlasobj) is str:
+		atlasobj = atlas.get(atlasobj)
 	ret = {}
 	windowLength = dynamic_conf[0]
 	stepSize = dynamic_conf[1]
