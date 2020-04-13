@@ -288,16 +288,19 @@ class CircosLink:
 								f.write('\n')
 
 class CircosValue:
-	def __init__(self, attr, valuerange = None):
+	def __init__(self, attr, valuerange = None, cmap_str = None):
 		self.brainparts = attr.atlasobj.get_brainparts()
 		if valuerange is None:
 			self.valuerange = (np.min(attr.data), np.max(attr.data))
 		else:
 			self.valuerange = valuerange
+		if cmap_str is not None:
+			self.set_cmap(cmap_str)
+		else:
+			self.cmap = cm.Reds
 		self.chrdict = self.brainparts.chrdict
 		self.attr = attr
 		self.data = self.attr.data
-		self.cmap = cm.Reds
 
 	def get_line(self, chro, idx):
 		valuefmt = '{} {} {} {} {}'  # L_1 0 1 0.312 color=(10,10,10)
@@ -312,13 +315,13 @@ class CircosValue:
 
 	def get_index(self, chro, idx):
 		return chro.indexes[idx]
-	
+
 	def get_color(self, chro, idx):
 		value = self.get_value(chro, idx)
 		value = self.map_value(value)
 		color = self.cmap(value, bytes=True)
 		return color
-	
+
 	def map_value(self, value):
 		a = self.valuerange[0]
 		b = self.valuerange[1]
@@ -327,6 +330,8 @@ class CircosValue:
 	def set_cmap(self, cmap_str):
 		if cmap_str == 'blue':
 			self.cmap = cm.Blues
+		elif cmap_str == 'coolwarm':
+			self.cmap = cm.coolwarm
 		else:
 			self.cmap = cm.Reds
 
@@ -447,6 +452,7 @@ class CircosPlotDecorator():
 	"""
 	CircosPlotDecorator is used to add titles and detailed information on four corners of circos plot
 	"""
+
 	def __init__(self, infilepath, outfilepath, title, top_left = None, top_right = None, bottom_left = None, bottom_right = None):
 		"""
 		Specify detailed information (strings) to be added in a list and pass arguments to the appropriate position
@@ -454,6 +460,14 @@ class CircosPlotDecorator():
 		self.infilepath = infilepath
 		self.outfilepath = outfilepath
 		self.title = title
+		if type(top_left) is str:
+			top_left = [top_left]
+		if type(top_right) is str:
+			top_right = [top_right]
+		if type(bottom_left) is str:
+			bottom_left = [bottom_left]
+		if type(bottom_right) is str:
+			bottom_right = [bottom_right]
 		self.top_left = top_left
 		self.top_right = top_right
 		self.bottom_left = bottom_left
@@ -462,13 +476,16 @@ class CircosPlotDecorator():
 
 	def decorate_figure(self):
 		img = Image.open(self.infilepath)
-		padtop = 200
+		if len(self.title) > 0:
+			padtop = 200
+		else:
+			padtop = 0
 		self.new_image = Image.new('RGBA', (img.width, img.height + padtop), (255, 255, 255, 255))
 		self.new_image.paste(img, (0, padtop))
-		
+
 		self.add_title()
 		self.decorate_corner()
-		
+
 		newpng = self.infilepath[:-4] + '_decorated.png'
 		self.new_image.save(newpng)
 		return newpng
@@ -478,37 +495,37 @@ class CircosPlotDecorator():
 		font = ImageFont.truetype('arial.ttf', 100)
 		w, h = draw.textsize(self.title, font = font)
 		width, height = self.new_image.size
-		draw.text(((width - w)/2, h/2), self.title, (0, 0, 0), font = font)
+		draw.text(((width - w) / 2, h / 2), self.title, (0, 0, 0), font = font)
 
 	def decorate_corner(self):
 		width, height = self.new_image.size
 		draw = ImageDraw.Draw(self.new_image)
-		font = ImageFont.truetype('arial.ttf', 48)
+		font = ImageFont.truetype('arial.ttf', 72)
 		if self.top_left is not None:
 			h_cursor = 0
 			for info in self.top_left:
 				w, h = draw.textsize(info, font = font)
-				draw.text((0, h_cursor + h/2), info, (0, 0, 0), font = font)
+				draw.text((0, h_cursor + h / 2), info, (0, 0, 0), font = font)
 				h_cursor += h
 		if self.top_right is not None:
 			h_cursor = 0
 			for info in self.top_right:
 				w, h = draw.textsize(info, font = font)
-				draw.text((width - w, h_cursor + h/2), info, (0, 0, 0), font = font)
+				draw.text((width - w, h_cursor + h / 2), info, (0, 0, 0), font = font)
 				h_cursor += h
 		if self.bottom_left is not None:
 			w, h = draw.textsize('test text', font = font)
 			h_cursor = height - len(self.bottom_left) * h - h
 			for info in self.bottom_left:
 				w, h = draw.textsize(info, font = font)
-				draw.text((0, h_cursor + h/2), info, (0, 0, 0), font = font)
+				draw.text((0, h_cursor + h / 2), info, (0, 0, 0), font = font)
 				h_cursor += h
 		if self.bottom_right is not None:
 			w, h = draw.textsize('test text', font = font)
 			h_cursor = height - len(self.bottom_right) * h - h
 			for info in self.bottom_right:
 				w, h = draw.textsize(info, font = font)
-				draw.text((width - w, h_cursor + h/2), info, (0, 0, 0), font = font)
+				draw.text((width - w, h_cursor + h / 2), info, (0, 0, 0), font = font)
 				h_cursor += h
 
 if __name__ == '__main__':

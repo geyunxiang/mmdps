@@ -217,7 +217,7 @@ class CorrPlot:
 		slope, intercept, rvalue, pvalue, stderr = stats.linregress(self.xvec, self.yvec)
 		fig = plt.figure(figsize=(8, 6))
 		plt.plot(self.xvec, self.yvec, 'o')
-		plt.hold(True)
+		# plt.hold(True) # removed intentionally since matplotlib 3.0
 		a = slope
 		b = intercept
 		ax = plt.gca()
