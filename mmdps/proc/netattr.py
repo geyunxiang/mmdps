@@ -281,6 +281,7 @@ def averageNets(nets):
 def averageAttr(attr_list):
 	atlasobj = attr_list[0].atlasobj
 	result = zero_attr(atlasobj)
+	result.feature_name = attr_list[0].feature_name
 	for idx in range(atlasobj.count):
 		result.data[idx] = np.average([attr.data[idx] for attr in attr_list])
 	return result

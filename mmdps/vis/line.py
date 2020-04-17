@@ -146,8 +146,8 @@ class LinePlot:
 		else:
 			self.adjust_plot_index(sig_positions)
 		for attr in self.attrs:
-			plt.plot(range(self.count), attr.data, '.-', label = attr.name)
-		
+			plt.plot(range(self.count), attr.data, '.-', label = attr.scan)
+
 		plt.xticks(range(self.count), self.plot_ticks, rotation=60)
 		if sig_positions is not None:
 			self.add_markers()
