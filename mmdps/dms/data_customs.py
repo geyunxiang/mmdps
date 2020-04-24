@@ -138,8 +138,10 @@ def convert_dicom_to_nifti(infolder, outfolder):
 	The outfolder will be the converted NIFTI folder.
 	the ret is the conversion program return value. 0 typically indicates success.
 	"""
-	path.rmtree(outfolder)
-	path.makedirs(outfolder)
+	if os.path.isdir(outfolder):
+		print('Output path %s is not empty. Continue anyway...' % outfolder)
+	else:
+		path.makedirs(outfolder)
 	try:
 		# try to generate scan info, processing date-time etc
 		# will fail on non-Changgung data folder structure
@@ -148,7 +150,7 @@ def convert_dicom_to_nifti(infolder, outfolder):
 		pass
 	ret = subprocess.call([rootconfig.path.dcm2nii, '-z', 'y', '-o', outfolder, infolder],
 		cwd=os.path.dirname(rootconfig.path.dcm2nii))
-	print(outfolder, ret)
+	print('Conversion finished. Return value: %d. Data saved at: %s' % (ret, outfolder))
 	return ret
 
 class NiftiGetter:
