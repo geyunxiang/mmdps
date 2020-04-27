@@ -8,21 +8,117 @@ mmdpdb is the database of MMDPS, containing 3 databased.
 	2. MongoDB keeps all extracted features like networks
 	   and attributes. 
 	3. Redis is a high-speed cache that starts up upon request. 
+
 """
 import os
-
-from mmdps.dms import tables
-from mmdps.util import loadsave, clock
-from mmdps import rootconfig
 
 from sqlalchemy import create_engine, exists, and_
 from sqlalchemy.orm import sessionmaker
 
 from sqlalchemy.orm.exc import MultipleResultsFound
 
-class MMDPDatabase:
+from mmdps.proc import atlas
+from mmdps.dms import tables
+from mmdps.util import loadsave, clock
+from mmdps import rootconfig
+
+from mmdps.dms import mongodb_database, redis_database
+
+class MMDBDatabase:
+	def __init__(self):
+		self.rdb = redis_database.RedisDatabase()
+		self.mdb = mongodb_database.MongoDBDatabase()
+		self.sdb = SQLiteDB()
+
+	def get_feature(self, scan_list, atlasobj, feature_name, data_source = 'Changgung'):
+		#wrong input check
+		return_single = False
+		if type(scan_list) is str:
+			scan_list = [scan_list]
+			return_single = True
+		if type(atlasobj) is atlas.Atlas:
+			atlasobj = atlasobj.name
+		ret_list = []
+		for scan in scan_list:
+			res = self.rdb.get_static_value(scan, atlasobj, feature_name)
+			if res != None:
+				ret_list.append(res)
+			else:
+				doc = self.mdb.query_static(scan, atlasobj, feature_name)
+				if doc.count() != 0:
+					ret_list.append(self.rdb.set_value(doc[0]))
+				else:
+					e = Exception('No such item in redis and mongodb: ' + scan +' '+ atlasobj +' '+ feature_name)
+					print(e)
+		if return_single:
+			return ret_list[0]
+		else:
+			return ret_list
+
+	def get_dynamic_feature(self, scan_list, atlasobj, feature_name, window_length, step_size, data_source = 'Changgung'):
+		return_single = False
+		if type(scan_list) is str:
+			scan_list = [scan_list]
+			return_single = True
+		if type(atlasobj) is atlas.Atlas:
+			atlasobj = atlasobj.name
+		ret_list = []
+		for scan in scan_list:
+			res = self.rdb.get_dynamic_value(scan, atlasobj, feature_name, window_length, step_size)
+			if type(res) is Exception:
+				raise res
+			if res != None:
+				ret_list.append(res)
+			else:
+				doc = self.mdb.query_dynamic(scan, atlasobj, feature_name, window_length, step_size)
+				if doc.count() != 0:
+					mat = self.rdb.set_value(doc)
+					if type(mat) is Exception:
+						raise mat
+					ret_list.append(mat)
+				else:
+					e = Exception('No such item in redis and mongodb: ' + scan +' '+ atlasobj +' '+ feature_name +' '+
+								 ' '+ str(window_length) +' '+ str(step_size))
+					print(e)
+		if return_single:
+			return ret_list[0]
+		else:
+			return ret_list
+
+	def get_temp_feature(self, feature_collection, feature_name):
+		pass
+
+	def save_temp_feature(self, feature_collection, feature_name, value):
+		pass
+
+	def append_cache_list(self, cache_key, value):
+		pass
+
+	def get_cache_list(self, cache_key):
+		pass
+
+	def save_cache_list(self, cache_key):
+		"""
+		save list from Redis to MongoDB
+		"""
+		pass
+
+	def get_study(self, alias):
+		# TODO: input part of alias and search automatically
+		return self.sdb.getResearchStudy(alias)
+
+	def get_group(self, group_name):
+		# TODO: input part of group_name and search automatically
+		session = self.sdb.new_session()
+		return session.query(tables.Group).filter_by(name = group_name).one()
+
+
+class SQLiteDB:
+	"""
+	SQLite stores meta-info like patient information, scan date, group 
+	relationships, research study cases and so on. 
+	"""
 	def __init__(self, dbFilePath = rootconfig.dms.mmdpdb_filepath):
-		# self.engine = create_engine('sqlite:///../import_changgung/mmdpdb.db')
 		self.engine = create_engine('sqlite:///' + dbFilePath)
 		self.Session = sessionmaker(bind = self.engine)
 		self.session = self.Session()
@@ -42,18 +138,18 @@ class MMDPDatabase:
 			print('Error when importing: multiple scan records found for %s' % scan)
 			return 1
 		mrifolder = rootconfig.dms.folder_mridata
-		scaninfo = loadsave.load_json(os.path.join(mrifolder, scan, 'scan_info.json'))
+		scan_info = loadsave.load_json(os.path.join(mrifolder, scan, 'scan_info.json'))
 
-		machine = tables.MRIMachine(institution = scaninfo['Machine']['Institution'],
-							 manufacturer = scaninfo['Machine']['Manufacturer'],
-							 modelname = scaninfo['Machine']['ManufacturerModelName'])
+		machine = tables.MRIMachine(institution = scan_info['Machine']['Institution'],
+							 manufacturer = scan_info['Machine']['Manufacturer'],
+							 modelname = scan_info['Machine']['ManufacturerModelName'])
 
 		name, date = scan.split('_')
 		dateobj = clock.simple_to_time(date)
 		db_mriscan = tables.MRIScan(date = dateobj, hasT1 = hasT1, hasT2 = hasT2, hasBOLD = hasBOLD, hasDWI = hasDWI, filename = scan)
 		machine.mriscans.append(db_mriscan)
 		try:
-			ret = self.session.query(exists().where(and_(tables.Person.name == name, tables.Person.patientid == scaninfo['Patient']['ID']))).scalar()
+			ret = self.session.query(exists().where(and_(tables.Person.name == name, tables.Person.patientid == scan_info['Patient']['ID']))).scalar()
 			if ret:
 				self.session.add(db_mriscan)
 				person = self.session.query(tables.Person).filter_by(name = name).one()
@@ -64,7 +160,7 @@ class MMDPDatabase:
 		except MultipleResultsFound:
 			print('Error when importing: multiple person records found for %s' % name)
 			return 2
-		db_person = tables.Person.build_person(name, scaninfo)
+		db_person = tables.Person.build_person(name, scan_info)
 		db_person.mriscans.append(db_mriscan)
 		self.session.add(db_person)
 		self.session.commit()
@@ -118,7 +214,7 @@ class MMDPDatabase:
 
 	def newGroupByNames(self, groupName, nameList, scanNum, desc = None, accumulateScan = False):
 		"""
-		Initialize a group by a list of names. The scans are generated automatically. 
+		Initialize a group by a list of names. The scans are generated automatically.
 		scanNum - which scan (first/second/etc)
 		accumulateScan - whether keep former scans in this group
 		"""
@@ -181,38 +277,3 @@ class MMDPDatabase:
 		db_scan = session.query(tables.MRIScan).filter_by(filename = mriscanFilename).one()
 		session.delete(db_scan)
 		session.commit()
-
-def updateDatabase(newDBFilePath, currentDBFilePath = rootconfig.dms.mmdpdb_filepath):
-	"""
-	This function is used to update people/mriscans in current database
-	Usually used after new data are added
-	NOT TESTED
-	"""
-	currentEngine = create_engine('sqlite:///' + currentDBFilePath)
-	newEngine = create_engine('sqlite:///' + newDBFilePath)
-	currentSession = sessionmaker(bind = currentEngine)()
-	newSession = sessionmaker(bind = newEngine)()
-
-	# search for new people
-	allNewPeople = newSession.query(tables.Person).all()
-	for person in allNewPeople:
-		# find if this person is in current session
-		try:
-			ret = currentSession.query(exists().where(and_(tables.Person.name == person.name, tables.Person.patientid == person.id))).scalar()
-			if not ret:
-				currentSession.add(person)
-		except MultipleResultsFound:
-			print('Multiple same person found!')
-
-	# search for new scans
-	allNewScans = newSession.query(tables.MRIScan).all()
-	for scan in allNewScans:
-		try:
-			ret = currentSession.query(exists().where(tables.MRIScan.filename == scan.filename)).scalar()
-			if not ret:
-				currentSession.add(scan)
-		except MultipleResultsFound:
-			print('Multiple same scans found!')
-	currentSession.commit()
-	currentSession.close()
-	newSession.close()
