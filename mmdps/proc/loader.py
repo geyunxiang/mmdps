@@ -263,7 +263,18 @@ def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder 
 		atlasobj = atlas.get(atlasobj)
 	windowLength = dynamic_conf[0]
 	stepSize = dynamic_conf[1]
-	dynamic_attr = netattr.DynamicAttr(None, atlasobj, windowLength, stepSize, scan = scan, feature_name = attrname)
+	# fix dynamic attr feature_name issue
+	if attrname.find('bc') != -1 or attrname.find('BC') != -1:
+		feature_name = 'BOLD.BC'
+	elif attrname.find('ccfs') != -1 or attrname.find('CCFS') != -1:
+		feature_name = 'BOLD.CCFS'
+	elif attrname.find('le') != -1 or attrname.find('LE') != -1:
+		feature_name = 'BOLD.LE'
+	elif attrname.find('wd') != -1 or attrname.find('WD') != -1:
+		feature_name = 'BOLD.WD'
+	else:
+		raise Exception('Unknown feature_name %s' % attrname)
+	dynamic_attr = netattr.DynamicAttr(None, atlasobj, windowLength, stepSize, scan = scan, feature_name = feature_name)
 	start = 0
 	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
 	while True:
