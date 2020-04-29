@@ -81,8 +81,8 @@ class RedisDatabase:
 			scan = obj[0]['scan']
 			atlas = obj[0]['atlas']
 			feature = obj[0]['feature']
-			window_length = obj[0]['window length']
-			step_size = obj[0]['step size']
+			window_length = obj[0]['WindowLength']
+			step_size = obj[0]['StepSize']
 			key_all = self.generate_dynamic_key(scan, atlas, feature, window_length, step_size)
 			pipe = rdb.pipeline()
 			try:
