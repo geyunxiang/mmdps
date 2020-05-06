@@ -8,7 +8,7 @@ import nibabel as nib
 from dipy.align.reslice import reslice
 from dipy.io import read_bvals_bvecs
 from dipy.core.gradients import gradient_table
-from dipy.viz import fvtk
+# from dipy.viz import fvtk # fixed 20200506 by geyunxiang since there is no fvtk module
 
 def get_dwi_file_path(folder, niiname, gz=False):
     """Get dwi volume, bval and bvec file path."""
@@ -26,10 +26,10 @@ def get_dwi_img_gtab(fdwi, fbval, fbvec):
     gtab = gradient_table(bvals, bvecs)
     return img, gtab
 
-def get_fvtk_streamlines_actor(streamlines):
-    """Get vtk streamline actor."""
-    streamlines_actor = fvtk.line(streamlines)
-    return streamlines_actor
+# def get_fvtk_streamlines_actor(streamlines):
+#     """Get vtk streamline actor."""
+#     streamlines_actor = fvtk.line(streamlines)
+#     return streamlines_actor
 
 def save_streamlines_to_trk(streamlines, affine, fileobj):
     """Save streamlines to trackvis file.

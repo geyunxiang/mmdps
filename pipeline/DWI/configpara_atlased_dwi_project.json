@@ -1,9 +1,9 @@
 {
     "name": "DWIProc",
-    "MainFolder": "/media/LocalDisk_E/DataProcessing/DWI/",
-    "FolderList": "/media/LocalDisk_E/namelist.txt",
+    "MainFolder": "/Users/andy/workshop/DWI_Process",
+    "FolderList": "/Users/andy/workshop/HC_namelist.txt",
     "Second": true,
-    "SecondList": "/media/LocalDisk_E/DataProcessing/atlas_list.txt",
+    "SecondList": "/Users/andy/workshop/atlas_list.txt",
     "JobConfig": "configjob_atlased_dwi_gen_net.json",
     "RunMode": "Parallel"
 }

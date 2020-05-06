@@ -8,13 +8,17 @@
 
 	* T1: run `configpara_unatlased_t1_project.json` and `configpara_atlased_t1_project.json`. Remember to modify `FolderList`.
 
-	* DWI: run `configjob_main_dwi.json`. Note: one should modify `configpara_dwi_project.json` and `configpara_atlased_dwi_project.json` for the appropriate folder list.
+	* DWI: run `configjob_main_dwi.json`. Note: one should modify `configpara_dwi_project.json` and `configpara_atlased_dwi_project.json` for the appropriate folder list. Also remember to run `chmod +x *.sh` at `pipeline/DWI`. And check `$MMDPS_ROOTDIR` environment variable.
 
 	* BOLD: run `configpara_bold_project.json`. Remember to modify `FolderList`.
 
 ## Parallel mechanism
 
 * Set env `set MMDPS_CPU_COUNT=n` to force the cpu count to n.
+
+## Dependencies
+
+* `dipy` for DWI processing. `fury` for `dipy`. `scipy=1.2.0`, `numpy=1.16.1`
 
 ## Featured functionalities
 
