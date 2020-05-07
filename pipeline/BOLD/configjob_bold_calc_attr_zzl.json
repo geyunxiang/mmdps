@@ -1,0 +1,11 @@
+{
+    "name": "BoldCalcAttr",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "CalcAttr_zzl",
+            "typename": "PythonJob",
+            "cmd": "bold_netcalc_inter_intra_region.py"
+        }
+    ]
+}

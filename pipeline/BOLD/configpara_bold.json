@@ -1,9 +1,9 @@
 {
     "name": "GenBoldNet",
-    "MainFolder": "E:/DataProcessing/BOLD",
-    "FolderList": "E:/changgeng_20180815_full.txt",
+    "MainFolder": "D:/Research/DPARSFA Preprocessing/FunRawARWSDCF-newest 10-200401",
+    "FolderList": "C:/Users/geyx/Desktop/workshop/newest_namelist.txt",
     "Second": true,
-    "SecondList": "E:/DataProcessing/atlas_list.txt",
-    "JobConfig": "configjob_bold_main.json",
+    "SecondList": "C:/Users/geyx/Desktop/workshop/atlas_list.txt",
+    "JobConfig": "configjob_bold_main_zzl.json",
     "RunMode": "Parallel"
 }
