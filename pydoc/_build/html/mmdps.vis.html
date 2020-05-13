@@ -1,0 +1,986 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.vis package &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="mmdps.util package" href="mmdps.util.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="mmdps-vis-package">
+<h1>mmdps.vis package<a class="headerlink" href="#mmdps-vis-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-mmdps.vis.add_text">
+<span id="mmdps-vis-add-text-module"></span><h2>mmdps.vis.add_text module<a class="headerlink" href="#module-mmdps.vis.add_text" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mmdps.vis.add_text.add_text">
+<code class="descclassname">mmdps.vis.add_text.</code><code class="descname">add_text</code><span class="sig-paren">(</span><em>imagePath</em>, <em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/add_text.html#add_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.add_text.add_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.add_text.add_title_BNV">
+<code class="descclassname">mmdps.vis.add_text.</code><code class="descname">add_title_BNV</code><span class="sig-paren">(</span><em>imagePath</em>, <em>text</em>, <em>font_size=72</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/add_text.html#add_title_BNV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.add_text.add_title_BNV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.vis.attrprocs">
+<span id="mmdps-vis-attrprocs-module"></span><h2>mmdps.vis.attrprocs module<a class="headerlink" href="#module-mmdps.vis.attrprocs" title="Permalink to this headline">¶</a></h2>
+<p>Attr procs.</p>
+<p>Proper scale for plot in bnv.</p>
+<dl class="function">
+<dt id="mmdps.vis.attrprocs.get">
+<code class="descclassname">mmdps.vis.attrprocs.</code><code class="descname">get</code><span class="sig-paren">(</span><em>attrname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/attrprocs.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.attrprocs.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the proc by attrname.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.attrprocs.reload">
+<code class="descclassname">mmdps.vis.attrprocs.</code><code class="descname">reload</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/attrprocs.html#reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.attrprocs.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update procs.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.vis.bnv">
+<span id="mmdps-vis-bnv-module"></span><h2>mmdps.vis.bnv module<a class="headerlink" href="#module-mmdps.vis.bnv" title="Permalink to this headline">¶</a></h2>
+<p>bnv is used to plot brainnet viewer images.</p>
+<p>Check the BrainNetViewer manual for details.
+Plot is slow, consider add p.plot_net and similar to a list and use parabase
+to run the plots in parallel.</p>
+<dl class="class">
+<dt id="mmdps.vis.bnv.AbsThresholdProc">
+<em class="property">class </em><code class="descclassname">mmdps.vis.bnv.</code><code class="descname">AbsThresholdProc</code><span class="sig-paren">(</span><em>thres</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#AbsThresholdProc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.AbsThresholdProc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Absolute threshold proc.</p>
+<dl class="method">
+<dt id="mmdps.vis.bnv.AbsThresholdProc.proc">
+<code class="descname">proc</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#AbsThresholdProc.proc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.AbsThresholdProc.proc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Threshold data after abs.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.bnv.BNVEdge">
+<em class="property">class </em><code class="descclassname">mmdps.vis.bnv.</code><code class="descname">BNVEdge</code><span class="sig-paren">(</span><em>net</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVEdge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVEdge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>BNV edge file manipulation.</p>
+<p>edgefile is the corresponding edge data file in bnv.
+It is just a square matrix represents the network.</p>
+<dl class="staticmethod">
+<dt id="mmdps.vis.bnv.BNVEdge.readNet">
+<em class="property">static </em><code class="descname">readNet</code><span class="sig-paren">(</span><em>inEdgeFile</em>, <em>atlasobj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVEdge.readNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVEdge.readNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in an edge file and return a net</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVEdge.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>outedgefile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVEdge.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVEdge.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the edge file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.bnv.BNVNode">
+<em class="property">class </em><code class="descclassname">mmdps.vis.bnv.</code><code class="descname">BNVNode</code><span class="sig-paren">(</span><em>nodefile=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>BNV node file manipulation.</p>
+<p>nodefile is the corresponding node data file in bnv.
+Note: each atlasobj has one bnvnode attribute</p>
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVNode.change_column">
+<code class="descname">change_column</code><span class="sig-paren">(</span><em>col</em>, <em>colvalue</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVNode.change_column"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVNode.change_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change one column in the node file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVNode.change_label">
+<code class="descname">change_label</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVNode.change_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVNode.change_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the label column.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVNode.change_modular">
+<code class="descname">change_modular</code><span class="sig-paren">(</span><em>modular</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVNode.change_modular"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVNode.change_modular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the modular column.
+Specify each node’s modular value in a list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVNode.change_modular_according_to_label">
+<code class="descname">change_modular_according_to_label</code><span class="sig-paren">(</span><em>label_to_change</em>, <em>modular_value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVNode.change_modular_according_to_label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVNode.change_modular_according_to_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function could be used to change the modular value of nodes according
+to the label specified in a list. The modular value is further used to 
+specify node color.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVNode.change_value">
+<code class="descname">change_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVNode.change_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVNode.change_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the value column.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVNode.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVNode.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVNode.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the bnvnode object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVNode.copy_sub">
+<code class="descname">copy_sub</code><span class="sig-paren">(</span><em>subindexes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVNode.copy_sub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVNode.copy_sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sub bnvnode object use indexes in subindexes and return it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVNode.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVNode.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVNode.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the data to original.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVNode.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>outnodefile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVNode.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVNode.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write current data to a new node file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.bnv.BNVPlot">
+<em class="property">class </em><code class="descclassname">mmdps.vis.bnv.</code><code class="descname">BNVPlot</code><span class="sig-paren">(</span><em>net</em>, <em>attr</em>, <em>title</em>, <em>outfilepath</em>, <em>f_netproc=None</em>, <em>f_attrproc=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>BNV plot is used to init one bnv plot, and run the plot.</p>
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVPlot.fullpath">
+<code class="descname">fullpath</code><span class="sig-paren">(</span><em>*p</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot.fullpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot.fullpath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full path for bnv data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVPlot.gen_edge">
+<code class="descname">gen_edge</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot.gen_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot.gen_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate edge file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVPlot.gen_node">
+<code class="descname">gen_node</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot.gen_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot.gen_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate node file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVPlot.get_cfg">
+<code class="descname">get_cfg</code><span class="sig-paren">(</span><em>cfgname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot.get_cfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot.get_cfg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the config path.</p>
+<p>Override this to provide your own config file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVPlot.get_mesh">
+<code class="descname">get_mesh</code><span class="sig-paren">(</span><em>meshname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot.get_mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot.get_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mesh path.</p>
+<p>Override this to provide your own mesh file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVPlot.onesattr">
+<code class="descname">onesattr</code><span class="sig-paren">(</span><em>net</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot.onesattr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot.onesattr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a attr of all ones.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVPlot.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>plottype</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot.</p>
+<p>TODO:
+Plot by type.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVPlot.plot_attr">
+<code class="descname">plot_attr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot.plot_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot.plot_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot attribute only.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVPlot.plot_net">
+<code class="descname">plot_net</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot.plot_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot.plot_net" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot net only.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.bnv.BNVPlot.plot_netattr">
+<code class="descname">plot_netattr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#BNVPlot.plot_netattr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.BNVPlot.plot_netattr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot net and attr.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.bnv.MatProc">
+<em class="property">class </em><code class="descclassname">mmdps.vis.bnv.</code><code class="descname">MatProc</code><a class="reference internal" href="_modules/mmdps/vis/bnv.html#MatProc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.MatProc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Matrix proc.</p>
+<dl class="method">
+<dt id="mmdps.vis.bnv.MatProc.proc">
+<code class="descname">proc</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#MatProc.proc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.MatProc.proc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input data, return proced data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.bnv.ScaleProc">
+<em class="property">class </em><code class="descclassname">mmdps.vis.bnv.</code><code class="descname">ScaleProc</code><span class="sig-paren">(</span><em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#ScaleProc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.ScaleProc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Scale proc.</p>
+<dl class="method">
+<dt id="mmdps.vis.bnv.ScaleProc.proc">
+<code class="descname">proc</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#ScaleProc.proc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.ScaleProc.proc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale the data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.bnv.ThresholdProc">
+<em class="property">class </em><code class="descclassname">mmdps.vis.bnv.</code><code class="descname">ThresholdProc</code><span class="sig-paren">(</span><em>thres</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#ThresholdProc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.ThresholdProc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Threshold proc.</p>
+<dl class="method">
+<dt id="mmdps.vis.bnv.ThresholdProc.proc">
+<code class="descname">proc</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#ThresholdProc.proc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.ThresholdProc.proc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Threshold the data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.bnv.decorate_image">
+<code class="descclassname">mmdps.vis.bnv.</code><code class="descname">decorate_image</code><span class="sig-paren">(</span><em>image_path</em>, <em>title</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#decorate_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.decorate_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add title to image</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.bnv.fullfile_bnvdata">
+<code class="descclassname">mmdps.vis.bnv.</code><code class="descname">fullfile_bnvdata</code><span class="sig-paren">(</span><em>*p</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#fullfile_bnvdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.fullfile_bnvdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>full file for bnv data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.bnv.gen_matlab">
+<code class="descclassname">mmdps.vis.bnv.</code><code class="descname">gen_matlab</code><span class="sig-paren">(</span><em>nodepath</em>, <em>edgepath</em>, <em>title</em>, <em>outpath</em>, <em>bnv_mesh</em>, <em>bnv_cfg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#gen_matlab"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.gen_matlab" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate matlab string for plotting bnv image.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.bnv.get_cfg">
+<code class="descclassname">mmdps.vis.bnv.</code><code class="descname">get_cfg</code><span class="sig-paren">(</span><em>cfgname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#get_cfg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.get_cfg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get config path by name.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.bnv.get_mesh">
+<code class="descclassname">mmdps.vis.bnv.</code><code class="descname">get_mesh</code><span class="sig-paren">(</span><em>meshname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#get_mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.get_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get mesh path by name.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.bnv.sub_list">
+<code class="descclassname">mmdps.vis.bnv.</code><code class="descname">sub_list</code><span class="sig-paren">(</span><em>l</em>, <em>idx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/bnv.html#sub_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.bnv.sub_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sub list by index.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.vis.braincircos">
+<span id="mmdps-vis-braincircos-module"></span><h2>mmdps.vis.braincircos module<a class="headerlink" href="#module-mmdps.vis.braincircos" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="mmdps.vis.braincircos.BrainParts">
+<em class="property">class </em><code class="descclassname">mmdps.vis.braincircos.</code><code class="descname">BrainParts</code><span class="sig-paren">(</span><em>configdict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#BrainParts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.BrainParts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="mmdps.vis.braincircos.BrainParts.build_all">
+<code class="descname">build_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#BrainParts.build_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.BrainParts.build_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.BrainParts.build_chromosomes">
+<code class="descname">build_chromosomes</code><span class="sig-paren">(</span><em>prefix</em>, <em>config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#BrainParts.build_chromosomes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.BrainParts.build_chromosomes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.BrainParts.get_region_list">
+<code class="descname">get_region_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#BrainParts.get_region_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.BrainParts.get_region_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of regions in order plotted by circos
+Left and right regions are interleaved
+Also return the second element as a list of no. of nodes in each lobe</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.braincircos.Chromosome">
+<em class="property">class </em><code class="descclassname">mmdps.vis.braincircos.</code><code class="descname">Chromosome</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>chrname</em>, <em>configdict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#Chromosome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.Chromosome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="mmdps.vis.braincircos.Chromosome.build_bands">
+<code class="descname">build_bands</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#Chromosome.build_bands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.Chromosome.build_bands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.Chromosome.build_bandtuples">
+<code class="descname">build_bandtuples</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#Chromosome.build_bandtuples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.Chromosome.build_bandtuples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.braincircos.CircosConfigChromosome">
+<em class="property">class </em><code class="descclassname">mmdps.vis.braincircos.</code><code class="descname">CircosConfigChromosome</code><span class="sig-paren">(</span><em>brainparts</em>, <em>colorlist=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigChromosome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigChromosome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosConfigChromosome.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>outfolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigChromosome.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigChromosome.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosConfigChromosome.write_karyotype">
+<code class="descname">write_karyotype</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigChromosome.write_karyotype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigChromosome.write_karyotype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosConfigChromosome.write_labels">
+<code class="descname">write_labels</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigChromosome.write_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigChromosome.write_labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.braincircos.CircosConfigFile">
+<em class="property">class </em><code class="descclassname">mmdps.vis.braincircos.</code><code class="descname">CircosConfigFile</code><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="mmdps.vis.braincircos.CircosConfigFile.LinkFmt">
+<code class="descname">LinkFmt</code><em class="property"> = '\n\t&lt;link&gt;\n\tfile = {file}\n\tradius = {radius}\n\tbezier_radius = 0r\n\tthickness = {thickness}\n\t&lt;/link&gt;\n\t'</em><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigFile.LinkFmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="mmdps.vis.braincircos.CircosConfigFile.PlotFmt">
+<code class="descname">PlotFmt</code><em class="property"> = '\n\t&lt;plot&gt;\n\ttype = heatmap\n\tstroke_thickness = 1p\n\tstroke_color = black\n\tfile = {file}\n\tr1 = {r1}\n\tr0 = {r0}\n\t&lt;/plot&gt;\n\t'</em><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigFile.PlotFmt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosConfigFile.add_link">
+<code class="descname">add_link</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigFile.add_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigFile.add_link" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosConfigFile.add_plot">
+<code class="descname">add_plot</code><span class="sig-paren">(</span><em>file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigFile.add_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigFile.add_plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosConfigFile.build_circos_conf">
+<code class="descname">build_circos_conf</code><span class="sig-paren">(</span><em>plotstrs</em>, <em>linkstrs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigFile.build_circos_conf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigFile.build_circos_conf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosConfigFile.customizeSize">
+<code class="descname">customizeSize</code><span class="sig-paren">(</span><em>label_size</em>, <em>linkThickness</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigFile.customizeSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigFile.customizeSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosConfigFile.customized_rewrite">
+<code class="descname">customized_rewrite</code><span class="sig-paren">(</span><em>outfolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigFile.customized_rewrite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigFile.customized_rewrite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-generate circos.conf to update parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosConfigFile.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>outfolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosConfigFile.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosConfigFile.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.braincircos.CircosLink">
+<em class="property">class </em><code class="descclassname">mmdps.vis.braincircos.</code><code class="descname">CircosLink</code><span class="sig-paren">(</span><em>net</em>, <em>threshold=0</em>, <em>valuerange=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosLink.get_cmap">
+<code class="descname">get_cmap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosLink.get_cmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosLink.get_cmap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosLink.get_color">
+<code class="descname">get_color</code><span class="sig-paren">(</span><em>chrA</em>, <em>idxA</em>, <em>chrB</em>, <em>idxB</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosLink.get_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosLink.get_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosLink.get_line">
+<code class="descname">get_line</code><span class="sig-paren">(</span><em>chrA</em>, <em>idxA</em>, <em>chrB</em>, <em>idxB</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosLink.get_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosLink.get_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosLink.get_mask">
+<code class="descname">get_mask</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosLink.get_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosLink.get_mask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosLink.get_rowcol">
+<code class="descname">get_rowcol</code><span class="sig-paren">(</span><em>chrA</em>, <em>idxA</em>, <em>chrB</em>, <em>idxB</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosLink.get_rowcol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosLink.get_rowcol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosLink.get_value">
+<code class="descname">get_value</code><span class="sig-paren">(</span><em>chrA</em>, <em>idxA</em>, <em>chrB</em>, <em>idxB</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosLink.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosLink.get_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosLink.map_value">
+<code class="descname">map_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosLink.map_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosLink.map_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosLink.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>outfullpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosLink.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosLink.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.braincircos.CircosPlotBuilder">
+<em class="property">class </em><code class="descclassname">mmdps.vis.braincircos.</code><code class="descname">CircosPlotBuilder</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>title</em>, <em>outfilepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotBuilder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotBuilder.add_circoslink">
+<code class="descname">add_circoslink</code><span class="sig-paren">(</span><em>circoslink</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotBuilder.add_circoslink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotBuilder.add_circoslink" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotBuilder.add_circosvalue">
+<code class="descname">add_circosvalue</code><span class="sig-paren">(</span><em>circosvalue</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotBuilder.add_circosvalue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotBuilder.add_circosvalue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check unique value amount. If all values are the same, do not add this value 
+since circos will crash when plotting same values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotBuilder.copy_files">
+<code class="descname">copy_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotBuilder.copy_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotBuilder.copy_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy circos basic ideogram config files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotBuilder.customizeSize">
+<code class="descname">customizeSize</code><span class="sig-paren">(</span><em>ideogram_radius='0.8r'</em>, <em>label_size='40p'</em>, <em>linkThickness='20p'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotBuilder.customizeSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotBuilder.customizeSize" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>input ideogram_radius as a string like ‘0.80r’</dt>
+<dd><ul class="first last simple">
+<li>ideogram_radius controls the size of the whole ring</li>
+</ul>
+</dd>
+<dt>input label_size as a string like ‘40p’</dt>
+<dd><ul class="first last simple">
+<li>label_size controls the font size of the ticks (L1, R2 etc.)</li>
+</ul>
+</dd>
+<dt>input linkThickness as an integer like 20p</dt>
+<dd><ul class="first last simple">
+<li>linkThickness controls the thickness of network links(edges)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotBuilder.fullpath">
+<code class="descname">fullpath</code><span class="sig-paren">(</span><em>*p</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotBuilder.fullpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotBuilder.fullpath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotBuilder.get_colorlist">
+<code class="descname">get_colorlist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotBuilder.get_colorlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotBuilder.get_colorlist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotBuilder.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>top_left=None</em>, <em>top_right=None</em>, <em>bottom_left=None</em>, <em>bottom_right=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotBuilder.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotBuilder.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotBuilder.run_circos">
+<code class="descname">run_circos</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotBuilder.run_circos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotBuilder.run_circos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotBuilder.write_files">
+<code class="descname">write_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotBuilder.write_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotBuilder.write_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write net links and attributes to files.
+self.circosConfigFile would generate the circos.conf file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.braincircos.CircosPlotDecorator">
+<em class="property">class </em><code class="descclassname">mmdps.vis.braincircos.</code><code class="descname">CircosPlotDecorator</code><span class="sig-paren">(</span><em>infilepath</em>, <em>outfilepath</em>, <em>title</em>, <em>top_left=None</em>, <em>top_right=None</em>, <em>bottom_left=None</em>, <em>bottom_right=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotDecorator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotDecorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>CircosPlotDecorator is used to add titles and detailed information on four corners of circos plot</p>
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotDecorator.add_title">
+<code class="descname">add_title</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotDecorator.add_title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotDecorator.add_title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotDecorator.decorate_corner">
+<code class="descname">decorate_corner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotDecorator.decorate_corner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotDecorator.decorate_corner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosPlotDecorator.decorate_figure">
+<code class="descname">decorate_figure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosPlotDecorator.decorate_figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosPlotDecorator.decorate_figure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.braincircos.CircosValue">
+<em class="property">class </em><code class="descclassname">mmdps.vis.braincircos.</code><code class="descname">CircosValue</code><span class="sig-paren">(</span><em>attr</em>, <em>valuerange=None</em>, <em>cmap_str=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosValue.get_color">
+<code class="descname">get_color</code><span class="sig-paren">(</span><em>chro</em>, <em>idx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosValue.get_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosValue.get_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosValue.get_index">
+<code class="descname">get_index</code><span class="sig-paren">(</span><em>chro</em>, <em>idx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosValue.get_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosValue.get_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosValue.get_line">
+<code class="descname">get_line</code><span class="sig-paren">(</span><em>chro</em>, <em>idx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosValue.get_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosValue.get_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosValue.get_value">
+<code class="descname">get_value</code><span class="sig-paren">(</span><em>chro</em>, <em>idx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosValue.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosValue.get_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosValue.map_value">
+<code class="descname">map_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosValue.map_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosValue.map_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosValue.set_cmap">
+<code class="descname">set_cmap</code><span class="sig-paren">(</span><em>cmap_str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosValue.set_cmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosValue.set_cmap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.braincircos.CircosValue.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>outfullpath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#CircosValue.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.CircosValue.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.braincircos.color_to_str">
+<code class="descclassname">mmdps.vis.braincircos.</code><code class="descname">color_to_str</code><span class="sig-paren">(</span><em>color</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/braincircos.html#color_to_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.braincircos.color_to_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.vis.heatmap">
+<span id="mmdps-vis-heatmap-module"></span><h2>mmdps.vis.heatmap module<a class="headerlink" href="#module-mmdps.vis.heatmap" title="Permalink to this headline">¶</a></h2>
+<p>Plot network heatmap.</p>
+<dl class="class">
+<dt id="mmdps.vis.heatmap.HeatmapPlot">
+<em class="property">class </em><code class="descclassname">mmdps.vis.heatmap.</code><code class="descname">HeatmapPlot</code><span class="sig-paren">(</span><em>net</em>, <em>title</em>, <em>outfilepath</em>, <em>valuerange=(-1.0</em>, <em>1.0)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The heatmap plot.</p>
+<dl class="method">
+<dt id="mmdps.vis.heatmap.HeatmapPlot.get_cmap">
+<code class="descname">get_cmap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlot.get_cmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlot.get_cmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get default cmap use valuerange.</p>
+<p>If all positive, use Greys.
+If have negative, use coolwarm.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.heatmap.HeatmapPlot.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlot.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlot.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the plot.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.heatmap.HeatmapPlot.plotRSN">
+<code class="descname">plotRSN</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlot.plotRSN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlot.plotRSN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar as plot(), but plot the heatmap according to RSN config file
+and use black lines to separate RSNs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.heatmap.HeatmapPlot.set_cmap">
+<code class="descname">set_cmap</code><span class="sig-paren">(</span><em>cmap</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlot.set_cmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlot.set_cmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>cmap should be one of matplotlib.cm.xxx
+see <a class="reference external" href="https://matplotlib.org/gallery/color/colormap_reference.html">https://matplotlib.org/gallery/color/colormap_reference.html</a> for a list of cmaps</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.heatmap.HeatmapPlot.set_show_colorbar">
+<code class="descname">set_show_colorbar</code><span class="sig-paren">(</span><em>is_showing</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlot.set_show_colorbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlot.set_show_colorbar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.heatmap.HeatmapPlot.set_show_ticks">
+<code class="descname">set_show_ticks</code><span class="sig-paren">(</span><em>is_showing</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlot.set_show_ticks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlot.set_show_ticks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.heatmap.HeatmapPlot.set_title_font_size">
+<code class="descname">set_title_font_size</code><span class="sig-paren">(</span><em>font_size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlot.set_title_font_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlot.set_title_font_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.heatmap.HeatmapPlotRows">
+<em class="property">class </em><code class="descclassname">mmdps.vis.heatmap.</code><code class="descname">HeatmapPlotRows</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>rowsmat</em>, <em>rowsticks</em>, <em>title</em>, <em>outfilepath</em>, <em>valuerange=(-1.0</em>, <em>1.0)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlotRows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlotRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The heatmap rows plot.</p>
+<dl class="method">
+<dt id="mmdps.vis.heatmap.HeatmapPlotRows.get_cmap">
+<code class="descname">get_cmap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlotRows.get_cmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlotRows.get_cmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the color map.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.heatmap.HeatmapPlotRows.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#HeatmapPlotRows.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.HeatmapPlotRows.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do the plot.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.heatmap.plot_net_RSN">
+<code class="descclassname">mmdps.vis.heatmap.</code><code class="descname">plot_net_RSN</code><span class="sig-paren">(</span><em>net</em>, <em>title</em>, <em>outfilepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/heatmap.html#plot_net_RSN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.heatmap.plot_net_RSN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.vis.line">
+<span id="mmdps-vis-line-module"></span><h2>mmdps.vis.line module<a class="headerlink" href="#module-mmdps.vis.line" title="Permalink to this headline">¶</a></h2>
+<p>Line plot.</p>
+<dl class="class">
+<dt id="mmdps.vis.line.CorrPlot">
+<em class="property">class </em><code class="descclassname">mmdps.vis.line.</code><code class="descname">CorrPlot</code><span class="sig-paren">(</span><em>xvec</em>, <em>yvec</em>, <em>xlabel</em>, <em>ylabel</em>, <em>title</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#CorrPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.CorrPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is used to generate correlation, usually correlation between FC/graph
+attributes and clinical scores</p>
+<dl class="method">
+<dt id="mmdps.vis.line.CorrPlot.adjust_tick_label_size">
+<code class="descname">adjust_tick_label_size</code><span class="sig-paren">(</span><em>labelsize</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#CorrPlot.adjust_tick_label_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.CorrPlot.adjust_tick_label_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.line.CorrPlot.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#CorrPlot.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.CorrPlot.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.line.CorrPlot.set_title_show_corr">
+<code class="descname">set_title_show_corr</code><span class="sig-paren">(</span><em>flag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#CorrPlot.set_title_show_corr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.CorrPlot.set_title_show_corr" title="Permalink to this definition">¶</a></dt>
+<dd><p>flag = True/False. Controls whether append correlation and p value to title</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.line.DynamicLinePlot">
+<em class="property">class </em><code class="descclassname">mmdps.vis.line.</code><code class="descname">DynamicLinePlot</code><span class="sig-paren">(</span><em>attrs</em>, <em>regionIdx</em>, <em>stepSize</em>, <em>title</em>, <em>outfilepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#DynamicLinePlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.DynamicLinePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is used to plot the time series of dynamic features.</p>
+<dl class="method">
+<dt id="mmdps.vis.line.DynamicLinePlot.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#DynamicLinePlot.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.DynamicLinePlot.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.line.LinePlot">
+<em class="property">class </em><code class="descclassname">mmdps.vis.line.</code><code class="descname">LinePlot</code><span class="sig-paren">(</span><em>attrs</em>, <em>title</em>, <em>outfilepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#LinePlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.LinePlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Line plot to plot attrs.</p>
+<dl class="method">
+<dt id="mmdps.vis.line.LinePlot.add_markers">
+<code class="descname">add_markers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#LinePlot.add_markers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.LinePlot.add_markers" title="Permalink to this definition">¶</a></dt>
+<dd><p>positions - a list of index</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.line.LinePlot.add_text">
+<code class="descname">add_text</code><span class="sig-paren">(</span><em>stat_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#LinePlot.add_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.LinePlot.add_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>sig_positions is a np.array with length = atlasobj.count
+The value at each index is 0 or 1, with 1 representing significance
+stat_list is a list of zipped value (stat, p). The length = atlasobj.count</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.line.LinePlot.adjust_RSN">
+<code class="descname">adjust_RSN</code><span class="sig-paren">(</span><em>ax</em>, <em>sig_positions=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#LinePlot.adjust_RSN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.LinePlot.adjust_RSN" title="Permalink to this definition">¶</a></dt>
+<dd><p>adjust data and ticks according to RSN</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.line.LinePlot.adjust_circos">
+<code class="descname">adjust_circos</code><span class="sig-paren">(</span><em>ax</em>, <em>sig_positions=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#LinePlot.adjust_circos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.LinePlot.adjust_circos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.line.LinePlot.adjust_plot_index">
+<code class="descname">adjust_plot_index</code><span class="sig-paren">(</span><em>sig_positions=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#LinePlot.adjust_plot_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.LinePlot.adjust_plot_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>adjust data and ticks according to plot_index
+return nothing, data, ticks and sig_positions are stored as local attributes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.line.LinePlot.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>sig_positions=None</em>, <em>stat_list=None</em>, <em>adjust_method=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#LinePlot.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.LinePlot.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>sig_positions should be a vector of 0 and 1, where 1 stands for significance
+specify adjust_method as a string (‘RSN’, ‘circos’). Defaults to plot_index</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.line.LinePlot.plot_rectangle_background">
+<code class="descname">plot_rectangle_background</code><span class="sig-paren">(</span><em>ax</em>, <em>num_nodes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#LinePlot.plot_rectangle_background"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.LinePlot.plot_rectangle_background" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.line.plot_attr_lines">
+<code class="descclassname">mmdps.vis.line.</code><code class="descname">plot_attr_lines</code><span class="sig-paren">(</span><em>attrs</em>, <em>title</em>, <em>outfilepath</em>, <em>sig_positions=None</em>, <em>stat_list=None</em>, <em>adjust_method=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#plot_attr_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.plot_attr_lines" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.line.plot_correlation">
+<code class="descclassname">mmdps.vis.line.</code><code class="descname">plot_correlation</code><span class="sig-paren">(</span><em>xvec</em>, <em>yvec</em>, <em>xlabel</em>, <em>ylabel</em>, <em>title</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/line.html#plot_correlation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.line.plot_correlation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.vis.matprocs">
+<span id="mmdps-vis-matprocs-module"></span><h2>mmdps.vis.matprocs module<a class="headerlink" href="#module-mmdps.vis.matprocs" title="Permalink to this headline">¶</a></h2>
+<p>Mat procs.</p>
+<dl class="function">
+<dt id="mmdps.vis.matprocs.absolute">
+<code class="descclassname">mmdps.vis.matprocs.</code><code class="descname">absolute</code><span class="sig-paren">(</span><em>mat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/matprocs.html#absolute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.matprocs.absolute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Absolute only.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.matprocs.negativeonly">
+<code class="descclassname">mmdps.vis.matprocs.</code><code class="descname">negativeonly</code><span class="sig-paren">(</span><em>mat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/matprocs.html#negativeonly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.matprocs.negativeonly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Negative only.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.matprocs.noproc">
+<code class="descclassname">mmdps.vis.matprocs.</code><code class="descname">noproc</code><span class="sig-paren">(</span><em>mat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/matprocs.html#noproc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.matprocs.noproc" title="Permalink to this definition">¶</a></dt>
+<dd><p>no proc.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.vis.matprocs.positiveonly">
+<code class="descclassname">mmdps.vis.matprocs.</code><code class="descname">positiveonly</code><span class="sig-paren">(</span><em>mat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/matprocs.html#positiveonly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.matprocs.positiveonly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Positive only.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.vis.netprocs">
+<span id="mmdps-vis-netprocs-module"></span><h2>mmdps.vis.netprocs module<a class="headerlink" href="#module-mmdps.vis.netprocs" title="Permalink to this headline">¶</a></h2>
+<p>Default net procs.</p>
+<dl class="function">
+<dt id="mmdps.vis.netprocs.get_valuerange">
+<code class="descclassname">mmdps.vis.netprocs.</code><code class="descname">get_valuerange</code><span class="sig-paren">(</span><em>netname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/netprocs.html#get_valuerange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.netprocs.get_valuerange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the default valuerange by netname.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.vis.report">
+<span id="mmdps-vis-report-module"></span><h2>mmdps.vis.report module<a class="headerlink" href="#module-mmdps.vis.report" title="Permalink to this headline">¶</a></h2>
+<p>Report for attr and net.</p>
+<dl class="class">
+<dt id="mmdps.vis.report.PlotAttr">
+<em class="property">class </em><code class="descclassname">mmdps.vis.report.</code><code class="descname">PlotAttr</code><span class="sig-paren">(</span><em>attrname</em>, <em>attr</em>, <em>title</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/report.html#PlotAttr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.report.PlotAttr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Plot an attr.</p>
+<dl class="method">
+<dt id="mmdps.vis.report.PlotAttr.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/report.html#PlotAttr.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.report.PlotAttr.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the plots.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.report.PlotAttr.run_plot_bnv">
+<code class="descname">run_plot_bnv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/report.html#PlotAttr.run_plot_bnv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.report.PlotAttr.run_plot_bnv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot bnv.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.report.PlotAttr.run_plot_line">
+<code class="descname">run_plot_line</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/report.html#PlotAttr.run_plot_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.report.PlotAttr.run_plot_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot line.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.vis.report.PlotNet">
+<em class="property">class </em><code class="descclassname">mmdps.vis.report.</code><code class="descname">PlotNet</code><span class="sig-paren">(</span><em>netname</em>, <em>net</em>, <em>title</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/report.html#PlotNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.report.PlotNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Plot a net.</p>
+<dl class="method">
+<dt id="mmdps.vis.report.PlotNet.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/report.html#PlotNet.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.report.PlotNet.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot heatmap.</p>
+<p>TODO:
+Plot proper bnv.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.vis.report.PlotNet.run_plot_heatmap">
+<code class="descname">run_plot_heatmap</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/vis/report.html#PlotNet.run_plot_heatmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.vis.report.PlotNet.run_plot_heatmap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot heatmap.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.vis">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mmdps.vis" title="Permalink to this headline">¶</a></h2>
+<p>For visulization.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MMDPS</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mmdps.html">mmdps package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mmdps.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mmdps.common.html">mmdps.common package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mmdps.dms.html">mmdps.dms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mmdps.gui.html">mmdps.gui package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mmdps.proc.html">mmdps.proc package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mmdps.util.html">mmdps.util package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mmdps.vis package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.vis.add_text">mmdps.vis.add_text module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.vis.attrprocs">mmdps.vis.attrprocs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.vis.bnv">mmdps.vis.bnv module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.vis.braincircos">mmdps.vis.braincircos module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.vis.heatmap">mmdps.vis.heatmap module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.vis.line">mmdps.vis.line module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.vis.matprocs">mmdps.vis.matprocs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.vis.netprocs">mmdps.vis.netprocs module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.vis.report">mmdps.vis.report module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.vis">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mmdps.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmdps.html#module-mmdps.rootconfig">mmdps.rootconfig module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmdps.html#mmdps-rootconfig-sample-module">mmdps.rootconfig.sample module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmdps.html#module-mmdps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="mmdps.html">mmdps package</a><ul>
+      <li>Previous: <a href="mmdps.util.html" title="previous chapter">mmdps.util package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/mmdps.vis.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

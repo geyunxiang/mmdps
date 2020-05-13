@@ -1,0 +1,234 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.proc.fusion &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.proc.fusion</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;The fusion provides all needed for data fusion.</span>
+
+<span class="sd">The fusion should be used to access all features.</span>
+<span class="sd">One atlas at a time. Use the fusion object to access the atlas,</span>
+<span class="sd">features, clinical scores and groups.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="c1"># from . import loader</span>
+<span class="c1"># from ..util.loadsave import load_json_ordered</span>
+<span class="kn">from</span> <span class="nn">mmdps.proc</span> <span class="k">import</span> <span class="n">loader</span>
+<span class="kn">from</span> <span class="nn">mmdps.util.loadsave</span> <span class="k">import</span> <span class="n">load_json_ordered</span>
+
+<div class="viewcode-block" id="merge_dicts"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.merge_dicts">[docs]</a><span class="k">def</span> <span class="nf">merge_dicts</span><span class="p">(</span><span class="o">*</span><span class="n">dicts</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Merge several dicts to one.&quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dicts</span><span class="p">:</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Fusion"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.Fusion">[docs]</a><span class="k">class</span> <span class="nc">Fusion</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The Fusion object provides all data for fusion.</span>
+
+<span class="sd">    Use this to access everything, including features, atlasobj, scores and groups.</span>
+<span class="sd">    After init, this fusion object will have nets, attrs, scores, groups.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">mainconfig</span><span class="p">,</span> <span class="n">netattrconfig</span><span class="p">,</span> <span class="n">scoresconfig</span><span class="p">,</span> <span class="n">groupsconfig</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init the fusion.</span>
+<span class="sd">        </span>
+<span class="sd">        atlasobj is the atlas object used for this fusion.</span>
+<span class="sd">        mainconfig is the main config for this fusion, feature input folders.</span>
+<span class="sd">        netattrconfig is the config for all the features.</span>
+<span class="sd">        scoresconfig is the config for all the clinical scores.</span>
+<span class="sd">        groupsconfig is the config for all the groups.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlasobj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainconfig</span> <span class="o">=</span> <span class="n">mainconfig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netattrconfig</span> <span class="o">=</span> <span class="n">netattrconfig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scoresconfig</span> <span class="o">=</span> <span class="n">scoresconfig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupsconfig</span> <span class="o">=</span> <span class="n">groupsconfig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_all</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Fusion.init_all"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.Fusion.init_all">[docs]</a>    <span class="k">def</span> <span class="nf">init_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init all loaders.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainfolder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainconfig</span><span class="p">[</span><span class="s1">&#39;mainfolder&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_netattr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_groups</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_scores</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="Fusion.init_netattr"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.Fusion.init_netattr">[docs]</a>    <span class="k">def</span> <span class="nf">init_netattr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init feature loaders, net and attribute.&quot;&quot;&quot;</span>
+        <span class="n">netsconfig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">netattrconfig</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nets&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">csvdict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">netname</span><span class="p">,</span> <span class="n">netconfig</span> <span class="ow">in</span> <span class="n">netsconfig</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">csvfile</span> <span class="o">=</span> <span class="n">netconfig</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="n">netname</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+            <span class="n">csvdict</span><span class="p">[</span><span class="n">netname</span><span class="p">]</span> <span class="o">=</span> <span class="n">csvfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nets</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">NetLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainfolder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">csvdict</span><span class="p">)</span>
+        <span class="n">attrsconfig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">netattrconfig</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attrs&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">csvdict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">attrconfig</span> <span class="ow">in</span> <span class="n">attrsconfig</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">csvfile</span> <span class="o">=</span> <span class="n">netconfig</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">,</span> <span class="n">attrname</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+            <span class="n">csvdict</span><span class="p">[</span><span class="n">attrname</span><span class="p">]</span> <span class="o">=</span> <span class="n">csvfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">AttrLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainfolder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">csvdict</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Fusion.init_groups"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.Fusion.init_groups">[docs]</a>    <span class="k">def</span> <span class="nf">init_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init group loaders.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupsconfig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">groupconfigdict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">groupsconfig</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">curgroup</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">GroupLoader</span><span class="p">(</span><span class="n">groupconfigdict</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="n">groupname</span><span class="p">]</span> <span class="o">=</span> <span class="n">curgroup</span></div>
+
+<div class="viewcode-block" id="Fusion.init_scores"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.Fusion.init_scores">[docs]</a>    <span class="k">def</span> <span class="nf">init_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init clinical scores.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scores</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scoresconfig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">scorename</span><span class="p">,</span> <span class="n">scoreconfigdict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scoresconfig</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">scorename</span><span class="p">]</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">ScoreLoader</span><span class="p">(</span><span class="n">scoreconfigdict</span><span class="p">)</span></div></div>
+        
+<div class="viewcode-block" id="load_json_nonraise"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.load_json_nonraise">[docs]</a><span class="k">def</span> <span class="nf">load_json_nonraise</span><span class="p">(</span><span class="n">jfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load json with out exception. Return None if failed to load.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">jfile</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">load_json_ordered</span><span class="p">(</span><span class="n">jfile</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="create_by_files"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.create_by_files">[docs]</a><span class="k">def</span> <span class="nf">create_by_files</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">mainconffile</span><span class="p">,</span> <span class="n">netattrfile</span><span class="p">,</span> <span class="n">scorefile</span><span class="p">,</span> <span class="n">groupfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the fusion by config files.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Fusion</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">load_json_nonraise</span><span class="p">(</span><span class="n">mainconffile</span><span class="p">),</span> <span class="n">load_json_nonraise</span><span class="p">(</span><span class="n">netattrfile</span><span class="p">),</span>
+                  <span class="n">load_json_nonraise</span><span class="p">(</span><span class="n">scorefile</span><span class="p">),</span> <span class="n">load_json_nonraise</span><span class="p">(</span><span class="n">groupfile</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="create_by_folder"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.create_by_folder">[docs]</a><span class="k">def</span> <span class="nf">create_by_folder</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">configsfolder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the fusion by config folder, in which the config files reside.&quot;&quot;&quot;</span>
+    <span class="n">ff</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">configsfolder</span><span class="p">,</span> <span class="s1">&#39;fusion_mainconf.json&#39;</span><span class="p">)</span>
+    <span class="n">nf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">configsfolder</span><span class="p">,</span> <span class="s1">&#39;fusion_netattr.json&#39;</span><span class="p">)</span>
+    <span class="n">sf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">configsfolder</span><span class="p">,</span> <span class="s1">&#39;fusion_score.json&#39;</span><span class="p">)</span>
+    <span class="n">gf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">configsfolder</span><span class="p">,</span> <span class="s1">&#39;fusion_group.json&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">create_by_files</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">ff</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">sf</span><span class="p">,</span> <span class="n">gf</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="ForeachBase"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.ForeachBase">[docs]</a><span class="k">class</span> <span class="nc">ForeachBase</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;For each iterate.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fu</span><span class="p">,</span> <span class="n">caselist</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init use fusion object and all cases list.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fu</span> <span class="o">=</span> <span class="n">fu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">caselist</span> <span class="o">=</span> <span class="n">caselist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atlasname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fu</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">name</span>
+
+<div class="viewcode-block" id="ForeachBase.work"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.ForeachBase.work">[docs]</a>    <span class="k">def</span> <span class="nf">work</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">case</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test work, override to provide actual functionality.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">case</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="ForeachBase.run"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.ForeachBase.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run the for each iteration. Return whateven work returns in a list.&quot;&quot;&quot;</span>
+        <span class="n">rets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">case</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">caselist</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="p">(</span><span class="n">case</span><span class="p">)</span>
+            <span class="n">rets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rets</span></div></div>
+
+<div class="viewcode-block" id="ForeachMRIScan"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.ForeachMRIScan">[docs]</a><span class="k">class</span> <span class="nc">ForeachMRIScan</span><span class="p">(</span><span class="n">ForeachBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterate mriscans.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fu</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init with mriscans.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">fu</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mriscans</span> <span class="o">=</span> <span class="n">mriscans</span></div>
+
+<div class="viewcode-block" id="ForeachPerson"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.fusion.ForeachPerson">[docs]</a><span class="k">class</span> <span class="nc">ForeachPerson</span><span class="p">(</span><span class="n">ForeachBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterate people.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fu</span><span class="p">,</span> <span class="n">people</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init with people.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">fu</span><span class="p">,</span> <span class="n">people</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">people</span> <span class="o">=</span> <span class="n">people</span></div>
+        
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">MMDPS</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mmdps.html">mmdps package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,1503 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.proc package &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="mmdps.util package" href="mmdps.util.html" />
+    <link rel="prev" title="mmdps.gui package" href="mmdps.gui.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="mmdps-proc-package">
+<h1>mmdps.proc package<a class="headerlink" href="#mmdps-proc-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-mmdps.proc.analysis_report">
+<span id="mmdps-proc-analysis-report-module"></span><h2>mmdps.proc.analysis_report module<a class="headerlink" href="#module-mmdps.proc.analysis_report" title="Permalink to this headline">¶</a></h2>
+<p>Analysis and Report</p>
+<dl class="class">
+<dt id="mmdps.proc.analysis_report.GroupAnalysisAssistant">
+<em class="property">class </em><code class="descclassname">mmdps.proc.analysis_report.</code><code class="descname">GroupAnalysisAssistant</code><span class="sig-paren">(</span><em>study_name</em>, <em>atlasobj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#GroupAnalysisAssistant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.GroupAnalysisAssistant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>docstring for GroupAnalysisAssistant</p>
+<dl class="method">
+<dt id="mmdps.proc.analysis_report.GroupAnalysisAssistant.compare_BOLD_attrs">
+<code class="descname">compare_BOLD_attrs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#GroupAnalysisAssistant.compare_BOLD_attrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.GroupAnalysisAssistant.compare_BOLD_attrs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.analysis_report.GroupAnalysisAssistant.compare_BOLD_networks">
+<code class="descname">compare_BOLD_networks</code><span class="sig-paren">(</span><em>group1_name</em>, <em>group2_name</em>, <em>comparison_method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#GroupAnalysisAssistant.compare_BOLD_networks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.GroupAnalysisAssistant.compare_BOLD_networks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.analysis_report.GroupAnalysisAssistant.correlate_sigdiff_BOLD_network">
+<code class="descname">correlate_sigdiff_BOLD_network</code><span class="sig-paren">(</span><em>group1_name</em>, <em>group2_name</em>, <em>scoreLoader</em>, <em>score1_name</em>, <em>score2_name</em>, <em>comp_p_network</em>, <em>correlation_method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#GroupAnalysisAssistant.correlate_sigdiff_BOLD_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.GroupAnalysisAssistant.correlate_sigdiff_BOLD_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only significant different connections will be correlated to scores.
+Correlation coefficient and p_vals of significant correlated links will be stored to r_network and corr_p_network</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.analysis_report.GroupAnalysisAssistant.generate_result_comp">
+<code class="descname">generate_result_comp</code><span class="sig-paren">(</span><em>stats_network</em>, <em>comp_p_network</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#GroupAnalysisAssistant.generate_result_comp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.GroupAnalysisAssistant.generate_result_comp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.analysis_report.GroupAnalysisAssistant.generate_result_comp_corr">
+<code class="descname">generate_result_comp_corr</code><span class="sig-paren">(</span><em>stats_network</em>, <em>comp_p_network</em>, <em>r_network</em>, <em>corr_p_network</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#GroupAnalysisAssistant.generate_result_comp_corr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.GroupAnalysisAssistant.generate_result_comp_corr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.analysis_report.GroupAnalysisAssistant.plot_BOLD_attr_BNV">
+<code class="descname">plot_BOLD_attr_BNV</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#GroupAnalysisAssistant.plot_BOLD_attr_BNV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.GroupAnalysisAssistant.plot_BOLD_attr_BNV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.analysis_report.GroupAnalysisAssistant.plot_BOLD_attr_line">
+<code class="descname">plot_BOLD_attr_line</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#GroupAnalysisAssistant.plot_BOLD_attr_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.GroupAnalysisAssistant.plot_BOLD_attr_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.analysis_report.GroupAnalysisAssistant.plot_BOLD_network_circos">
+<code class="descname">plot_BOLD_network_circos</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#GroupAnalysisAssistant.plot_BOLD_network_circos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.GroupAnalysisAssistant.plot_BOLD_network_circos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.analysis_report.SingleAnalysisAssistant">
+<em class="property">class </em><code class="descclassname">mmdps.proc.analysis_report.</code><code class="descname">SingleAnalysisAssistant</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#SingleAnalysisAssistant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.SingleAnalysisAssistant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>docstring</p>
+<dl class="method">
+<dt id="mmdps.proc.analysis_report.SingleAnalysisAssistant.plot_BOLD_attr_line">
+<code class="descname">plot_BOLD_attr_line</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/analysis_report.html#SingleAnalysisAssistant.plot_BOLD_attr_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.analysis_report.SingleAnalysisAssistant.plot_BOLD_attr_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.proc.atlas">
+<span id="mmdps-proc-atlas-module"></span><h2>mmdps.proc.atlas module<a class="headerlink" href="#module-mmdps.proc.atlas" title="Permalink to this headline">¶</a></h2>
+<p>Brain atlas tools.</p>
+<p>Access brain atlases.</p>
+<dl class="class">
+<dt id="mmdps.proc.atlas.Atlas">
+<em class="property">class </em><code class="descclassname">mmdps.proc.atlas.</code><code class="descname">Atlas</code><span class="sig-paren">(</span><em>descdict</em>, <em>atlasfolder=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The brain atlas.</p>
+<p>Init use a description desc, check atlas folder for example.
+Can be used without actual atlas nii. If do have nii, it is in atlasfolder.</p>
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.add_volumes">
+<code class="descname">add_volumes</code><span class="sig-paren">(</span><em>volumes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.add_volumes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.add_volumes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add volumes for actual nii files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.adjust_mat">
+<code class="descname">adjust_mat</code><span class="sig-paren">(</span><em>sqmat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.adjust_mat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.adjust_mat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjust a matrix according to plotindexes.
+Both columns and rows are adjusted.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.adjust_mat_RSN">
+<code class="descname">adjust_mat_RSN</code><span class="sig-paren">(</span><em>sqmat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.adjust_mat_RSN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.adjust_mat_RSN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjust a matrix according to RSN config file.
+Return the adjusted matrix</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.adjust_mat_col">
+<code class="descname">adjust_mat_col</code><span class="sig-paren">(</span><em>mat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.adjust_mat_col"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.adjust_mat_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjust matrix columns according to plotindexes.</p>
+<p>Only columns are adjusted, rows not adjusted.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.adjust_mat_row">
+<code class="descname">adjust_mat_row</code><span class="sig-paren">(</span><em>mat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.adjust_mat_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.adjust_mat_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjust matrix rows according to plotindexes.</p>
+<p>Only rows are adjusted, columns not adjusted.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.adjust_ticks">
+<code class="descname">adjust_ticks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.adjust_ticks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.adjust_ticks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjust ticks according to plotindexes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.adjust_ticks_RSN">
+<code class="descname">adjust_ticks_RSN</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.adjust_ticks_RSN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.adjust_ticks_RSN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a tuple.
+The first element is the adjusted list of ticks according to RSN config file.
+The second element is a list of no. of nodes in each RSN (used for minor ticks vline and hline)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.adjust_vec">
+<code class="descname">adjust_vec</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.adjust_vec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.adjust_vec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjust a vector according to plotindexes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.adjust_vec_Circos">
+<code class="descname">adjust_vec_Circos</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.adjust_vec_Circos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.adjust_vec_Circos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.adjust_vec_RSN">
+<code class="descname">adjust_vec_RSN</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.adjust_vec_RSN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.adjust_vec_RSN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the adjusted vector.
+Adjust order of data in vec according to RSN</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.build_indexes_fliplr">
+<code class="descname">build_indexes_fliplr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.build_indexes_fliplr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.build_indexes_fliplr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.check_RSN">
+<code class="descname">check_RSN</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.check_RSN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.check_RSN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.create_sub">
+<code class="descname">create_sub</code><span class="sig-paren">(</span><em>subatlasname</em>, <em>subindexes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.create_sub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.create_sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a sub atlas using specified sub indexes.</p>
+<p>Create a sub atlas with name and sub indexes. The new sub atlas can be used
+just like a normal atlas.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.fullpath">
+<code class="descname">fullpath</code><span class="sig-paren">(</span><em>*p</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.fullpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.fullpath" title="Permalink to this definition">¶</a></dt>
+<dd><p>fullpath for atlas folder.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.get_RSN_list">
+<code class="descname">get_RSN_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.get_RSN_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.get_RSN_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of RSN strs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.get_brainparts">
+<code class="descname">get_brainparts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.get_brainparts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.get_brainparts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.get_volume">
+<code class="descname">get_volume</code><span class="sig-paren">(</span><em>volumename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.get_volume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.get_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get one volume using volumename.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.indexes_to_ticks">
+<code class="descname">indexes_to_ticks</code><span class="sig-paren">(</span><em>indexes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.indexes_to_ticks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.indexes_to_ticks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert indexes to ticks.
+indexes should be a list of index, like [1, 2, 3] etc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.regions_to_indexes">
+<code class="descname">regions_to_indexes</code><span class="sig-paren">(</span><em>regions</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.regions_to_indexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.regions_to_indexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert regions to indexes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.set_brainparts">
+<code class="descname">set_brainparts</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.set_brainparts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.set_brainparts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.ticks_to_indexes">
+<code class="descname">ticks_to_indexes</code><span class="sig-paren">(</span><em>ticks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.ticks_to_indexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.ticks_to_indexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert ticks to indexes.
+ticks should be a list of tick, like [‘L1’, ‘R2’] etc</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.atlas.Atlas.ticks_to_regions">
+<code class="descname">ticks_to_regions</code><span class="sig-paren">(</span><em>ticks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#Atlas.ticks_to_regions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.Atlas.ticks_to_regions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert ticks to regions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.atlas.color_atlas_region">
+<code class="descclassname">mmdps.proc.atlas.</code><code class="descname">color_atlas_region</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>regions</em>, <em>colors</em>, <em>outfilepath</em>, <em>resolution='1mm'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#color_atlas_region"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.color_atlas_region" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is used to color one or several regions in an atlas.
+An nii file is saved where the specified region is set to 1 and other areas to 0
+Input</p>
+<blockquote>
+<div><ul class="simple">
+<li>regions: a string or a list of strings</li>
+<li>colors: int or a list of int</li>
+</ul>
+</div></blockquote>
+<p>Note: if both regions and colors are lists, these two must have the same length</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.atlas.get">
+<code class="descclassname">mmdps.proc.atlas.</code><code class="descname">get</code><span class="sig-paren">(</span><em>atlasname</em>, <em>suppress=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.atlas.get_old">
+<code class="descclassname">mmdps.proc.atlas.</code><code class="descname">get_old</code><span class="sig-paren">(</span><em>atlasname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#get_old"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.get_old" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an atlasobj with name.</p>
+<p>This is typically what you want when to get a atlas object.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.atlas.getbyenv">
+<code class="descclassname">mmdps.proc.atlas.</code><code class="descname">getbyenv</code><span class="sig-paren">(</span><em>atlasname_default='aal'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#getbyenv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.getbyenv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an atlasobj by environment variable MMDPS_CUR_ATLAS.</p>
+<p>If there is a environment variable MMDPS_CUR_ATLAS. Return the atlasobj specified
+by atlas name. Otherwise return the atlasobj of atlasname_default.
+Use this when writing processing scripts that should run in every atlases.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.atlas.getbywd">
+<code class="descclassname">mmdps.proc.atlas.</code><code class="descname">getbywd</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#getbywd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.getbywd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an atlasobj by working directory.</p>
+<p>If current working directory is xx/xx/aal, then it will return an aal atlasobj.
+Use this when writing processing scripts. It will work regardless of the actual
+atlas.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.atlas.region_overlap_report">
+<code class="descclassname">mmdps.proc.atlas.</code><code class="descname">region_overlap_report</code><span class="sig-paren">(</span><em>regionName</em>, <em>atlasBase</em>, <em>atlasTarget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/atlas.html#region_overlap_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.atlas.region_overlap_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is used to generate a region overlap report. It is used to find which regions a given
+area in an atlas (base) correspond to in another atlas (target). 
+The returned list is sorted according to overlap ratio. Each element is a tuple with the region name, counts and ratio</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.proc.correlation_calculator">
+<span id="mmdps-proc-correlation-calculator-module"></span><h2>mmdps.proc.correlation_calculator module<a class="headerlink" href="#module-mmdps.proc.correlation_calculator" title="Permalink to this headline">¶</a></h2>
+<p>Calculate correlation between features and clinical scores.</p>
+<dl class="class">
+<dt id="mmdps.proc.correlation_calculator.ScoreCorrelationCalculator">
+<em class="property">class </em><code class="descclassname">mmdps.proc.correlation_calculator.</code><code class="descname">ScoreCorrelationCalculator</code><span class="sig-paren">(</span><em>mriscans</em>, <em>netLoader</em>, <em>scoreLoader</em>, <em>attrLoader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/correlation_calculator.html#ScoreCorrelationCalculator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.correlation_calculator.ScoreCorrelationCalculator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>FCScoreCorrelation
+This class is used to calculate the correlation between FCs in a network
+and scores.</p>
+<dl class="method">
+<dt id="mmdps.proc.correlation_calculator.ScoreCorrelationCalculator.calculateAttributeScoreCorrelation">
+<code class="descname">calculateAttributeScoreCorrelation</code><span class="sig-paren">(</span><em>regions</em>, <em>atlasobj</em>, <em>titlePrefix</em>, <em>outfilepath</em>, <em>scoreNames=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/correlation_calculator.html#ScoreCorrelationCalculator.calculateAttributeScoreCorrelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.correlation_calculator.ScoreCorrelationCalculator.calculateAttributeScoreCorrelation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Score and graphic metrics correlation
+Specify which scores to calculate in scoreNames(list), otherwise all scores will be used</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.correlation_calculator.ScoreCorrelationCalculator.calculateCorrelationAttr">
+<code class="descname">calculateCorrelationAttr</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>attrName</em>, <em>scoreName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/correlation_calculator.html#ScoreCorrelationCalculator.calculateCorrelationAttr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.correlation_calculator.ScoreCorrelationCalculator.calculateCorrelationAttr" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is used to calculate correlation between one clinical scores
+and graph attributes of each brain region.
+The return value, rvec, pvec, contains Pearson’s r and p regarding the correlation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.correlation_calculator.ScoreCorrelationCalculator.calculateCorrelationNet">
+<code class="descname">calculateCorrelationNet</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>scoreName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/correlation_calculator.html#ScoreCorrelationCalculator.calculateCorrelationNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.correlation_calculator.ScoreCorrelationCalculator.calculateCorrelationNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is used to calculate FC correlation with scoreName.
+The return value, rmat, pmat, contains Pearson’s r and p regarding the correlation of 
+this connection with score</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.correlation_calculator.ScoreCorrelationCalculator.calculateFCScoreCorrelation">
+<code class="descname">calculateFCScoreCorrelation</code><span class="sig-paren">(</span><em>connections</em>, <em>atlasobj</em>, <em>titlePrefix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/correlation_calculator.html#ScoreCorrelationCalculator.calculateFCScoreCorrelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.correlation_calculator.ScoreCorrelationCalculator.calculateFCScoreCorrelation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only FC in connections will be considered</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.correlation_calculator.ScoreCorrelationCalculator.stacknets">
+<code class="descname">stacknets</code><span class="sig-paren">(</span><em>f_netproc=&lt;function absolute&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/correlation_calculator.html#ScoreCorrelationCalculator.stacknets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.correlation_calculator.ScoreCorrelationCalculator.stacknets" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function convert the whole 2D net into an 1D vector (horizontal)
+and stack all vector vertically.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.proc.fusion">
+<span id="mmdps-proc-fusion-module"></span><h2>mmdps.proc.fusion module<a class="headerlink" href="#module-mmdps.proc.fusion" title="Permalink to this headline">¶</a></h2>
+<p>The fusion provides all needed for data fusion.</p>
+<p>The fusion should be used to access all features.
+One atlas at a time. Use the fusion object to access the atlas,
+features, clinical scores and groups.</p>
+<dl class="class">
+<dt id="mmdps.proc.fusion.ForeachBase">
+<em class="property">class </em><code class="descclassname">mmdps.proc.fusion.</code><code class="descname">ForeachBase</code><span class="sig-paren">(</span><em>fu</em>, <em>caselist</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#ForeachBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.ForeachBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>For each iterate.</p>
+<dl class="method">
+<dt id="mmdps.proc.fusion.ForeachBase.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#ForeachBase.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.ForeachBase.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the for each iteration. Return whateven work returns in a list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.fusion.ForeachBase.work">
+<code class="descname">work</code><span class="sig-paren">(</span><em>case</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#ForeachBase.work"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.ForeachBase.work" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test work, override to provide actual functionality.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.fusion.ForeachMRIScan">
+<em class="property">class </em><code class="descclassname">mmdps.proc.fusion.</code><code class="descname">ForeachMRIScan</code><span class="sig-paren">(</span><em>fu</em>, <em>mriscans</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#ForeachMRIScan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.ForeachMRIScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.fusion.ForeachBase" title="mmdps.proc.fusion.ForeachBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.fusion.ForeachBase</span></code></a></p>
+<p>Iterate mriscans.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.fusion.ForeachPerson">
+<em class="property">class </em><code class="descclassname">mmdps.proc.fusion.</code><code class="descname">ForeachPerson</code><span class="sig-paren">(</span><em>fu</em>, <em>people</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#ForeachPerson"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.ForeachPerson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.fusion.ForeachBase" title="mmdps.proc.fusion.ForeachBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.fusion.ForeachBase</span></code></a></p>
+<p>Iterate people.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.fusion.Fusion">
+<em class="property">class </em><code class="descclassname">mmdps.proc.fusion.</code><code class="descname">Fusion</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>mainconfig</em>, <em>netattrconfig</em>, <em>scoresconfig</em>, <em>groupsconfig</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#Fusion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.Fusion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Fusion object provides all data for fusion.</p>
+<p>Use this to access everything, including features, atlasobj, scores and groups.
+After init, this fusion object will have nets, attrs, scores, groups.</p>
+<dl class="method">
+<dt id="mmdps.proc.fusion.Fusion.init_all">
+<code class="descname">init_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#Fusion.init_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.Fusion.init_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Init all loaders.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.fusion.Fusion.init_groups">
+<code class="descname">init_groups</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#Fusion.init_groups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.Fusion.init_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Init group loaders.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.fusion.Fusion.init_netattr">
+<code class="descname">init_netattr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#Fusion.init_netattr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.Fusion.init_netattr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Init feature loaders, net and attribute.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.fusion.Fusion.init_scores">
+<code class="descname">init_scores</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#Fusion.init_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.Fusion.init_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Init clinical scores.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.fusion.create_by_files">
+<code class="descclassname">mmdps.proc.fusion.</code><code class="descname">create_by_files</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>mainconffile</em>, <em>netattrfile</em>, <em>scorefile</em>, <em>groupfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#create_by_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.create_by_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the fusion by config files.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.fusion.create_by_folder">
+<code class="descclassname">mmdps.proc.fusion.</code><code class="descname">create_by_folder</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>configsfolder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#create_by_folder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.create_by_folder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the fusion by config folder, in which the config files reside.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.fusion.load_json_nonraise">
+<code class="descclassname">mmdps.proc.fusion.</code><code class="descname">load_json_nonraise</code><span class="sig-paren">(</span><em>jfile</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#load_json_nonraise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.load_json_nonraise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load json with out exception. Return None if failed to load.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.fusion.merge_dicts">
+<code class="descclassname">mmdps.proc.fusion.</code><code class="descname">merge_dicts</code><span class="sig-paren">(</span><em>*dicts</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/fusion.html#merge_dicts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.fusion.merge_dicts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge several dicts to one.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.proc.group_manager">
+<span id="mmdps-proc-group-manager-module"></span><h2>mmdps.proc.group_manager module<a class="headerlink" href="#module-mmdps.proc.group_manager" title="Permalink to this headline">¶</a></h2>
+<p>Group manager.
+Used to manage group name/scan list.</p>
+<dl class="class">
+<dt id="mmdps.proc.group_manager.DatabaseGroupManager">
+<em class="property">class </em><code class="descclassname">mmdps.proc.group_manager.</code><code class="descname">DatabaseGroupManager</code><span class="sig-paren">(</span><em>db=&lt;mmdps.dms.mmdpdb.MMDPDatabase object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#DatabaseGroupManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.DatabaseGroupManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is an implementation of group manager using mmdpdb</p>
+<dl class="method">
+<dt id="mmdps.proc.group_manager.DatabaseGroupManager.deleteGroupByName">
+<code class="descname">deleteGroupByName</code><span class="sig-paren">(</span><em>groupName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#DatabaseGroupManager.deleteGroupByName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.DatabaseGroupManager.deleteGroupByName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.group_manager.DatabaseGroupManager.getAllGroups">
+<code class="descname">getAllGroups</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#DatabaseGroupManager.getAllGroups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.DatabaseGroupManager.getAllGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all groups in this database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.group_manager.DatabaseGroupManager.getNamesInGroup">
+<code class="descname">getNamesInGroup</code><span class="sig-paren">(</span><em>groupName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#DatabaseGroupManager.getNamesInGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.DatabaseGroupManager.getNamesInGroup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.group_manager.DatabaseGroupManager.getScansInGroup">
+<code class="descname">getScansInGroup</code><span class="sig-paren">(</span><em>groupName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#DatabaseGroupManager.getScansInGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.DatabaseGroupManager.getScansInGroup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.group_manager.DatabaseGroupManager.newGroupByNames">
+<code class="descname">newGroupByNames</code><span class="sig-paren">(</span><em>groupName</em>, <em>nameList</em>, <em>scanNum</em>, <em>desc=None</em>, <em>accumulateScan=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#DatabaseGroupManager.newGroupByNames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.DatabaseGroupManager.newGroupByNames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a group by a list of names. The scans are generated automatically. 
+scanNum - which scan (first/second/etc)
+accumulateScan - whether keep former scans in this group</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.group_manager.DatabaseGroupManager.newGroupByNamesAndScans">
+<code class="descname">newGroupByNamesAndScans</code><span class="sig-paren">(</span><em>groupName</em>, <em>nameList</em>, <em>scanList</em>, <em>desc=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#DatabaseGroupManager.newGroupByNamesAndScans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.DatabaseGroupManager.newGroupByNamesAndScans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a group by giving both name and scans</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.group_manager.DatabaseGroupManager.newGroupByScans">
+<code class="descname">newGroupByScans</code><span class="sig-paren">(</span><em>groupName</em>, <em>scanList</em>, <em>desc=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#DatabaseGroupManager.newGroupByScans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.DatabaseGroupManager.newGroupByScans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a group by a list of scans</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.group_manager.GroupManager">
+<em class="property">class </em><code class="descclassname">mmdps.proc.group_manager.</code><code class="descname">GroupManager</code><span class="sig-paren">(</span><em>folderPath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#GroupManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.GroupManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class automatically scan folderPath, finds <a href="#id1"><span class="problematic" id="id2">*</span></a>.txt files and load name/scan list.
+The list should be named conventionally</p>
+<blockquote>
+<div><ul class="simple">
+<li>treatment_scanlist-1.txt: a list of the first scan for treatment group.</li>
+<li>control_namelist.txt: a list of names for control group.</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="mmdps.proc.group_manager.GroupManager.allScansWithinGroup">
+<code class="descname">allScansWithinGroup</code><span class="sig-paren">(</span><em>groupName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#GroupManager.allScansWithinGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.GroupManager.allScansWithinGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function will return all scans belonging to groupName
+Essentially selecting all entries with keys containing the given key word</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.group_manager.GroupManager.genNameDictFromScan">
+<code class="descname">genNameDictFromScan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#GroupManager.genNameDictFromScan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.GroupManager.genNameDictFromScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate name dict from scanDict</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.group_manager.GroupManager.scanFolder">
+<code class="descname">scanFolder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#GroupManager.scanFolder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.GroupManager.scanFolder" title="Permalink to this definition">¶</a></dt>
+<dd><p>scan folder to load name/scan list</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.group_manager.genDefaultScan">
+<code class="descclassname">mmdps.proc.group_manager.</code><code class="descname">genDefaultScan</code><span class="sig-paren">(</span><em>loader</em>, <em>manager</em>, <em>totalScanNum=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#genDefaultScan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.genDefaultScan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate scanDict from nameDict.
+Specify total number of scans related to one person in totalScanNum
+After this function, manager.scanDict will contain &lt;totalScanNum&gt; keys for each group</p>
+<blockquote>
+<div>the naming of keys follows this rule: &lt;groupName&gt;&lt;totalScanNum&gt; (control1 etc)</div></blockquote>
+<p>loader can be a basic loader</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.group_manager.getHealthyGroup">
+<code class="descclassname">mmdps.proc.group_manager.</code><code class="descname">getHealthyGroup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#getHealthyGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.getHealthyGroup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.group_manager.getResearchStudy">
+<code class="descclassname">mmdps.proc.group_manager.</code><code class="descname">getResearchStudy</code><span class="sig-paren">(</span><em>alias</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/group_manager.html#getResearchStudy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.group_manager.getResearchStudy" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function might cause sqlalchemy.orm.exc.DetachedInstanceError
+Use analysis_report to set ResearchStudy instead</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.proc.job">
+<span id="mmdps-proc-job-module"></span><h2>mmdps.proc.job module<a class="headerlink" href="#module-mmdps.proc.job" title="Permalink to this headline">¶</a></h2>
+<p>Job is a processing unit.</p>
+<p>One job is a processing unit. It can run python script, matlab, 
+executable, shell. It can run other jobs, forming a tree.
+It can also run parallel, forming a project.</p>
+<dl class="class">
+<dt id="mmdps.proc.job.BatchJob">
+<em class="property">class </em><code class="descclassname">mmdps.proc.job.</code><code class="descname">BatchJob</code><span class="sig-paren">(</span><em>name</em>, <em>cmd</em>, <em>config=''</em>, <em>argv=None</em>, <em>wd='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#BatchJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.BatchJob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.job.Job" title="mmdps.proc.job.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.job.Job</span></code></a></p>
+<p>Batch job, this is a list of sequentially run jobs.</p>
+<dl class="method">
+<dt id="mmdps.proc.job.BatchJob.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#BatchJob.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.BatchJob.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the job. configfile or joblist.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.job.BatchJob.run_configfile">
+<code class="descname">run_configfile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#BatchJob.run_configfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.BatchJob.run_configfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run config file, use runjob.py.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.job.BatchJob.run_joblist">
+<code class="descname">run_joblist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#BatchJob.run_joblist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.BatchJob.run_joblist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run job list, one by one.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.job.ChangeDirectory">
+<em class="property">class </em><code class="descclassname">mmdps.proc.job.</code><code class="descname">ChangeDirectory</code><span class="sig-paren">(</span><em>chdirto</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#ChangeDirectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.ChangeDirectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Change dir context manager.</p>
+<p>Change to dir on enter, change back on exit.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.job.ExecutableJob">
+<em class="property">class </em><code class="descclassname">mmdps.proc.job.</code><code class="descname">ExecutableJob</code><span class="sig-paren">(</span><em>name</em>, <em>cmd</em>, <em>config=''</em>, <em>argv=None</em>, <em>wd='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#ExecutableJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.ExecutableJob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.job.Job" title="mmdps.proc.job.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.job.Job</span></code></a></p>
+<p>Executable job, this should be an executable.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.job.Job">
+<em class="property">class </em><code class="descclassname">mmdps.proc.job.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>name</em>, <em>cmd</em>, <em>config=''</em>, <em>argv=None</em>, <em>wd='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.Job" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A job is a processing unit.</p>
+<dl class="method">
+<dt id="mmdps.proc.job.Job.build_cmdlist">
+<code class="descname">build_cmdlist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#Job.build_cmdlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.Job.build_cmdlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the command list, including rootcmd and argv.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.job.Job.build_fullcmd">
+<code class="descname">build_fullcmd</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#Job.build_fullcmd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.Job.build_fullcmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build full command.</p>
+<p>If the cmd is not absolute path, search in path for this cmd.
+It is similar to matlabpath, so you do not need to specify the
+full cmd path. Just make sure to avoid name clash.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.job.Job.build_fullconfig">
+<code class="descname">build_fullconfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#Job.build_fullconfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.Job.build_fullconfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build full config.</p>
+<p>Search the config file using path.fullfile.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.job.Job.build_rootcmd">
+<code class="descname">build_rootcmd</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#Job.build_rootcmd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.Job.build_rootcmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the root command.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="mmdps.proc.job.Job.from_dict">
+<em class="property">classmethod </em><code class="descname">from_dict</code><span class="sig-paren">(</span><em>configDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#Job.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.Job.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the job from dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.job.Job.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#Job.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.Job.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build cmd list and run the job in wd.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.job.Job.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#Job.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.Job.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize the job to dict.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.job.MatlabJob">
+<em class="property">class </em><code class="descclassname">mmdps.proc.job.</code><code class="descname">MatlabJob</code><span class="sig-paren">(</span><em>name</em>, <em>cmd</em>, <em>config=''</em>, <em>argv=None</em>, <em>wd='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#MatlabJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.MatlabJob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.job.Job" title="mmdps.proc.job.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.job.Job</span></code></a></p>
+<p>Matlab job, run a matlab string, typically a matlab function.</p>
+<dl class="method">
+<dt id="mmdps.proc.job.MatlabJob.build_cmdlist">
+<code class="descname">build_cmdlist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#MatlabJob.build_cmdlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.MatlabJob.build_cmdlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the full command line to run the matlab cmd.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.job.MatlabJob.build_matlab_logfile">
+<code class="descname">build_matlab_logfile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#MatlabJob.build_matlab_logfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.MatlabJob.build_matlab_logfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build matlab log file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.job.MatlabJob.build_matlab_wd">
+<code class="descname">build_matlab_wd</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#MatlabJob.build_matlab_wd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.MatlabJob.build_matlab_wd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build wd, for matlab to cd into.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.job.MatlabJob.matlab_path_to_add">
+<code class="descname">matlab_path_to_add</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#MatlabJob.matlab_path_to_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.MatlabJob.matlab_path_to_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the addpath command to add all paths in path.searchpathlist.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.job.PythonJob">
+<em class="property">class </em><code class="descclassname">mmdps.proc.job.</code><code class="descname">PythonJob</code><span class="sig-paren">(</span><em>name</em>, <em>cmd</em>, <em>config=''</em>, <em>argv=None</em>, <em>wd='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#PythonJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.PythonJob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.job.Job" title="mmdps.proc.job.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.job.Job</span></code></a></p>
+<p>Python job, run a python script.</p>
+<p>The script may be self-contained. If it use modules in the same directory,
+the directory should be added to project path so when run the job in wd,
+the python interpreter can import it.</p>
+<dl class="method">
+<dt id="mmdps.proc.job.PythonJob.build_rootcmd">
+<code class="descname">build_rootcmd</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#PythonJob.build_rootcmd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.PythonJob.build_rootcmd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override the root cmd to python executable.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.job.ShellJob">
+<em class="property">class </em><code class="descclassname">mmdps.proc.job.</code><code class="descname">ShellJob</code><span class="sig-paren">(</span><em>name</em>, <em>cmd</em>, <em>config=''</em>, <em>argv=None</em>, <em>wd='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#ShellJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.ShellJob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.job.Job" title="mmdps.proc.job.Job"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.job.Job</span></code></a></p>
+<p>Shell job.</p>
+<dl class="method">
+<dt id="mmdps.proc.job.ShellJob.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#ShellJob.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.ShellJob.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build cmd list and run the job in wd.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.job.call_in_wd">
+<code class="descclassname">mmdps.proc.job.</code><code class="descname">call_in_wd</code><span class="sig-paren">(</span><em>cmdlist</em>, <em>wd</em>, <em>info=''</em>, <em>isShell=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#call_in_wd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.call_in_wd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call in supplied working directory.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.job.call_logged">
+<code class="descclassname">mmdps.proc.job.</code><code class="descname">call_logged</code><span class="sig-paren">(</span><em>cmdlist</em>, <em>info=''</em>, <em>isShell=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#call_logged"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.call_logged" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call the cmdlist and output the log to a file in log folder.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.job.call_logged2">
+<code class="descclassname">mmdps.proc.job.</code><code class="descname">call_logged2</code><span class="sig-paren">(</span><em>cmdlist</em>, <em>info=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#call_logged2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.call_logged2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call the cmdlist and output the log to a file in log folder.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.job.create">
+<code class="descclassname">mmdps.proc.job.</code><code class="descname">create</code><span class="sig-paren">(</span><em>configDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a job from dict. The type of the job is specified in ‘typename’.
+An instance of the corresponding class is created and returned.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.job.dump">
+<code class="descclassname">mmdps.proc.job.</code><code class="descname">dump</code><span class="sig-paren">(</span><em>job</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#dump"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dump the job to console.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.job.genlogfilename">
+<code class="descclassname">mmdps.proc.job.</code><code class="descname">genlogfilename</code><span class="sig-paren">(</span><em>info=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#genlogfilename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.genlogfilename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a log file name base on current time and supplied info.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.job.load">
+<code class="descclassname">mmdps.proc.job.</code><code class="descname">load</code><span class="sig-paren">(</span><em>configDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a job from dict.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.job.runjob">
+<code class="descclassname">mmdps.proc.job.</code><code class="descname">runjob</code><span class="sig-paren">(</span><em>currentJob</em>, <em>folder=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/job.html#runjob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.job.runjob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the job in folder.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.proc.loader">
+<span id="mmdps-proc-loader-module"></span><h2>mmdps.proc.loader module<a class="headerlink" href="#module-mmdps.proc.loader" title="Permalink to this headline">¶</a></h2>
+<p>Loader is used to load all fusion input.</p>
+<p>The fusion input is loaded by loaders.
+The loaders are created by fusion constructor. There are config files
+to config every loader.</p>
+<dl class="class">
+<dt id="mmdps.proc.loader.AttrLoader">
+<em class="property">class </em><code class="descclassname">mmdps.proc.loader.</code><code class="descname">AttrLoader</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>mainfolder='/Users/andy/workshop/ChangGungFeatures/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#AttrLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.AttrLoader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.loader.Loader" title="mmdps.proc.loader.Loader"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.loader.Loader</span></code></a></p>
+<p>Attribute loader.</p>
+<dl class="method">
+<dt id="mmdps.proc.loader.AttrLoader.loadSingle">
+<code class="descname">loadSingle</code><span class="sig-paren">(</span><em>mriscan</em>, <em>attrname</em>, <em>csvfilename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#AttrLoader.loadSingle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.AttrLoader.loadSingle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the attribute object, with atlasobj.
+- mriscan: specify which scan to load from
+- attrname: the name of the attr to load
+- csvfilename: the name of the attr file name. Specify this parameter to override filename</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.AttrLoader.load_multiple_attrs">
+<code class="descname">load_multiple_attrs</code><span class="sig-paren">(</span><em>mriscans</em>, <em>attrname</em>, <em>csvfilename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#AttrLoader.load_multiple_attrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.AttrLoader.load_multiple_attrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a list of netattr.Attr for each scan in mriscans
+attrname = ‘BOLD.BC’ etc…
+:param mriscans:
+:param attrname:
+:param attrname: the name of the attr file name. Specify this parameter to override filename
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.AttrLoader.loadvstackmulti">
+<code class="descname">loadvstackmulti</code><span class="sig-paren">(</span><em>mriscans</em>, <em>attrnames</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#AttrLoader.loadvstackmulti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.AttrLoader.loadvstackmulti" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load all data in every mriscans in mriscans, and every attr in attrnames.</p>
+<p>mriscan0 | attr0v attr1v attr2v
+mriscan1 | attr0v attr1v attr2v
+- mriscans: a list of scans
+- attrnames: a list of names
+The return data dimension is len(mriscans) X (len(attrnames) * atlasobj.count)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.loader.GroupLoader">
+<em class="property">class </em><code class="descclassname">mmdps.proc.loader.</code><code class="descname">GroupLoader</code><span class="sig-paren">(</span><em>groupconfigdict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#GroupLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.GroupLoader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Group loader is used to load a group.</p>
+<dl class="method">
+<dt id="mmdps.proc.loader.GroupLoader.build_internals">
+<code class="descname">build_internals</code><span class="sig-paren">(</span><em>mriscans</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#GroupLoader.build_internals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.GroupLoader.build_internals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build internals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.GroupLoader.load_mriscanstxt">
+<code class="descname">load_mriscanstxt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#GroupLoader.load_mriscanstxt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.GroupLoader.load_mriscanstxt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the mriscans txt file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.GroupLoader.person_to_mriscans">
+<code class="descname">person_to_mriscans</code><span class="sig-paren">(</span><em>person</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#GroupLoader.person_to_mriscans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.GroupLoader.person_to_mriscans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Person to mriscans, in this group.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.loader.Loader">
+<em class="property">class </em><code class="descclassname">mmdps.proc.loader.</code><code class="descname">Loader</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>mainfolder='/Users/andy/workshop/ChangGungFeatures/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#Loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.Loader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class Loader is used to load raw array data.</p>
+<dl class="method">
+<dt id="mmdps.proc.loader.Loader.csvfilename">
+<code class="descname">csvfilename</code><span class="sig-paren">(</span><em>netattrname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#Loader.csvfilename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.Loader.csvfilename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the csv filename by feature name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.Loader.fullfile">
+<code class="descname">fullfile</code><span class="sig-paren">(</span><em>mriscan</em>, <em>*p</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#Loader.fullfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.Loader.fullfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full path for one feature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.Loader.get_feature_filenames">
+<code class="descname">get_feature_filenames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#Loader.get_feature_filenames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.Loader.get_feature_filenames" title="Permalink to this definition">¶</a></dt>
+<dd><p>The feature filenames in attr_config_dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.Loader.getshape">
+<code class="descname">getshape</code><span class="sig-paren">(</span><em>mriscan</em>, <em>netattrname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#Loader.getshape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.Loader.getshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get data shape.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.Loader.loadSingle">
+<code class="descname">loadSingle</code><span class="sig-paren">(</span><em>mriscan</em>, <em>netattrname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#Loader.loadSingle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.Loader.loadSingle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load Mat, with atlasobj.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.Loader.loaddata">
+<code class="descname">loaddata</code><span class="sig-paren">(</span><em>mriscan</em>, <em>netattrname</em>, <em>csvfilename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#Loader.loaddata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.Loader.loaddata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the feature data specified by mriscan and feature name.
+Return a np mat or vec
+Use set_preproc to set a pre-processing function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.Loader.loadfilepath">
+<code class="descname">loadfilepath</code><span class="sig-paren">(</span><em>mriscan</em>, <em>netattrname</em>, <em>csvfilename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#Loader.loadfilepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.Loader.loadfilepath" title="Permalink to this definition">¶</a></dt>
+<dd><p>File path for one feature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.Loader.loadvstack">
+<code class="descname">loadvstack</code><span class="sig-paren">(</span><em>mriscans</em>, <em>netattrname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#Loader.loadvstack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.Loader.loadvstack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load all data in every mriscan in mriscans.</p>
+<p>Every feature data for one mriscan is flattened, before vstacked to a matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.Loader.set_preproc">
+<code class="descname">set_preproc</code><span class="sig-paren">(</span><em>f_preproc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#Loader.set_preproc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.Loader.set_preproc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the pre-process function. A function or mriscan:function dict.
+Will be used when loaddata is called.</p>
+<p>If f_preproc is a function, it will be used like m=f_preproc(m).
+If f_preproc is a dict, it will be used like m=f_preproc[mriscan](m).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.loader.NetLoader">
+<em class="property">class </em><code class="descclassname">mmdps.proc.loader.</code><code class="descname">NetLoader</code><span class="sig-paren">(</span><em>atlasobj</em>, <em>mainfolder='/Users/andy/workshop/ChangGungFeatures/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#NetLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.NetLoader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.loader.Loader" title="mmdps.proc.loader.Loader"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.loader.Loader</span></code></a></p>
+<p>Net loader.</p>
+<dl class="method">
+<dt id="mmdps.proc.loader.NetLoader.loadMulti">
+<code class="descname">loadMulti</code><span class="sig-paren">(</span><em>mriscans</em>, <em>attrname='BOLD.net'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#NetLoader.loadMulti"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.NetLoader.loadMulti" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a list of nets</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.NetLoader.loadSingle">
+<code class="descname">loadSingle</code><span class="sig-paren">(</span><em>mriscan</em>, <em>attrname='BOLD.net'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#NetLoader.loadSingle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.NetLoader.loadSingle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the net object, with atlasobj.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.loader.ScoreLoader">
+<em class="property">class </em><code class="descclassname">mmdps.proc.loader.</code><code class="descname">ScoreLoader</code><span class="sig-paren">(</span><em>scoreCsvFile</em>, <em>name_column='Name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#ScoreLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.ScoreLoader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>ScoreLoader is used to load clinical score data.
+The scoreCsvFile should contain a column named ‘Name’ that specifies the name of subjects.
+Other columns are considered as clinical scores.
+The loader stores scores in a dict, with key = person name and value = dict of scores</p>
+<blockquote>
+<div><ul class="simple">
+<li>person 1 : dict(score1, score2, …)</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="mmdps.proc.loader.ScoreLoader.load_scoreCsvFile">
+<code class="descname">load_scoreCsvFile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#ScoreLoader.load_scoreCsvFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.ScoreLoader.load_scoreCsvFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load score csv file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.loader.ScoreLoader.loadvstack">
+<code class="descname">loadvstack</code><span class="sig-paren">(</span><em>mriscans</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#ScoreLoader.loadvstack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.ScoreLoader.loadvstack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load all scores and vstack them to a matrix for all mriscans, in order.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.loader.generate_mriscans">
+<code class="descclassname">mmdps.proc.loader.</code><code class="descname">generate_mriscans</code><span class="sig-paren">(</span><em>namelist</em>, <em>root_folder='/Users/andy/workshop/ChangGungFeatures/'</em>, <em>num_scan=1</em>, <em>accumulate=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#generate_mriscans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.generate_mriscans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load specific scans of subjects in namelist. Specify scan number (1st, 2nd, …)
+namelist is a list of subject names (str)
+Set accumulate = True to load all scans up to (including) num_scan</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.loader.get_BOLD_feature_name">
+<code class="descclassname">mmdps.proc.loader.</code><code class="descname">get_BOLD_feature_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#get_BOLD_feature_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.get_BOLD_feature_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.loader.load_attrs">
+<code class="descclassname">mmdps.proc.loader.</code><code class="descname">load_attrs</code><span class="sig-paren">(</span><em>scans</em>, <em>atlasobj</em>, <em>attrname</em>, <em>rootFolder='/Users/andy/workshop/ChangGungFeatures/'</em>, <em>csvfilename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#load_attrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.load_attrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load static attrs as a list
+:param rootFolder:
+:param scans:
+:param atlasobj:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.loader.load_dynamic_attr">
+<code class="descclassname">mmdps.proc.loader.</code><code class="descname">load_dynamic_attr</code><span class="sig-paren">(</span><em>scans</em>, <em>atlasobj</em>, <em>attrname</em>, <em>dynamic_conf</em>, <em>rootFolder='/Users/andy/workshop/ChangGungFeatures/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#load_dynamic_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.load_dynamic_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of DynamicAttr (attr.data[tickIdx, timeIdx])
+Newer version of dynamic attr loader.
+:param rootFolder:
+:param scans:
+:param atlasobj:
+:param attrname:
+:param windowLength:
+:param stepSize:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.loader.load_dynamic_attrs">
+<code class="descclassname">mmdps.proc.loader.</code><code class="descname">load_dynamic_attrs</code><span class="sig-paren">(</span><em>scans</em>, <em>atlasobj</em>, <em>attrname</em>, <em>dynamic_conf</em>, <em>rootFolder='/Users/andy/workshop/ChangGungFeatures/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#load_dynamic_attrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.load_dynamic_attrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict of lists of Attrs as dynamic attr
+Dynamic features are saved as inter-region_&lt;feature&gt;-&lt;start&gt;.&lt;end&gt;.csv at bold_net_attr/dynamic &lt;stepSize&gt; &lt;windowLength&gt;/ folder
+Specify attrname as ‘inter-region_BC’ etc.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.loader.load_dynamic_networks">
+<code class="descclassname">mmdps.proc.loader.</code><code class="descname">load_dynamic_networks</code><span class="sig-paren">(</span><em>scans</em>, <em>atlasobj</em>, <em>dynamic_conf</em>, <em>rootFolder='/Users/andy/workshop/ChangGungFeatures/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#load_dynamic_networks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.load_dynamic_networks" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function loads dynamic networks for each scan into a dict
+The key of the dict is the scan name</p>
+<blockquote>
+<div>value is a list of networks</div></blockquote>
+<p>Dynamic networks are saved as corrcoef-&lt;start&gt;.&lt;end&gt;.csv at bold_net/dynamic &lt;stepSize&gt; &lt;windowLength&gt;/ folder</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.loader.load_single_dynamic_attr">
+<code class="descclassname">mmdps.proc.loader.</code><code class="descname">load_single_dynamic_attr</code><span class="sig-paren">(</span><em>scan</em>, <em>atlasobj</em>, <em>attrname</em>, <em>dynamic_conf</em>, <em>rootFolder='/Users/andy/workshop/ChangGungFeatures/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#load_single_dynamic_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.load_single_dynamic_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a DynamicAttr (attr.data[tickIdx, timeIdx])</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.loader.load_single_dynamic_network">
+<code class="descclassname">mmdps.proc.loader.</code><code class="descname">load_single_dynamic_network</code><span class="sig-paren">(</span><em>scan</em>, <em>atlasobj</em>, <em>dynamic_conf</em>, <em>rootFolder='/Users/andy/workshop/ChangGungFeatures/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#load_single_dynamic_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.load_single_dynamic_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a DynamicNet (net.data[timeIdx, tickIdx, tickIdx])</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.loader.load_single_network">
+<code class="descclassname">mmdps.proc.loader.</code><code class="descname">load_single_network</code><span class="sig-paren">(</span><em>mriscan</em>, <em>atlasobj</em>, <em>mainfolder='/Users/andy/workshop/ChangGungFeatures/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/loader.html#load_single_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.loader.load_single_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a single network</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.proc.netattr">
+<span id="mmdps-proc-netattr-module"></span><h2>mmdps.proc.netattr module<a class="headerlink" href="#module-mmdps.proc.netattr" title="Permalink to this headline">¶</a></h2>
+<p>Feature data container.</p>
+<p>Net is a network feature.
+Attr is an attribute feature.
+Both have corresponding atlasobj in them.
+You can create sub-net or sub-attr, the atlasobj is also subbed.</p>
+<dl class="class">
+<dt id="mmdps.proc.netattr.Attr">
+<em class="property">class </em><code class="descclassname">mmdps.proc.netattr.</code><code class="descname">Attr</code><span class="sig-paren">(</span><em>data</em>, <em>atlasobj</em>, <em>scan=None</em>, <em>feature_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.netattr.Mat" title="mmdps.proc.netattr.Mat"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.netattr.Mat</span></code></a></p>
+<p>Attr is an attribute. It is a one dimensional vector.</p>
+<p>The dimension of the vector is atlasobj.count.</p>
+<p>In static context, an Attr represents one kind of attributes of one person, 
+containing single value for multiple brain regions and resulting in a 1-D 
+vector.</p>
+<dl class="method">
+<dt id="mmdps.proc.netattr.Attr.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Attr.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Attr.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the attr.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Attr.gensub">
+<code class="descname">gensub</code><span class="sig-paren">(</span><em>subatlasname</em>, <em>subindexes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Attr.gensub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Attr.gensub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a sub, with proper atlasobj.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Attr.normalize">
+<code class="descname">normalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Attr.normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Attr.normalize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Attr.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>outfile</em>, <em>addticks=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Attr.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Attr.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the attr, can add ticks defined in atlasobj.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.netattr.DynamicAttr">
+<em class="property">class </em><code class="descclassname">mmdps.proc.netattr.</code><code class="descname">DynamicAttr</code><span class="sig-paren">(</span><em>data</em>, <em>atlasobj</em>, <em>window_length</em>, <em>step_size</em>, <em>scan=None</em>, <em>feature_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#DynamicAttr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.DynamicAttr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.netattr.Mat" title="mmdps.proc.netattr.Mat"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.netattr.Mat</span></code></a></p>
+<p>DynamicAttr is the dynamic version of Attr.</p>
+<p>In dynamic context, a DynamicAttr represents one kind of dynamic attributes 
+of one person, containing multiple values for multiple brain regions and 
+resulting in a 2-D matrix. (num_regions X num_time_points)</p>
+<dl class="method">
+<dt id="mmdps.proc.netattr.DynamicAttr.append_one_slice">
+<code class="descname">append_one_slice</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#DynamicAttr.append_one_slice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.DynamicAttr.append_one_slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function appends one slice of attributes to current dynamic attributes.
+The appended slice should align with current data, or be used to create original data.
+:param data: a np (n,) array
+:return: nothing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.DynamicAttr.get_dynamic_at_tick">
+<code class="descname">get_dynamic_at_tick</code><span class="sig-paren">(</span><em>tick</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#DynamicAttr.get_dynamic_at_tick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.DynamicAttr.get_dynamic_at_tick" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.DynamicAttr.normalize">
+<code class="descname">normalize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#DynamicAttr.normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.DynamicAttr.normalize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.netattr.DynamicNet">
+<em class="property">class </em><code class="descclassname">mmdps.proc.netattr.</code><code class="descname">DynamicNet</code><span class="sig-paren">(</span><em>data</em>, <em>atlasobj</em>, <em>window_length</em>, <em>step_size</em>, <em>scan=None</em>, <em>feature_name='BOLD.net'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#DynamicNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.DynamicNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.netattr.Mat" title="mmdps.proc.netattr.Mat"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.netattr.Mat</span></code></a></p>
+<p>DynamicNet is the dynamic version of Net. It is stored as a 3-dimensional
+data array (loc x, loc y, time). One can obtain the network at a given time
+slice by using data[:, :, idx]</p>
+<dl class="method">
+<dt id="mmdps.proc.netattr.DynamicNet.loadDynamicNets">
+<code class="descname">loadDynamicNets</code><span class="sig-paren">(</span><em>loadPath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#DynamicNet.loadDynamicNets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.DynamicNet.loadDynamicNets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated. Do not use this function</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.netattr.Mat">
+<em class="property">class </em><code class="descclassname">mmdps.proc.netattr.</code><code class="descname">Mat</code><span class="sig-paren">(</span><em>data</em>, <em>atlasobj</em>, <em>scan=None</em>, <em>feature_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Mat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Mat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Mat is a general array data of any dimension, with an atlasobj and a name.
+This is the core of Attr, Net, DynamicAttr and DynamicNet</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="mmdps.proc.netattr.Net">
+<em class="property">class </em><code class="descclassname">mmdps.proc.netattr.</code><code class="descname">Net</code><span class="sig-paren">(</span><em>data</em>, <em>atlasobj</em>, <em>scan=None</em>, <em>feature_name='BOLD.net'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Net" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mmdps.proc.netattr.Mat" title="mmdps.proc.netattr.Mat"><code class="xref py py-class docutils literal notranslate"><span class="pre">mmdps.proc.netattr.Mat</span></code></a></p>
+<p>Net is a network. It is a two dimensional sqaure symmetric matrix.</p>
+<p>The dimension of the matrix is (atlasobj.count, atlasobj.count).</p>
+<dl class="method">
+<dt id="mmdps.proc.netattr.Net.binarize">
+<code class="descname">binarize</code><span class="sig-paren">(</span><em>threshold</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Net.binarize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Net.binarize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of current network, with values binarized
+abs(FC) &lt; threshold –&gt; FC = 0
+abs(FC) &gt;= threshold –&gt; FC = 1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Net.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Net.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Net.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy the net.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Net.copySubnetOnly">
+<code class="descname">copySubnetOnly</code><span class="sig-paren">(</span><em>subAreaList</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Net.copySubnetOnly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Net.copySubnetOnly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of current network, but only values associated
+with the subnetwork specified by areas in the subAreaList argument</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Net.gensub">
+<code class="descname">gensub</code><span class="sig-paren">(</span><em>subatlasname</em>, <em>subindexes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Net.gensub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Net.gensub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a sub net, with proper atlasobj.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Net.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>outfile</em>, <em>addticks=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Net.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Net.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the net, can add ticks defined in atlasobj.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Net.setDataFromList">
+<code class="descname">setDataFromList</code><span class="sig-paren">(</span><em>valueList</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Net.setDataFromList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Net.setDataFromList" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a list of values and store them in a symmetric matrix
+The matrix is filled column-first
+The input valueList is assumed to be a one-dimensional list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Net.setValueAtTicks">
+<code class="descname">setValueAtTicks</code><span class="sig-paren">(</span><em>xtick</em>, <em>ytick</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Net.setValueAtTicks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Net.setValueAtTicks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Net.threshold">
+<code class="descname">threshold</code><span class="sig-paren">(</span><em>threshold</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Net.threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Net.threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of current network, with values thresholded
+abs(FC) &lt; threshold –&gt; FC = 0</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.netattr.Net.uniqueValueAsList">
+<code class="descname">uniqueValueAsList</code><span class="sig-paren">(</span><em>selectedAreas=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#Net.uniqueValueAsList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.Net.uniqueValueAsList" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes the strict lower triangle areas of data and convert
+to an np.array. The elements are selected column-wise, without main diag
+Specify selectedAreas to return connections within those areas</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.netattr.attr_comparisons">
+<code class="descclassname">mmdps.proc.netattr.</code><code class="descname">attr_comparisons</code><span class="sig-paren">(</span><em>attr_list_A</em>, <em>attr_list_B</em>, <em>comparison_method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#attr_comparisons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.attr_comparisons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.netattr.averageAttr">
+<code class="descclassname">mmdps.proc.netattr.</code><code class="descname">averageAttr</code><span class="sig-paren">(</span><em>attr_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#averageAttr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.averageAttr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.netattr.averageNets">
+<code class="descclassname">mmdps.proc.netattr.</code><code class="descname">averageNets</code><span class="sig-paren">(</span><em>nets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#averageNets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.averageNets" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes in a list of Net and return an averaged Net</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.netattr.networks_comparisons">
+<code class="descclassname">mmdps.proc.netattr.</code><code class="descname">networks_comparisons</code><span class="sig-paren">(</span><em>network_list_A</em>, <em>network_list_B</em>, <em>comparison_method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#networks_comparisons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.networks_comparisons" title="Permalink to this definition">¶</a></dt>
+<dd><p>comparison_method should be stats_utils.twoSampleTTest or stats_utils.pairedTTest</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.netattr.normalize_feature">
+<code class="descclassname">mmdps.proc.netattr.</code><code class="descname">normalize_feature</code><span class="sig-paren">(</span><em>feature_value</em>, <em>feature_name</em>, <em>atlasobj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#normalize_feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.normalize_feature" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.netattr.normalize_features">
+<code class="descclassname">mmdps.proc.netattr.</code><code class="descname">normalize_features</code><span class="sig-paren">(</span><em>feature_list</em>, <em>feature_name</em>, <em>atlasobj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#normalize_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.normalize_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input a list of actual values
+:param feature_list:
+:param feature_name:
+:param atlasobj:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.netattr.one_net">
+<code class="descclassname">mmdps.proc.netattr.</code><code class="descname">one_net</code><span class="sig-paren">(</span><em>atlasobj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#one_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.one_net" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.netattr.zero_attr">
+<code class="descclassname">mmdps.proc.netattr.</code><code class="descname">zero_attr</code><span class="sig-paren">(</span><em>atlasobj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#zero_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.zero_attr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.netattr.zero_net">
+<code class="descclassname">mmdps.proc.netattr.</code><code class="descname">zero_net</code><span class="sig-paren">(</span><em>atlasobj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/netattr.html#zero_net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.netattr.zero_net" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.proc.para">
+<span id="mmdps-proc-para-module"></span><h2>mmdps.proc.para module<a class="headerlink" href="#module-mmdps.proc.para" title="Permalink to this headline">¶</a></h2>
+<p>Parallel can run one job in many different folders in parallel.</p>
+<p>Parallel is used to run one job in many folders in parallel.
+The folders should be in the same parent folder.
+There is a second order parameter. If true, the folders in secondlist
+will multiply the folders in folderlist.
+If there are m folders in folderlist, the bsecond is True, n folders 
+in secondlist, there will be m * n jobs to be run in parallel.</p>
+<dl class="docutils">
+<dt>T1</dt>
+<dd><dl class="first last docutils">
+<dt>P00</dt>
+<dd>aal
+brodmann_lr</dd>
+<dt>P01</dt>
+<dd>aal
+brodmann_lr</dd>
+</dl>
+</dd>
+</dl>
+<p>the folder list contains [P00, P01], the secondlist contains [aal, brodmann_lr].
+If use bsecond is True, the job will run in the four folders in parallel.</p>
+<dl class="class">
+<dt id="mmdps.proc.para.Para">
+<em class="property">class </em><code class="descclassname">mmdps.proc.para.</code><code class="descname">Para</code><span class="sig-paren">(</span><em>name</em>, <em>mainfolder</em>, <em>jobconfig</em>, <em>folderlist</em>, <em>runmode</em>, <em>bsecond=False</em>, <em>secondlist=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/para.html#Para"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.para.Para" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="classmethod">
+<dt id="mmdps.proc.para.Para.from_dict">
+<em class="property">classmethod </em><code class="descname">from_dict</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/para.html#Para.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.para.Para.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the parallel from dict.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.para.Para.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/para.html#Para.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.para.Para.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the para.
+finalfolders is the constructed folder in which to run the job in parallel,
+Or sequential if configured that way.
+Env MMDPS_NEWLIST_TXT will override folderlist.
+Env MMDPS_SECONDLIST_TXT will override secondlist.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.para.Para.run_para">
+<code class="descname">run_para</code><span class="sig-paren">(</span><em>jobobj</em>, <em>folders</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/para.html#Para.run_para"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.para.Para.run_para" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run all jobs in parallel.
+folders is a list of folder names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.para.Para.run_seq">
+<code class="descname">run_seq</code><span class="sig-paren">(</span><em>jobobj</em>, <em>folders</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/para.html#Para.run_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.para.Para.run_seq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run all jobs sequentially.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="mmdps.proc.para.Para.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/para.html#Para.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.para.Para.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize to dict.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.para.load">
+<code class="descclassname">mmdps.proc.para.</code><code class="descname">load</code><span class="sig-paren">(</span><em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/para.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.para.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a Para from dict.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.proc.parabase">
+<span id="mmdps-proc-parabase-module"></span><h2>mmdps.proc.parabase module<a class="headerlink" href="#module-mmdps.proc.parabase" title="Permalink to this headline">¶</a></h2>
+<p>Parallel base functions.</p>
+<p>Useful functions to run commands in parallel.
+If you have a lot of time consuming work to run, save the function
+handles to a list, and use tools in this module to run them in 
+parallel.</p>
+<p>Example:
+allfuncs = []
+allfuncs.append(plot_heatmap.run)
+allfuncs.append(plot_line.run)
+allfuncs.append(plot_bnv.run)
+allfuncs.append(plot_circos.run)
+parabase.run_callfunc(allfuncs)</p>
+<dl class="class">
+<dt id="mmdps.proc.parabase.FWrap">
+<em class="property">class </em><code class="descclassname">mmdps.proc.parabase.</code><code class="descname">FWrap</code><span class="sig-paren">(</span><em>f</em>, <em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#FWrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.FWrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrap the function in an object. Put run arg in the q when done.</p>
+<dl class="method">
+<dt id="mmdps.proc.parabase.FWrap.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>arg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#FWrap.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.FWrap.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the function. Put the run arg to q when finished calling f.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.parabase.callfunc">
+<code class="descclassname">mmdps.proc.parabase.</code><code class="descname">callfunc</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#callfunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.callfunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call f().</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.parabase.callrun">
+<code class="descclassname">mmdps.proc.parabase.</code><code class="descname">callrun</code><span class="sig-paren">(</span><em>o</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#callrun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.callrun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call o.run().</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.parabase.get_processes">
+<code class="descclassname">mmdps.proc.parabase.</code><code class="descname">get_processes</code><span class="sig-paren">(</span><em>processes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#get_processes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.get_processes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get how many processes to use when run things in parallel.</p>
+<p>Set env MMDPS_CPU_COUNT=n to force the cpu count to n. n is an integer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.parabase.run">
+<code class="descclassname">mmdps.proc.parabase.</code><code class="descname">run</code><span class="sig-paren">(</span><em>f</em>, <em>argvec</em>, <em>processes=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run function f len(argvec) times, each time use one arg in argvec.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.parabase.run1">
+<code class="descclassname">mmdps.proc.parabase.</code><code class="descname">run1</code><span class="sig-paren">(</span><em>f</em>, <em>argvec</em>, <em>processes=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#run1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.run1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run function f len(argvec) times, each time use one arg in argvec.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.parabase.run_callfunc">
+<code class="descclassname">mmdps.proc.parabase.</code><code class="descname">run_callfunc</code><span class="sig-paren">(</span><em>fs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#run_callfunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.run_callfunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parallel call function, call f.() for each f in fs.</p>
+<p>Use this whenever possible.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.parabase.run_callrun">
+<code class="descclassname">mmdps.proc.parabase.</code><code class="descname">run_callrun</code><span class="sig-paren">(</span><em>tasks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#run_callrun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.run_callrun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parallel call run, call task.run() for each task in tasks.</p>
+<p>Use this whenever possible.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.parabase.run_in_background">
+<code class="descclassname">mmdps.proc.parabase.</code><code class="descname">run_in_background</code><span class="sig-paren">(</span><em>f</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#run_in_background"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.run_in_background" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run f in background.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mmdps.proc.parabase.run_simple">
+<code class="descclassname">mmdps.proc.parabase.</code><code class="descname">run_simple</code><span class="sig-paren">(</span><em>f</em>, <em>argvec</em>, <em>processes=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mmdps/proc/parabase.html#run_simple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mmdps.proc.parabase.run_simple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as run, without progress reporting.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mmdps.proc">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mmdps.proc" title="Permalink to this headline">¶</a></h2>
+<p>proc deals with computation framework.</p>
+<p>Includes config framework, parallel computing, fusion framework, atlas tools.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MMDPS</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="mmdps.html">mmdps package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="mmdps.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mmdps.common.html">mmdps.common package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mmdps.dms.html">mmdps.dms package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mmdps.gui.html">mmdps.gui package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">mmdps.proc package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc.analysis_report">mmdps.proc.analysis_report module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc.atlas">mmdps.proc.atlas module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc.correlation_calculator">mmdps.proc.correlation_calculator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc.fusion">mmdps.proc.fusion module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc.group_manager">mmdps.proc.group_manager module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc.job">mmdps.proc.job module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc.loader">mmdps.proc.loader module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc.netattr">mmdps.proc.netattr module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc.para">mmdps.proc.para module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc.parabase">mmdps.proc.parabase module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-mmdps.proc">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mmdps.util.html">mmdps.util package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mmdps.vis.html">mmdps.vis package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mmdps.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmdps.html#module-mmdps.rootconfig">mmdps.rootconfig module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmdps.html#mmdps-rootconfig-sample-module">mmdps.rootconfig.sample module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mmdps.html#module-mmdps">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="mmdps.html">mmdps package</a><ul>
+      <li>Previous: <a href="mmdps.gui.html" title="previous chapter">mmdps.gui package</a></li>
+      <li>Next: <a href="mmdps.util.html" title="next chapter">mmdps.util package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/mmdps.proc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

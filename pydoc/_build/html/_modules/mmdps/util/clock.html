@@ -1,0 +1,153 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.util.clock &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.util.clock</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Clock and time related utils.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">date</span>
+
+<div class="viewcode-block" id="add_years"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.clock.add_years">[docs]</a><span class="k">def</span> <span class="nf">add_years</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">years</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a date that&#39;s `years` years after the date (or datetime)</span>
+<span class="sd">    object `d`. Return the same calendar date (month and day) in the</span>
+<span class="sd">    destination year, if it exists, otherwise use the following day</span>
+<span class="sd">    (thus changing February 29 to March 1).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">years</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">d</span> <span class="o">+</span> <span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">years</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">date</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span></div>
+    
+<div class="viewcode-block" id="now"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.clock.now">[docs]</a><span class="k">def</span> <span class="nf">now</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Time string represents now().</span>
+<span class="sd">    </span>
+<span class="sd">    No &#39;:&#39; in the string, can be used in filename.</span>
+<span class="sd">    The iso time string cannot be used in filename.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H-%M-%S.</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="now_str"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.clock.now_str">[docs]</a><span class="k">def</span> <span class="nf">now_str</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;A more reader-friendly format&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="isofmt"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.clock.isofmt">[docs]</a><span class="k">def</span> <span class="nf">isofmt</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;ISO time fmt.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S&#39;</span></div>
+
+<div class="viewcode-block" id="simplefmt"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.clock.simplefmt">[docs]</a><span class="k">def</span> <span class="nf">simplefmt</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Simple time fmt.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">&#39;</span></div>
+
+<div class="viewcode-block" id="iso_to_time"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.clock.iso_to_time">[docs]</a><span class="k">def</span> <span class="nf">iso_to_time</span><span class="p">(</span><span class="n">isostr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ISO time string to time object.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">isostr</span><span class="p">,</span> <span class="n">isofmt</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="time_to_iso"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.clock.time_to_iso">[docs]</a><span class="k">def</span> <span class="nf">time_to_iso</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Time object to iso time string.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">isofmt</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="iso_to_simple"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.clock.iso_to_simple">[docs]</a><span class="k">def</span> <span class="nf">iso_to_simple</span><span class="p">(</span><span class="n">isostr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ISO time string to simple time string.&quot;&quot;&quot;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">iso_to_time</span><span class="p">(</span><span class="n">isostr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">simplefmt</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="simple_to_time"><a class="viewcode-back" href="../../../mmdps.util.html#mmdps.util.clock.simple_to_time">[docs]</a><span class="k">def</span> <span class="nf">simple_to_time</span><span class="p">(</span><span class="n">simplestr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simple time string to time object.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">simplestr</span><span class="p">,</span> <span class="n">simplefmt</span><span class="p">())</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">MMDPS</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mmdps.html">mmdps package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

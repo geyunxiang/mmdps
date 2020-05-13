@@ -1,0 +1,309 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.dms.tables &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.dms.tables</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Database sql-alchemy tables.</span>
+
+<span class="sd">Define the database by sql-alchemy tables.</span>
+<span class="sd">Can ease the selection of RDBMS, and much more if use ORM properly.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="k">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">DateTime</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">Boolean</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="k">import</span> <span class="n">declarative_base</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="k">import</span> <span class="n">relationship</span>
+
+<span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+
+<span class="c1"># table for many to many relationship</span>
+<span class="n">association_table_group_person</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+	<span class="s1">&#39;association_group_person&#39;</span><span class="p">,</span> <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+	<span class="n">Column</span><span class="p">(</span><span class="s1">&#39;group_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;groups.id&#39;</span><span class="p">)),</span>
+	<span class="n">Column</span><span class="p">(</span><span class="s1">&#39;person_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;people.id&#39;</span><span class="p">))</span>
+<span class="p">)</span>
+
+<span class="n">association_table_group_scan</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+	<span class="s1">&#39;association_group_scan&#39;</span><span class="p">,</span> <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> 
+	<span class="n">Column</span><span class="p">(</span><span class="s1">&#39;group_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;groups.id&#39;</span><span class="p">)),</span> 
+	<span class="n">Column</span><span class="p">(</span><span class="s1">&#39;scan_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;mriscans.id&#39;</span><span class="p">))</span>
+<span class="p">)</span>
+
+<span class="n">association_table_group_study</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+	<span class="s1">&#39;association_group_study&#39;</span><span class="p">,</span> <span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+	<span class="n">Column</span><span class="p">(</span><span class="s1">&#39;group_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;groups.id&#39;</span><span class="p">)),</span>
+	<span class="n">Column</span><span class="p">(</span><span class="s1">&#39;study_id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;researchstudy.id&#39;</span><span class="p">))</span>
+<span class="p">)</span>
+
+<div class="viewcode-block" id="BaseModel"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.BaseModel">[docs]</a><span class="k">class</span> <span class="nc">BaseModel</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Base model.&quot;&quot;&quot;</span>
+	<span class="n">__abstract__</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Person"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.Person">[docs]</a><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Person.&quot;&quot;&quot;</span>
+	<span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;people&#39;</span>
+	<span class="c1"># columns</span>
+	<span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">patientid</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+	<span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+	<span class="n">gender</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+	<span class="n">birth</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">)</span>
+	<span class="n">weight</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
+
+	<span class="c1"># relationships</span>
+	<span class="n">mriscans</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;MRIScan&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
+	<span class="n">motionscores</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;MotionScore&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
+	<span class="n">strokescores</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;StrokeScore&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
+	<span class="n">groups</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="n">secondary</span><span class="o">=</span><span class="n">association_table_group_person</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;people&#39;</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s2">&quot;&lt;Person(name=&#39;</span><span class="si">{}</span><span class="s2">&#39;, gender=&#39;</span><span class="si">{}</span><span class="s2">&#39;, birth=&#39;</span><span class="si">{}</span><span class="s2">&#39;, weight=&#39;</span><span class="si">{}</span><span class="s2">&#39;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">birth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Person.build_person"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.Person.build_person">[docs]</a>	<span class="nd">@classmethod</span>
+	<span class="k">def</span> <span class="nf">build_person</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">scaninfo</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Used when new person is introduced</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="kn">from</span> <span class="nn">mmdps.util</span> <span class="k">import</span> <span class="n">clock</span>
+		<span class="n">patient_dict</span> <span class="o">=</span> <span class="n">scaninfo</span><span class="p">[</span><span class="s1">&#39;Patient&#39;</span><span class="p">]</span>
+		<span class="n">patientid</span> <span class="o">=</span> <span class="n">patient_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+		<span class="n">gender</span> <span class="o">=</span> <span class="n">patient_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">)</span>
+		<span class="n">weight</span> <span class="o">=</span> <span class="n">patient_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Weight&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">)</span>
+		<span class="k">if</span> <span class="s1">&#39;Birth&#39;</span> <span class="ow">in</span> <span class="n">patient_dict</span><span class="p">:</span>
+			<span class="n">birth</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">patient_dict</span><span class="p">[</span><span class="s1">&#39;Birth&#39;</span><span class="p">],</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">ageraw</span> <span class="o">=</span> <span class="n">patient_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AgeRaw&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+			<span class="n">scandate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">scaninfo</span><span class="p">[</span><span class="s1">&#39;StudyDate&#39;</span><span class="p">],</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">)</span> <span class="c1"># parse scan datetime</span>
+			<span class="n">birth</span> <span class="o">=</span> <span class="n">clock</span><span class="o">.</span><span class="n">add_years</span><span class="p">(</span><span class="n">scandate</span><span class="p">,</span> <span class="o">-</span><span class="n">ageraw</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">,</span> <span class="n">patientid</span> <span class="o">=</span> <span class="n">patientid</span><span class="p">,</span> <span class="n">gender</span> <span class="o">=</span> <span class="n">gender</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span><span class="p">,</span> <span class="n">birth</span> <span class="o">=</span> <span class="n">birth</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="MRIMachine"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.MRIMachine">[docs]</a><span class="k">class</span> <span class="nc">MRIMachine</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;MRIMachine.&quot;&quot;&quot;</span>
+	<span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;mrimachines&#39;</span>
+	<span class="c1"># columns</span>
+	<span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">institution</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+	<span class="n">manufacturer</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+	<span class="n">modelname</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+
+	<span class="c1"># relationships</span>
+	<span class="n">mriscans</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;MRIScan&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;mrimachine&#39;</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s2">&quot;&lt;MRIMachine(institution=&#39;</span><span class="si">{}</span><span class="s2">&#39;, manufacturer=&#39;</span><span class="si">{}</span><span class="s2">&#39;, modelname=&#39;</span><span class="si">{}</span><span class="s2">&#39;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">institution</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">manufacturer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelname</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MRIScan"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.MRIScan">[docs]</a><span class="k">class</span> <span class="nc">MRIScan</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;MRIScan.&quot;&quot;&quot;</span>
+	<span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;mriscans&#39;</span>
+	<span class="c1"># columns</span>
+	<span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">filename</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+	<span class="n">person_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;people.id&#39;</span><span class="p">))</span>
+	<span class="n">mrimachine_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;mrimachines.id&#39;</span><span class="p">))</span>
+	<span class="n">date</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">)</span>
+	<span class="n">hasT1</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Boolean</span><span class="p">)</span>
+	<span class="n">hasT2</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Boolean</span><span class="p">)</span>
+	<span class="n">hasBOLD</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Boolean</span><span class="p">)</span>
+	<span class="n">hasDWI</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Boolean</span><span class="p">)</span>
+
+	<span class="c1"># relationships</span>
+	<span class="n">person</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;mriscans&#39;</span><span class="p">)</span>
+	<span class="n">mrimachine</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;MRIMachine&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;mriscans&#39;</span><span class="p">)</span>
+	<span class="n">motionscores</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;MotionScore&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;mriscan&#39;</span><span class="p">)</span>
+	<span class="n">strokescores</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;StrokeScore&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;mriscan&#39;</span><span class="p">)</span>
+	<span class="n">groups</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="n">secondary</span> <span class="o">=</span> <span class="n">association_table_group_scan</span><span class="p">,</span> <span class="n">back_populates</span> <span class="o">=</span> <span class="s1">&#39;scans&#39;</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s2">&quot;&lt;MRIScan(person_id=&#39;</span><span class="si">{}</span><span class="s2">&#39;, filename=&#39;</span><span class="si">{}</span><span class="s2">&#39;, hasT1=&#39;</span><span class="si">{}</span><span class="s2">&#39;, hasT2=&#39;</span><span class="si">{}</span><span class="s2">&#39;, hasBOLD=&#39;</span><span class="si">{}</span><span class="s2">&#39;, hasDWI=&#39;</span><span class="si">{}</span><span class="s2">&#39;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">person_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasT1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasT2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasBOLD</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasDWI</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MRIScan.get_folder"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.MRIScan.get_folder">[docs]</a>	<span class="k">def</span> <span class="nf">get_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">person</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">))</span></div></div>
+
+<div class="viewcode-block" id="MotionScore"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.MotionScore">[docs]</a><span class="k">class</span> <span class="nc">MotionScore</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;MotionScore.&quot;&quot;&quot;</span>
+	<span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;motionscores&#39;</span>
+	<span class="c1"># columns</span>
+	<span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">person_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;people.id&#39;</span><span class="p">))</span>
+	<span class="n">mriscan_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;mriscans.id&#39;</span><span class="p">))</span>
+	<span class="n">date</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">)</span>
+	<span class="n">scTSI</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+	<span class="n">scMotor</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+	<span class="n">scSensory</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+	<span class="n">scVAS</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+	<span class="n">scMAS</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+	<span class="n">scWISCI2</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+	<span class="n">scSCIM</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+	<span class="c1"># relationships</span>
+	<span class="n">person</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;motionscores&#39;</span><span class="p">)</span>
+	<span class="n">mriscan</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;MRIScan&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;motionscores&#39;</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s2">&quot;&lt;MotionScore(person_id=&#39;</span><span class="si">{}</span><span class="s2">&#39;, mriscan_id=&#39;</span><span class="si">{}</span><span class="s2">&#39;, date=&#39;</span><span class="si">{}</span><span class="s2">&#39;, scTSI=&#39;</span><span class="si">{}</span><span class="s2">&#39;, scMotor=&#39;</span><span class="si">{}</span><span class="s2">&#39;, scSensory=&#39;</span><span class="si">{}</span><span class="s2">&#39;, scVAS=&#39;</span><span class="si">{}</span><span class="s2">&#39;, scMAS=&#39;</span><span class="si">{}</span><span class="s2">&#39;, scWISCI2=&#39;</span><span class="si">{}</span><span class="s2">&#39;, scSCIM=&#39;</span><span class="si">{}</span><span class="s2">&#39;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">person_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mriscan_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scTSI</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scMotor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scSensory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scVAS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scMAS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scWISCI2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scSCIM</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StrokeScore"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.StrokeScore">[docs]</a><span class="k">class</span> <span class="nc">StrokeScore</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;StrokeScore.&quot;&quot;&quot;</span>
+	<span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;strokescores&#39;</span>
+	<span class="c1"># columns</span>
+	<span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">person_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;people.id&#39;</span><span class="p">))</span>
+	<span class="n">mriscan_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;mriscans.id&#39;</span><span class="p">))</span>
+	<span class="n">date</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">DateTime</span><span class="p">)</span>
+	<span class="n">scFMA</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+	<span class="n">scARAT</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+	<span class="n">scWOLF</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+	<span class="c1"># relationships</span>
+	<span class="n">person</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;strokescores&#39;</span><span class="p">)</span>
+	<span class="n">mriscan</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;MRIScan&#39;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;strokescores&#39;</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s2">&quot;&lt;StrokeScore(person_id=&#39;</span><span class="si">{}</span><span class="s2">&#39;, mriscan_id=&#39;</span><span class="si">{}</span><span class="s2">&#39;, date=&#39;</span><span class="si">{}</span><span class="s2">&#39;, scFMA=&#39;</span><span class="si">{}</span><span class="s2">&#39;, scARAT=&#39;</span><span class="si">{}</span><span class="s2">&#39;, scWOLF=&#39;</span><span class="si">{}</span><span class="s2">&#39;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">person_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mriscan_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scFMA</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scARAT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scWOLF</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.Group">[docs]</a><span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Group.&quot;&quot;&quot;</span>
+	<span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;groups&#39;</span>
+	<span class="c1"># columns</span>
+	<span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+	<span class="n">description</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+
+	<span class="c1"># relationships</span>
+	<span class="n">people</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="n">secondary</span> <span class="o">=</span> <span class="n">association_table_group_person</span><span class="p">,</span> <span class="n">back_populates</span> <span class="o">=</span> <span class="s1">&#39;groups&#39;</span><span class="p">)</span>
+	<span class="n">scans</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;MRIScan&#39;</span><span class="p">,</span> <span class="n">secondary</span> <span class="o">=</span> <span class="n">association_table_group_scan</span><span class="p">,</span> <span class="n">back_populates</span> <span class="o">=</span> <span class="s1">&#39;groups&#39;</span><span class="p">)</span>
+	<span class="n">studies</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;ResearchStudy&#39;</span><span class="p">,</span> <span class="n">secondary</span> <span class="o">=</span> <span class="n">association_table_group_study</span><span class="p">,</span> <span class="n">back_populates</span> <span class="o">=</span> <span class="s1">&#39;groups&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Group.getScanStrList"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.Group.getScanStrList">[docs]</a>	<span class="k">def</span> <span class="nf">getScanStrList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="p">[</span><span class="n">scan</span><span class="o">.</span><span class="n">filename</span> <span class="k">for</span> <span class="n">scan</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Group.getSubjectNameList"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.Group.getSubjectNameList">[docs]</a>	<span class="k">def</span> <span class="nf">getSubjectNameList</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="p">[</span><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">people</span><span class="p">]</span></div>
+
+	<span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s2">&quot;&lt;Group(name=&#39;</span><span class="si">{}</span><span class="s2">&#39;, description=&#39;</span><span class="si">{}</span><span class="s2">&#39;&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ResearchStudy"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.ResearchStudy">[docs]</a><span class="k">class</span> <span class="nc">ResearchStudy</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	A ResearchStudy stands for a specific research. It includes multiple groups.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;researchstudy&#39;</span>
+	<span class="c1"># columns</span>
+	<span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+	<span class="n">description</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+	<span class="n">alias</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">)</span>
+
+	<span class="c1"># relationships</span>
+	<span class="n">groups</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s1">&#39;Group&#39;</span><span class="p">,</span> <span class="n">secondary</span> <span class="o">=</span> <span class="n">association_table_group_study</span><span class="p">,</span> <span class="n">back_populates</span> <span class="o">=</span> <span class="s1">&#39;studies&#39;</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s2">&quot;&lt;Study(name=&#39;</span><span class="si">{}</span><span class="s2">&#39;, description=&#39;</span><span class="si">{}</span><span class="s2">&#39;, alias=&#39;</span><span class="si">{}</span><span class="s2">&#39;)&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alias</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ResearchStudy.listGroups"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.ResearchStudy.listGroups">[docs]</a>	<span class="k">def</span> <span class="nf">listGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+			<span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="ResearchStudy.getGroup"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.ResearchStudy.getGroup">[docs]</a>	<span class="k">def</span> <span class="nf">getGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name_string</span><span class="p">):</span>
+		<span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">name_string</span> <span class="ow">in</span> <span class="n">gp</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">gp</span>
+		<span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ResearchStudy.getScansOfSubject"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.tables.ResearchStudy.getScansOfSubject">[docs]</a>	<span class="k">def</span> <span class="nf">getScansOfSubject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject_name</span><span class="p">):</span>
+		<span class="n">scan_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">gp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">scan</span> <span class="ow">in</span> <span class="n">gp</span><span class="o">.</span><span class="n">scans</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">scan</span><span class="o">.</span><span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">subject_name</span><span class="p">:</span>
+					<span class="n">scan_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scan</span><span class="p">)</span>
+		<span class="n">scan_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scan_list</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">scan_list</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">MMDPS</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mmdps.html">mmdps package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

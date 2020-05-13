@@ -1,0 +1,185 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.dms.exporter &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.dms.exporter</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains database-related exporters</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="c1"># from ..util import path</span>
+<span class="kn">from</span> <span class="nn">mmdps.util</span> <span class="k">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">loadsave</span>
+<span class="kn">from</span> <span class="nn">mmdps.dms.tables</span> <span class="k">import</span> <span class="n">Person</span>
+
+<div class="viewcode-block" id="MRIScanTableExporter"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.exporter.MRIScanTableExporter">[docs]</a><span class="k">class</span> <span class="nc">MRIScanTableExporter</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	The mriscan table exporter.</span>
+<span class="sd">	This class is used to scan a root folder with MRI data, and </span>
+<span class="sd">	output summaries to a csv file. The summary includes scan names</span>
+<span class="sd">	and modalities each scan contains. </span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscansfolder</span><span class="p">,</span> <span class="n">outcsvname</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Use information from the main mriscan folder, export summary to csv.&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mriscansfolder</span> <span class="o">=</span> <span class="n">mriscansfolder</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">outcsvname</span> <span class="o">=</span> <span class="n">outcsvname</span>
+		<span class="n">path</span><span class="o">.</span><span class="n">makedirs_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outcsvname</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MRIScanTableExporter.checkmodals"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.exporter.MRIScanTableExporter.checkmodals">[docs]</a>	<span class="k">def</span> <span class="nf">checkmodals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscanfolder</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Check the modals, exist or not.&quot;&quot;&quot;</span>
+		<span class="n">hasT1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mriscanfolder</span><span class="p">,</span> <span class="s1">&#39;T1.nii.gz&#39;</span><span class="p">))</span>
+		<span class="n">hasT2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mriscanfolder</span><span class="p">,</span> <span class="s1">&#39;T2.nii.gz&#39;</span><span class="p">))</span>
+		<span class="n">hasBOLD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mriscanfolder</span><span class="p">,</span> <span class="s1">&#39;BOLD.nii.gz&#39;</span><span class="p">))</span>
+		<span class="n">hasDWI</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mriscanfolder</span><span class="p">,</span> <span class="s1">&#39;DWI.nii.gz&#39;</span><span class="p">))</span>
+		<span class="k">return</span> <span class="p">(</span><span class="n">hasT1</span><span class="p">,</span> <span class="n">hasT2</span><span class="p">,</span> <span class="n">hasBOLD</span><span class="p">,</span> <span class="n">hasDWI</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MRIScanTableExporter.add_row"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.exporter.MRIScanTableExporter.add_row">[docs]</a>	<span class="k">def</span> <span class="nf">add_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">csvwriter</span><span class="p">,</span> <span class="n">mriscanfolder</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Add one result row to the csv.&quot;&quot;&quot;</span>
+		<span class="n">modalbools</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkmodals</span><span class="p">(</span><span class="n">mriscanfolder</span><span class="p">)</span>
+		<span class="n">mriscan</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">mriscanfolder</span><span class="p">)</span>
+		<span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">mriscan</span><span class="p">]</span>
+		<span class="k">for</span> <span class="n">modal</span> <span class="ow">in</span> <span class="n">modalbools</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">modal</span><span class="p">:</span>
+				<span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+		<span class="n">csvwriter</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MRIScanTableExporter.gen_csv"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.exporter.MRIScanTableExporter.gen_csv">[docs]</a>	<span class="k">def</span> <span class="nf">gen_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Generate the csv summary file.&quot;&quot;&quot;</span>
+		<span class="n">mriscanfolders</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mriscansfolder</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">))</span>
+		<span class="n">mriscanfolders</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">mriscanfolders</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">f</span><span class="p">)]</span>
+		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outcsvname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+			<span class="n">csvwriter</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+			<span class="n">csvwriter</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;T1&#39;</span><span class="p">,</span> <span class="s1">&#39;T2&#39;</span><span class="p">,</span> <span class="s1">&#39;BOLD&#39;</span><span class="p">,</span> <span class="s1">&#39;DWI&#39;</span><span class="p">])</span>
+			<span class="k">for</span> <span class="n">mriscanfolder</span> <span class="ow">in</span> <span class="n">mriscanfolders</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">csvwriter</span><span class="p">,</span> <span class="n">mriscanfolder</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MRIScanTableExporter.run"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.exporter.MRIScanTableExporter.run">[docs]</a>	<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Run the generator.&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">gen_csv</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="TextExporter"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.exporter.TextExporter">[docs]</a><span class="k">class</span> <span class="nc">TextExporter</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	This class is used to export mmdpdb file to a csv file</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mmdb</span><span class="p">,</span> <span class="n">outcsvname</span><span class="p">,</span> <span class="n">personnamestxt</span><span class="p">,</span> <span class="n">anonymize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mmdb</span> <span class="o">=</span> <span class="n">mmdb</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">outcsvname</span> <span class="o">=</span> <span class="n">outcsvname</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">anonymize</span> <span class="o">=</span> <span class="n">anonymize</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">personnames</span> <span class="o">=</span> <span class="n">loadsave</span><span class="o">.</span><span class="n">load_txt</span><span class="p">(</span><span class="n">personnamestxt</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TextExporter.run"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.exporter.TextExporter.run">[docs]</a>	<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mmdb</span><span class="o">.</span><span class="n">new_session</span><span class="p">()</span>
+		<span class="n">ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mmdb</span><span class="o">.</span><span class="n">personname_to_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">personnames</span><span class="p">)</span>
+		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outcsvname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+			<span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+			<span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s1">&#39;MRIScanID&#39;</span><span class="p">,</span> <span class="s1">&#39;personID&#39;</span><span class="p">,</span> <span class="s1">&#39;PatientID&#39;</span><span class="p">,</span> <span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;Birth&#39;</span><span class="p">,</span> <span class="s1">&#39;Weight&#39;</span><span class="p">,</span> <span class="s1">&#39;Institution&#39;</span><span class="p">,</span> <span class="s1">&#39;Manufacturer&#39;</span><span class="p">,</span> <span class="s1">&#39;ModelName&#39;</span><span class="p">,</span> <span class="s1">&#39;ScanDate&#39;</span><span class="p">,</span> <span class="s1">&#39;HasT1&#39;</span><span class="p">,</span> <span class="s1">&#39;HasT2&#39;</span><span class="p">,</span> <span class="s1">&#39;HasBOLD&#39;</span><span class="p">,</span> <span class="s1">&#39;HasDWI&#39;</span><span class="p">])</span>
+			<span class="k">for</span> <span class="n">personID</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+				<span class="n">person</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Person</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">personID</span><span class="p">)</span>
+				<span class="n">birthdate</span> <span class="o">=</span> <span class="n">person</span><span class="o">.</span><span class="n">birth</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y_%m_</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+				<span class="nb">print</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+				<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anonymize</span><span class="p">:</span>
+					<span class="n">personName</span> <span class="o">=</span> <span class="s1">&#39;P</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+					<span class="n">patientID</span> <span class="o">=</span> <span class="s1">&#39;hidden&#39;</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">personName</span> <span class="o">=</span> <span class="n">person</span><span class="o">.</span><span class="n">name</span>
+					<span class="n">patientID</span> <span class="o">=</span> <span class="n">person</span><span class="o">.</span><span class="n">patientid</span>
+				<span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="n">person</span><span class="o">.</span><span class="n">mriscans</span><span class="p">:</span>
+					<span class="n">scandate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">mriscan</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="s1">&#39;%Y_%m_</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+					<span class="n">machine</span> <span class="o">=</span> <span class="n">mriscan</span><span class="o">.</span><span class="n">mrimachine</span>
+					<span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="n">mriscan</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">person</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">patientID</span><span class="p">,</span> <span class="n">personName</span><span class="p">,</span> <span class="n">person</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span> <span class="n">birthdate</span><span class="p">,</span> <span class="n">person</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">institution</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">manufacturer</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">modelname</span><span class="p">,</span> <span class="n">scandate</span><span class="p">,</span> <span class="n">mriscan</span><span class="o">.</span><span class="n">hasT1</span><span class="p">,</span> <span class="n">mriscan</span><span class="o">.</span><span class="n">hasT2</span><span class="p">,</span> <span class="n">mriscan</span><span class="o">.</span><span class="n">hasBOLD</span><span class="p">,</span> <span class="n">mriscan</span><span class="o">.</span><span class="n">hasDWI</span><span class="p">])</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">MMDPS</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mmdps.html">mmdps package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

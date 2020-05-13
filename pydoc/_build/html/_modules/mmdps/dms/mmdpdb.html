@@ -1,0 +1,314 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.dms.mmdpdb &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.dms.mmdpdb</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module deals with mmdpdb related actions.</span>
+
+<span class="sd">mmdpdb is the database of MMDPS, containing 3 databased.</span>
+<span class="sd">	1. SQLite stores meta-info like</span>
+<span class="sd">	   patient information, scan date, group relationships, </span>
+<span class="sd">	   research study cases and so on. </span>
+<span class="sd">	2. MongoDB keeps all extracted features like networks</span>
+<span class="sd">	   and attributes. </span>
+<span class="sd">	3. Redis is a high-speed cache that starts up upon request. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">mmdps.dms</span> <span class="k">import</span> <span class="n">tables</span>
+<span class="kn">from</span> <span class="nn">mmdps.util</span> <span class="k">import</span> <span class="n">loadsave</span><span class="p">,</span> <span class="n">clock</span>
+<span class="kn">from</span> <span class="nn">mmdps</span> <span class="k">import</span> <span class="n">rootconfig</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="k">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">exists</span><span class="p">,</span> <span class="n">and_</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="k">import</span> <span class="n">sessionmaker</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm.exc</span> <span class="k">import</span> <span class="n">MultipleResultsFound</span>
+
+<div class="viewcode-block" id="MMDPDatabase"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase">[docs]</a><span class="k">class</span> <span class="nc">MMDPDatabase</span><span class="p">:</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dbFilePath</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">dms</span><span class="o">.</span><span class="n">mmdpdb_filepath</span><span class="p">):</span>
+		<span class="c1"># self.engine = create_engine(&#39;sqlite:///../import_changgung/mmdpdb.db&#39;)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="n">dbFilePath</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">Session</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MMDPDatabase.new_session"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.new_session">[docs]</a>	<span class="k">def</span> <span class="nf">new_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.insert_mrirow"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.insert_mrirow">[docs]</a>	<span class="k">def</span> <span class="nf">insert_mrirow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">hasT1</span><span class="p">,</span> <span class="n">hasT2</span><span class="p">,</span> <span class="n">hasBOLD</span><span class="p">,</span> <span class="n">hasDWI</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Insert one mriscan record.&quot;&quot;&quot;</span>
+		<span class="c1"># check if scan already exist</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">exists</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">MRIScan</span><span class="o">.</span><span class="n">filename</span> <span class="o">==</span> <span class="n">scan</span><span class="p">))</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+				<span class="c1"># record exists</span>
+				<span class="k">return</span> <span class="mi">0</span>
+		<span class="k">except</span> <span class="n">MultipleResultsFound</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error when importing: multiple scan records found for </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">scan</span><span class="p">)</span>
+			<span class="k">return</span> <span class="mi">1</span>
+		<span class="n">mrifolder</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">dms</span><span class="o">.</span><span class="n">folder_mridata</span>
+		<span class="n">scaninfo</span> <span class="o">=</span> <span class="n">loadsave</span><span class="o">.</span><span class="n">load_json</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mrifolder</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="s1">&#39;scan_info.json&#39;</span><span class="p">))</span>
+
+		<span class="n">machine</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">MRIMachine</span><span class="p">(</span><span class="n">institution</span> <span class="o">=</span> <span class="n">scaninfo</span><span class="p">[</span><span class="s1">&#39;Machine&#39;</span><span class="p">][</span><span class="s1">&#39;Institution&#39;</span><span class="p">],</span>
+							 <span class="n">manufacturer</span> <span class="o">=</span> <span class="n">scaninfo</span><span class="p">[</span><span class="s1">&#39;Machine&#39;</span><span class="p">][</span><span class="s1">&#39;Manufacturer&#39;</span><span class="p">],</span>
+							 <span class="n">modelname</span> <span class="o">=</span> <span class="n">scaninfo</span><span class="p">[</span><span class="s1">&#39;Machine&#39;</span><span class="p">][</span><span class="s1">&#39;ManufacturerModelName&#39;</span><span class="p">])</span>
+
+		<span class="n">name</span><span class="p">,</span> <span class="n">date</span> <span class="o">=</span> <span class="n">scan</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+		<span class="n">dateobj</span> <span class="o">=</span> <span class="n">clock</span><span class="o">.</span><span class="n">simple_to_time</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+		<span class="n">db_mriscan</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">MRIScan</span><span class="p">(</span><span class="n">date</span> <span class="o">=</span> <span class="n">dateobj</span><span class="p">,</span> <span class="n">hasT1</span> <span class="o">=</span> <span class="n">hasT1</span><span class="p">,</span> <span class="n">hasT2</span> <span class="o">=</span> <span class="n">hasT2</span><span class="p">,</span> <span class="n">hasBOLD</span> <span class="o">=</span> <span class="n">hasBOLD</span><span class="p">,</span> <span class="n">hasDWI</span> <span class="o">=</span> <span class="n">hasDWI</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">scan</span><span class="p">)</span>
+		<span class="n">machine</span><span class="o">.</span><span class="n">mriscans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db_mriscan</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">exists</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">,</span> <span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="o">.</span><span class="n">patientid</span> <span class="o">==</span> <span class="n">scaninfo</span><span class="p">[</span><span class="s1">&#39;Patient&#39;</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">])))</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">db_mriscan</span><span class="p">)</span>
+				<span class="n">person</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+				<span class="n">person</span><span class="o">.</span><span class="n">mriscans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db_mriscan</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Old patient new scan </span><span class="si">%s</span><span class="s1"> inserted&#39;</span> <span class="o">%</span> <span class="n">scan</span><span class="p">)</span>
+				<span class="k">return</span> <span class="mi">0</span>
+		<span class="k">except</span> <span class="n">MultipleResultsFound</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error when importing: multiple person records found for </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+			<span class="k">return</span> <span class="mi">2</span>
+		<span class="n">db_person</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="o">.</span><span class="n">build_person</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">scaninfo</span><span class="p">)</span>
+		<span class="n">db_person</span><span class="o">.</span><span class="n">mriscans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db_mriscan</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">db_person</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;New patient new scan </span><span class="si">%s</span><span class="s1"> inserted&#39;</span> <span class="o">%</span> <span class="n">scan</span><span class="p">)</span>
+		<span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.getScansInGroup"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.getScansInGroup">[docs]</a>	<span class="k">def</span> <span class="nf">getScansInGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">):</span>
+		<span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">groupName</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+		<span class="k">return</span> <span class="n">group</span><span class="o">.</span><span class="n">scans</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.getNamesInGroup"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.getNamesInGroup">[docs]</a>	<span class="k">def</span> <span class="nf">getNamesInGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">):</span>
+		<span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">groupName</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+		<span class="k">return</span> <span class="n">group</span><span class="o">.</span><span class="n">people</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.getAllGroups"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.getAllGroups">[docs]</a>	<span class="k">def</span> <span class="nf">getAllGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Return a list of all groups in this database</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.getResearchStudy"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.getResearchStudy">[docs]</a>	<span class="k">def</span> <span class="nf">getResearchStudy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alias</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">ResearchStudy</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">alias</span> <span class="o">=</span> <span class="n">alias</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.getHealthyGroup"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.getHealthyGroup">[docs]</a>	<span class="k">def</span> <span class="nf">getHealthyGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Changgung HC&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.newGroupByScans"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.newGroupByScans">[docs]</a>	<span class="k">def</span> <span class="nf">newGroupByScans</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">,</span> <span class="n">scanList</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Initialize a group by a list of scans</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">group</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">Group</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">groupName</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="n">desc</span><span class="p">)</span>
+		<span class="c1"># check if group already exist</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">groupName</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">NoResultFound</span><span class="p">:</span>
+			<span class="c1"># alright</span>
+			<span class="k">for</span> <span class="n">scan</span> <span class="ow">in</span> <span class="n">scanList</span><span class="p">:</span>
+				<span class="n">db_scan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">MRIScan</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">scan</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+				<span class="n">group</span><span class="o">.</span><span class="n">scans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db_scan</span><span class="p">)</span>
+				<span class="n">group</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db_scan</span><span class="o">.</span><span class="n">person</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+			<span class="k">return</span>
+		<span class="k">except</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">MultipleResultsFound</span><span class="p">:</span>
+			<span class="c1"># more than one record found</span>
+			<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;More than one </span><span class="si">%s</span><span class="s2"> group found!&quot;</span> <span class="o">%</span> <span class="n">groupName</span><span class="p">)</span>
+		<span class="c1"># found one existing record</span>
+		<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> group already exist&quot;</span> <span class="o">%</span> <span class="n">groupName</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.newGroupByNames"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.newGroupByNames">[docs]</a>	<span class="k">def</span> <span class="nf">newGroupByNames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">,</span> <span class="n">nameList</span><span class="p">,</span> <span class="n">scanNum</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">accumulateScan</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Initialize a group by a list of names. The scans are generated automatically. </span>
+<span class="sd">		scanNum - which scan (first/second/etc)</span>
+<span class="sd">		accumulateScan - whether keep former scans in this group</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">group</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">Group</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">groupName</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="n">desc</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">groupName</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+		<span class="k">except</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">NoResultFound</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">nameList</span><span class="p">:</span>
+				<span class="n">db_person</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+				<span class="n">group</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db_person</span><span class="p">)</span>
+				<span class="k">if</span> <span class="n">accumulateScan</span><span class="p">:</span>
+					<span class="n">group</span><span class="o">.</span><span class="n">scans</span> <span class="o">+=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">db_person</span><span class="o">.</span><span class="n">mriscans</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">filename</span><span class="p">)[:</span><span class="n">scanNum</span><span class="p">]</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">group</span><span class="o">.</span><span class="n">scans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">db_person</span><span class="o">.</span><span class="n">mriscans</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="n">scanNum</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+			<span class="k">return</span>
+		<span class="k">except</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">orm</span><span class="o">.</span><span class="n">exc</span><span class="o">.</span><span class="n">MultipleResultsFound</span><span class="p">:</span>
+			<span class="c1"># more than one record found</span>
+			<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;More than one </span><span class="si">%s</span><span class="s2"> group found!&quot;</span> <span class="o">%</span> <span class="n">groupName</span><span class="p">)</span>
+		<span class="c1"># found one existing record</span>
+		<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> group already exist&quot;</span> <span class="o">%</span> <span class="n">groupName</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.newGroupByNamesAndScans"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.newGroupByNamesAndScans">[docs]</a>	<span class="k">def</span> <span class="nf">newGroupByNamesAndScans</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">,</span> <span class="n">nameList</span><span class="p">,</span> <span class="n">scanList</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Initialize a group by giving both name and scans</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">group</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">Group</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">groupName</span><span class="p">,</span> <span class="n">description</span> <span class="o">=</span> <span class="n">desc</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">nameList</span><span class="p">:</span>
+			<span class="n">db_person</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+			<span class="n">group</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db_person</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">scan</span> <span class="ow">in</span> <span class="n">scanList</span><span class="p">:</span>
+			<span class="n">db_scan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">MRIScan</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">scan</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+			<span class="n">group</span><span class="o">.</span><span class="n">scans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">db_scan</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.deleteGroupByName"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.deleteGroupByName">[docs]</a>	<span class="k">def</span> <span class="nf">deleteGroupByName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupName</span><span class="p">):</span>
+		<span class="n">groupList</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">groupName</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+		<span class="c1"># if group is None:</span>
+		<span class="c1"># 	raise Exception(&quot;%s group does not exist!&quot; % groupName)</span>
+		<span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groupList</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.personname_to_id"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.personname_to_id">[docs]</a>	<span class="k">def</span> <span class="nf">personname_to_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">personnames</span><span class="p">):</span>
+		<span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_session</span><span class="p">()</span>
+		<span class="n">personIDs</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">personname</span> <span class="ow">in</span> <span class="n">personnames</span><span class="p">:</span>
+			<span class="n">person</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">personname</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+			<span class="n">personIDs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">person</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">personIDs</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.get_all_scans_of_person"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.get_all_scans_of_person">[docs]</a>	<span class="k">def</span> <span class="nf">get_all_scans_of_person</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person_name</span><span class="p">):</span>
+		<span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_session</span><span class="p">()</span>
+		<span class="n">one_person</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">person_name</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+		<span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">MRIScan</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">person_id</span> <span class="o">=</span> <span class="n">one_person</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MMDPDatabase.deleteScan"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.MMDPDatabase.deleteScan">[docs]</a>	<span class="k">def</span> <span class="nf">deleteScan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">mriscanFilename</span><span class="p">):</span>
+		<span class="n">db_scan</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">MRIScan</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">mriscanFilename</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+		<span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">db_scan</span><span class="p">)</span>
+		<span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="updateDatabase"><a class="viewcode-back" href="../../../mmdps.dms.html#mmdps.dms.mmdpdb.updateDatabase">[docs]</a><span class="k">def</span> <span class="nf">updateDatabase</span><span class="p">(</span><span class="n">newDBFilePath</span><span class="p">,</span> <span class="n">currentDBFilePath</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">dms</span><span class="o">.</span><span class="n">mmdpdb_filepath</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	This function is used to update people/mriscans in current database</span>
+<span class="sd">	Usually used after new data are added</span>
+<span class="sd">	NOT TESTED</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">currentEngine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="n">currentDBFilePath</span><span class="p">)</span>
+	<span class="n">newEngine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;sqlite:///&#39;</span> <span class="o">+</span> <span class="n">newDBFilePath</span><span class="p">)</span>
+	<span class="n">currentSession</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span> <span class="o">=</span> <span class="n">currentEngine</span><span class="p">)()</span>
+	<span class="n">newSession</span> <span class="o">=</span> <span class="n">sessionmaker</span><span class="p">(</span><span class="n">bind</span> <span class="o">=</span> <span class="n">newEngine</span><span class="p">)()</span>
+
+	<span class="c1"># search for new people</span>
+	<span class="n">allNewPeople</span> <span class="o">=</span> <span class="n">newSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">allNewPeople</span><span class="p">:</span>
+		<span class="c1"># find if this person is in current session</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">ret</span> <span class="o">=</span> <span class="n">currentSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">exists</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">and_</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">person</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">tables</span><span class="o">.</span><span class="n">Person</span><span class="o">.</span><span class="n">patientid</span> <span class="o">==</span> <span class="n">person</span><span class="o">.</span><span class="n">id</span><span class="p">)))</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+				<span class="n">currentSession</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+		<span class="k">except</span> <span class="n">MultipleResultsFound</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Multiple same person found!&#39;</span><span class="p">)</span>
+
+	<span class="c1"># search for new scans</span>
+	<span class="n">allNewScans</span> <span class="o">=</span> <span class="n">newSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">MRIScan</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+	<span class="k">for</span> <span class="n">scan</span> <span class="ow">in</span> <span class="n">allNewScans</span><span class="p">:</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">ret</span> <span class="o">=</span> <span class="n">currentSession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">exists</span><span class="p">()</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tables</span><span class="o">.</span><span class="n">MRIScan</span><span class="o">.</span><span class="n">filename</span> <span class="o">==</span> <span class="n">scan</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+				<span class="n">currentSession</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">scan</span><span class="p">)</span>
+		<span class="k">except</span> <span class="n">MultipleResultsFound</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Multiple same scans found!&#39;</span><span class="p">)</span>
+	<span class="n">currentSession</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+	<span class="n">currentSession</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="n">newSession</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">MMDPS</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mmdps.html">mmdps package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

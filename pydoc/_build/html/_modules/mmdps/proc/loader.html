@@ -1,0 +1,524 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.proc.loader &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.proc.loader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Loader is used to load all fusion input.</span>
+
+<span class="sd">The fusion input is loaded by loaders.</span>
+<span class="sd">The loaders are created by fusion constructor. There are config files</span>
+<span class="sd">to config every loader.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">mmdps</span> <span class="k">import</span> <span class="n">rootconfig</span>
+<span class="kn">from</span> <span class="nn">mmdps.proc</span> <span class="k">import</span> <span class="n">netattr</span><span class="p">,</span> <span class="n">atlas</span>
+<span class="kn">from</span> <span class="nn">mmdps.util.loadsave</span> <span class="k">import</span> <span class="n">load_csvmat</span><span class="p">,</span> <span class="n">load_txt</span><span class="p">,</span> <span class="n">load_csv_to_list</span>
+<span class="kn">from</span> <span class="nn">mmdps.util</span> <span class="k">import</span> <span class="n">path</span>
+
+<div class="viewcode-block" id="Loader"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader">[docs]</a><span class="k">class</span> <span class="nc">Loader</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Base class Loader is used to load raw array data.&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">mainfolder</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">feature_root</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Init the loader.</span>
+<span class="sd">		- mainfolder: the folder containing all scans</span>
+<span class="sd">		- attr_config_dict: contains mapping from attr name to file name</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mainfolder</span> <span class="o">=</span> <span class="n">mainfolder</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlasobj</span>
+		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">proc</span><span class="p">,</span> <span class="s1">&#39;attr_dict.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">attr_config_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">f_preproc</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Loader.get_feature_filenames"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.get_feature_filenames">[docs]</a>	<span class="k">def</span> <span class="nf">get_feature_filenames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;The feature filenames in attr_config_dict.&quot;&quot;&quot;</span>
+		<span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr_config_dict</span><span class="p">:</span>
+			<span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feat</span><span class="p">[</span><span class="s1">&#39;filename&#39;</span><span class="p">])</span>
+		<span class="k">return</span> <span class="n">filenames</span></div>
+
+<div class="viewcode-block" id="Loader.fullfile"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.fullfile">[docs]</a>	<span class="k">def</span> <span class="nf">fullfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Full path for one feature.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainfolder</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Loader.csvfilename"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.csvfilename">[docs]</a>	<span class="k">def</span> <span class="nf">csvfilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Get the csv filename by feature name.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr_config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">netattrname</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Loader.loadfilepath"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.loadfilepath">[docs]</a>	<span class="k">def</span> <span class="nf">loadfilepath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">,</span> <span class="n">csvfilename</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;File path for one feature.&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">csvfilename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullfile</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">csvfilename</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fullfile</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">csvfilename</span><span class="p">(</span><span class="n">netattrname</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Loader.loaddata"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.loaddata">[docs]</a>	<span class="k">def</span> <span class="nf">loaddata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">,</span> <span class="n">csvfilename</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Load the feature data specified by mriscan and feature name.</span>
+<span class="sd">		Return a np mat or vec</span>
+<span class="sd">		Use set_preproc to set a pre-processing function.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">csvfilename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">csvfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadfilepath</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">,</span> <span class="n">csvfilename</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">csvfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadfilepath</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">)</span>
+		<span class="n">resmat</span> <span class="o">=</span> <span class="n">load_csvmat</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f_preproc</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_preproc</span><span class="p">:</span>
+				<span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_preproc</span><span class="p">[</span><span class="n">mriscan</span><span class="p">]</span>
+				<span class="k">if</span> <span class="n">f</span><span class="p">:</span>
+					<span class="n">resmat</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">resmat</span><span class="p">)</span>
+		<span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_preproc</span><span class="p">:</span>
+			<span class="n">resmat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_preproc</span><span class="p">(</span><span class="n">resmat</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">resmat</span></div>
+
+<div class="viewcode-block" id="Loader.loadSingle"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.loadSingle">[docs]</a>	<span class="k">def</span> <span class="nf">loadSingle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Load Mat, with atlasobj.&quot;&quot;&quot;</span>
+		<span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">)</span>
+		<span class="n">netattrobj</span> <span class="o">=</span> <span class="n">netattr</span><span class="o">.</span><span class="n">Mat</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">netattrobj</span></div>
+
+<div class="viewcode-block" id="Loader.getshape"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.getshape">[docs]</a>	<span class="k">def</span> <span class="nf">getshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Get data shape.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span></div>
+
+<div class="viewcode-block" id="Loader.set_preproc"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.set_preproc">[docs]</a>	<span class="k">def</span> <span class="nf">set_preproc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f_preproc</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Set the pre-process function. A function or mriscan:function dict.</span>
+<span class="sd">		Will be used when loaddata is called.</span>
+
+<span class="sd">		If f_preproc is a function, it will be used like m=f_preproc(m).</span>
+<span class="sd">		If f_preproc is a dict, it will be used like m=f_preproc[mriscan](m).</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">f_preproc</span> <span class="o">=</span> <span class="n">f_preproc</span></div>
+
+<div class="viewcode-block" id="Loader.loadvstack"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.Loader.loadvstack">[docs]</a>	<span class="k">def</span> <span class="nf">loadvstack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Load all data in every mriscan in mriscans.</span>
+
+<span class="sd">		Every feature data for one mriscan is flattened, before vstacked to a matrix.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">datalist</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="n">mriscans</span><span class="p">:</span>
+			<span class="n">currentData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">netattrname</span><span class="p">)</span>
+			<span class="n">datalist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentData</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+		<span class="n">datavstack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">datalist</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">datavstack</span></div></div>
+
+<div class="viewcode-block" id="AttrLoader"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.AttrLoader">[docs]</a><span class="k">class</span> <span class="nc">AttrLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Attribute loader.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="AttrLoader.loadSingle"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.AttrLoader.loadSingle">[docs]</a>	<span class="k">def</span> <span class="nf">loadSingle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">csvfilename</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Load the attribute object, with atlasobj.</span>
+<span class="sd">		- mriscan: specify which scan to load from</span>
+<span class="sd">		- attrname: the name of the attr to load</span>
+<span class="sd">		- csvfilename: the name of the attr file name. Specify this parameter to override filename</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="n">csvfilename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="n">attrdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">csvfilename</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">attrdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span>
+		<span class="n">attr</span> <span class="o">=</span> <span class="n">netattr</span><span class="o">.</span><span class="n">Attr</span><span class="p">(</span><span class="n">attrdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">attr</span></div>
+
+<div class="viewcode-block" id="AttrLoader.load_multiple_attrs"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.AttrLoader.load_multiple_attrs">[docs]</a>	<span class="k">def</span> <span class="nf">load_multiple_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">,</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">csvfilename</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Load a list of netattr.Attr for each scan in mriscans</span>
+<span class="sd">		attrname = &#39;BOLD.BC&#39; etc...</span>
+<span class="sd">		:param mriscans:</span>
+<span class="sd">		:param attrname:</span>
+<span class="sd">		:param attrname: the name of the attr file name. Specify this parameter to override filename</span>
+<span class="sd">		:return:</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">attr_list</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="n">mriscans</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">csvfilename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="n">attr_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loadSingle</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">csvfilename</span><span class="p">))</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">attr_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loadSingle</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">attr_list</span></div>
+
+<div class="viewcode-block" id="AttrLoader.loadvstackmulti"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.AttrLoader.loadvstackmulti">[docs]</a>	<span class="k">def</span> <span class="nf">loadvstackmulti</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">,</span> <span class="n">attrnames</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Load all data in every mriscans in mriscans, and every attr in attrnames.</span>
+
+<span class="sd">		mriscan0 | attr0v attr1v attr2v</span>
+<span class="sd">		mriscan1 | attr0v attr1v attr2v</span>
+<span class="sd">		- mriscans: a list of scans</span>
+<span class="sd">		- attrnames: a list of names</span>
+<span class="sd">		The return data dimension is len(mriscans) X (len(attrnames) * atlasobj.count)</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">attrvs</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">attrname</span> <span class="ow">in</span> <span class="n">attrnames</span><span class="p">:</span>
+			<span class="n">attrv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadvstack</span><span class="p">(</span><span class="n">mriscans</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span>
+			<span class="n">attrvs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attrv</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">attrvs</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="NetLoader"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.NetLoader">[docs]</a><span class="k">class</span> <span class="nc">NetLoader</span><span class="p">(</span><span class="n">Loader</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Net loader.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="NetLoader.loadSingle"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.NetLoader.loadSingle">[docs]</a>	<span class="k">def</span> <span class="nf">loadSingle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span> <span class="o">=</span> <span class="s1">&#39;BOLD.net&#39;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Load the net object, with atlasobj.&quot;&quot;&quot;</span>
+		<span class="n">netdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaddata</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span>
+		<span class="n">net</span> <span class="o">=</span> <span class="n">netattr</span><span class="o">.</span><span class="n">Net</span><span class="p">(</span><span class="n">netdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">net</span></div>
+
+<div class="viewcode-block" id="NetLoader.loadMulti"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.NetLoader.loadMulti">[docs]</a>	<span class="k">def</span> <span class="nf">loadMulti</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">,</span> <span class="n">attrname</span> <span class="o">=</span> <span class="s1">&#39;BOLD.net&#39;</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Load a list of nets&quot;&quot;&quot;</span>
+		<span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="n">mriscans</span><span class="p">:</span>
+			<span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loadSingle</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">attrname</span><span class="p">))</span>
+		<span class="k">return</span> <span class="n">ret</span></div></div>
+
+<div class="viewcode-block" id="ScoreLoader"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.ScoreLoader">[docs]</a><span class="k">class</span> <span class="nc">ScoreLoader</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	ScoreLoader is used to load clinical score data.</span>
+<span class="sd">	The scoreCsvFile should contain a column named &#39;Name&#39; that specifies the name of subjects.</span>
+<span class="sd">	Other columns are considered as clinical scores.</span>
+<span class="sd">	The loader stores scores in a dict, with key = person name and value = dict of scores</span>
+<span class="sd">		- person 1 : dict(score1, score2, ...)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scoreCsvFile</span><span class="p">,</span> <span class="n">name_column</span> <span class="o">=</span> <span class="s1">&#39;Name&#39;</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">scoreCsvFile</span> <span class="o">=</span> <span class="n">scoreCsvFile</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">name_column</span> <span class="o">=</span> <span class="n">name_column</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">scoreDict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">load_scoreCsvFile</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ScoreLoader.load_scoreCsvFile"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.ScoreLoader.load_scoreCsvFile">[docs]</a>	<span class="k">def</span> <span class="nf">load_scoreCsvFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Load score csv file.&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scoreCsvFile</span><span class="p">):</span>
+			<span class="k">return</span>
+		<span class="n">scoreCsvList</span> <span class="o">=</span> <span class="n">load_csv_to_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scoreCsvFile</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">scoreCsvList</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">scoreDict</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_column</span><span class="p">)]</span> <span class="o">=</span> <span class="n">row</span></div>
+
+<div class="viewcode-block" id="ScoreLoader.loadvstack"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.ScoreLoader.loadvstack">[docs]</a>	<span class="k">def</span> <span class="nf">loadvstack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Load all scores and vstack them to a matrix for all mriscans, in order.&quot;&quot;&quot;</span>
+		<span class="n">scoresList</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="n">mriscans</span><span class="p">:</span>
+			<span class="n">currentScores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mriscan_scores_dict</span><span class="p">[</span><span class="n">mriscan</span><span class="p">]</span>
+			<span class="n">scoresList</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentScores</span><span class="p">)</span>
+		<span class="n">scores_vstack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">scoresList</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">scores_vstack</span></div>
+
+	<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+		<span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scoreDict</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+		<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">itm</span> <span class="ow">in</span> <span class="n">ret</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">ret</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ret</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+			<span class="k">except</span><span class="p">:</span>
+				<span class="k">pass</span>
+		<span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="GroupLoader"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.GroupLoader">[docs]</a><span class="k">class</span> <span class="nc">GroupLoader</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;Group loader is used to load a group.&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groupconfigdict</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Init the loader using config dict.&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mriscanstxt</span> <span class="o">=</span> <span class="n">groupconfigdict</span><span class="p">[</span><span class="s1">&#39;txtfile&#39;</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">load_mriscanstxt</span><span class="p">()</span>
+
+<div class="viewcode-block" id="GroupLoader.load_mriscanstxt"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.GroupLoader.load_mriscanstxt">[docs]</a>	<span class="k">def</span> <span class="nf">load_mriscanstxt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Load the mriscans txt file.&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mriscanstxt</span><span class="p">):</span>
+			<span class="k">return</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mriscans</span> <span class="o">=</span> <span class="n">load_txt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mriscanstxt</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">people</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_internals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mriscans</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GroupLoader.build_internals"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.GroupLoader.build_internals">[docs]</a>	<span class="k">def</span> <span class="nf">build_internals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mriscans</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Build internals.&quot;&quot;&quot;</span>
+		<span class="n">peopleset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+		<span class="n">person_mriscans_dict</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="k">for</span> <span class="n">mriscan</span> <span class="ow">in</span> <span class="n">mriscans</span><span class="p">:</span>
+			<span class="n">person</span><span class="p">,</span> <span class="n">mriscandate</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">name_date</span><span class="p">(</span><span class="n">mriscan</span><span class="p">)</span>
+			<span class="n">peopleset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">person_mriscans_dict</span><span class="p">:</span>
+				<span class="n">person_mriscans_dict</span><span class="p">[</span><span class="n">person</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mriscan</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">person_mriscans_dict</span><span class="p">[</span><span class="n">person</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">mriscan</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">person_mriscans_dict</span> <span class="o">=</span> <span class="n">person_mriscans_dict</span>
+		<span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">peopleset</span><span class="p">))</span></div>
+	
+<div class="viewcode-block" id="GroupLoader.person_to_mriscans"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.GroupLoader.person_to_mriscans">[docs]</a>	<span class="k">def</span> <span class="nf">person_to_mriscans</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Person to mriscans, in this group.&quot;&quot;&quot;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">person_mriscans_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="p">[])</span></div></div>
+
+<div class="viewcode-block" id="get_BOLD_feature_name"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.get_BOLD_feature_name">[docs]</a><span class="k">def</span> <span class="nf">get_BOLD_feature_name</span><span class="p">():</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">proc</span><span class="p">,</span> <span class="s1">&#39;attr_dict.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+		<span class="n">attr_config_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+		<span class="k">return</span> <span class="p">[</span><span class="n">attr_config_dict</span><span class="p">[</span><span class="n">feat</span><span class="p">][</span><span class="s1">&#39;feat_name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">attr_config_dict</span> <span class="k">if</span> <span class="n">feat</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;BOLD&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">feat</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;net&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="load_attrs"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.load_attrs">[docs]</a><span class="k">def</span> <span class="nf">load_attrs</span><span class="p">(</span><span class="n">scans</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">rootFolder</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">feature_root</span><span class="p">,</span> <span class="n">csvfilename</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Load static attrs as a list</span>
+<span class="sd">	:param rootFolder:</span>
+<span class="sd">	:param scans:</span>
+<span class="sd">	:param atlasobj:</span>
+<span class="sd">	:return:</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span>
+	<span class="n">l</span> <span class="o">=</span> <span class="n">AttrLoader</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">rootFolder</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">csvfilename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">l</span><span class="o">.</span><span class="n">load_multiple_attrs</span><span class="p">(</span><span class="n">scans</span><span class="p">,</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">csvfilename</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">l</span><span class="o">.</span><span class="n">load_multiple_attrs</span><span class="p">(</span><span class="n">scans</span><span class="p">,</span> <span class="n">attrname</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="load_single_dynamic_attr"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.load_single_dynamic_attr">[docs]</a><span class="k">def</span> <span class="nf">load_single_dynamic_attr</span><span class="p">(</span><span class="n">scan</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">dynamic_conf</span><span class="p">,</span> <span class="n">rootFolder</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">feature_root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Return a DynamicAttr (attr.data[tickIdx, timeIdx])</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span>
+	<span class="n">window_length</span> <span class="o">=</span> <span class="n">dynamic_conf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">step_size</span> <span class="o">=</span> <span class="n">dynamic_conf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="c1"># fix dynamic attr feature_name issue</span>
+	<span class="k">if</span> <span class="n">attrname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;bc&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">attrname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;BC&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+		<span class="n">feature_name</span> <span class="o">=</span> <span class="s1">&#39;BOLD.BC&#39;</span>
+	<span class="k">elif</span> <span class="n">attrname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ccfs&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">attrname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;CCFS&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+		<span class="n">feature_name</span> <span class="o">=</span> <span class="s1">&#39;BOLD.CCFS&#39;</span>
+	<span class="k">elif</span> <span class="n">attrname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;le&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">attrname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;LE&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+		<span class="n">feature_name</span> <span class="o">=</span> <span class="s1">&#39;BOLD.LE&#39;</span>
+	<span class="k">elif</span> <span class="n">attrname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;wd&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">attrname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;WD&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+		<span class="n">feature_name</span> <span class="o">=</span> <span class="s1">&#39;BOLD.WD&#39;</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unknown feature_name </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">attrname</span><span class="p">)</span>
+	<span class="n">dynamic_attr</span> <span class="o">=</span> <span class="n">netattr</span><span class="o">.</span><span class="n">DynamicAttr</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">window_length</span><span class="p">,</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">scan</span> <span class="o">=</span> <span class="n">scan</span><span class="p">,</span> <span class="n">feature_name</span> <span class="o">=</span> <span class="n">feature_name</span><span class="p">)</span>
+	<span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="n">dynamic_foler_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootFolder</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">atlasobj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;bold_net_attr&#39;</span><span class="p">,</span> <span class="s1">&#39;dynamic </span><span class="si">%d</span><span class="s1"> </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">step_size</span><span class="p">,</span> <span class="n">window_length</span><span class="p">))</span>
+	<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+		<span class="n">dynamic_attr_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dynamic_foler_path</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">-</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">.csv&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attrname</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">start</span> <span class="o">+</span> <span class="n">window_length</span><span class="p">))</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dynamic_attr_filepath</span><span class="p">):</span>
+			<span class="n">dynamic_attr</span><span class="o">.</span><span class="n">append_one_slice</span><span class="p">(</span><span class="n">load_csvmat</span><span class="p">(</span><span class="n">dynamic_attr_filepath</span><span class="p">))</span>
+			<span class="n">start</span> <span class="o">+=</span> <span class="n">step_size</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># print(&#39;loaded %d attrs for %s&#39; % (len(ret[scan]), scan))</span>
+			<span class="k">break</span>
+	<span class="k">return</span> <span class="n">dynamic_attr</span></div>
+
+<div class="viewcode-block" id="load_dynamic_attr"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.load_dynamic_attr">[docs]</a><span class="k">def</span> <span class="nf">load_dynamic_attr</span><span class="p">(</span><span class="n">scans</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">dynamic_conf</span><span class="p">,</span> <span class="n">rootFolder</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">feature_root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Return a list of DynamicAttr (attr.data[tickIdx, timeIdx])</span>
+<span class="sd">	Newer version of dynamic attr loader.</span>
+<span class="sd">	:param rootFolder:</span>
+<span class="sd">	:param scans:</span>
+<span class="sd">	:param atlasobj:</span>
+<span class="sd">	:param attrname:</span>
+<span class="sd">	:param windowLength:</span>
+<span class="sd">	:param stepSize:</span>
+<span class="sd">	:return:</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span>
+	<span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">scan</span> <span class="ow">in</span> <span class="n">scans</span><span class="p">:</span>
+		<span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">load_single_dynamic_attr</span><span class="p">(</span><span class="n">scan</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">dynamic_conf</span><span class="p">,</span> <span class="n">rootFolder</span><span class="p">))</span>
+	<span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="load_dynamic_attrs"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.load_dynamic_attrs">[docs]</a><span class="k">def</span> <span class="nf">load_dynamic_attrs</span><span class="p">(</span><span class="n">scans</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">attrname</span><span class="p">,</span> <span class="n">dynamic_conf</span><span class="p">,</span> <span class="n">rootFolder</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">feature_root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Return a dict of lists of Attrs as dynamic attr</span>
+<span class="sd">	Dynamic features are saved as inter-region_&lt;feature&gt;-&lt;start&gt;.&lt;end&gt;.csv at bold_net_attr/dynamic &lt;stepSize&gt; &lt;windowLength&gt;/ folder</span>
+<span class="sd">	Specify attrname as &#39;inter-region_BC&#39; etc.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span>
+	<span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+	<span class="n">windowLength</span> <span class="o">=</span> <span class="n">dynamic_conf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">stepSize</span> <span class="o">=</span> <span class="n">dynamic_conf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="k">for</span> <span class="n">scan</span> <span class="ow">in</span> <span class="n">scans</span><span class="p">:</span>
+		<span class="n">ret</span><span class="p">[</span><span class="n">scan</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="n">dynamic_foler_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootFolder</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">atlasobj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;bold_net_attr&#39;</span><span class="p">,</span> <span class="s1">&#39;dynamic </span><span class="si">%d</span><span class="s1"> </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stepSize</span><span class="p">,</span> <span class="n">windowLength</span><span class="p">))</span>
+		<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+			<span class="n">dynamic_attr_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dynamic_foler_path</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">-</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">.csv&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attrname</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">start</span><span class="o">+</span><span class="n">windowLength</span><span class="p">))</span>
+			<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dynamic_attr_filepath</span><span class="p">):</span>
+				<span class="n">ret</span><span class="p">[</span><span class="n">scan</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">netattr</span><span class="o">.</span><span class="n">Attr</span><span class="p">(</span><span class="n">load_csvmat</span><span class="p">(</span><span class="n">dynamic_attr_filepath</span><span class="p">),</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">start</span><span class="o">+</span><span class="n">windowLength</span><span class="p">)))</span>
+				<span class="n">start</span> <span class="o">+=</span> <span class="n">stepSize</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="c1"># print(&#39;loaded %d attrs for %s&#39; % (len(ret[scan]), scan))</span>
+				<span class="k">break</span>
+	<span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="load_single_network"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.load_single_network">[docs]</a><span class="k">def</span> <span class="nf">load_single_network</span><span class="p">(</span><span class="n">mriscan</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">mainfolder</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">feature_root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Load a single network</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span>
+	<span class="n">l</span> <span class="o">=</span> <span class="n">NetLoader</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">,</span> <span class="n">mainfolder</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">l</span><span class="o">.</span><span class="n">loadSingle</span><span class="p">(</span><span class="n">mriscan</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="load_single_dynamic_network"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.load_single_dynamic_network">[docs]</a><span class="k">def</span> <span class="nf">load_single_dynamic_network</span><span class="p">(</span><span class="n">scan</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">dynamic_conf</span><span class="p">,</span> <span class="n">rootFolder</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">feature_root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Return a DynamicNet (net.data[timeIdx, tickIdx, tickIdx])</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span>
+	<span class="n">window_length</span> <span class="o">=</span> <span class="n">dynamic_conf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">step_size</span> <span class="o">=</span> <span class="n">dynamic_conf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="n">dynamic_foler_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootFolder</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">atlasobj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;bold_net&#39;</span><span class="p">,</span> <span class="s1">&#39;dynamic </span><span class="si">%d</span><span class="s1"> </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">step_size</span><span class="p">,</span> <span class="n">window_length</span><span class="p">))</span>
+	<span class="n">time_slice_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dynamic_foler_path</span><span class="p">)))</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># get rid of timeseries.csv</span>
+	<span class="n">dynamic_net</span> <span class="o">=</span> <span class="n">netattr</span><span class="o">.</span><span class="n">DynamicNet</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">atlasobj</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">time_slice_count</span><span class="p">)),</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">window_length</span><span class="p">,</span> <span class="n">step_size</span><span class="p">,</span> <span class="n">scan</span> <span class="o">=</span> <span class="n">scan</span><span class="p">,</span> <span class="n">feature_name</span> <span class="o">=</span> <span class="s1">&#39;BOLD.net&#39;</span><span class="p">)</span>
+	<span class="n">timeIdx</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+		<span class="n">dynamic_net_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dynamic_foler_path</span><span class="p">,</span> <span class="s1">&#39;corrcoef-</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">.csv&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">start</span><span class="o">+</span><span class="n">window_length</span><span class="p">))</span>
+		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dynamic_net_filepath</span><span class="p">):</span>
+			<span class="n">time_slice_net</span> <span class="o">=</span> <span class="n">load_csvmat</span><span class="p">(</span><span class="n">dynamic_net_filepath</span><span class="p">)</span>
+			<span class="n">dynamic_net</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">timeIdx</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_slice_net</span>
+			<span class="n">timeIdx</span> <span class="o">+=</span> <span class="mi">1</span>
+			<span class="n">start</span> <span class="o">+=</span> <span class="n">step_size</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">break</span>
+	<span class="k">return</span> <span class="n">dynamic_net</span></div>
+
+<div class="viewcode-block" id="load_dynamic_networks"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.load_dynamic_networks">[docs]</a><span class="k">def</span> <span class="nf">load_dynamic_networks</span><span class="p">(</span><span class="n">scans</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">dynamic_conf</span><span class="p">,</span> <span class="n">rootFolder</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">feature_root</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	This function loads dynamic networks for each scan into a dict</span>
+<span class="sd">	The key of the dict is the scan name</span>
+<span class="sd">		value is a list of networks</span>
+<span class="sd">	Dynamic networks are saved as corrcoef-&lt;start&gt;.&lt;end&gt;.csv at bold_net/dynamic &lt;stepSize&gt; &lt;windowLength&gt;/ folder</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+		<span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">atlasobj</span><span class="p">)</span>
+	<span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+	<span class="n">windowLength</span> <span class="o">=</span> <span class="n">dynamic_conf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">stepSize</span> <span class="o">=</span> <span class="n">dynamic_conf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="k">for</span> <span class="n">scan</span> <span class="ow">in</span> <span class="n">scans</span><span class="p">:</span>
+		<span class="n">ret</span><span class="p">[</span><span class="n">scan</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="n">dynamic_foler_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootFolder</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">atlasobj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;bold_net&#39;</span><span class="p">,</span> <span class="s1">&#39;dynamic </span><span class="si">%d</span><span class="s1"> </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stepSize</span><span class="p">,</span> <span class="n">windowLength</span><span class="p">))</span>
+		<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+			<span class="n">dynamic_net_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dynamic_foler_path</span><span class="p">,</span> <span class="s1">&#39;corrcoef-</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">.csv&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">start</span><span class="o">+</span><span class="n">windowLength</span><span class="p">))</span>
+			<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dynamic_net_filepath</span><span class="p">):</span>
+				<span class="n">ret</span><span class="p">[</span><span class="n">scan</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">netattr</span><span class="o">.</span><span class="n">Net</span><span class="p">(</span><span class="n">load_csvmat</span><span class="p">(</span><span class="n">dynamic_net_filepath</span><span class="p">),</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">.</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">start</span><span class="o">+</span><span class="n">windowLength</span><span class="p">)))</span>
+				<span class="n">start</span> <span class="o">+=</span> <span class="n">stepSize</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="c1"># print(&#39;loaded %d nets for %s&#39; % (len(ret[scan]), scan))</span>
+				<span class="k">break</span>
+	<span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="generate_mriscans"><a class="viewcode-back" href="../../../mmdps.proc.html#mmdps.proc.loader.generate_mriscans">[docs]</a><span class="k">def</span> <span class="nf">generate_mriscans</span><span class="p">(</span><span class="n">namelist</span><span class="p">,</span> <span class="n">root_folder</span> <span class="o">=</span> <span class="n">rootconfig</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">feature_root</span><span class="p">,</span> <span class="n">num_scan</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">accumulate</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;Load specific scans of subjects in namelist. Specify scan number (1st, 2nd, ...)</span>
+<span class="sd">	namelist is a list of subject names (str)</span>
+<span class="sd">	Set accumulate = True to load all scans up to (including) num_scan</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">mriscans</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">lastName</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="n">currentScans</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">scan</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">root_folder</span><span class="p">)):</span>
+		<span class="n">name</span> <span class="o">=</span> <span class="n">scan</span><span class="p">[:</span><span class="n">scan</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">lastName</span><span class="p">:</span>
+				<span class="k">if</span> <span class="n">lastName</span> <span class="ow">in</span> <span class="n">namelist</span><span class="p">:</span>
+					<span class="k">if</span> <span class="n">accumulate</span><span class="p">:</span>
+						<span class="n">mriscans</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">currentScans</span><span class="p">[:</span><span class="n">num_scan</span><span class="p">])</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">mriscans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentScans</span><span class="p">[</span><span class="n">num_scan</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+				<span class="n">lastName</span> <span class="o">=</span> <span class="n">name</span>
+				<span class="n">currentScans</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+			<span class="c1"># some one might not have corresponding scans</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loader Warning: Index error&#39;</span><span class="p">)</span>
+			<span class="n">lastName</span> <span class="o">=</span> <span class="n">name</span>
+			<span class="n">currentScans</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">currentScans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scan</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">lastName</span> <span class="ow">in</span> <span class="n">namelist</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">accumulate</span><span class="p">:</span>
+			<span class="n">mriscans</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">currentScans</span><span class="p">[:</span><span class="n">num_scan</span><span class="p">])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">mriscans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentScans</span><span class="p">[</span><span class="n">num_scan</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+	<span class="c1"># check if some one is missing</span>
+	<span class="k">if</span> <span class="n">accumulate</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">mriscans</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_scan</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">namelist</span><span class="p">):</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loader Warning: no. mriscans found (</span><span class="si">%d</span><span class="s1">) not equal to no. subjects (</span><span class="si">%d</span><span class="s1">) times num_scan (</span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mriscans</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">namelist</span><span class="p">),</span> <span class="n">num_scan</span><span class="p">))</span>
+	<span class="k">elif</span> <span class="ow">not</span> <span class="n">accumulate</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">mriscans</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">namelist</span><span class="p">):</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Loader Warning: no. mriscans found (</span><span class="si">%d</span><span class="s1">) not equal to no. subjects (</span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mriscans</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">namelist</span><span class="p">)))</span>
+	<span class="k">return</span> <span class="n">mriscans</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">MMDPS</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mmdps.html">mmdps package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

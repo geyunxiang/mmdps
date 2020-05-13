@@ -14,13 +14,13 @@
 #
 # import os
 # import sys
-# sys.path.insert(0, 'E:\MMDPSoftware\mmdps\mmdps')
+# sys.path.insert(0, '/Users/andy/workshop/mmdps/mmdps')
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'MMDPS'
-copyright = '2018, mmdp'
+copyright = '2020, mmdp'
 author = 'mmdp'
 
 # The short X.Y version

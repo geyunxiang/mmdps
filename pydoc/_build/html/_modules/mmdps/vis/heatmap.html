@@ -1,0 +1,303 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>mmdps.vis.heatmap &#8212; MMDPS 1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for mmdps.vis.heatmap</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Plot network heatmap.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.cm</span>
+<span class="kn">from</span> <span class="nn">mmdps.util</span> <span class="k">import</span> <span class="n">path</span>
+
+<div class="viewcode-block" id="HeatmapPlot"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlot">[docs]</a><span class="k">class</span> <span class="nc">HeatmapPlot</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;The heatmap plot.&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">outfilepath</span><span class="p">,</span> <span class="n">valuerange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)):</span>
+		<span class="sd">&quot;&quot;&quot;Init the heatmap.</span>
+<span class="sd">		net, the network.</span>
+<span class="sd">		title, the image titile.</span>
+<span class="sd">		outfilepath, the output image path.</span>
+<span class="sd">		valuerange, the valuerange of the net.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">net</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">atlasobj</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">count</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">outfilepath</span> <span class="o">=</span> <span class="n">outfilepath</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">valuerange</span> <span class="o">=</span> <span class="n">valuerange</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">title_font_size</span> <span class="o">=</span> <span class="mi">36</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">show_ticks</span> <span class="o">=</span> <span class="kc">True</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">show_colorbar</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="HeatmapPlot.set_title_font_size"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlot.set_title_font_size">[docs]</a>	<span class="k">def</span> <span class="nf">set_title_font_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">font_size</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">title_font_size</span> <span class="o">=</span> <span class="n">font_size</span></div>
+
+<div class="viewcode-block" id="HeatmapPlot.set_show_ticks"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlot.set_show_ticks">[docs]</a>	<span class="k">def</span> <span class="nf">set_show_ticks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_showing</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">show_ticks</span> <span class="o">=</span> <span class="n">is_showing</span></div>
+
+<div class="viewcode-block" id="HeatmapPlot.set_show_colorbar"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlot.set_show_colorbar">[docs]</a>	<span class="k">def</span> <span class="nf">set_show_colorbar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_showing</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">show_colorbar</span> <span class="o">=</span> <span class="n">is_showing</span></div>
+
+<div class="viewcode-block" id="HeatmapPlot.get_cmap"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlot.get_cmap">[docs]</a>	<span class="k">def</span> <span class="nf">get_cmap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Get default cmap use valuerange.</span>
+<span class="sd">		</span>
+<span class="sd">		If all positive, use Greys.</span>
+<span class="sd">		If have negative, use coolwarm.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">valuerange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greys</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span></div>
+
+<div class="viewcode-block" id="HeatmapPlot.set_cmap"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlot.set_cmap">[docs]</a>	<span class="k">def</span> <span class="nf">set_cmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmap</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		cmap should be one of matplotlib.cm.xxx</span>
+<span class="sd">		see https://matplotlib.org/gallery/color/colormap_reference.html for a list of cmaps</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span></div>
+
+<div class="viewcode-block" id="HeatmapPlot.plot"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlot.plot">[docs]</a>	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Do the plot.&quot;&quot;&quot;</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+		<span class="n">netdata_adjusted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">adjust_mat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+		<span class="n">netdata_adjusted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">netdata_adjusted</span><span class="p">)</span>
+		<span class="n">axim</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">netdata_adjusted</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="p">,</span>
+						  <span class="n">vmin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">valuerange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">valuerange</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">netdata_adjusted</span><span class="o">.</span><span class="n">shape</span>
+		<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ncol</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">nrow</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+
+		<span class="c1"># set ticks</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_ticks</span><span class="p">:</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">))</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">ticks_adjusted</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">))</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">ticks_adjusted</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+
+		<span class="c1"># set colorbar</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_colorbar</span><span class="p">:</span>
+			<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">axim</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
+			<span class="c1"># change colorbar ticks font size</span>
+			<span class="c1"># see https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.tick_params</span>
+			<span class="c1"># and https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.tick_params.html#matplotlib.axes.Axes.tick_params</span>
+			<span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+
+		<span class="c1"># save fig</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title_font_size</span><span class="p">)</span>
+		<span class="n">path</span><span class="o">.</span><span class="n">makedirs_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outfilepath</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outfilepath</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="HeatmapPlot.plotRSN"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlot.plotRSN">[docs]</a>	<span class="k">def</span> <span class="nf">plotRSN</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Similar as plot(), but plot the heatmap according to RSN config file</span>
+<span class="sd">		and use black lines to separate RSNs</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+		<span class="n">netdata_adjusted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">adjust_mat_RSN</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+		<span class="n">netdata_adjusted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">netdata_adjusted</span><span class="p">)</span>
+		<span class="n">axim</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">netdata_adjusted</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cmap</span><span class="p">,</span>
+						  <span class="n">vmin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">valuerange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">valuerange</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">netdata_adjusted</span><span class="o">.</span><span class="n">shape</span>
+		<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ncol</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">nrow</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+
+		<span class="c1"># set ticks</span>
+		<span class="n">ticks_adjusted</span><span class="p">,</span> <span class="n">nodeCount</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">adjust_ticks_RSN</span><span class="p">()</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_ticks</span><span class="p">:</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">))</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ticks_adjusted</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">))</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">ticks_adjusted</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+
+		<span class="c1"># plot horizontal and vertical lines</span>
+		<span class="n">plotIdx</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">plotIdx</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">linewidths</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># vposition, start, end</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">plotIdx</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">linewidths</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># hposition, start, end</span>
+		<span class="n">border</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># the border of each RSN, including 0 and max</span>
+		<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nodeCount</span><span class="p">)):</span>
+			<span class="n">netCount</span> <span class="o">=</span> <span class="n">nodeCount</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+			<span class="n">plotIdx</span> <span class="o">+=</span> <span class="n">netCount</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">plotIdx</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">linewidths</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># vposition, start, end</span>
+			<span class="n">ax</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">plotIdx</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">linewidths</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="c1"># hposition, start, end</span>
+			<span class="n">border</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">border</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">netCount</span><span class="p">)</span>
+
+		<span class="c1"># add ticks for RSN</span>
+		<span class="n">minorTicks</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">border</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+			<span class="n">minorTicks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">border</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">border</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">minorTicks</span><span class="p">,</span> <span class="n">minor</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">minorTicks</span><span class="p">,</span> <span class="n">minor</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s2">&quot;minor&quot;</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">labelsize</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span> <span class="c1"># make minor ticks invisible</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">get_RSN_list</span><span class="p">(),</span> <span class="n">minor</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">get_RSN_list</span><span class="p">(),</span> <span class="n">minor</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+		<span class="c1"># set colorbar</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_colorbar</span><span class="p">:</span>
+			<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">axim</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
+			<span class="c1"># change colorbar ticks font size</span>
+			<span class="c1"># see https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes.tick_params</span>
+			<span class="c1"># and https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.tick_params.html#matplotlib.axes.Axes.tick_params</span>
+			<span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+
+		<span class="c1"># save fig</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">title_font_size</span><span class="p">)</span>
+		<span class="n">path</span><span class="o">.</span><span class="n">makedirs_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outfilepath</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outfilepath</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="HeatmapPlotRows"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlotRows">[docs]</a><span class="k">class</span> <span class="nc">HeatmapPlotRows</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;The heatmap rows plot.&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atlasobj</span><span class="p">,</span> <span class="n">rowsmat</span><span class="p">,</span> <span class="n">rowsticks</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">outfilepath</span><span class="p">,</span> <span class="n">valuerange</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)):</span>
+		<span class="sd">&quot;&quot;&quot;Init the heatmap rows.</span>
+<span class="sd">		atlasobj, the atlas object.</span>
+<span class="sd">		rowsmat, the rows matrix, each row acts as an attribute.</span>
+<span class="sd">		rowsticks, the rows ticks, each row&#39;s y tick label.</span>
+<span class="sd">		title, the image titile.</span>
+<span class="sd">		outfilepath, the output image path.</span>
+<span class="sd">		valuerange, the valuerange of the net.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">rowsmat</span> <span class="o">=</span> <span class="n">rowsmat</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">rowsticks</span> <span class="o">=</span> <span class="n">rowsticks</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span> <span class="o">=</span> <span class="n">atlasobj</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">count</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">outfilepath</span> <span class="o">=</span> <span class="n">outfilepath</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">valuerange</span> <span class="o">=</span> <span class="n">valuerange</span>
+
+<div class="viewcode-block" id="HeatmapPlotRows.get_cmap"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlotRows.get_cmap">[docs]</a>	<span class="k">def</span> <span class="nf">get_cmap</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Get the color map.&quot;&quot;&quot;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">valuerange</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greys</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span></div>
+
+<div class="viewcode-block" id="HeatmapPlotRows.plot"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.HeatmapPlotRows.plot">[docs]</a>	<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;Do the plot.&quot;&quot;&quot;</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+		<span class="n">netdata_adjusted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">adjust_mat_col</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowsmat</span><span class="p">)</span>
+		<span class="n">netdata_adjusted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">netdata_adjusted</span><span class="p">)</span>
+		<span class="n">axim</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">netdata_adjusted</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(),</span>
+						  <span class="n">vmin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">valuerange</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">valuerange</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="n">nrow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowsmat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">_</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">netdata_adjusted</span><span class="o">.</span><span class="n">shape</span>
+		<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">))</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atlasobj</span><span class="o">.</span><span class="n">ticks_adjusted</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nrow</span><span class="p">))</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowsticks</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ncol</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+		<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">nrow</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+		<span class="c1">#fig.colorbar(axim)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+		<span class="n">path</span><span class="o">.</span><span class="n">makedirs_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outfilepath</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outfilepath</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="plot_net_RSN"><a class="viewcode-back" href="../../../mmdps.vis.html#mmdps.vis.heatmap.plot_net_RSN">[docs]</a><span class="k">def</span> <span class="nf">plot_net_RSN</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">outfilepath</span><span class="p">):</span>
+	<span class="n">plotter</span> <span class="o">=</span> <span class="n">HeatmapPlot</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">outfilepath</span><span class="p">)</span>
+	<span class="n">plotter</span><span class="o">.</span><span class="n">plotRSN</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">MMDPS</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../mmdps.html">mmdps package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, mmdp.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
