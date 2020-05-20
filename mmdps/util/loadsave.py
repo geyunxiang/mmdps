@@ -55,7 +55,16 @@ def load_csvmat(matfile, delimiter = ','):
     Load csv array in csv file.
     The return value is a (n,) np array for 1-D vector or a (m, n) np array for 2-D matrix
     """
-    return np.loadtxt(matfile, delimiter = delimiter)
+    try:
+        ret = np.loadtxt(matfile, delimiter = delimiter)
+    except ValueError:
+        # work around for csv files with comma at the end
+        ret = np.genfromtxt(matfile, delimiter=',', dtype=np.float64)
+        if len(ret.shape) > 1:
+            # does not support loading network
+            raise Exception
+        ret = ret[:-1]
+    return ret
 
 def save_csvmat(matfile, mat, delimiter = ','):
     """Save csv array in csv file."""
