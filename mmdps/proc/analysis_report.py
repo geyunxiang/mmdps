@@ -4,6 +4,7 @@ Analysis and Report
 
 from mmdps.proc import loader, netattr
 from mmdps.dms import mmdpdb, tables
+from mmdps.vis import line
 
 class GroupAnalysisAssistant():
 	"""docstring for GroupAnalysisAssistant"""
@@ -18,10 +19,29 @@ class GroupAnalysisAssistant():
 		self.study = self.session.query(tables.ResearchStudy).filter_by(alias = study_name).one()
 		self.atlasobj = atlasobj
 		self.group_nets = dict()
+		self.attr_comparison_result = dict()
 
-	def compare_BOLD_attrs(self):
-		pass
-		
+	def compare_BOLD_attrs(self, group1_name, group2_name, comparison_method, plotting = False):
+		"""
+		comparison is performed by group2 - group1
+		comparison_method should be one of stats_utils.pairedTTest or stats_utils.twoSampleTTest
+		"""
+		group1_attr_list = loader.load_attrs(self.study.getGroup(group1_name).getScanStrList())
+		group1_attr_mean = netattr.averageAttr(group1_attr_list)
+		group1_attr_mean.scan = '%s mean' % group1_name
+
+		group2_attr_list = loader.load_attrs(self.study.getGroup(group2_name).getScanStrList())
+		group2_attr_mean = netattr.averageAttr(group2_attr_list)
+		group2_attr_mean.scan = '%s mean' % group2_name
+
+		t_attr, p_attr = netattr.attr_comparisons(group2_attr_list, group1_attr_list, comparison_method)
+
+		for idx in range(self.atlasobj.count):
+			if p_attr.data[idx] < 0.05:
+				print('tick: %s t = %1.4f, p = %1.4f' % (self.atlasobj.ticks[idx], t_attr.data[idx], p_attr.data[idx]))
+		self.attr_comparison_result['%s vs %s' % (group1_name, group2_name)] = dict(t_attr = t_attr, p_attr = p_attr, group1_attr_mean = group1_attr_mean, group2_attr_mean = group2_attr_mean)
+		return t_attr, p_attr
+
 	def compare_BOLD_networks(self, group1_name, group2_name, comparison_method):
 		group1 = self.study.getGroup(group1_name)
 		group2 = self.study.getGroup(group2_name)
@@ -71,8 +91,15 @@ class GroupAnalysisAssistant():
 					result_list.append(dict(area1 = xtick, area2 = ytick, stat = stats_network.data[xidx, yidx], p_val = comp_p_network.data[xidx, yidx], corr_r = r_network.data[xidx, yidx], corr_p = corr_p_network.data[xidx, yidx]))
 		return result_list
 
-	def plot_BOLD_attr_line(self):
-		pass
+	def plot_BOLD_attr_line(self, group1_name, group2_name, title, outfilepath):
+		comparison_key = '%s vs %s' % (group1_name, group2_name)
+		if comparison_key not in self.attr_comparison_result:
+			raise Exception('%s vs %s not analyzed' % (group1_name, group2_name))
+		group1_attr_mean = self.attr_comparison_result[comparison_key]['group1_attr_mean']
+		group2_attr_mean = self.attr_comparison_result[comparison_key]['group2_attr_mean']
+		p_attr = self.attr_comparison_result[comparison_key]['p_attr']
+		t_attr = self.attr_comparison_result[comparison_key]['t_attr']
+		line.plot_attr_lines([group1_attr_mean, group2_attr_mean], title = title, outfilepath = outfilepath, sig_positions = (p_attr.data<0.05).astype(int), stat_list = zip(t_attr.data, p_attr.data))
 
 	def plot_BOLD_attr_BNV(self):
 		pass
