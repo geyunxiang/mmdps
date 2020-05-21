@@ -3,7 +3,7 @@ import tkinter as tk
 from mmdps.gui import guiframe, tktools, paraconfigfield
 from mmdps.util.loadsave import load_json_ordered, save_json_ordered
 
-class Application(guiframe.MainWindow):
+class ConfigParaApplication(guiframe.MainWindow):
     def __init__(self, master=None, **kw):
         guiframe.MainWindow.__init__(self, master, **kw)
         self.build_actions()
@@ -20,7 +20,7 @@ class Application(guiframe.MainWindow):
         self.mainfieldwidget = self.rootfield.build_widget(self.mainframe)
         self.set_mainwidget(self.mainfieldwidget)
         self.mainfieldwidget.pack()
-        
+
     def build_actions(self):
         self.add_action('Open', self.cb_menu_Open)
         self.add_action('Save', self.cb_menu_Save)
@@ -37,14 +37,14 @@ class Application(guiframe.MainWindow):
             d = self.connector.field_to_config(self.rootfield)
             save_json_ordered(resname, d)
             print('Saved to {}'.format(resname))
-    
+
     def cb_menu_Dump(self):
         d = self.connector.field_to_config(self.rootfield)
         print(d)
-    
+
 def main(configfile=None):
     root = tk.Tk()
-    app = Application(root)
+    app = ConfigParaApplication(root)
     connector = paraconfigfield.ParaConfigFieldConnector()
     app.setup(connector)
     if configfile:
@@ -60,5 +60,3 @@ if __name__ == '__main__':
     else:
         configfile = sys.argv[1]
         main(configfile)
-        
-    

@@ -3,7 +3,7 @@
         {
             "name": "ConfigPara",
             "pyui": "ui_configpara.py"
-        },        
+        },
         {
             "name": "ConfigJob",
             "pyui": "ui_configjob.py"
