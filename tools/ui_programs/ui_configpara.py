@@ -3,6 +3,7 @@ import tkinter as tk
 from mmdps.gui import guiframe, tktools, paraconfigfield
 from mmdps.util.loadsave import load_json_ordered, save_json_ordered
 from mmdps.util import path
+from mmdps.proc import para
 
 class ConfigParaApplication(guiframe.MainWindow):
 	def __init__(self, master=None, **kw):
@@ -54,7 +55,9 @@ class ConfigParaApplication(guiframe.MainWindow):
 		print('\n', d)
 
 	def cb_menu_Run(self):
-		pass
+		d = self.connector.field_to_config(self.rootfield)
+		currentPara = para.load(d)
+		currentPara.run()
 
 def main(configfile=None):
 	root = tk.Tk()

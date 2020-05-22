@@ -8,14 +8,14 @@ If there are m folders in folderlist, the bsecond is True, n folders
 in secondlist, there will be m * n jobs to be run in parallel.
 
 T1
-  P00
-	aal
-	brodmann_lr
-  P01
-	aal
-	brodmann_lr
-	
-the folder list contains [P00, P01], the secondlist contains [aal, brodmann_lr].
+|-subject1_datetime
+| |- aal
+| |- brodmann_lr
+|-subject2_datetime
+| |- aal
+| |- brodmann_lr
+
+the folder list contains [subject1_datetime, subject2_datetime], the secondlist contains [aal, brodmann_lr].
 If use bsecond is True, the job will run in the four folders in parallel.
 """
 
