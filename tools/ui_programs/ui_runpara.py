@@ -6,37 +6,37 @@ from mmdps.proc import para
 
 
 class RunParaApplication(guiframe.MainWindow):
-    def __init__(self, master=None, **kw):
-        guiframe.MainWindow.__init__(self, master, **kw)
-        self.build_actions()
-        self.build_widgets()
+	def __init__(self, master=None, **kw):
+		guiframe.MainWindow.__init__(self, master, **kw)
+		self.build_actions()
+		self.build_widgets()
 
-    def build_actions(self):
-        pass
+	def build_actions(self):
+		pass
 
-    def build_widgets(self):
-        d = {'typename': 'FileEditField', 'name': 'ParaConfig', 'value': ''}
-        self.fpara = field.create(d)
-        d = {'typename': 'StringField', 'name': 'ProjectPathVar', 'value': '.'}
-        self.fpath = field.create(d)
-        wpara = self.fpara.build_widget(self.mainframe)
-        wpath = self.fpath.build_widget(self.mainframe)
-        wrun = tktools.button(self.mainframe, 'Run', self.cb_run)
-        wpara.pack()
-        wpath.pack()
-        wrun.pack()
+	def build_widgets(self):
+		d = {'typename': 'FileEditField', 'name': 'ParaConfig', 'value': ''}
+		self.fpara = field.create(d)
+		d = {'typename': 'StringField', 'name': 'ProjectPathVar', 'value': '.'}
+		self.fpath = field.create(d)
+		wpara = self.fpara.build_widget(self.mainframe)
+		wpath = self.fpath.build_widget(self.mainframe)
+		wrun = tktools.button(self.mainframe, 'Run', self.cb_run)
+		wpara.pack()
+		wpath.pack()
+		wrun.pack()
 
-    def cb_run(self):
-        paraconf = self.fpara.value
-        pathconf = self.fpath.value
-        os.environ['MMDPS_PROJECTPATH'] = pathconf
-        j = para.load(load_json_ordered(paraconf))
-        j.run()
+	def cb_run(self):
+		paraconf = self.fpara.value
+		pathconf = self.fpath.value
+		os.environ['MMDPS_PROJECTPATH'] = pathconf
+		j = para.load(load_json_ordered(paraconf))
+		j.run()
 
 if __name__ == '__main__':
-    root = tk.Tk()
-    root.geometry('800x600')
-    app = RunParaApplication(root)
-    app.pack(fill='both', expand=True)
-    root.title('MMDPS RunPara')
-    root.mainloop()
+	root = tk.Tk()
+	root.geometry('800x600')
+	app = RunParaApplication(root)
+	app.pack(fill='both', expand=True)
+	root.title('MMDPS RunPara')
+	root.mainloop()
