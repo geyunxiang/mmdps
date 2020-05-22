@@ -41,6 +41,7 @@ def runjob(job, folder=None):
 
 if __name__ == '__main__':
     root = tk.Tk()
+    root.geometry('800x600')
     app = RunJobApplication(root)
     app.pack(fill='both', expand=True)
     root.title('MMDPS RunJob')

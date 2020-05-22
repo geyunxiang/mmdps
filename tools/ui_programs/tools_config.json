@@ -1,6 +1,18 @@
 {
     "tools": [
         {
+            "name": "T1 Process",
+            "pyui": "ui_t1_process.py"
+        },
+        {
+            "name": "DWI Process",
+            "pyui": "ui_DWI_process.py"
+        },
+        {
+            "name": "BOLD Process",
+            "pyui": "ui_BOLD_process.py"
+        },
+        {
             "name": "ConfigPara",
             "pyui": "ui_configpara.py"
         },

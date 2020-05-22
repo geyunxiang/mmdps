@@ -35,6 +35,7 @@ class RunParaApplication(guiframe.MainWindow):
 
 if __name__ == '__main__':
     root = tk.Tk()
+    root.geometry('800x600')
     app = RunParaApplication(root)
     app.pack(fill='both', expand=True)
     root.title('MMDPS RunPara')

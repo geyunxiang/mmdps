@@ -1,12 +1,16 @@
 # Multi-Modal Data Processing System
 
+## Environment setter
+
+On Linux and macOS, one should set environment variable `MMDPS_ROOTDIR` at `~/.bashrc` or similar profile file. The `MMDPS_ROOTDIR` should point to the root dir of mmdps system. 
+
 ## New Data Process Pipeline
 
 1. Import Data
 
 2. Process
 
-	* T1: run `configpara_unatlased_t1_project.json` and `configpara_atlased_t1_project.json`. Remember to modify `FolderList`.
+	* T1: run `configjob_main_t1.json`. Note: one should modify `configpara_unatlased_t1_project.json` and `configpara_atlased_t1_project.json` for the appropriate folder list.
 
 	* DWI: run `configjob_main_dwi.json`. Note: one should modify `configpara_dwi_project.json` and `configpara_atlased_dwi_project.json` for the appropriate folder list.
 

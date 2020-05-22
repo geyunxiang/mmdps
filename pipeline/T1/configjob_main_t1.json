@@ -1,5 +1,5 @@
 {
-    "name": "BatchJob",
+    "name": "T1ProcessMain",
     "typename": "BatchJob",
     "config": [
         {

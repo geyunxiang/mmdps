@@ -17,7 +17,8 @@ class MainApplication(guiframe.MainWindow):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    app = MainApplication(root)
+    root.geometry('800x600')
+    app = MainApplication(root, height = 480, width = 640)
 
     manager = toolman.get_default_manager()
 
