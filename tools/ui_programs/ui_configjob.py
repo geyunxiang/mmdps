@@ -8,6 +8,7 @@ class ConfigJobApplication(guiframe.MainWindow):
     def __init__(self, master=None, **kw):
         guiframe.MainWindow.__init__(self, master, **kw)
         self.build_actions()
+        self.configfile_path = None
 
     def setup(self, connector):
         self.connector = connector
@@ -23,6 +24,7 @@ class ConfigJobApplication(guiframe.MainWindow):
         if not os.path.isfile(configfile):
             print('cannot open file {}'.format(configfile))
             return
+        self.configfile_path = configfile
         configdict = load_json_ordered(configfile)
         self.load_configdict(configdict)
 
@@ -30,6 +32,7 @@ class ConfigJobApplication(guiframe.MainWindow):
         self.add_action('DWI', self.cb_menu_DWI)
         self.add_action('Open', self.cb_menu_Open)
         self.add_action('Save', self.cb_menu_Save)
+        self.add_action('Save as', self.cb_menu_Save_as)
         self.add_action('Dump', self.cb_menu_Dump)
         self.add_action('Add', self.cb_menu_Add)
         self.add_action('Remove', self.cb_menu_Remove)
@@ -46,6 +49,11 @@ class ConfigJobApplication(guiframe.MainWindow):
             self.open_configfile(resname)
 
     def cb_menu_Save(self):
+        d = self.connector.field_to_config(self.rootfield)
+        save_json_ordered(self.configfile_path, d)
+        print('Saved to {}'.format(self.configfile_path))
+
+    def cb_menu_Save_as(self):
         resname = tktools.asksaveasfilename()
         if resname:
             d = self.connector.field_to_config(self.rootfield)
@@ -77,6 +85,7 @@ class ConfigJobApplication(guiframe.MainWindow):
 
 def main(configfile=None):
     root = tk.Tk()
+    root.geometry('800x600')
     app = ConfigJobApplication(root)
     connector = jobconfigfield.JobConfigFieldConnector()
     app.setup(connector)

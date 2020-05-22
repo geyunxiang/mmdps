@@ -7,6 +7,7 @@ class ConfigParaApplication(guiframe.MainWindow):
     def __init__(self, master=None, **kw):
         guiframe.MainWindow.__init__(self, master, **kw)
         self.build_actions()
+        self.configfile_path = None
 
     def setup(self, connector):
         self.connector = connector
@@ -15,6 +16,7 @@ class ConfigParaApplication(guiframe.MainWindow):
         if not os.path.isfile(configfile):
             print('cannot open file {}'.format(configfile))
             return
+        self.configfile_path = configfile
         configdict = load_json_ordered(configfile)
         self.rootfield = self.connector.config_to_field(configdict)
         self.mainfieldwidget = self.rootfield.build_widget(self.mainframe)
@@ -24,6 +26,7 @@ class ConfigParaApplication(guiframe.MainWindow):
     def build_actions(self):
         self.add_action('Open', self.cb_menu_Open)
         self.add_action('Save', self.cb_menu_Save)
+        self.add_action('Save as', self.cb_menu_Save_as)
         self.add_action('Dump', self.cb_menu_Dump)
 
     def cb_menu_Open(self):
@@ -32,6 +35,11 @@ class ConfigParaApplication(guiframe.MainWindow):
             self.open_configfile(resname)
 
     def cb_menu_Save(self):
+        d = self.connector.field_to_config(self.rootfield)
+        save_json_ordered(self.configfile_path, d)
+        print('Saved to {}'.format(self.configfile_path))
+
+    def cb_menu_Save_as(self):
         resname = tktools.asksaveasfilename()
         if resname:
             d = self.connector.field_to_config(self.rootfield)
@@ -44,6 +52,7 @@ class ConfigParaApplication(guiframe.MainWindow):
 
 def main(configfile=None):
     root = tk.Tk()
+    root.geometry('800x600')
     app = ConfigParaApplication(root)
     connector = paraconfigfield.ParaConfigFieldConnector()
     app.setup(connector)
