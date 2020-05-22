@@ -3,6 +3,7 @@ import tkinter as tk
 from mmdps.gui import guiframe, tktools, jobconfigfield
 from mmdps.util.loadsave import load_json_ordered, save_json_ordered
 from mmdps.util import path
+from mmdps.proc import job
 
 class ConfigJobApplication(guiframe.MainWindow):
 	def __init__(self, master=None, **kw):
@@ -36,6 +37,7 @@ class ConfigJobApplication(guiframe.MainWindow):
 		self.add_action('Dump', self.cb_menu_Dump)
 		self.add_action('Add', self.cb_menu_Add)
 		self.add_action('Remove', self.cb_menu_Remove)
+		self.add_action('Run', self.cb_menu_Run)
 
 	def cb_menu_Open(self):
 		resname = tktools.askopenfilename()
@@ -76,6 +78,10 @@ class ConfigJobApplication(guiframe.MainWindow):
 		if len(d['config']) > 0:
 			del d['config'][-1]
 			self.load_configdict(d)
+
+	def cb_menu_Run(self):
+		d = self.connector.field_to_config(self.rootfield)
+		job.runjob_with_config(d)
 
 def main(configfile=None):
 	root = tk.Tk()

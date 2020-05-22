@@ -30,6 +30,7 @@ class ConfigParaApplication(guiframe.MainWindow):
 		self.add_action('Save', self.cb_menu_Save)
 		self.add_action('Save as', self.cb_menu_Save_as)
 		self.add_action('Dump', self.cb_menu_Dump)
+		self.add_action('Run', self.cb_menu_Run)
 
 	def cb_menu_Open(self):
 		resname = tktools.askopenfilename()
@@ -51,6 +52,9 @@ class ConfigParaApplication(guiframe.MainWindow):
 	def cb_menu_Dump(self):
 		d = self.connector.field_to_config(self.rootfield)
 		print('\n', d)
+
+	def cb_menu_Run(self):
+		pass
 
 def main(configfile=None):
 	root = tk.Tk()

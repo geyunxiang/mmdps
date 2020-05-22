@@ -1,8 +1,7 @@
 import tkinter as tk
 from mmdps.gui import guiframe, tktools, field
-from mmdps.util.loadsave import load_json_ordered
+# from mmdps.util.loadsave import load_json_ordered
 from mmdps.proc import job
-# import runjob
 
 
 class RunJobApplication(guiframe.MainWindow):
@@ -29,15 +28,7 @@ class RunJobApplication(guiframe.MainWindow):
 	def cb_runjob(self):
 		jobconf = self.fjob.value
 		folderconf = self.ffolder.value
-		j = job.load(load_json_ordered(jobconf))
-		runjob.runjob(j, folderconf)
-
-def runjob(job, folder=None):
-	if folder:
-		with job.ChangeDirectory(folder):
-			return job.run()
-	else:
-		return job.run()
+		job.runjob_in_folder(jobconf, folderconf)
 
 if __name__ == '__main__':
 	root = tk.Tk()

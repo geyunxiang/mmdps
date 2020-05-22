@@ -109,7 +109,7 @@ class Para:
 					finalfolders.append(newfolder)
 		else:
 			finalfolders = folders
-		currentJob = job.load(loadsave.load_json(path.fullfile(self.jobconfig)))
+		currentJob = job.create_from_dict(loadsave.load_json(path.fullfile(self.jobconfig)))
 		if self.runmode == 'FirstOnly':
 			return self.run_seq(currentJob, finalfolders[0:1])
 		if self.runmode == 'Parallel':
