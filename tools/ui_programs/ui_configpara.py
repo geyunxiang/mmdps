@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 from mmdps.gui import guiframe, tktools, paraconfigfield
 from mmdps.util.loadsave import load_json_ordered, save_json_ordered
+from mmdps.util import path
 
 class ConfigParaApplication(guiframe.MainWindow):
     def __init__(self, master=None, **kw):
@@ -13,6 +14,7 @@ class ConfigParaApplication(guiframe.MainWindow):
         self.connector = connector
 
     def open_configfile(self, configfile):
+        configfile = path.fullfile(configfile)
         if not os.path.isfile(configfile):
             print('cannot open file {}'.format(configfile))
             return
@@ -48,7 +50,7 @@ class ConfigParaApplication(guiframe.MainWindow):
 
     def cb_menu_Dump(self):
         d = self.connector.field_to_config(self.rootfield)
-        print(d)
+        print('\n', d)
 
 def main(configfile=None):
     root = tk.Tk()

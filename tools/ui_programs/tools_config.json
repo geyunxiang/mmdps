@@ -2,15 +2,18 @@
     "tools": [
         {
             "name": "T1 Process",
-            "pyui": "ui_t1_process.py"
+            "pyui": "ui_configjob.py",
+            "argv": "configjob_main_t1.json"
         },
         {
             "name": "DWI Process",
-            "pyui": "ui_DWI_process.py"
+            "pyui": "ui_configjob.py",
+            "argv": "configjob_main_dwi.json"
         },
         {
             "name": "BOLD Process",
-            "pyui": "ui_BOLD_process.py"
+            "pyui": "ui_configpara.py",
+            "argv": "configpara_bold_project.json"
         },
         {
             "name": "ConfigPara",

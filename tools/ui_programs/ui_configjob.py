@@ -21,6 +21,7 @@ class ConfigJobApplication(guiframe.MainWindow):
         self.mainfieldwidget.pack()
 
     def open_configfile(self, configfile):
+        configfile = path.fullfile(configfile)
         if not os.path.isfile(configfile):
             print('cannot open file {}'.format(configfile))
             return
@@ -62,7 +63,7 @@ class ConfigJobApplication(guiframe.MainWindow):
 
     def cb_menu_Dump(self):
         d = self.connector.field_to_config(self.rootfield)
-        print(d)
+        print('\n', d)
 
     def cb_menu_Add(self):
         if self.rootfield is None:
