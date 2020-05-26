@@ -83,15 +83,15 @@ class Attr(Mat):
 class DynamicAttr(Mat):
 	"""
 	DynamicAttr is the dynamic version of Attr.
-	
+
 	In dynamic context, a DynamicAttr represents one kind of dynamic attributes 
 	of one person, containing multiple values for multiple brain regions and 
 	resulting in a 2-D matrix. (num_regions X num_time_points)
 	"""
-	def __init__(self, data, atlasobj, windowLength, stepSize, scan = None, feature_name = None):
+	def __init__(self, data, atlasobj, window_length, step_size, scan = None, feature_name = None):
 		super().__init__(data, atlasobj, scan, feature_name)
-		self.windowLength = windowLength
-		self.stepSize = stepSize
+		self.window_length = window_length
+		self.step_size = step_size
 
 	def normalize(self):
 		if np.max(self.data) < 1.1:
@@ -99,7 +99,7 @@ class DynamicAttr(Mat):
 			return
 		for xidx in range(self.data.shape[0]):
 			for yidx in range(self.data.shape[1]):
-				self.data[xidx, yidx] = normalize_feature(self.data[xidx, yidx], self.name, self.atlasobj)
+				self.data[xidx, yidx] = normalize_feature(self.data[xidx, yidx], self.feature_name, self.atlasobj)
 
 	def append_one_slice(self, data):
 		"""
@@ -241,23 +241,27 @@ class Net(Mat):
 class DynamicNet(Mat):
 	"""
 	DynamicNet is the dynamic version of Net. It is stored as a 3-dimensional
-	data array (time, loc x, loc y). One can obtain the network at a given time
-	slice by using data[idx, :, :]
+	data array (loc x, loc y, time). One can obtain the network at a given time
+	slice by using data[:, :, idx]
 	"""
-	def __init__(self, data, atlasobj, windowLength, stepSize, scan = None, feature_name = 'BOLD.net'):
+	def __init__(self, data, atlasobj, window_length, step_size, scan = None, feature_name = 'BOLD.net'):
 		super().__init__(data, atlasobj, scan, feature_name)
-		self.stepSize = stepSize
-		self.windowLength = windowLength
+		self.step_size = step_size
+		self.window_length = window_length
 
 	def loadDynamicNets(self, loadPath):
+		"""
+		Deprecated. Do not use this function
+		"""
+		raise Exception
 		start = 0
 		while True:
-			filePath = Path(os.path.join(loadPath, 'corrcoef-%d.%d.csv' % (start, start + self.windowLength)))
+			filePath = Path(os.path.join(loadPath, 'corrcoef-%d.%d.csv' % (start, start + self.window_length)))
 			if filePath.exists():
 				self.dynamic_nets.append(Net(load_csvmat(filePath), self.atlasobj))
 			else:
 				break
-			start += self.stepSize
+			start += self.step_size
 
 def zero_net(atlasobj):
 	return Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)

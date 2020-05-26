@@ -1,14 +1,10 @@
 """Run a Para."""
 
-import sys, os
+import sys
 import argparse
-from mmdps import proc
-import mmdps.proc.para
+from mmdps.proc import para
 from mmdps.util.loadsave import load_json
 from mmdps.util import path
-
-def runpara(para):
-	return para.run()
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
@@ -17,8 +13,8 @@ if __name__ == '__main__':
 	configpath = path.fullfile(args.config)
 	print('Runpara: configpath', configpath)
 	configDict = load_json(configpath)
-	currentPara = proc.para.load(configDict)
-	runpara(currentPara)
+	currentPara = para.load(configDict)
+	currentPara.run()
 	sys.stdin.close()
 	sys.stdout.close()
 	sys.stderr.close()

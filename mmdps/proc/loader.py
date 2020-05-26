@@ -261,8 +261,8 @@ def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder 
 	"""
 	if type(atlasobj) is str:
 		atlasobj = atlas.get(atlasobj)
-	windowLength = dynamic_conf[0]
-	stepSize = dynamic_conf[1]
+	window_length = dynamic_conf[0]
+	step_size = dynamic_conf[1]
 	# fix dynamic attr feature_name issue
 	if attrname.find('bc') != -1 or attrname.find('BC') != -1:
 		feature_name = 'BOLD.BC'
@@ -274,14 +274,14 @@ def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder 
 		feature_name = 'BOLD.WD'
 	else:
 		raise Exception('Unknown feature_name %s' % attrname)
-	dynamic_attr = netattr.DynamicAttr(None, atlasobj, windowLength, stepSize, scan = scan, feature_name = feature_name)
+	dynamic_attr = netattr.DynamicAttr(None, atlasobj, window_length, step_size, scan = scan, feature_name = feature_name)
 	start = 0
-	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
+	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (step_size, window_length))
 	while True:
-		dynamic_attr_filepath = os.path.join(dynamic_foler_path, '%s-%d.%d.csv' % (attrname, start, start + windowLength))
+		dynamic_attr_filepath = os.path.join(dynamic_foler_path, '%s-%d.%d.csv' % (attrname, start, start + window_length))
 		if os.path.exists(dynamic_attr_filepath):
 			dynamic_attr.append_one_slice(load_csvmat(dynamic_attr_filepath))
-			start += stepSize
+			start += step_size
 		else:
 			# print('loaded %d attrs for %s' % (len(ret[scan]), scan))
 			break
@@ -346,20 +346,20 @@ def load_single_dynamic_network(scan, atlasobj, dynamic_conf, rootFolder = rootc
 	"""
 	if type(atlasobj) is str:
 		atlasobj = atlas.get(atlasobj)
-	windowLength = dynamic_conf[0]
-	stepSize = dynamic_conf[1]
+	window_length = dynamic_conf[0]
+	step_size = dynamic_conf[1]
 	start = 0
-	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net', 'dynamic %d %d' % (stepSize, windowLength))
+	dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net', 'dynamic %d %d' % (step_size, window_length))
 	time_slice_count = len(list(os.listdir(dynamic_foler_path))) - 1 # get rid of timeseries.csv
-	dynamic_net = netattr.DynamicNet(np.zeros((time_slice_count, atlasobj.count, atlasobj.count)), atlasobj, windowLength, stepSize, scan = scan, feature_name = 'BOLD.net')
+	dynamic_net = netattr.DynamicNet(np.zeros((atlasobj.count, atlasobj.count, time_slice_count)), atlasobj, window_length, step_size, scan = scan, feature_name = 'BOLD.net')
 	timeIdx = 0
 	while True:
-		dynamic_net_filepath = os.path.join(dynamic_foler_path, 'corrcoef-%d.%d.csv' % (start, start+windowLength))
+		dynamic_net_filepath = os.path.join(dynamic_foler_path, 'corrcoef-%d.%d.csv' % (start, start+window_length))
 		if os.path.exists(dynamic_net_filepath):
 			time_slice_net = load_csvmat(dynamic_net_filepath)
-			dynamic_net.data[timeIdx, :, :] = time_slice_net
+			dynamic_net.data[:, :, timeIdx] = time_slice_net
 			timeIdx += 1
-			start += stepSize
+			start += step_size
 		else:
 			break
 	return dynamic_net

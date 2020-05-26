@@ -26,8 +26,11 @@ def makedirs_file(file):
 	The dir is extracted use dirname.
 	"""
 	d = os.path.dirname(file)
+	if len(d) < 1:
+		# if the given file contains only filename
+		return
 	makedirs(d)
-	
+
 def makedirs(dirs):
 	"""Makedirs that use exist_ok=True."""
 	os.makedirs(dirs, exist_ok=True)

@@ -15,6 +15,7 @@ from collections import OrderedDict
 # from ..util import clock, path
 # from .. import rootconfig
 from mmdps.util import clock, path
+from mmdps.util.loadsave import load_json_ordered, load_json
 from mmdps import rootconfig
 
 def genlogfilename(info=''):
@@ -22,22 +23,6 @@ def genlogfilename(info=''):
 	path.makedirs('log')
 	timestr = clock.now()
 	return 'log/log_{}_{}.txt'.format(timestr, info)
-
-def call_logged2(cmdlist, info=''):
-	"""Call the cmdlist and output the log to a file in log folder."""
-	try:
-		print(cmdlist)
-		ret = subprocess.check_output(cmdlist, stderr=subprocess.STDOUT, stdin=None) #
-		output = ret
-		retcode = 0
-	except subprocess.CalledProcessError as err:
-		output = err.output
-		retcode = err.returncode
-		warnings.warn('Error run "{}", return code is {}'.format(str(cmdlist), retcode))
-	with open(genlogfilename(info), 'wb') as f:
-		f.write((str(cmdlist)+'\n\n').encode())
-		f.write(output)
-	return retcode
 
 def call_logged(cmdlist, info='',isShell=False):
 	"""Call the cmdlist and output the log to a file in log folder."""
@@ -80,12 +65,12 @@ class ChangeDirectory:
 	def __exit__(self, exc_type, exc_val, exc_tb):
 		"""When exit, change dir back."""
 		os.chdir(self.oldfolder)
-		
+
 class Job:
 	"""A job is a processing unit."""
 	def __init__(self, name, cmd, config='', argv=None, wd='.'):
 		"""Init the job with name, cmd, config, argv and wd.
-		
+
 		The config will become --config CONFIG in argv.
 		wd is the working directory in which the job would be run.
 		"""
@@ -123,7 +108,7 @@ class Job:
 
 	def build_fullcmd(self):
 		"""Build full command.
-		
+
 		If the cmd is not absolute path, search in path for this cmd.
 		It is similar to matlabpath, so you do not need to specify the
 		full cmd path. Just make sure to avoid name clash.
@@ -136,7 +121,7 @@ class Job:
 
 	def build_fullconfig(self):
 		"""Build full config.
-		
+
 		Search the config file using path.fullfile.
 		"""
 		config = path.fullfile(self.config)
@@ -153,6 +138,8 @@ class Job:
 	def build_cmdlist(self):
 		"""Build the command list, including rootcmd and argv."""
 		cmdlist = self.build_rootcmd()
+		# Split the string using shell-like syntax
+		# given 'mkdir -p abc', return ['mkdir', '-p', 'abc']
 		cmdlist.extend(shlex.split(self.argv))
 		if self.config:
 			cmdlist.extend(['--config', self.build_fullconfig()])
@@ -178,7 +165,7 @@ class ShellJob(Job):
 
 class PythonJob(Job):
 	"""Python job, run a python script.
-	
+
 	The script may be self-contained. If it use modules in the same directory,
 	the directory should be added to project path so when run the job in wd,
 	the python interpreter can import it.
@@ -196,7 +183,7 @@ class MatlabJob(Job):
 	"""Matlab job, run a matlab string, typically a matlab function."""
 	def __init__(self, name, cmd, config='', argv=None, wd='.'):
 		"""Init the matlab job.
-		
+
 		The path.searchpathlist will be added to the matlab path by addpath function
 		before the matlab command run. If not configured right, the matlab job cannot
 		find the matlab function.
@@ -226,7 +213,7 @@ class MatlabJob(Job):
 		cmdlist = []
 		cmdlist.append(rootconfig.matlab_bin)
 		cmdlist.extend(['-wait', '-nosplash', '-minimize', '-nodesktop', '-logfile',
-				self.build_matlab_logfile(), '-r'])
+						self.build_matlab_logfile(), '-r'])
 		realcmd = []
 		#realcmd.append('"')
 		realcmd.append(self.matlab_path_to_add())
@@ -248,7 +235,7 @@ class BatchJob(Job):
 	"""Batch job, this is a list of sequentially run jobs."""
 	def __init__(self, name, cmd, config='', argv=None, wd='.'):
 		"""Init the batch job.
-		
+
 		If config is str, this is a configfile. If config is list, this list
 		contains the children jobs in place.
 		"""
@@ -274,7 +261,7 @@ class BatchJob(Job):
 		"""Run job list, one by one."""
 		jobs = []
 		for jobconfig in self.config:
-			currentJob = create(jobconfig)
+			currentJob = create_from_dict(jobconfig)
 			jobs.append(currentJob)
 		for currentJob in jobs:
 			retcode = currentJob.run()
@@ -295,7 +282,7 @@ JobClasses = [Job, ShellJob, PythonJob, MatlabJob, ExecutableJob, BatchJob]
 # Class name to class mapping
 JobClassesDict = {C.__name__: C for C in JobClasses}
 
-def create(configDict):
+def create_from_dict(configDict):
 	"""
 	Create a job from dict. The type of the job is specified in 'typename'.
 	An instance of the corresponding class is created and returned.
@@ -309,9 +296,10 @@ def dump(job):
 	"""Dump the job to console."""
 	return job.to_dict()
 
-def load(configDict):
-	"""Load a job from dict."""
-	return create(configDict)
+def load_from_file(configfile):
+	"""Load a job from file."""
+	configDict = load_json(configfile)
+	return create_from_dict(configDict)
 
 def runjob(currentJob, folder=None):
 	"""Run the job in folder."""
@@ -320,3 +308,11 @@ def runjob(currentJob, folder=None):
 			return currentJob.run()
 	else:
 		return currentJob.run()
+
+def runjob_with_config(jobconfig, folder = None):
+	currentJob = create_from_dict(jobconfig)
+	runjob(currentJob, folder)
+
+def runjob_with_file(configfile, folder = None):
+	currentJob = create_from_dict(load_json_ordered(configfile))
+	runjob(currentJob, folder)

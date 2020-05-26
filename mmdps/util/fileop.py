@@ -26,7 +26,7 @@ def edit_json(filepath, filename, firstpart):
 	"""Edit json use dedicated tool if possible, otherwise use text editor."""
 	manager = toolman.get_default_manager()
 	tool = manager.find(firstpart)
-	print(firstpart)
+	print('fileop edit_json: ', firstpart)
 	if tool is None:
 		print('No proper ui, use text editor instead')
 		edit_text(filepath)

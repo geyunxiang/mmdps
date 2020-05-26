@@ -17,6 +17,7 @@ ThisDir = os.path.dirname(os.path.abspath(__file__))
 class OneJobConnector(gui.configfield.DefaultSimpleConnector):
     """Connector for one job."""
     JobConfigField = load_json_ordered(os.path.join(ThisDir, 'jobconfigfield.json'))
+
     def __init__(self):
         """Init the onejob connector."""
         super().__init__(self.JobConfigField)
@@ -28,15 +29,14 @@ class JobConfigFieldConnector(gui.configfield.ConfigFieldConnector):
         """Init the connector."""
         super().__init__()
         self.jobconnector = OneJobConnector()
-        
+
     def config_to_field(self, config):
         """Batch job config to field."""
         assert config['typename'] == 'BatchJob'
         jobconfigs = config.get('config')
-        rootfield = gui.field.CompositeField('BatchJob')
+        rootfield = gui.field.CompositeField(config.get('name', 'BatchJob'))
         childrenfield = []
         for jobconfig in jobconfigs:
-            print(jobconfig)
             field = self.jobconnector.config_to_field(jobconfig)
             childrenfield.append(field)
         rootfield.children = childrenfield
@@ -49,7 +49,7 @@ class JobConfigFieldConnector(gui.configfield.ConfigFieldConnector):
         rootconfig['typename'] = 'BatchJob'
         rootconfig['config'] = [self.jobconnector.field_to_config(None)]
         return rootconfig
-    
+
     def field_to_config(self, field):
         """Field to batchjob config."""
         if field is None:
@@ -65,4 +65,3 @@ class JobConfigFieldConnector(gui.configfield.ConfigFieldConnector):
             jobconfigs.append(jobconfig)
         rootconfig['config'] = jobconfigs
         return rootconfig
-    

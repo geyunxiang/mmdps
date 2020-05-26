@@ -6,13 +6,6 @@ from mmdps.proc import job
 from mmdps.util import loadsave
 from mmdps.util import path
 
-def runjob(job, folder=None):
-	if folder:
-		with job.ChangeDirectory(folder):
-			return job.run()
-	else:
-		return job.run()
-
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--config', help='job config json file', required=True)
@@ -22,8 +15,8 @@ if __name__ == '__main__':
 	configfile = path.fullfile(args.config)
 	print('Runjob File:', configfile)
 	configdict = loadsave.load_json(configfile)
-	currentJob = job.load(configdict)
-	runjob(currentJob, args.folder)
+	currentJob = job.create_from_dict(configdict)
+	job.runjob(currentJob, args.folder)
 	sys.stdin.close()
 	sys.stdout.close()
 	sys.stderr.close()
