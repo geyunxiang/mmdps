@@ -1,6 +1,5 @@
-import os, sys
+import os
 from mmdps.util import dwi
-from mmdps.proc import atlas
 from dipy.tracking import utils
 import nibabel as nib
 from dipy.io import pickles
@@ -8,13 +7,11 @@ from dipy.io import pickles
 class Struct:
     pass
 
-
 def track_gen_net_work(tracks, img_template):
     labels = img_template.get_data()
     labels = labels.astype(int)
     M, grouping = utils.connectivity_matrix(tracks, labels, affine=img_template.get_affine(),
                               return_mapping=True, mapping_as_streamlines=True)
-
     p = Struct()
     p.M = M
     p.grouping = grouping
@@ -31,4 +28,3 @@ if __name__ == '__main__':
     trackfile = os.path.join('../../', spacename, 'raw_track.trk')
     templatepath = 'wtemplate_2.nii.gz'
     track_gen_net(trackfile, templatepath)
-    

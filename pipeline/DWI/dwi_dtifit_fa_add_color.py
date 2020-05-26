@@ -26,29 +26,23 @@ def to_fa_color(niifa, niiv1):
     fa_img = nib.load(niifa)
     v1_img = nib.load(niiv1)  # [-1, 1] for each component
 
-    fa_data = fa_img.get_data()
-    v1_data = np.abs(v1_img.get_data())
-    print(fa_data.shape)
-    print(v1_data.shape)
-    
+    fa_data = fa_img.get_fdata()
+    v1_data = np.abs(v1_img.get_fdata())
+    print('dwi_ditfit_fa_add_color, fa_data.shape: ', fa_data.shape)
+    print('dwi_ditfit_fa_add_color, v1_data.shape: ', v1_data.shape)
+
     fa_color_float = multiply_one_many(fa_data, v1_data)
-    print(fa_color_float.shape)
-    print(fa_color_float[111, 160, 41, 1])
-    
+    print('dwi_ditfit_fa_add_color, fa_color_float.shape: ', fa_color_float.shape)
+    print('dwi_ditfit_fa_add_color, fa_color_float[111, 160, 41, 1]: ', fa_color_float[111, 160, 41, 1])
+
     fa_color_data = floatcolor3_to_int24rgb(fa_color_float)
-    print(fa_color_data.shape)
-    
+    print('dwi_ditfit_fa_add_color, fa_color_data.shape: ', fa_color_data.shape)
+
     fa_color_int24_img = nib.Nifti1Image(fa_color_data, fa_img.get_affine())
-    
+
     namenoext = nifti_noext(niifa)
     outfilename = namenoext + '_color.nii.gz'
     nib.save(fa_color_int24_img, outfilename)
-    
-    
-    
-    
 
 if __name__ == '__main__':
     to_fa_color('dtifitresult_FA.nii.gz', 'dtifitresult_V1.nii.gz')
-    
-    
