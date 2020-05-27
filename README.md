@@ -2,7 +2,9 @@
 
 ## Environment setter
 
-On Linux and macOS, one should set environment variable `MMDPS_ROOTDIR` at `~/.bashrc` or similar profile file. The `MMDPS_ROOTDIR` should point to the root dir of mmdps system. 
+On Linux and macOS, one should set environment variable `MMDPS_ROOTDIR` at `~/.bashrc` or similar profile file. On Windows, the environment variable `MMDPS_ROOTDIR` should be set at computer->properties->advanced->environment variable. User environment variable is enough.
+
+The `MMDPS_ROOTDIR` should point to the root dir of mmdps system. 
 
 ## New Data Process Pipeline
 
