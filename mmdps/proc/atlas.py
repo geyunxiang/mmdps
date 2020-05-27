@@ -275,6 +275,7 @@ class Atlas:
 brodmann_lr = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'brodmann_lr.json')))
 brodmann_lrce = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'brodmann_lrce.json')))
 aal = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aal.json')))
+aal2 = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas), 'aal2.json'))
 aicha = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aicha.json')))
 bnatlas = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'bnatlas.json')))
 
@@ -287,6 +288,8 @@ def get(atlasname, suppress = True):
 		return brodmann_lrce
 	elif atlasname == 'aal':
 		return aal
+	elif atlasname == 'aal2':
+		return aal2
 	elif atlasname == 'aicha':
 		return aicha
 	elif atlasname == 'bnatlas':
