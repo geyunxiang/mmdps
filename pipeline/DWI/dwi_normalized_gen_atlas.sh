@@ -4,7 +4,7 @@
 # template already in MNI space, just copy and rename
 # Example: ./individual_gen_template.sh ../../../commonfiles/brodmann_lr_2.nii.gz brodmann_lr_2
 
-ATLASNAME=$(basename $PWD)
+ATLASNAME=$(basename "$PWD")
 
 echo "atlasname: ${ATLASNAME}"
 
