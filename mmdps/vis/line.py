@@ -1,6 +1,6 @@
 """Line plot."""
 
-import os
+import os, sys
 from scipy import stats
 import numpy as np
 from matplotlib import pyplot as plt
@@ -30,7 +30,7 @@ class LinePlot:
 		self.ylim = (0 - 0.1*self.H, self.H * 1.1)
 		self.sig_positions = None
 		self.plot_ticks = None
-	
+
 	def add_markers(self):
 		"""
 		positions - a list of index
@@ -49,14 +49,30 @@ class LinePlot:
 		The value at each index is 0 or 1, with 1 representing significance
 		stat_list is a list of zipped value (stat, p). The length = atlasobj.count
 		"""
+		stat_list = list(stat_list) # persist zip
 		image = Image.open(self.outfilepath)
 		width, height = image.size
 		# find text height
 		new_im = Image.new('RGB', (width, height), 'white')
 		draw = ImageDraw.Draw(new_im)
-		font = ImageFont.truetype('arial.ttf', 16)
+		if sys.platform == 'darwin':
+			# macOS stores font files in a location that can not be searched by Pillow (PIL)
+			font = ImageFont.truetype('/Library/Fonts/arial.ttf', 16)
+		else:
+			# might be erroneous on Linux
+			font = ImageFont.truetype('arial.ttf', 16)
 		w, h = draw.textsize(' p = 1.234   ', font = font)
-		y_maximum = 4 # how many records per column
+		x_maximum = 6 # experiment result. At most 6 columns under line plot
+		y_maximum = 4 # how many records per column. need to be determined dynamically
+		# count how many significant result
+		counter = 0
+		for stat in stat_list:
+			if stat[1] <= 0.05:
+				counter += 1
+		if counter > x_maximum * y_maximum:
+			# adjust y_maximum so that all results can fill under line plot
+			y_maximum = int(counter/x_maximum + 1)
+			print('adjusted y_maximum = %d' % y_maximum)
 		new_im = Image.new('RGB', (width, height + int(h * y_maximum)), 'white')
 		draw = ImageDraw.Draw(new_im)
 		# paste old image
