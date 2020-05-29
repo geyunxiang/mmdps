@@ -1,0 +1,16 @@
+{
+    "name": "intra_attr",
+    "netthreshold": 0.5,
+    "if_stride": false,
+    "netthreshold_stride": 0.05,
+    "netthreshold_end": 0.6,
+    "weakorstrong":1,
+    "calc_attr":{
+        "global_efficiency":true,
+        "clustering_coefficients":true,
+        "betweenness_centrality":true,
+        "average_path_length":true,
+        "modularity":false,
+        "small_worldness":false
+    }
+}

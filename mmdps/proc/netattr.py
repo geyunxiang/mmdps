@@ -80,6 +80,14 @@ class Attr(Mat):
 		for idx in range(self.data.shape[0]):
 			self.data[idx] = normalize_feature(self.data[idx], self.name, self.atlasobj)
 
+	def extract_node_community(self):
+		"""
+		Using Ziliang's program, the inter-region community is saved in a csv file.
+		Community is calculated using Louvein algorithm recursively. 
+		This function takes the first-level community (each node is associated with a community)
+		"""
+		self.data = self.data[:self.atlasobj.count, 1]
+
 class DynamicAttr(Mat):
 	"""
 	DynamicAttr is the dynamic version of Attr.
