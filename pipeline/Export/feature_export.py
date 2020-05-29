@@ -6,14 +6,14 @@ Use this exporter to export features from the calculation folder to feature data
 import os
 import shutil
 
-from mmdps.proc import atlas
-from mmdps.util.loadsave import load_json_ordered, save_json_ordered, load_txt, save_txt
+from mmdps.util.loadsave import load_json_ordered, load_txt
 from mmdps.util import path
+from mmdps.dms import mongodb_database
 
 class MRIScanProcMRIScanAtlasExporter:
 	"""
 	The feature exporter for mriscan processing.
-	
+
 	Only export for one mriscan and one atlas.
 	"""
 	def __init__(self, mriscan, atlasname, mainconfig, dataconfig):
@@ -69,23 +69,38 @@ class MRIScanProcMRIScanAtlasExporter:
 			for filename, fileconf in self.dataconfig['unatlased'].items():
 				self.run_feature(filename, fileconf)
 
+class MRIScanProcMMDPDatabaseExporter(MRIScanProcMRIScanAtlasExporter):
+	"""
+	The feature exporter for mriscan processing. 
+	Export features to MMDPDatabase (MongoDB Database)
+	Only export for one mriscan and one atlas.
+	"""
+	def __init__(self, mriscan, atlasname, mainconfig, dataconfig, data_source):
+		super().__init__(mriscan, atlasname, mainconfig, dataconfig)
+		self.data_source = data_source
+		self.mdb = mongodb_database.MongoDBDatabase(data_source)
+
 class MRIScanProcExporter:
 	"""
 	The feature exporter.
 
 	Export features in all mriscans.
 	"""
-	def __init__(self, mainconfig, dataconfig):
+	def __init__(self, mainconfig, dataconfig, modal = None, folder = None, database = False, data_source = None):
 		"""Init the exporter using mainconfig and dataconfig."""
 		self.mainconfig = mainconfig
 		self.dataconfig = dataconfig
 		self.atlases = load_txt(mainconfig['atlaslist'])
 		self.mriscans = load_txt(mainconfig['scanslist'])
+		self.modal = modal
+		self.folder = folder
+		self.database = database
+		self.data_source = data_source
 
 	def run_mriscan_atlas(self, mriscan, atlasname):
 		"""Run one mriscan and one atlas to export."""
 		atlas_exporter = MRIScanProcMRIScanAtlasExporter(mriscan, atlasname, self.mainconfig, self.dataconfig)
-		atlas_exporter.run()        
+		atlas_exporter.run()
 
 	def run(self):
 		"""Run the export."""
@@ -97,6 +112,11 @@ class MRIScanProcExporter:
 			# unatlased
 			for mriscan in self.mriscans:
 				self.run_mriscan_atlas(mriscan, None)
+
+def check_modal(modal, mainconfigfile):
+	mainconfig = load_json_ordered(mainconfigfile)
+	if modal not in mainconfig['inputfolders'].keys():
+		raise Exception('modal %s not valid (%s)' % (modal, mainconfig['inputfolders'].keys()))
 
 def create_by_files(mainconfigfile, dataconfigfile):
 	"""Create exporter by config files."""

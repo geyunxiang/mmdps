@@ -1,33 +1,39 @@
 {
     "nets": {
         "bold_net": {
-            "modal": "BOLD", "file": "bold_net/corrcoef.csv"
+            "modal": "BOLD", "file": "bold_net/corrcoef.csv", "feature_name": "BOLD.net"
         },
         "dwi_net": {
-            "modal": "DWI", "file": "nativespace/dwinet.csv"
+            "modal": "DWI", "file": "nativespace/dwinet.csv", "feature_name": "DWI.net"
         }
     },
     "attrs": {
         "bold_interBC": {
-            "modal": "BOLD", "file": "bold_net_attr/inter-region_bc.csv"
+            "modal": "BOLD", "file": "bold_net_attr/inter-region_bc.csv", "feature_name": "BOLD.BC"
         },
         "bold_interCCFS": {
-            "modal": "BOLD", "file": "bold_net_attr/inter-region_ccfs.csv"
+            "modal": "BOLD", "file": "bold_net_attr/inter-region_ccfs.csv", "feature_name": "BOLD.CCFS"
         },
         "bold_interLE": {
-            "modal": "BOLD", "file": "bold_net_attr/inter-region_le.csv"
+            "modal": "BOLD", "file": "bold_net_attr/inter-region_le.csv", "feature_name": "BOLD.LE"
         },
         "bold_interWD": {
-            "modal": "BOLD", "file": "bold_net_attr/inter-region_wd.csv"
+            "modal": "BOLD", "file": "bold_net_attr/inter-region_wd.csv", "feature_name": "BOLD.WD"
         },
         "t1_GMD": {
-            "modal": "T1", "file": "t1mean/greydensity.csv"
+            "modal": "T1", "file": "t1mean/greydensity.csv", "feature_name": "T1.GMD"
         },
         "dwi_MD": {
-            "modal": "DWI", "file": "nativespace/meanmd.csv"
+            "modal": "DWI", "file": "nativespace/meanmd.csv", "feature_name": "DWI.MD"
         },
         "dwi_FA": {
-            "modal": "DWI", "file": "nativespace/meanfa.csv"
+            "modal": "DWI", "file": "nativespace/meanfa.csv", "feature_name": "DWI.FA"
+        }, 
+        "dwi_RD": {
+            "modal": "DWI", "file": "nativespace/meanRD.csv", "feature_name": "DWI.RD"
+        }, 
+        "dwi_AD": {
+            "modal": "DWI", "file": "nativespace/meanAD.csv", "feature_name": "DWI.AD"
         }
     },
     "unatlased": {
