@@ -1,0 +1,10 @@
+{
+    "input_folders": {
+        "T1": "E:/DataProcessing/T1",
+        "BOLD": "E:/DataProcessing/BOLD",
+        "DWI": "D:/Research/ASCI_Guo/DWI work Guo"
+    },
+    "output_folder": "E:/FeatureDatabase/ChangGungFeatures",
+    "atlas_list": ["brodmann_lrce"],
+    "scan_list": "listdir"
+}

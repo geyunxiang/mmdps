@@ -1,6 +1,7 @@
-import argparse
-import feature_export
+import argparse, os
+from mmdps.dms import feature_exporter
 from mmdps.util import loadsave
+from mmdps import rootconfig
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
@@ -9,9 +10,9 @@ if __name__ == '__main__':
 	parser.add_argument('--datasource', help = 'datasource for MMDPDatabase', default = None)
 	args = parser.parse_args()
 
-	feature_export.check_modal(args.modal, 'export_mainconf.json')
-	data_config = loadsave.load_json('export_dataconf.json')
-	main_config = loadsave.load_json('export_mainconf.json')
+	feature_exporter.check_modal(args.modal, os.path.join(rootconfig.path.dms, 'export_mainconf.json'))
+	data_config = loadsave.load_json(os.path.join(rootconfig.path.dms, 'export_dataconf.json'))
+	main_config = loadsave.load_json(os.path.join(rootconfig.path.dms, 'export_mainconf.json'))
 
 	if args.modal is not None:
 		print('Will search default folder for %s' % (args.modal))
@@ -20,6 +21,6 @@ if __name__ == '__main__':
 	elif args.database:
 		print('Will export to database. datasource = %s' % (args.datasource))
 
-	exporter = feature_export.MRIScanProcExporter(main_config, data_config, args.modal, args.database, args.datasource)
+	exporter = feature_exporter.MRIScanProcExporter(main_config, data_config, args.modal, args.database, args.datasource)
 	exporter.run()
 	print('Feature export completed.')
