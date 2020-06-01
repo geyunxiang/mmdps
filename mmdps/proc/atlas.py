@@ -73,7 +73,7 @@ class Atlas:
 		from mmdps.vis import braincircos
 		circosfile = 'circosparts_{}.json'.format(name)
 		self.brainparts = braincircos.BrainParts(loadsave.load_json(os.path.join(self.circosfolder, circosfile)))
-	
+
 	def get_brainparts(self):
 		if self.brainparts:
 			return self.brainparts
@@ -110,10 +110,11 @@ class Atlas:
 		Convert ticks to indexes.
 		ticks should be a list of tick, like ['L1', 'R2'] etc
 		"""
-		if not hasattr(self, '_tickindexdict'):
-			self._tickindexdict = dict([(k, i) for i, k in enumerate(self.ticks)])
-		indexes = [self._tickindexdict[tick] for tick in ticks]
-		return indexes
+		# if not hasattr(self, '_tickindexdict'):
+		# 	self._tickindexdict = dict([(k, i) for i, k in enumerate(self.ticks)])
+		# indexes = [self._tickindexdict[tick] for tick in ticks]
+		# return indexes
+		return [self.ticks.index(region) for region in ticks]
 
 	def indexes_to_ticks(self, indexes):
 		"""

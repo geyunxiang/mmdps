@@ -85,8 +85,19 @@ class Attr(Mat):
 		Using Ziliang's program, the inter-region community is saved in a csv file.
 		Community is calculated using Louvein algorithm recursively. 
 		This function takes the first-level community (each node is associated with a community)
+		TODO: the first-level community order might be different in AAL (left-right-interleaved)
 		"""
-		self.data = self.data[:self.atlasobj.count, 1]
+		origin = self.data[:self.atlasobj.count, 1].astype(int)
+		new = origin.copy()
+		community_counter = 0
+		processed_original_community = []
+		for idx in range(self.atlasobj.count):
+			if origin[idx] in processed_original_community:
+				continue
+			new[origin == origin[idx]] = community_counter
+			community_counter += 1
+			processed_original_community.append(origin[idx])
+		self.data = new
 
 class DynamicAttr(Mat):
 	"""
@@ -238,8 +249,34 @@ class Net(Mat):
 		abs(FC) < threshold --> FC = 0
 		abs(FC) >= threshold --> FC = 1
 		"""
-		newnet = Net(self.data.copy(), self.atlasobj, self.name)
+		newnet = Net(self.data.copy(), self.atlasobj, self.scan, self.feature_name)
 		newnet.data = (np.abs(newnet.data) >= threshold).astype(int)
+		return newnet
+
+	def select_ROI(self, roi_list):
+		"""
+		Return a copy of current network, with connections associated with regions in 
+		roi_list alone.
+		roi_list should be of length atlasobj.count with True or False in it.
+		Input lists of region ticks or region indices is also accepted.
+		"""
+		if len(roi_list) != self.atlasobj.count and type(roi_list[0]) is str:
+			# list of region ticks
+			tmp_list = np.zeros(self.atlasobj.count)
+			tmp_list[self.atlasobj.ticks_to_indexes(roi_list)] = 1
+			roi_list = tmp_list.astype(bool)
+		elif type(roi_list[0]) is int:
+			# list of region indices
+			tmp_list = np.zeros(self.atlasobj.count)
+			tmp_list[roi_list] = 1
+			roi_list = tmp_list.astype(bool)
+		newnet = Net(self.data.copy(), self.atlasobj, self.scan, self.feature_name)
+		for xidx in range(self.atlasobj.count):
+			for yidx in range(xidx + 1, self.atlasobj.count):
+				if roi_list[xidx] and roi_list[yidx]:
+					continue
+				newnet.data[xidx, yidx] = 0
+				newnet.data[yidx, xidx] = 0
 		return newnet
 
 	def setValueAtTicks(self, xtick, ytick, value):
