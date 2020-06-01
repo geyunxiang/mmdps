@@ -1,44 +1,76 @@
 {
+    "dynamic": {
+        "is_dynamic": false,
+        "window_length": 100,
+        "step_size": 1
+    },
     "nets": {
-        "bold_net": {
-            "modal": "BOLD", "file": "bold_net/corrcoef.csv", "feature_name": "BOLD.net"
+        "BOLD.net": {
+            "modal": "BOLD", "file": "bold_net/dynamic 1 100/corrcoef", "file_type": ".csv", "out_file_name": "bold_net"
         },
-        "dwi_net": {
-            "modal": "DWI", "file": "nativespace/dwinet.csv", "feature_name": "DWI.net"
+        "DWI.net": {
+            "modal": "DWI", "file": "nativespace/dwinet", "file_type": ".csv", "out_file_name": "dwi_net"
         }
     },
     "attrs": {
-        "bold_interBC": {
-            "modal": "BOLD", "file": "bold_net_attr/inter-region_bc.csv", "feature_name": "BOLD.BC"
+        "BOLD.BC.inter": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_bc", "file_type": ".csv", "out_file_name": "bold_interBC"
         },
-        "bold_interCCFS": {
-            "modal": "BOLD", "file": "bold_net_attr/inter-region_ccfs.csv", "feature_name": "BOLD.CCFS"
+        "BOLD.CCFS.inter": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_ccfs", "file_type": ".csv", "out_file_name": "bold_interCCFS"
         },
-        "bold_interLE": {
-            "modal": "BOLD", "file": "bold_net_attr/inter-region_le.csv", "feature_name": "BOLD.LE"
+        "BOLD.LE.inter": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_le", "file_type": ".csv", "out_file_name": "bold_interLE"
         },
-        "bold_interWD": {
-            "modal": "BOLD", "file": "bold_net_attr/inter-region_wd.csv", "feature_name": "BOLD.WD"
+        "BOLD.WD.inter": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_wd", "file_type": ".csv", "out_file_name": "bold_interWD"
         },
-        "t1_GMD": {
-            "modal": "T1", "file": "t1mean/greydensity.csv", "feature_name": "T1.GMD"
+        "BOLD.community.inter": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_community", "file_type": ".csv", "out_file_name": "bold_interCommunity"
         },
-        "dwi_MD": {
-            "modal": "DWI", "file": "nativespace/meanmd.csv", "feature_name": "DWI.MD"
+        "BOLD.modularity.inter": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_modularity", "file_type": ".csv", "out_file_name": "bold_interModularity"
         },
-        "dwi_FA": {
-            "modal": "DWI", "file": "nativespace/meanfa.csv", "feature_name": "DWI.FA"
+        "BOLD.SWN.inter": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_swn", "file_type": ".csv", "out_file_name": "bold_interSWN"
+        },
+        "BOLD.BC.intra": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_bc", "file_type": ".csv", "out_file_name": "bold_intraBC"
+        },
+        "BOLD.CCFS.intra": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_ccfs", "file_type": ".csv", "out_file_name": "bold_intraCCFS"
+        },
+        "BOLD.GE.intra": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_ge", "file_type": ".csv", "out_file_name": "bold_intraGE"
+        },
+        "BOLD.path.intra": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_path", "file_type": ".csv", "out_file_name": "bold_intraPath"
+        },
+        "BOLD.modularity.intra": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_modularity", "file_type": ".csv", "out_file_name": "bold_intraModularity"
+        },
+        "BOLD.SWN.intra": {
+            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_SWN", "file_type": ".csv", "out_file_name": "bold_intraSWN"
+        },
+        "T1.GMD": {
+            "modal": "T1", "file": "t1mean/greydensity", "file_type": ".csv", "out_file_name": "t1_GMD"
+        },
+        "DWI.MD": {
+            "modal": "DWI", "file": "nativespace/meanMD", "file_type": ".csv", "out_file_name": "dwi_MD"
+        },
+        "DWI.FA": {
+            "modal": "DWI", "file": "nativespace/meanFA", "file_type": ".csv", "out_file_name": "dwi_FA"
         }, 
-        "dwi_RD": {
-            "modal": "DWI", "file": "nativespace/meanRD.csv", "feature_name": "DWI.RD"
+        "DWI.RD": {
+            "modal": "DWI", "file": "nativespace/meanRD", "file_type": ".csv", "out_file_name": "dwi_RD"
         }, 
-        "dwi_AD": {
-            "modal": "DWI", "file": "nativespace/meanAD.csv", "feature_name": "DWI.AD"
+        "DWI.AD": {
+            "modal": "DWI", "file": "nativespace/meanAD", "file_type": ".csv", "out_file_name": "dwi_AD"
         }
     },
     "unatlased": {
         "dwi_FAColor": {
-            "modal": "DWI", "file": "dtifitresult_FA_color.nii.gz"
+            "modal": "DWI", "file": "dtifitresult_FA_color", "file_type": ".nii.gz", "out_file_name": "dwi_FAColor"
         }
     }
 }

@@ -294,6 +294,19 @@ class DynamicNet(Mat):
 		self.step_size = step_size
 		self.window_length = window_length
 
+	def append_one_slice(self, data):
+		"""
+		This function appends one slice of network to current dynamic networks.
+		The appended slice should align with current data, or be used to create original data.
+		:param data: a np (n, n) array
+		:return: nothing
+		"""
+		data = np.reshape(data, (data.shape[0], data.shape[1], 1))
+		if self.data is None:
+			self.data = data
+		else:
+			self.data = np.concatenate((self.data, data), axis = 2)
+
 	def loadDynamicNets(self, loadPath):
 		"""
 		Deprecated. Do not use this function
