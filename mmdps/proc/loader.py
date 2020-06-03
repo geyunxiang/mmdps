@@ -5,7 +5,6 @@ The loaders are created by fusion constructor. There are config files
 to config every loader.
 """
 import os
-import csv
 import json
 import numpy as np
 
@@ -24,8 +23,10 @@ class Loader:
 		"""
 		self.mainfolder = mainfolder
 		self.atlasobj = atlasobj
-		with open(os.path.join(rootconfig.path.proc, 'attr_dict.json')) as f:
-			self.attr_config_dict = json.load(f)
+		with open(os.path.join(rootconfig.path.dms, 'export_dataconf.json')) as f:
+			export_config = json.load(f)
+			self.attr_config_dict = export_config['nets']
+			self.attr_config_dict.update(export_config['attrs'])
 		self.f_preproc = None
 
 	def get_feature_filenames(self):
@@ -41,7 +42,8 @@ class Loader:
 
 	def csvfilename(self, netattrname):
 		"""Get the csv filename by feature name."""
-		return self.attr_config_dict.get(netattrname).get('filename')
+		attr_config = self.attr_config_dict.get(netattrname)
+		return attr_config['out_file_name'] + attr_config['file_type']
 
 	def loadfilepath(self, mriscan, netattrname, csvfilename = None):
 		"""File path for one feature."""
@@ -236,9 +238,10 @@ class GroupLoader:
 		return self.person_mriscans_dict.get(person, [])
 
 def get_BOLD_feature_name():
-	with open(os.path.join(rootconfig.path.proc, 'attr_dict.json')) as f:
+	with open(os.path.join(rootconfig.path.dms, 'export_dataconf.json')) as f:
 		attr_config_dict = json.load(f)
-		return [attr_config_dict[feat]['feat_name'] for feat in attr_config_dict if feat.find('BOLD') != -1 and feat.find('net') == -1]
+		return [name for name in attr_config_dict['attrs'] if attr_config_dict['attrs'][name]['modal'] == 'BOLD']
+		# return [attr_config_dict['attrs'][feat]['feat_name'] for feat in attr_config_dict if feat.find('BOLD') != -1 and feat.find('net') == -1]
 
 def load_attrs(scans, atlasobj, attrname, rootFolder = rootconfig.path.feature_root, csvfilename = None):
 	"""
@@ -250,10 +253,10 @@ def load_attrs(scans, atlasobj, attrname, rootFolder = rootconfig.path.feature_r
 	"""
 	if type(atlasobj) is str:
 		atlasobj = atlas.get(atlasobj)
-	l = AttrLoader(atlasobj, rootFolder)
+	# l = AttrLoader(atlasobj, rootFolder)
 	if csvfilename is not None:
-		return l.load_multiple_attrs(scans, attrname, csvfilename)
-	return l.load_multiple_attrs(scans, attrname)
+		return AttrLoader(atlasobj, rootFolder).load_multiple_attrs(scans, attrname, csvfilename)
+	return AttrLoader(atlasobj, rootFolder).load_multiple_attrs(scans, attrname)
 
 def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder = rootconfig.path.feature_root):
 	"""
@@ -265,13 +268,13 @@ def load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder 
 	step_size = dynamic_conf[1]
 	# fix dynamic attr feature_name issue
 	if attrname.find('bc') != -1 or attrname.find('BC') != -1:
-		feature_name = 'BOLD.BC'
+		feature_name = 'BOLD.BC.inter'
 	elif attrname.find('ccfs') != -1 or attrname.find('CCFS') != -1:
-		feature_name = 'BOLD.CCFS'
+		feature_name = 'BOLD.CCFS.inter'
 	elif attrname.find('le') != -1 or attrname.find('LE') != -1:
-		feature_name = 'BOLD.LE'
+		feature_name = 'BOLD.LE.inter'
 	elif attrname.find('wd') != -1 or attrname.find('WD') != -1:
-		feature_name = 'BOLD.WD'
+		feature_name = 'BOLD.WD.inter'
 	else:
 		raise Exception('Unknown feature_name %s' % attrname)
 	dynamic_attr = netattr.DynamicAttr(None, atlasobj, window_length, step_size, scan = scan, feature_name = feature_name)
@@ -306,39 +309,14 @@ def load_dynamic_attr(scans, atlasobj, attrname, dynamic_conf, rootFolder = root
 		ret.append(load_single_dynamic_attr(scan, atlasobj, attrname, dynamic_conf, rootFolder))
 	return ret
 
-def load_dynamic_attrs(scans, atlasobj, attrname, dynamic_conf, rootFolder = rootconfig.path.feature_root):
-	"""
-	Return a dict of lists of Attrs as dynamic attr
-	Dynamic features are saved as inter-region_<feature>-<start>.<end>.csv at bold_net_attr/dynamic <stepSize> <windowLength>/ folder
-	Specify attrname as 'inter-region_BC' etc.
-	"""
-	if type(atlasobj) is str:
-		atlasobj = atlas.get(atlasobj)
-	ret = {}
-	windowLength = dynamic_conf[0]
-	stepSize = dynamic_conf[1]
-	for scan in scans:
-		ret[scan] = []
-		start = 0
-		dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net_attr', 'dynamic %d %d' % (stepSize, windowLength))
-		while True:
-			dynamic_attr_filepath = os.path.join(dynamic_foler_path, '%s-%d.%d.csv' % (attrname, start, start+windowLength))
-			if os.path.exists(dynamic_attr_filepath):
-				ret[scan].append(netattr.Attr(load_csvmat(dynamic_attr_filepath), atlasobj, '%d.%d' % (start, start+windowLength)))
-				start += stepSize
-			else:
-				# print('loaded %d attrs for %s' % (len(ret[scan]), scan))
-				break
-	return ret
-
 def load_single_network(mriscan, atlasobj, mainfolder = rootconfig.path.feature_root):
 	"""
 	Load a single network
 	"""
 	if type(atlasobj) is str:
 		atlasobj = atlas.get(atlasobj)
-	l = NetLoader(atlasobj, mainfolder)
-	return l.loadSingle(mriscan)
+	# l = NetLoader(atlasobj, mainfolder)
+	return NetLoader(atlasobj, mainfolder).loadSingle(mriscan)
 
 def load_single_dynamic_network(scan, atlasobj, dynamic_conf, rootFolder = rootconfig.path.feature_root):
 	"""
@@ -363,32 +341,6 @@ def load_single_dynamic_network(scan, atlasobj, dynamic_conf, rootFolder = rootc
 		else:
 			break
 	return dynamic_net
-
-def load_dynamic_networks(scans, atlasobj, dynamic_conf, rootFolder = rootconfig.path.feature_root):
-	"""
-	This function loads dynamic networks for each scan into a dict
-	The key of the dict is the scan name
-		value is a list of networks
-	Dynamic networks are saved as corrcoef-<start>.<end>.csv at bold_net/dynamic <stepSize> <windowLength>/ folder
-	"""
-	if type(atlasobj) is str:
-		atlasobj = atlas.get(atlasobj)
-	ret = {}
-	windowLength = dynamic_conf[0]
-	stepSize = dynamic_conf[1]
-	for scan in scans:
-		ret[scan] = []
-		start = 0
-		dynamic_foler_path = os.path.join(rootFolder, scan, atlasobj.name, 'bold_net', 'dynamic %d %d' % (stepSize, windowLength))
-		while True:
-			dynamic_net_filepath = os.path.join(dynamic_foler_path, 'corrcoef-%d.%d.csv' % (start, start+windowLength))
-			if os.path.exists(dynamic_net_filepath):
-				ret[scan].append(netattr.Net(load_csvmat(dynamic_net_filepath), atlasobj, '%d.%d' % (start, start+windowLength)))
-				start += stepSize
-			else:
-				# print('loaded %d nets for %s' % (len(ret[scan]), scan))
-				break
-	return ret
 
 def generate_mriscans(namelist, root_folder = rootconfig.path.feature_root, num_scan = 1, accumulate = False):
 	"""Load specific scans of subjects in namelist. Specify scan number (1st, 2nd, ...)
