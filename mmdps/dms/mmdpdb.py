@@ -11,6 +11,7 @@ mmdpdb is the database of MMDPS, containing 3 databased.
 
 """
 import os
+import datetime
 
 from sqlalchemy import create_engine, exists, and_
 from sqlalchemy.orm import sessionmaker
@@ -19,7 +20,7 @@ from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 
 from mmdps.proc import atlas
 from mmdps.dms import tables
-from mmdps.util import loadsave, clock
+from mmdps.util import loadsave
 from mmdps import rootconfig
 
 from mmdps.dms import mongodb_database, redis_database
@@ -135,13 +136,19 @@ class MMDPDatabase:
 		# TODO: delete the list from mongo
 
 	def get_study(self, alias):
-		# TODO: input part of alias and search automatically
-		return self.sdb.get_study(alias)
+		study_list = self.sdb.get_all_studies()
+		for study in study_list:
+			if study.alias.find(alias) != -1:
+				return study
 
 	def get_group(self, group_name):
-		# TODO: input part of group_name and search automatically
-		session = self.sdb.new_session()
-		return session.query(tables.Group).filter_by(name = group_name).one()
+		group_list = self.sdb.get_all_groups()
+		for group in group_list:
+			if group.name.find(group_name) != -1:
+				return group
+
+	def get_Changgung_HC(self):
+		return self.sdb.get_Changgung_HC()
 
 
 class SQLiteDB:
@@ -157,7 +164,7 @@ class SQLiteDB:
 	def new_session(self):
 		return self.Session()
 
-	def insert_mrirow(self, scan, hasT1, hasT2, hasBOLD, hasDWI):
+	def insert_mrirow(self, scan, hasT1, hasT2, hasBOLD, hasDWI, mrifolder = rootconfig.dms.folder_mridata):
 		"""Insert one mriscan record."""
 		# check if scan already exist
 		try:
@@ -168,23 +175,32 @@ class SQLiteDB:
 		except MultipleResultsFound:
 			print('Error when importing: multiple scan records found for %s' % scan)
 			return 1
-		mrifolder = rootconfig.dms.folder_mridata
+
+		# check MRIMachine
 		scan_info = loadsave.load_json(os.path.join(mrifolder, scan, 'scan_info.json'))
+		ret = self.session.query(exists().where(and_(tables.MRIMachine.institution == scan_info['Machine']['Institution'], tables.MRIMachine.manufacturer == scan_info['Machine']['Manufacturer'], tables.MRIMachine.modelname == scan_info['Machine']['ManufacturerModelName']))).scalar()
+		if ret:
+			machine = self.session.query(tables.MRIMachine).filter(and_(tables.MRIMachine.institution == scan_info['Machine']['Institution'], tables.MRIMachine.manufacturer == scan_info['Machine']['Manufacturer'], tables.MRIMachine.modelname == scan_info['Machine']['ManufacturerModelName'])).one()
+		else:
+			# insert new MRIMachine
+			machine = tables.MRIMachine(institution = scan_info['Machine']['Institution'],
+										manufacturer = scan_info['Machine']['Manufacturer'],
+										modelname = scan_info['Machine']['ManufacturerModelName'])
 
-		machine = tables.MRIMachine(institution = scan_info['Machine']['Institution'],
-									manufacturer = scan_info['Machine']['Manufacturer'],
-									modelname = scan_info['Machine']['ManufacturerModelName'])
-
-		name, date = scan.split('_')
-		dateobj = clock.simple_to_time(date)
+		# check Person
+		name = scan_info['Patient']['Name']
+		try:
+			dateobj = datetime.datetime.strptime(scan_info['StudyDate'], '%Y-%m-%d %H:%M:%S')
+		except ValueError:
+			dateobj = None
 		db_mriscan = tables.MRIScan(date = dateobj, hasT1 = hasT1, hasT2 = hasT2, hasBOLD = hasBOLD, hasDWI = hasDWI, filename = scan)
 		machine.mriscans.append(db_mriscan)
 		try:
 			ret = self.session.query(exists().where(and_(tables.Person.name == name, tables.Person.patientid == scan_info['Patient']['ID']))).scalar()
 			if ret:
-				self.session.add(db_mriscan)
-				person = self.session.query(tables.Person).filter_by(name = name).one()
+				person = self.session.query(tables.Person).filter(and_(tables.Person.name == name, tables.Person.patientid == scan_info['Patient']['ID'])).one()
 				person.mriscans.append(db_mriscan)
+				self.session.add(db_mriscan)
 				self.session.commit()
 				print('Old patient new scan %s inserted' % scan)
 				return 0
@@ -207,7 +223,13 @@ class SQLiteDB:
 	def get_study(self, alias):
 		return self.session.query(tables.ResearchStudy).filter_by(alias = alias).one()
 
-	def get_healthy_group(self):
+	def get_all_studies(self):
+		"""
+		Return a list of all ResearchStudy in this database
+		"""
+		return self.session.query(tables.ResearchStudy).all()
+
+	def get_Changgung_HC(self):
 		"""
 		"""
 		return self.session.query(tables.Group).filter_by(name = 'Changgung HC').one()
@@ -235,51 +257,11 @@ class SQLiteDB:
 		# found one existing record
 		raise Exception("%s group already exist" % group_name)
 
-	def newGroupByNames(self, groupName, nameList, scanNum, desc = None, accumulateScan = False):
-		"""
-		Initialize a group by a list of names. The scans are generated automatically.
-		scanNum - which scan (first/second/etc)
-		accumulateScan - whether keep former scans in this group
-		"""
-		group = tables.Group(name = groupName, description = desc)
-		try:
-			self.session.query(tables.Group).filter_by(name = groupName).one()
-		except sqlalchemy.orm.exc.NoResultFound:
-			for name in nameList:
-				db_person = self.session.query(tables.Person).filter_by(name = name).one()
-				group.people.append(db_person)
-				if accumulateScan:
-					group.scans += sorted(db_person.mriscans, key = lambda x: x.filename)[:scanNum]
-				else:
-					group.scans.append(sorted(db_person.mriscans, key = lambda x: x.filename)[scanNum - 1])
-			self.session.add(group)
-			self.session.commit()
-			return
-		except sqlalchemy.orm.exc.MultipleResultsFound:
-			# more than one record found
-			raise Exception("More than one %s group found!" % groupName)
-		# found one existing record
-		raise Exception("%s group already exist" % groupName)
-
-	def newGroupByNamesAndScans(self, groupName, nameList, scanList, desc = None):
-		"""
-		Initialize a group by giving both name and scans
-		"""
-		group = tables.Group(name = groupName, description = desc)
-		for name in nameList:
-			db_person = self.session.query(tables.Person).filter_by(name = name).one()
-			group.people.append(db_person)
-		for scan in scanList:
-			db_scan = self.session.query(tables.MRIScan).filter_by(filename = scan).one()
-			group.scans.append(db_scan)
-		self.session.add(group)
-		self.commit()
-
-	def deleteGroupByName(self, groupName):
-		groupList = self.session.query(tables.Group).filter_by(name = groupName).all()
+	def delete_group(self, group_name):
+		group_list = self.session.query(tables.Group).filter_by(name = group_name).all()
 		# if group is None:
-		# 	raise Exception("%s group does not exist!" % groupName)
-		for group in groupList:
+		# 	raise Exception("%s group does not exist!" % group_name)
+		for group in group_list:
 			self.session.delete(group)
 		self.session.commit()
 
@@ -296,7 +278,7 @@ class SQLiteDB:
 		one_person = session.query(tables.Person).filter_by(name = person_name).one()
 		return session.query(tables.MRIScan).filter_by(person_id = one_person.id)
 
-	def deleteScan(self, session, mriscanFilename):
+	def delete_scan(self, session, mriscanFilename):
 		db_scan = session.query(tables.MRIScan).filter_by(filename = mriscanFilename).one()
 		session.delete(db_scan)
 		session.commit()
