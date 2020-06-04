@@ -12,7 +12,7 @@ import os
 import shutil
 
 from mmdps import rootconfig
-from mmdps.dms import data_customs, dbgen
+from mmdps.dms import data_customs, dbgen, mmdpdb
 from mmdps.util import clock
 
 def copy_dicom_from_CD(scan_folder_name):
@@ -46,9 +46,12 @@ def update_sql_database(scan_folder_name, modalities_coverage):
 	:param modalities_coverage: a tuple containing bool values (hasT1, hasT2, hasBOLD, has DWI)
 	:return: nothing
 	"""
-	worker = dbgen.DatabaseGenerator()
-	worker.insert_mrirow(scan_folder_name, modalities_coverage[0],
-	                     modalities_coverage[1], modalities_coverage[2], modalities_coverage[3])
+	sdb = mmdpdb.SQLiteDB()
+	sdb.insert_mrirow(scan_folder_name, modalities_coverage[0],
+					modalities_coverage[1], modalities_coverage[2], modalities_coverage[3])
+	# worker = dbgen.DatabaseGenerator()
+	# worker.insert_mrirow(scan_folder_name, modalities_coverage[0],
+	#                      modalities_coverage[1], modalities_coverage[2], modalities_coverage[3])
 
 def main():
 	logging.basicConfig(filename='import_changgung.log', level=logging.DEBUG)
