@@ -6,8 +6,10 @@ from mmdps import rootconfig
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--modal', help = 'specific modal to export', default = None)
-	parser.add_argument('--database', help = 'whether export features to MMDPDatabase (MongoDB Database)', default = False)
+	parser.add_argument('--database', help = 'True/False. Whether export features to MMDPDatabase (MongoDB Database)', default = False)
 	parser.add_argument('--datasource', help = 'datasource for MMDPDatabase', default = None)
+	parser.add_argument('--force', help = 'True/False. If overwrite existing feature record', default = False)
+
 	args = parser.parse_args()
 
 	feature_exporter.check_modal(args.modal, os.path.join(rootconfig.path.dms, 'export_mainconf.json'))
@@ -20,7 +22,9 @@ if __name__ == '__main__':
 		raise Exception('Datasource unknown')
 	elif args.database:
 		print('Will export to database. datasource = %s' % (args.datasource))
+	if args.force:
+		print('Force mode. Will overwrite existing features')
 
-	exporter = feature_exporter.MRIScanProcExporter(main_config, data_config, args.modal, args.database, args.datasource)
+	exporter = feature_exporter.MRIScanProcExporter(main_config, data_config, args.modal, args.database, args.datasource, args.force)
 	exporter.run()
 	print('Feature export completed.')

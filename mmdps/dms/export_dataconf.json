@@ -6,7 +6,7 @@
     },
     "nets": {
         "BOLD.net": {
-            "modal": "BOLD", "file": "bold_net/dynamic 1 100/corrcoef", "file_type": ".csv", "out_file_name": "bold_net"
+            "modal": "BOLD", "file": "bold_net/corrcoef", "file_type": ".csv", "out_file_name": "bold_net"
         },
         "DWI.net": {
             "modal": "DWI", "file": "nativespace/dwinet", "file_type": ".csv", "out_file_name": "dwi_net"
@@ -14,43 +14,43 @@
     },
     "attrs": {
         "BOLD.BC.inter": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_bc", "file_type": ".csv", "out_file_name": "bold_interBC"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/inter-region_bc", "file_type": ".csv", "out_file_name": "bold_interBC"
         },
         "BOLD.CCFS.inter": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_ccfs", "file_type": ".csv", "out_file_name": "bold_interCCFS"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/inter-region_ccfs", "file_type": ".csv", "out_file_name": "bold_interCCFS"
         },
         "BOLD.LE.inter": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_le", "file_type": ".csv", "out_file_name": "bold_interLE"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/inter-region_le", "file_type": ".csv", "out_file_name": "bold_interLE"
         },
         "BOLD.WD.inter": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_wd", "file_type": ".csv", "out_file_name": "bold_interWD"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/inter-region_wd", "file_type": ".csv", "out_file_name": "bold_interWD"
         },
         "BOLD.community.inter": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_community", "file_type": ".csv", "out_file_name": "bold_interCommunity"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/inter-region_community", "file_type": ".csv", "out_file_name": "bold_interCommunity"
         },
         "BOLD.modularity.inter": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_modularity", "file_type": ".csv", "out_file_name": "bold_interModularity"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/inter-region_modularity", "file_type": ".csv", "out_file_name": "bold_interModularity"
         },
         "BOLD.SWN.inter": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/inter-region_swn", "file_type": ".csv", "out_file_name": "bold_interSWN"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/inter-region_swn", "file_type": ".csv", "out_file_name": "bold_interSWN"
         },
         "BOLD.BC.intra": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_bc", "file_type": ".csv", "out_file_name": "bold_intraBC"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/intra-region_bc", "file_type": ".csv", "out_file_name": "bold_intraBC"
         },
         "BOLD.CCFS.intra": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_ccfs", "file_type": ".csv", "out_file_name": "bold_intraCCFS"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/intra-region_ccfs", "file_type": ".csv", "out_file_name": "bold_intraCCFS"
         },
         "BOLD.GE.intra": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_ge", "file_type": ".csv", "out_file_name": "bold_intraGE"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/intra-region_ge", "file_type": ".csv", "out_file_name": "bold_intraGE"
         },
         "BOLD.path.intra": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_path", "file_type": ".csv", "out_file_name": "bold_intraPath"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/intra-region_path", "file_type": ".csv", "out_file_name": "bold_intraPath"
         },
         "BOLD.modularity.intra": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_modularity", "file_type": ".csv", "out_file_name": "bold_intraModularity"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/intra-region_modularity", "file_type": ".csv", "out_file_name": "bold_intraModularity"
         },
         "BOLD.SWN.intra": {
-            "modal": "BOLD", "file": "bold_net_attr/dynamic 1 100/intra-region_SWN", "file_type": ".csv", "out_file_name": "bold_intraSWN"
+            "modal": "BOLD", "file": "bold_net_attr_zzl/0.5/intra-region_SWN", "file_type": ".csv", "out_file_name": "bold_intraSWN"
         },
         "T1.GMD": {
             "modal": "T1", "file": "t1mean/greydensity", "file_type": ".csv", "out_file_name": "t1_GMD"

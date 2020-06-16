@@ -10,7 +10,7 @@
         "clustering_coefficients":true,
         "betweenness_centrality":true,
         "average_path_length":true,
-        "modularity":false,
-        "small_worldness":false
+        "modularity":true,
+        "small_worldness":true
     }
 }

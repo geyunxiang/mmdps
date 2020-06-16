@@ -340,10 +340,11 @@ def averageNets(nets):
 	data /= len(nets)
 	return Net(data, nets[0].atlasobj, name = 'averaged')
 
-def averageAttr(attr_list):
+def averageAttr(attr_list, result_scan = None):
 	atlasobj = attr_list[0].atlasobj
 	result = zero_attr(atlasobj)
 	result.feature_name = attr_list[0].feature_name
+	result.scan = result_scan
 	for idx in range(atlasobj.count):
 		result.data[idx] = np.average([attr.data[idx] for attr in attr_list])
 	return result
@@ -388,6 +389,9 @@ def networks_comparisons(network_list_A, network_list_B, comparison_method):
 	return stat_network, p_network
 
 def attr_comparisons(attr_list_A, attr_list_B, comparison_method):
+	"""
+	Comparison is performed by A - B
+	"""
 	atlasobj = attr_list_A[0].atlasobj
 	stat_attr = zero_attr(atlasobj)
 	p_attr = zero_attr(atlasobj)

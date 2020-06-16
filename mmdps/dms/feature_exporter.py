@@ -107,10 +107,14 @@ class MRIScanProcMMDPDatabaseExporter(MRIScanProcMRIScanAtlasExporter):
 	Export features to MMDPDatabase (MongoDB Database)
 	Only export for one mriscan and one atlas.
 	"""
-	def __init__(self, mriscan, atlasname, mainconfig, dataconfig, data_source, modal = None):
+	def __init__(self, mriscan, atlasname, mainconfig, dataconfig, data_source, modal = None, force = False):
+		"""
+		If force == True, will overwrite existing features in the database
+		"""
 		super().__init__(mriscan, atlasname, mainconfig, dataconfig, modal)
 		self.data_source = data_source
 		self.mdb = mongodb_database.MongoDBDatabase(data_source)
+		self.force = force
 
 	def run_feature(self, feature_name, feature_config):
 		"""
@@ -126,12 +130,28 @@ class MRIScanProcMMDPDatabaseExporter(MRIScanProcMRIScanAtlasExporter):
 				feature = netattr.DynamicNet(None, self.atlasname, self.dataconfig['dynamic']['window_length'], self.dataconfig['dynamic']['step_size'], scan = self.mriscan, feature_name = feature_name)
 				for file in in_file_list:
 					feature.append_one_slice(load_csvmat(file))
-				self.mdb.save_dynamic_network(feature)
+				try:
+					self.mdb.save_dynamic_network(feature)
+				except mongodb_database.MultipleRecordException:
+					if self.force:
+						# delete and overwrite
+						self.mdb.remove_dynamic_network(self.mriscan, self.dataconfig['dynamic']['window_length'], self.dataconfig['dynamic']['step_size'], self.atlasname)
+						self.mdb.save_dynamic_network(feature)
+					else:
+						print('!!!Already Exist: %s %s %s. Skipped' % (self.mriscan, self.atlasname, feature_name))
 			else:
 				feature = netattr.DynamicAttr(None, self.atlasname, self.dataconfig['dynamic']['window_length'], self.dataconfig['dynamic']['step_size'], scan = self.mriscan, feature_name = feature_name)
 				for file in in_file_list:
 					feature.append_one_slice(load_csvmat(file))
-				self.mdb.save_dynamic_attr(feature)
+				try:
+					self.mdb.save_dynamic_attr(feature)
+				except mongodb_database.MultipleRecordException:
+					if self.force:
+						# delete and overwrite
+						self.mdb.remove_dynamic_attr(self.mriscan, feature_name, self.dataconfig['dynamic']['window_length'], self.dataconfig['dynamic']['step_size'], self.atlasname)
+						self.mdb.save_dynamic_attr(feature)
+					else:
+						print('!!!Already Exist: %s %s %s. Skipped' % (self.mriscan, self.atlasname, feature_name))
 		elif self.is_dynamic:
 			# dynamic but not BOLD feature
 			return
@@ -145,7 +165,15 @@ class MRIScanProcMMDPDatabaseExporter(MRIScanProcMRIScanAtlasExporter):
 					feature = netattr.Net(load_csvmat(file), self.atlasname, self.mriscan, feature_name)
 				else:
 					feature = netattr.Attr(load_csvmat(file), self.atlasname, self.mriscan, feature_name)
-				self.mdb.save_static_feature(feature)
+				try:
+					self.mdb.save_static_feature(feature)
+				except mongodb_database.MultipleRecordException:
+					if self.force:
+						# delete and overwrite
+						self.mdb.remove_static_feature(self.mriscan, self.atlas_name, feature_name)
+						self.mdb.save_static_feature(feature)
+					else:
+						print('!!!Already Exist: %s %s %s. Skipped' % (self.mriscan, self.atlasname, feature_name))
 
 class MRIScanProcExporter:
 	"""
@@ -153,11 +181,11 @@ class MRIScanProcExporter:
 
 	Export features in all mriscans.
 	"""
-	def __init__(self, mainconfig, dataconfig, modal = None, database = False, data_source = None):
+	def __init__(self, mainconfig, dataconfig, modal = None, database = False, data_source = None, force = False):
 		"""Init the exporter using mainconfig and dataconfig."""
 		self.mainconfig = mainconfig
 		self.dataconfig = dataconfig
-		if mainconfig.get('atlas_list', None) is None:
+		if mainconfig.get('atlas_list', None) is None or mainconfig.get('atlas_list', None) == 'all':
 			# use default atlas_list
 			self.atlas_list = load_txt(os.path.join(rootconfig.path.atlas, 'atlas_list.txt'))
 		elif type(mainconfig['atlas_list']) is list:
@@ -176,13 +204,14 @@ class MRIScanProcExporter:
 		self.modal = modal
 		self.database = database
 		self.data_source = data_source
+		self.force = force
 
 	def run_mriscan_atlas(self, mriscan, atlasname):
 		"""Run one mriscan and one atlas to export."""
 		if not self.database:
 			atlas_exporter = MRIScanProcMRIScanAtlasExporter(mriscan, atlasname, self.mainconfig, self.dataconfig, self.modal)
 		else:
-			atlas_exporter = MRIScanProcMMDPDatabaseExporter(mriscan, atlasname, self.mainconfig, self.dataconfig, self.data_source, self.modal)
+			atlas_exporter = MRIScanProcMMDPDatabaseExporter(mriscan, atlasname, self.mainconfig, self.dataconfig, self.data_source, self.modal, self.force)
 		atlas_exporter.run()
 
 	def run(self):

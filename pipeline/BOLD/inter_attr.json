@@ -9,7 +9,7 @@
         "betweenness_centrality":true,
         "clustering_coefficients":true,
         "local_efficiency":true,
-        "modularity":false,
-        "small_worldness":false
+        "modularity":true,
+        "small_worldness":true
     }
 }
