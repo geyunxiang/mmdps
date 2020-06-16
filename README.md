@@ -50,6 +50,8 @@ The python module `mmdps` requires the following python dependencies:
 
 * `anytree` for GUI related modules.
 
+* `pymongo`, `redis` and `sqlalchemy` for mmdpdb support.
+
 * `numpy`, `scipy` etc that are installed with `anaconda`
 
 The process pipeline also needs other toolboxes, including:

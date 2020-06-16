@@ -20,6 +20,7 @@ if sys.platform == 'win32':
 		root = os.path.abspath(os.path.join(pyroot, '..'))
 		tools = os.path.join(root, 'tools')
 		proc = os.path.join(pyroot, 'proc')
+		dms = os.path.join(pyroot, 'dms')
 		atlas = os.path.join(root, 'atlas')
 		data = os.path.join(root, 'data')
 		bnvdata = os.path.join(data, 'bnv')
