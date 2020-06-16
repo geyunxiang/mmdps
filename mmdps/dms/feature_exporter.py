@@ -170,7 +170,7 @@ class MRIScanProcMMDPDatabaseExporter(MRIScanProcMRIScanAtlasExporter):
 				except mongodb_database.MultipleRecordException:
 					if self.force:
 						# delete and overwrite
-						self.mdb.remove_static_feature(self.mriscan, self.atlas_name, feature_name)
+						self.mdb.remove_static_feature(self.mriscan, self.atlasname, feature_name)
 						self.mdb.save_static_feature(feature)
 					else:
 						print('!!!Already Exist: %s %s %s. Skipped' % (self.mriscan, self.atlasname, feature_name))
