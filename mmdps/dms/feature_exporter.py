@@ -127,7 +127,7 @@ class MRIScanProcMMDPDatabaseExporter(MRIScanProcMRIScanAtlasExporter):
 		in_file_list, out_file_list = self.get_feature_file_path(feature_config)
 		if self.is_dynamic and feature_config['modal'] == 'BOLD':
 			if len(in_file_list) < 1:
-				print('==Not Exist:', self.mriscan, feature_name)
+				print('==Not Exist:', self.mriscan, self.atlasname, feature_name)
 				return
 			if feature_name.find('net') != -1:
 				feature = netattr.DynamicNet(None, self.atlasname, self.dataconfig['dynamic']['window_length'], self.dataconfig['dynamic']['step_size'], scan = self.mriscan, feature_name = feature_name)
@@ -162,7 +162,7 @@ class MRIScanProcMMDPDatabaseExporter(MRIScanProcMRIScanAtlasExporter):
 			# not dynamic
 			for file in in_file_list:
 				if not os.path.isfile(file):
-					print('==Not Exist:', file)
+					print('==Not Exist:', self.mriscan, self.atlasname, feature_name)
 					continue
 				if feature_name.find('net') != -1:
 					feature = netattr.Net(load_csvmat(file), self.atlasname, self.mriscan, feature_name)

@@ -38,6 +38,19 @@ The `MMDPS_ROOTDIR` should point to the root dir of mmdps system.
 
 * `loader.Loader.loadvstackmulti` is used to load attributes for a list of scans. The returned value is a list of Attrs.
 
+## MMDPDatabase
+
+### MongoDB
+
+#### Windows installation
+
+Open a Windows command prompt/interpreter (cmd.exe) as an Administrator, and run the following command: 
+
+```
+./mongod.exe -f /path/to/mongod.cfg --install 
+net start MongoDB
+```
+
 ## Dependencies
 
 The python module `mmdps` requires the following python dependencies:
@@ -50,7 +63,7 @@ The python module `mmdps` requires the following python dependencies:
 
 * `anytree` for GUI related modules.
 
-* `pymongo`, `redis` and `sqlalchemy` for mmdpdb support.
+* `pymongo==3.10.1`, `redis` and `sqlalchemy` for mmdpdb support.
 
 * `numpy`, `scipy` etc that are installed with `anaconda`
 
