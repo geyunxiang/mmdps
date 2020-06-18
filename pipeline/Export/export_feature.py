@@ -12,7 +12,8 @@ if __name__ == '__main__':
 
 	args = parser.parse_args()
 
-	feature_exporter.check_modal(args.modal, os.path.join(rootconfig.path.dms, 'export_mainconf.json'))
+	if args.modal is not None:
+		feature_exporter.check_modal(args.modal, os.path.join(rootconfig.path.dms, 'export_mainconf.json'))
 	data_config = loadsave.load_json(os.path.join(rootconfig.path.dms, 'export_dataconf.json'))
 	main_config = loadsave.load_json(os.path.join(rootconfig.path.dms, 'export_mainconf.json'))
 

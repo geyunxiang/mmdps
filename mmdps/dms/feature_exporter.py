@@ -121,6 +121,9 @@ class MRIScanProcMMDPDatabaseExporter(MRIScanProcMRIScanAtlasExporter):
 		Override super run_feature.
 		Stores csv files to MongoDB directly
 		"""
+		if feature_config['file_type'] != '.csv':
+			# only supports csv features
+			return
 		in_file_list, out_file_list = self.get_feature_file_path(feature_config)
 		if self.is_dynamic and feature_config['modal'] == 'BOLD':
 			if len(in_file_list) < 1:
@@ -228,7 +231,7 @@ class MRIScanProcExporter:
 def check_modal(modal, mainconfigfile):
 	mainconfig = load_json_ordered(mainconfigfile)
 	if modal not in mainconfig['input_folders'].keys():
-		raise Exception('modal %s not valid (%s)' % (modal, mainconfig['input_folders'].keys()))
+		raise Exception('modal %s not valid (%s)' % (modal, list(mainconfig['input_folders'].keys())))
 
 def create_by_files(mainconfigfile, dataconfigfile):
 	"""Create exporter by config files."""
