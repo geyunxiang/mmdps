@@ -388,7 +388,7 @@ def networks_comparisons(network_list_A, network_list_B, comparison_method):
 			p_network.data[yidx, xidx] = tp
 	return stat_network, p_network
 
-def attr_comparisons(attr_list_A, attr_list_B, comparison_method):
+def attr_comparisons(attr_list_A, attr_list_B, comparison_method, correction_method = None):
 	"""
 	Comparison is performed by A - B
 	"""
@@ -400,4 +400,6 @@ def attr_comparisons(attr_list_A, attr_list_B, comparison_method):
 								  [attr.data[idx] for attr in attr_list_B])
 		stat_attr.data[idx] = t
 		p_attr.data[idx] = tp
+	if correction_method is not None:
+		_, p_attr.data = correction_method(p_attr.data)
 	return stat_attr, p_attr

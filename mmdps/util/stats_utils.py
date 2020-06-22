@@ -73,6 +73,10 @@ def FDR_correction(p_list, sigLevel = 0.05):
 	reject, pvals_corrected, _, _ = multitest.multipletests(p_list, sigLevel, method='fdr_bh')
 	return reject, pvals_corrected
 
+def bonferroni_correction(p_list, sigLevel = 0.05):
+	reject, pvals_corrected, _, _ = multitest.multipletests(p_list, sigLevel, method='bonferroni')
+	return reject, pvals_corrected
+
 def filter_sigdiff_connections(netListA, netListB, sigLevel = 0.05):
 	"""
 	This function returns a list of significant different connections
