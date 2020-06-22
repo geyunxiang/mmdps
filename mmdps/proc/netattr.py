@@ -198,7 +198,7 @@ class Net(Mat):
 		Return a copy of current network, but only values associated
 		with the subnetwork specified by areas in the subAreaList argument
 		"""
-		newnet = Net(self.data.copy(), self.atlasobj, self.name)
+		newnet = Net(self.data.copy(), self.atlasobj, self.scan)
 		mask = np.zeros(self.data.shape)
 		indexList = [self.atlasobj.ticks.index(area) for area in subAreaList]
 		for xidx in range(self.atlasobj.count):
@@ -236,7 +236,7 @@ class Net(Mat):
 		Return a copy of current network, with values thresholded
 		abs(FC) < threshold --> FC = 0
 		"""
-		newnet = Net(self.data.copy(), self.atlasobj, self.name)
+		newnet = Net(self.data.copy(), self.atlasobj, self.scan)
 		for xidx in range(self.atlasobj.count):
 			for yidx in range(self.atlasobj.count):
 				if abs(self.data[xidx, yidx]) < threshold:
@@ -338,7 +338,7 @@ def averageNets(nets):
 	for net in nets:
 		data += net.data
 	data /= len(nets)
-	return Net(data, nets[0].atlasobj, name = 'averaged')
+	return Net(data, nets[0].atlasobj, scan = 'averaged')
 
 def averageAttr(attr_list, result_scan = None):
 	atlasobj = attr_list[0].atlasobj

@@ -15,7 +15,7 @@ import numpy as np
 # from ..proc import netattr
 from mmdps.util import path
 from mmdps import rootconfig
-from mmdps.proc import job, netattr
+from mmdps.proc import job
 
 # built in mesh
 BuiltinMeshDict = {'ch2cere': 'ch2cere.nv', 'icbm152smoothed': 'icbm152smoothed.nv'}
@@ -211,6 +211,7 @@ class BNVEdge:
 		"""
 		Read in an edge file and return a net
 		"""
+		from mmdps.proc import netattr
 		data = np.loadtxt(inEdgeFile, delimiter = '\t')
 		return netattr.Net(data, atlasobj)
 
@@ -241,9 +242,9 @@ class BNVPlot:
 		self.outfilename = os.path.basename(outfilepath)
 		self.bnvdatapath = os.path.dirname(outfilepath)
 
-	def onesattr(self, net):
-		"""Create a attr of all ones."""
-		return netattr.Attr(np.ones(net.atlasobj.count), net.atlasobj)
+	# def onesattr(self, net):
+	# 	"""Create a attr of all ones."""
+	# 	return netattr.Attr(np.ones(net.atlasobj.count), net.atlasobj)
 
 	def fullpath(self, *p):
 		"""Full path for bnv data."""
