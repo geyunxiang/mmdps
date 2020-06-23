@@ -26,7 +26,7 @@ from collections import OrderedDict
 # from . import job, parabase
 # from ..util import loadsave
 # from ..util import path
-
+from mmdps import rootconfig
 from mmdps.proc import job, parabase
 from mmdps.util import loadsave, path
 
@@ -97,11 +97,19 @@ class Para:
 		Env MMDPS_NEWLIST_TXT will override folderlist.
 		Env MMDPS_SECONDLIST_TXT will override secondlist.
 		"""
-		originalfolders = loadsave.load_txt(path.env_override(self.folderlist, 'MMDPS_NEWLIST_TXT'))
+		if self.folderlist == 'listdir':
+			originalfolders = path.clean_listdir(self.mainfolder)
+		else:
+			originalfolders = loadsave.load_txt(path.env_override(self.folderlist, 'MMDPS_NEWLIST_TXT'))
 		folders = [os.path.join(self.mainfolder, f) for f in originalfolders]
 		if self.bsecond:
 			finalfolders = []
-			secondfolders = loadsave.load_txt(path.env_override(self.secondlist, 'MMDPS_SECONDLIST_TXT'))
+			if type(self.secondlist) is list:
+				secondfolders = self.secondlist
+			elif self.secondlist == 'all':
+				secondfolders = loadsave.load_txt(os.path.join(rootconfig.path.atlas, 'atlas_list.txt'))
+			else:
+				secondfolders = loadsave.load_txt(path.env_override(self.secondlist, 'MMDPS_SECONDLIST_TXT'))
 			for folder in folders:
 				for secondfolder in secondfolders:
 					newfolder = os.path.join(folder, secondfolder)
