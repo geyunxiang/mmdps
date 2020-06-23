@@ -36,7 +36,13 @@ def call_logged(cmdlist, info='',isShell=False):
 			p = subprocess.Popen(cmdlist, stdout=f, stderr=f, shell=True, executable="/bin/bash")
 		else:
 			p = subprocess.Popen(cmdlist, stdout=f, stderr=f)
-		p.communicate()
+		while True:
+			try:
+				p.communicate(timeout = 5) # will block until process returned
+				break
+			except subprocess.TimeoutExpired:
+				print('communicate failed... try again')
+				continue
 	retcode = p.returncode
 	if retcode != 0:
 		warnings.warn('Error run "{}", return code is {}'.format(str(cmdlist), retcode))
