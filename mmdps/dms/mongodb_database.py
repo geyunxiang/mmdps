@@ -47,7 +47,7 @@ class MongoDBDatabase:
 	parameter slice_num : 	the number of slice in a sequence
 	"""
 
-	def __init__(self, data_source, host = 'localhost', port = 27017, col = 'features', password = ''):
+	def __init__(self, data_source, host = '101.6.70.33', port = 27017, col = 'features', password = ''):
 		self.data_source = data_source
 		self.client = pymongo.MongoClient(host, port)
 		self.db = self.client[data_source]
@@ -60,16 +60,16 @@ class MongoDBDatabase:
 	default collection : features;
 	"""
 
-	def generate_static_query(self,scan, atlas_name, feature):
-		static_query=dict(data_source=self.data_source,scan=scan,atlas=atlas_name,feature=feature,dynamic=0)
+	def generate_static_query(self,scan, atlas_name, feature, comment_dict = {}):
+		static_query=dict(data_source=self.data_source,scan=scan,atlas=atlas_name,feature=feature,dynamic=0, comment = comment_dict)
 		return static_query
 
 	def genarate_dynamic_query(self,scan, atlas_name, feature,window_length,step_size):
 		dynamic_query=dict(data_source=self.data_source,scan=scan,atlas=atlas_name,feature=feature,dynamic=1,window_length=window_length,step_size=step_size)
 		return dynamic_query
 
-	def query_static(self,scan, atlas_name, feature):
-		static_query= self.generate_static_query(scan, atlas_name, feature)
+	def query_static(self,scan, atlas_name, feature, comment_dict = {}):
+		static_query= self.generate_static_query(scan, atlas_name, feature, comment_dict = comment_dict)
 		self.col=self.db['features']
 		return self.col.find(static_query)
 
@@ -78,15 +78,15 @@ class MongoDBDatabase:
 		self.col=self.db['dynamic_data']
 		return self.col.find(dynamic_query).sort("slice_num",1)
 
-	def exist_static(self,scan, atlas_name, feature):
+	def exist_static(self,scan, atlas_name, feature, comment_dict = {}):
 		self.col=self.db['features']
-		return self.col.count_documents(self.generate_static_query(scan, atlas_name, feature))
+		return self.col.count_documents(self.generate_static_query(scan, atlas_name, feature, comment_dict))
 
 	def exist_dynamic(self,scan, atlas_name, feature,window_length,step_size):
 		self.col=self.db['dynamic_data']
 		return self.col.count_documents(self.genarate_dynamic_query(scan, atlas_name, feature,window_length,step_size))
 
-	def generate_static_document(self,scan, atlas_name, feature, value, comment=''):
+	def generate_static_document(self,scan, atlas_name, feature, value, comment={}):
 		static_document=dict(data_source=self.data_source,scan=scan,atlas=atlas_name,feature=feature,dynamic=0,value=value,comment=comment)
 		return static_document
 
