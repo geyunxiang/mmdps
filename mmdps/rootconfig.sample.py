@@ -61,6 +61,8 @@ if sys.platform == 'win32':
 		mmdpdb_filepath = 'I:/MMDPDatabase/mmdpdb.db'
 		# CD driver path
 		CD_dicom_path = 'G:/DICOM/'
+		# MongoDB host address
+		mongo_host = 'localhost'
 
 else:
 	matlab_bin = '/usr/local/bin/matlab'

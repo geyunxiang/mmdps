@@ -33,6 +33,7 @@ dynamic
 import pymongo
 import pickle
 from mmdps.proc import atlas, netattr
+from mmdps import rootconfig
 
 class MongoDBDatabase:
 	"""
@@ -47,18 +48,16 @@ class MongoDBDatabase:
 	parameter slice_num : 	the number of slice in a sequence
 	"""
 
-	def __init__(self, data_source, host = '101.6.70.33', port = 27017, col = 'features', password = ''):
+	def __init__(self, data_source, host = rootconfig.dms.mongo_host, port = 27017, password = ''):
+		"""
+		use data_source as the name of database
+		default collection : features;
+		"""
 		self.data_source = data_source
 		self.client = pymongo.MongoClient(host, port)
 		self.db = self.client[data_source]
-		self.col = self.db[col]
-		self.temp_db = self.client['Temp-database']
-		self.temp_collection = self.temp_db['Temp-collection']
-
-	"""
-	use data_source as the name of database
-	default collection : features;
-	"""
+		self.col = self.db['features']
+		self.temp_collection = self.db['Temp-features']
 
 	def generate_static_query(self,scan, atlas_name, feature, comment_dict = {}):
 		static_query=dict(data_source=self.data_source,scan=scan,atlas=atlas_name,feature=feature,dynamic=0, comment = comment_dict)
@@ -159,10 +158,10 @@ class MongoDBDatabase:
 		query = self.genarate_dynamic_query(scan,atlas_name,feature,window_length,step_size)
 		self.col.delete_many(query)
 
-	def get_attr(self,scan, atlas_name, feature):
+	def get_attr(self,scan, atlas_name, feature, comment_dict = {}):
 		#return to an attr object  directly
-		if self.exist_static(scan,atlas_name,feature):
-			binary_data = self.query_static(scan, atlas_name, feature)['value']
+		if self.exist_static(scan,atlas_name,feature, comment_dict):
+			binary_data = self.query_static(scan, atlas_name, feature, comment_dict)[0]['value']
 			attrdata = pickle.loads(binary_data)
 			atlasobj = atlas.get(atlas_name)
 			attr = netattr.Attr(attrdata, atlasobj,scan, feature)
