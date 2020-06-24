@@ -17,6 +17,7 @@ parabase.run_callfunc(allfuncs)
 import multiprocessing
 import threading
 import time
+import datetime
 import os
 import queue
 # from ..util import clock
@@ -28,16 +29,18 @@ class FWrap:
 		"""Init the FWrap using function to run and queue."""
 		self.f = f
 		self.q = q
-		
+
 	def run(self, arg):
 		"""Run the function. Put the run arg to q when finished calling f."""
+		return_dict = dict(start_time = time.time())
 		res = self.f(arg)
-		self.q.put('arg: %s, res: %s' % (arg, res))
+		return_dict['message'] = 'arg: %s, res: %s' % (arg, res)
+		self.q.put(return_dict)
 		return res
 
 def get_processes(processes):
 	"""Get how many processes to use when run things in parallel.
-	
+
 	Set env MMDPS_CPU_COUNT=n to force the cpu count to n. n is an integer.
 	"""
 	if processes:
@@ -76,6 +79,7 @@ def run1(f, argvec, processes=None):
 def run(f, argvec, processes=None):
 	"""Run function f len(argvec) times, each time use one arg in argvec."""
 	processes = get_processes(processes)
+	estimated_task_time_cost = -1
 	with multiprocessing.Pool(processes) as pool:
 		manager = multiprocessing.Manager()
 		managerQueue = manager.Queue()
@@ -91,18 +95,24 @@ def run(f, argvec, processes=None):
 				break
 			else:
 				try:
-					res = managerQueue.get(timeout=1)
+					ret = managerQueue.get(timeout=1)
 				except queue.Empty:
 					continue
 				else:
 					nfinished += 1
+					elapsed_time = time.time() - ret['start_time']
+					if estimated_task_time_cost < 0:
+						estimated_task_time_cost = elapsed_time
+					else:
+						estimated_task_time_cost = 0.75 * estimated_task_time_cost + 0.25 * elapsed_time
+					res = ret['message']
 					retCode = int(res[res.find('res: ') + 5:])
 					if retCode != 0:
 						nError += 1
 						errorList.append(res)
-						print('{} just finished with error. {} left, at {}'.format(res, ntotal-nfinished, clock.now()))
+						print('{} just finished with error after {:1.2f} s execution. {} left, at {}. Estimated time left: {} (HMS)'.format(res, elapsed_time, ntotal-nfinished, clock.now(), str(datetime.timedelta(seconds = (ntotal-nfinished) * estimated_task_time_cost))))
 					else:
-						print('{} just finished. {} left, at {}'.format(res, ntotal-nfinished, clock.now()))
+						print('{} just finished after {:1.2f} s execution. {} left, at {}. Estimated time left: {} (HMS)'.format(res, elapsed_time, ntotal-nfinished, clock.now(), str(datetime.timedelta(seconds = (ntotal-nfinished) * estimated_task_time_cost))))
 		print('End proc, end at {}. {} error.'.format(clock.now(), nError))
 		if nError != 0:
 			print('Listing errs')
@@ -135,14 +145,14 @@ def callfunc(f):
 
 def run_callrun(tasks):
 	"""Parallel call run, call task.run() for each task in tasks.
-	
+
 	Use this whenever possible.
 	"""
 	run(callrun, tasks)
 
 def run_callfunc(fs):
 	"""Parallel call function, call f.() for each f in fs.
-	
+
 	Use this whenever possible.
 	"""
 	run(callfunc, fs)
