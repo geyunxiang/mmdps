@@ -132,3 +132,9 @@ def name_date(mriscan):
 	"""Split name date."""
 	l = mriscan.split('_')
 	return l[0], l[1]
+
+def clean_listdir(root_path):
+	"""
+	Same as os.listdir, excluding non-directory
+	"""
+	return [dirname for dirname in sorted(os.listdir(root_path)) if os.path.isdir(os.path.join(root_path, dirname))]

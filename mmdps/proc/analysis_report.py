@@ -21,16 +21,20 @@ class GroupAnalysisAssistant():
 		self.group_nets = dict()
 		self.attr_comparison_result = dict()
 
-	def compare_BOLD_attrs(self, group1_name, group2_name, comparison_method, plotting = False):
+	def get_scan_in_group(self, group_name):
+		return self.study.get_group(group_name).get_scanlist()
+
+	def compare_BOLD_attrs(self, group1_name, group2_name, comparison_method):
 		"""
 		comparison is performed by group2 - group1
 		comparison_method should be one of stats_utils.pairedTTest or stats_utils.twoSampleTTest
+		Still using loader to load attrs
 		"""
-		group1_attr_list = loader.load_attrs(self.study.getGroup(group1_name).getScanStrList())
+		group1_attr_list = loader.load_attrs(self.study.get_group(group1_name).get_scanlist())
 		group1_attr_mean = netattr.averageAttr(group1_attr_list)
 		group1_attr_mean.scan = '%s mean' % group1_name
 
-		group2_attr_list = loader.load_attrs(self.study.getGroup(group2_name).getScanStrList())
+		group2_attr_list = loader.load_attrs(self.study.get_group(group2_name).get_scanlist())
 		group2_attr_mean = netattr.averageAttr(group2_attr_list)
 		group2_attr_mean.scan = '%s mean' % group2_name
 
@@ -43,11 +47,11 @@ class GroupAnalysisAssistant():
 		return t_attr, p_attr
 
 	def compare_BOLD_networks(self, group1_name, group2_name, comparison_method):
-		group1 = self.study.getGroup(group1_name)
-		group2 = self.study.getGroup(group2_name)
-		self.group_nets[group1.name] = [loader.load_single_network(self.atlasobj, scan_table.filename) for scan_table in group1.scans]
-		self.group_nets[group2.name] = [loader.load_single_network(self.atlasobj, scan_table.filename) for scan_table in group2.scans]
-		stats_network, comp_p_network = netattr.networks_comparisons(self.group_nets[group2.name], self.group_nets[group1.name], comparison_method)
+		group1_scan_list = self.get_scan_in_group(group1_name)
+		group2_scan_list = self.get_scan_in_group(group2_name)
+		self.group_nets[group1_name] = [loader.load_single_network(self.atlasobj, scan) for scan in group1_scan_list]
+		self.group_nets[group2_name] = [loader.load_single_network(self.atlasobj, scan) for scan in group2_scan_list]
+		stats_network, comp_p_network = netattr.networks_comparisons(self.group_nets[group2_name], self.group_nets[group1_name], comparison_method)
 		return stats_network, comp_p_network
 
 	def correlate_sigdiff_BOLD_network(self, group1_name, group2_name, scoreLoader, score1_name, score2_name, comp_p_network, correlation_method):
@@ -55,8 +59,8 @@ class GroupAnalysisAssistant():
 		Only significant different connections will be correlated to scores.
 		Correlation coefficient and p_vals of significant correlated links will be stored to r_network and corr_p_network
 		"""
-		group1 = self.study.getGroup(group1_name)
-		group2 = self.study.getGroup(group2_name)
+		group1 = self.study.get_group(group1_name)
+		group2 = self.study.get_group(group2_name)
 		r_network = netattr.zero_net(self.atlasobj)
 		corr_p_network = netattr.one_net(self.atlasobj)
 		for xidx in range(self.atlasobj.count):
@@ -73,7 +77,7 @@ class GroupAnalysisAssistant():
 					corr_p_network.data[yidx, xidx] = p
 		return r_network, corr_p_network
 
-	def generate_result_comp(self, stats_network, comp_p_network):
+	def generate_network_result_comp(self, stats_network, comp_p_network):
 		result_list = []
 		for xidx, xtick in enumerate(self.atlasobj.ticks):
 			for yidx in range(xidx, self.atlasobj.count):
@@ -82,7 +86,7 @@ class GroupAnalysisAssistant():
 					result_list.append(dict(area1 = xtick, area2 = ytick, stat = stats_network.data[xidx, yidx], p_val = comp_p_network.data[xidx, yidx]))
 		return result_list
 
-	def generate_result_comp_corr(self, stats_network, comp_p_network, r_network, corr_p_network):
+	def generate_network_result_comp_corr(self, stats_network, comp_p_network, r_network, corr_p_network):
 		result_list = []
 		for xidx, xtick in enumerate(self.atlasobj.ticks):
 			for yidx in range(xidx, self.atlasobj.count):

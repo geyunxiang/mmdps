@@ -2,7 +2,9 @@
 
 ## Environment setter
 
-On Linux and macOS, one should set environment variable `MMDPS_ROOTDIR` at `~/.bashrc` or similar profile file. The `MMDPS_ROOTDIR` should point to the root dir of mmdps system. 
+On Linux and macOS, one should set environment variable `MMDPS_ROOTDIR` at `~/.bashrc` or similar profile file. On Windows, the environment variable `MMDPS_ROOTDIR` should be set at computer->properties->advanced->environment variable. User environment variable is enough.
+
+The `MMDPS_ROOTDIR` should point to the root dir of mmdps system. 
 
 ## New Data Process Pipeline
 
@@ -40,6 +42,19 @@ On Linux and macOS, one should set environment variable `MMDPS_ROOTDIR` at `~/.b
 
 * `loader.Loader.loadvstackmulti` is used to load attributes for a list of scans. The returned value is a list of Attrs.
 
+## MMDPDatabase
+
+### MongoDB
+
+#### Windows installation
+
+Open a Windows command prompt/interpreter (cmd.exe) as an Administrator, and run the following command: 
+
+```
+./mongod.exe -f /path/to/mongod.cfg --install 
+net start MongoDB
+```
+
 ## Dependencies
 
 The python module `mmdps` requires the following python dependencies:
@@ -51,6 +66,8 @@ The python module `mmdps` requires the following python dependencies:
 * `pydicom` for reading dicom files. 
 
 * `anytree` for GUI related modules.
+
+* `pymongo==3.10.1`, `redis` and `sqlalchemy` for mmdpdb support.
 
 * `numpy`, `scipy` etc that are installed with `anaconda`
 

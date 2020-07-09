@@ -80,6 +80,25 @@ class Attr(Mat):
 		for idx in range(self.data.shape[0]):
 			self.data[idx] = normalize_feature(self.data[idx], self.name, self.atlasobj)
 
+	def extract_node_community(self):
+		"""
+		Using Ziliang's program, the inter-region community is saved in a csv file.
+		Community is calculated using Louvein algorithm recursively. 
+		This function takes the first-level community (each node is associated with a community)
+		TODO: the first-level community order might be different in AAL (left-right-interleaved)
+		"""
+		origin = self.data[:self.atlasobj.count, 1].astype(int)
+		new = origin.copy()
+		community_counter = 0
+		processed_original_community = []
+		for idx in range(self.atlasobj.count):
+			if origin[idx] in processed_original_community:
+				continue
+			new[origin == origin[idx]] = community_counter
+			community_counter += 1
+			processed_original_community.append(origin[idx])
+		self.data = new
+
 class DynamicAttr(Mat):
 	"""
 	DynamicAttr is the dynamic version of Attr.
@@ -179,7 +198,7 @@ class Net(Mat):
 		Return a copy of current network, but only values associated
 		with the subnetwork specified by areas in the subAreaList argument
 		"""
-		newnet = Net(self.data.copy(), self.atlasobj, self.name)
+		newnet = Net(self.data.copy(), self.atlasobj, self.scan)
 		mask = np.zeros(self.data.shape)
 		indexList = [self.atlasobj.ticks.index(area) for area in subAreaList]
 		for xidx in range(self.atlasobj.count):
@@ -217,7 +236,7 @@ class Net(Mat):
 		Return a copy of current network, with values thresholded
 		abs(FC) < threshold --> FC = 0
 		"""
-		newnet = Net(self.data.copy(), self.atlasobj, self.name)
+		newnet = Net(self.data.copy(), self.atlasobj, self.scan)
 		for xidx in range(self.atlasobj.count):
 			for yidx in range(self.atlasobj.count):
 				if abs(self.data[xidx, yidx]) < threshold:
@@ -230,8 +249,34 @@ class Net(Mat):
 		abs(FC) < threshold --> FC = 0
 		abs(FC) >= threshold --> FC = 1
 		"""
-		newnet = Net(self.data.copy(), self.atlasobj, self.name)
+		newnet = Net(self.data.copy(), self.atlasobj, self.scan, self.feature_name)
 		newnet.data = (np.abs(newnet.data) >= threshold).astype(int)
+		return newnet
+
+	def select_ROI(self, roi_list):
+		"""
+		Return a copy of current network, with connections associated with regions in 
+		roi_list alone.
+		roi_list should be of length atlasobj.count with True or False in it.
+		Input lists of region ticks or region indices is also accepted.
+		"""
+		if len(roi_list) != self.atlasobj.count and type(roi_list[0]) is str:
+			# list of region ticks
+			tmp_list = np.zeros(self.atlasobj.count)
+			tmp_list[self.atlasobj.ticks_to_indexes(roi_list)] = 1
+			roi_list = tmp_list.astype(bool)
+		elif type(roi_list[0]) is int:
+			# list of region indices
+			tmp_list = np.zeros(self.atlasobj.count)
+			tmp_list[roi_list] = 1
+			roi_list = tmp_list.astype(bool)
+		newnet = Net(self.data.copy(), self.atlasobj, self.scan, self.feature_name)
+		for xidx in range(self.atlasobj.count):
+			for yidx in range(xidx + 1, self.atlasobj.count):
+				if roi_list[xidx] and roi_list[yidx]:
+					continue
+				newnet.data[xidx, yidx] = 0
+				newnet.data[yidx, xidx] = 0
 		return newnet
 
 	def setValueAtTicks(self, xtick, ytick, value):
@@ -248,6 +293,19 @@ class DynamicNet(Mat):
 		super().__init__(data, atlasobj, scan, feature_name)
 		self.step_size = step_size
 		self.window_length = window_length
+
+	def append_one_slice(self, data):
+		"""
+		This function appends one slice of network to current dynamic networks.
+		The appended slice should align with current data, or be used to create original data.
+		:param data: a np (n, n) array
+		:return: nothing
+		"""
+		data = np.reshape(data, (data.shape[0], data.shape[1], 1))
+		if self.data is None:
+			self.data = data
+		else:
+			self.data = np.concatenate((self.data, data), axis = 2)
 
 	def loadDynamicNets(self, loadPath):
 		"""
@@ -280,12 +338,13 @@ def averageNets(nets):
 	for net in nets:
 		data += net.data
 	data /= len(nets)
-	return Net(data, nets[0].atlasobj, name = 'averaged')
+	return Net(data, nets[0].atlasobj, scan = 'averaged')
 
-def averageAttr(attr_list):
+def averageAttr(attr_list, result_scan = None):
 	atlasobj = attr_list[0].atlasobj
 	result = zero_attr(atlasobj)
 	result.feature_name = attr_list[0].feature_name
+	result.scan = result_scan
 	for idx in range(atlasobj.count):
 		result.data[idx] = np.average([attr.data[idx] for attr in attr_list])
 	return result
@@ -329,7 +388,10 @@ def networks_comparisons(network_list_A, network_list_B, comparison_method):
 			p_network.data[yidx, xidx] = tp
 	return stat_network, p_network
 
-def attr_comparisons(attr_list_A, attr_list_B, comparison_method):
+def attr_comparisons(attr_list_A, attr_list_B, comparison_method, correction_method = None):
+	"""
+	Comparison is performed by A - B
+	"""
 	atlasobj = attr_list_A[0].atlasobj
 	stat_attr = zero_attr(atlasobj)
 	p_attr = zero_attr(atlasobj)
@@ -338,4 +400,6 @@ def attr_comparisons(attr_list_A, attr_list_B, comparison_method):
 								  [attr.data[idx] for attr in attr_list_B])
 		stat_attr.data[idx] = t
 		p_attr.data[idx] = tp
+	if correction_method is not None:
+		_, p_attr.data = correction_method(p_attr.data)
 	return stat_attr, p_attr
