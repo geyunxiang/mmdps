@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 # from ..proc import atlas
 # from ..util import path
-from mmdps.util import path
+from mmdps.util import path, stats_utils
 
 class LinePlot:
 	"""Line plot to plot attrs."""
@@ -257,6 +257,11 @@ class CorrPlot:
 def plot_correlation(xvec, yvec, xlabel, ylabel, title, outfile):
 	plotter = CorrPlot(xvec, yvec, xlabel, ylabel, title, outfile)
 	plotter.plot()
+
+def plot_correlation_if_significant(xvec, yvec, xlabel, ylabel, title, outfile):
+	pr, prp = stats_utils.correlation_Pearson(xvec, yvec)
+	if prp < 0.05:
+		plot_correlation(xvec, yvec, xlabel, ylabel, title, outfile)
 
 def plot_attr_lines(attrs, title, outfilepath, sig_positions = None, stat_list = None, adjust_method = None):
 	plotter = LinePlot(attrs, title, outfilepath)
