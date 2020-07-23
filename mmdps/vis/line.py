@@ -170,6 +170,7 @@ class LinePlot:
 		plt.grid(True)
 		plt.legend()
 		plt.title(self.title, fontsize=20)
+		path.makedirs_file(self.outfilepath)
 		plt.savefig(self.outfilepath, dpi=100)
 		plt.close()
 		if stat_list is not None:
@@ -202,6 +203,7 @@ class DynamicLinePlot:
 		plt.grid(True)
 		plt.legend()
 		plt.title(self.title, fontsize = 20)
+		path.makedirs_file(self.outfilepath)
 		plt.savefig(self.outfilepath, dpi = 100)
 		plt.close()
 
@@ -210,11 +212,11 @@ class CorrPlot:
 	This class is used to generate correlation, usually correlation between FC/graph
 	attributes and clinical scores
 	"""
-	def __init__(self, xvec, yvec, xlabel, ylabel, title, outfile):
+	def __init__(self, xvec, yvec, xlabel, ylabel, title, outfilepath):
 		self.xvec = xvec
 		self.yvec = yvec
 		self.title = title
-		self.outfile = outfile
+		self.outfilepath = outfilepath
 		self.xlabel = xlabel
 		self.ylabel = ylabel
 		self.labelsize = None
@@ -250,18 +252,18 @@ class CorrPlot:
 			plt.title(self.title)
 		plt.xlabel(self.xlabel)
 		plt.ylabel(self.ylabel)
-		path.makedirs_file(self.outfile)
-		fig.savefig(self.outfile, dpi = 300)
+		path.makedirs_file(self.outfilepath)
+		fig.savefig(self.outfilepath, dpi = 300)
 		plt.close()
 
-def plot_correlation(xvec, yvec, xlabel, ylabel, title, outfile):
-	plotter = CorrPlot(xvec, yvec, xlabel, ylabel, title, outfile)
+def plot_correlation(xvec, yvec, xlabel, ylabel, title, outfilepath):
+	plotter = CorrPlot(xvec, yvec, xlabel, ylabel, title, outfilepath)
 	plotter.plot()
 
-def plot_correlation_if_significant(xvec, yvec, xlabel, ylabel, title, outfile):
+def plot_correlation_if_significant(xvec, yvec, xlabel, ylabel, title, outfilepath):
 	pr, prp = stats_utils.correlation_Pearson(xvec, yvec)
 	if prp < 0.05:
-		plot_correlation(xvec, yvec, xlabel, ylabel, title, outfile)
+		plot_correlation(xvec, yvec, xlabel, ylabel, title, outfilepath)
 
 def plot_attr_lines(attrs, title, outfilepath, sig_positions = None, stat_list = None, adjust_method = None):
 	plotter = LinePlot(attrs, title, outfilepath)
