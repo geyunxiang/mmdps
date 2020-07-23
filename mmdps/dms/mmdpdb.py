@@ -35,7 +35,7 @@ class MMDPDatabase:
 		self.sdb = SQLiteDB()
 		self.data_source = data_source
 
-	def get_feature(self, scan_list, atlasobj, feature_name):
+	def get_feature(self, scan_list, atlasobj, feature_name, comment = {}):
 		"""
 		Designed for static networks and attributes query.
 		Using scan name , altasobj/altasobj name, feature name and data source(the default is Changgung) to query data from Redis.
@@ -49,13 +49,16 @@ class MMDPDatabase:
 			return_single = True
 		if type(atlasobj) is atlas.Atlas:
 			atlasobj = atlasobj.name
+
+		if (not (type(scan_list) is list or type(scan_list) is str) or type(atlasobj) is not str or type(feature_name) is not str):
+			raise Exception("Please input in the format as follows : scan must be str or a list of str, atlas and feature must be str")
 		ret_list = []
 		for scan in scan_list:
-			res = self.rdb.get_static_value(self.data_source, scan, atlasobj, feature_name)
+			res = self.rdb.get_static_value(self.data_source, scan, atlasobj, feature_name, comment)
 			if res is not None:
 				ret_list.append(res)
 			else:
-				doc = self.mdb.query_static(scan, atlasobj, feature_name)
+				doc = self.mdb.total_query('static',scan, atlasobj, feature_name, comment)
 				if doc.count() != 0:
 					ret_list.append(self.rdb.set_value(doc[0],self.data_source))
 				else:
@@ -66,7 +69,7 @@ class MMDPDatabase:
 		else:
 			return ret_list
 
-	def get_dynamic_feature(self, scan_list, atlasobj, feature_name, window_length, step_size):
+	def get_dynamic_feature(self, scan_list, atlasobj, feature_name, window_length, step_size, comment = {}):
 		"""
 		Designed for dynamic networks and attributes query.
 		Using scan name , altasobj/altasobj name, feature name, window length, step size and data source(the default is Changgung)
@@ -80,13 +83,15 @@ class MMDPDatabase:
 			return_single = True
 		if type(atlasobj) is atlas.Atlas:
 			atlasobj = atlasobj.name
+		if (not (type(scan_list) is list or type(scan_list) is str) or type(atlasobj) is not str or type(feature_name) is not str or type(window_length) is not int or type(step_size) is not int):
+			raise Exception("Please input in the format as follows : scan must be str or a list of str, atlas and feature must be str, window length and step size must be int")
 		ret_list = []
 		for scan in scan_list:
-			res = self.rdb.get_dynamic_value(self.data_source, scan, atlasobj, feature_name, window_length, step_size)
+			res = self.rdb.get_dynamic_value(self.data_source, scan, atlasobj, feature_name, window_length, step_size, comment)
 			if res is not None:
 				ret_list.append(res)
 			else:
-				doc = self.mdb.query_dynamic(scan, atlasobj, feature_name, window_length, step_size)
+				doc = self.mdb.total_query('dynamic',scan, atlasobj, feature_name, comment, window_length, step_size)
 				if doc.count() != 0:
 					mat = self.rdb.set_value(doc,self.data_source)
 					ret_list.append(mat)
@@ -109,6 +114,8 @@ class MMDPDatabase:
 		"""
 		Store a list to redis as cache with cache_key
 		"""
+		if (type(cache_key) is not str or not all((type(x) is int or type(x) is float) for x in value)):
+			raise Exception("Please input in the format as follows : key must be str, value must be a list of float or int")
 		self.rdb.set_list_all_cache(cache_key, value)
 
 	def append_cache_list(self, cache_key, value):
@@ -116,6 +123,8 @@ class MMDPDatabase:
 		Append value to a list in redis with cache_key.
 		If the given key is empty in redis, a new list will be created.
 		"""
+		if (type(cache_key) is not str or not (type(value) is int or type(value) is float)):
+			raise Exception("Please input in the format as follows : key mast be str, value must be int or float")
 		self.rdb.set_list_cache(cache_key, value)
 
 	def get_cache_list(self, cache_key):
