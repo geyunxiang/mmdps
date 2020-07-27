@@ -60,21 +60,22 @@ def gen_matlab(nodepath, edgepath, title, outpath, bnv_mesh, bnv_cfg):
 	mstr = ''.join(rows)
 	return mstr
 
-def decorate_image(image_path, title):
+def decorate_image(image_path, title, font_size = 72, keep_origin = False):
 	"""
 	Add title to image
 	"""
 	from PIL import Image, ImageDraw, ImageFont
 	img = Image.open(image_path)
-	padtop = 100
-	newImg = Image.new('RGBA', (img.width, padtop + img.height), (255, 255, 255, 255))
-	newImg.paste(img, (0, padtop, img.width, padtop + img.height))
+	newImg = Image.new('RGBA', (img.width, img.height+font_size), (255, 255, 255, 255))
+	newImg.paste(img, (0, font_size, img.width, img.height+font_size))
 	draw = ImageDraw.Draw(newImg)
-	font = ImageFont.truetype('arial.ttf', 72)
+	font = ImageFont.truetype('arial.ttf', font_size)
 	w, h = draw.textsize(title, font = font)
-	draw.text((img.width/2-w/2, padtop/2-h/2), title, (0, 0, 0), font=font)
-	newpng = image_path[:-4] + '_decorated.png'
+	draw.text((img.width/2-w/2, 0), title, (0, 0, 0), font = font)
+	newpng = image_path[:image_path.rfind('.')] + '_decorated.png'
 	newImg.save(newpng)
+	if not keep_origin:
+		os.remove(image_path)
 
 class MatProc:
 	"""Matrix proc."""
