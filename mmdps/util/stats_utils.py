@@ -57,6 +57,14 @@ def pairedTTest(a, b):
 	t, p = scipy.stats.ttest_rel(a, b)
 	return (t, p)
 
+def permutation_test(a, b, num_rounds = 10000):
+	"""
+	http://rasbt.github.io/mlxtend/user_guide/evaluate/permutation_test/
+	"""
+	import mlxtend.evaluate
+	p = mlxtend.evaluate.permutation_test(a, b, num_rounds = num_rounds, method = 'approximate')
+	return (0, p)
+
 def correlation_Pearson(a, b):
 	pr, prp = scipy.stats.pearsonr(a, b)
 	return pr, prp
