@@ -18,10 +18,16 @@ association_table_group_person = Table(
 	Column('person_id', Integer, ForeignKey('people.id'))
 )
 
-association_table_group_scan = Table(
-	'association_group_scan', Base.metadata, 
-	Column('group_id', Integer, ForeignKey('groups.id')), 
+association_table_group_mriscan = Table(
+	'association_group_mriscan', Base.metadata,
+	Column('group_id', Integer, ForeignKey('groups.id')),
 	Column('scan_id', Integer, ForeignKey('mriscans.id'))
+)
+
+association_table_group_eegscan = Table(
+	'association_group_eegscan', Base.metadata,
+	Column('group_id', Integer, ForeignKey('groups.id')),
+	Column('scan_id', Integer, ForeignKey('eegscans.id'))
 )
 
 association_table_group_study = Table(
@@ -37,9 +43,13 @@ class BaseModel(Base):
 class Person(BaseModel):
 	"""Person."""
 	__tablename__ = 'people'
+	#__table_args__ = {"mysql_charset": "utf8"}
 	# columns
 	id = Column(Integer, primary_key=True)
 	patientid = Column(String)
+	mriid = Column(String)
+	eegid = Column(String)
+	datasource = Column(String)
 	name = Column(String)
 	gender = Column(String)
 	birth = Column(DateTime)
@@ -47,8 +57,7 @@ class Person(BaseModel):
 
 	# relationships
 	mriscans = relationship('MRIScan', back_populates='person')
-	motionscores = relationship('MotionScore', back_populates='person')
-	strokescores = relationship('StrokeScore', back_populates='person')
+	eegscans = relationship('EEGScan', back_populates='person')
 	groups = relationship('Group', secondary=association_table_group_person, back_populates='people')
 
 	def __repr__(self):
@@ -87,6 +96,19 @@ class MRIMachine(BaseModel):
 	def __repr__(self):
 		return "<MRIMachine(institution='{}', manufacturer='{}', modelname='{}'>".format(self.institution, self.manufacturer, self.modelname)
 
+class EEGMachine(BaseModel):
+	__tablename__ = 'eegmachines'
+	id = Column(Integer, primary_key=True)
+	devicename = Column(String)
+	devicemode = Column(String)
+	recordchannelsettinggroup = Column(String)
+	recordmontagename = Column(String)
+	recordprotocolname = Column(String)
+	recordeegcapname = Column(String)
+
+	# relationships
+	eegscans = relationship('EEGScan', back_populates='eegmachine')
+
 class MRIScan(BaseModel):
 	"""MRIScan."""
 	__tablename__ = 'mriscans'
@@ -104,9 +126,7 @@ class MRIScan(BaseModel):
 	# relationships
 	person = relationship('Person', back_populates='mriscans')
 	mrimachine = relationship('MRIMachine', back_populates='mriscans')
-	motionscores = relationship('MotionScore', back_populates='mriscan')
-	strokescores = relationship('StrokeScore', back_populates='mriscan')
-	groups = relationship('Group', secondary = association_table_group_scan, back_populates = 'scans')
+	groups = relationship('Group', secondary = association_table_group_mriscan, back_populates = 'mriscans')
 
 	def __repr__(self):
 		return "<MRIScan(person_id='{}', filename='{}', hasT1='{}', hasT2='{}', hasBOLD='{}', hasDWI='{}'>".format(self.person_id, self.filename, self.hasT1, self.hasT2, self.hasBOLD, self.hasDWI)
@@ -114,43 +134,31 @@ class MRIScan(BaseModel):
 	def get_folder(self):
 		return "{}_{}".format(self.person.name, datetime.datetime.strftime(self.date, '%Y%m%d'))
 
-class MotionScore(BaseModel):
-	"""MotionScore."""
-	__tablename__ = 'motionscores'
-	# columns
-	id = Column(Integer, primary_key=True)
-	person_id = Column(Integer, ForeignKey('people.id'))
-	mriscan_id = Column(Integer, ForeignKey('mriscans.id'))
-	date = Column(DateTime)
-	scTSI = Column(Float)
-	scMotor = Column(Float)
-	scSensory = Column(Float)
-	scVAS = Column(Float)
-	scMAS = Column(Float)
-	scWISCI2 = Column(Float)
-	scSCIM = Column(Float)
-	# relationships
-	person = relationship('Person', back_populates='motionscores')
-	mriscan = relationship('MRIScan', back_populates='motionscores')
-	def __repr__(self):
-		return "<MotionScore(person_id='{}', mriscan_id='{}', date='{}', scTSI='{}', scMotor='{}', scSensory='{}', scVAS='{}', scMAS='{}', scWISCI2='{}', scSCIM='{}'>".format(self.person_id, self.mriscan_id, self.date, self.scTSI, self.scMotor, self.scSensory, self.scVAS, self.scMAS, self.scWISCI2, self.scSCIM)
+class EEGScan(BaseModel):
 
-class StrokeScore(BaseModel):
-	"""StrokeScore."""
-	__tablename__ = 'strokescores'
-	# columns
+	__tablename__ = 'eegscans'
+	#__table_args__ = {"mysql_charset": "utf8"}
+
 	id = Column(Integer, primary_key=True)
+	examid = Column(String)
 	person_id = Column(Integer, ForeignKey('people.id'))
-	mriscan_id = Column(Integer, ForeignKey('mriscans.id'))
+	eegmachine_id = Column(Integer, ForeignKey('eegmachines.id'))
 	date = Column(DateTime)
-	scFMA = Column(Float)
-	scARAT = Column(Float)
-	scWOLF = Column(Float)
+	examitem = Column(String)
+	impedancepos = Column(String)
+	impedancedata = Column(String)
+	impedanceonline = Column(Boolean)
+	begintimestamp = Column(String)
+	digitalmin = Column(Integer)
+	digitalmax = Column(Integer)
+	physicalmin = Column(Float)
+	physicalmax = Column(Float)
+	samplerate = Column(Integer)
+
 	# relationships
-	person = relationship('Person', back_populates='strokescores')
-	mriscan = relationship('MRIScan', back_populates='strokescores')
-	def __repr__(self):
-		return "<StrokeScore(person_id='{}', mriscan_id='{}', date='{}', scFMA='{}', scARAT='{}', scWOLF='{}'>".format(self.person_id, self.mriscan_id, self.date, self.scFMA, self.scARAT, self.scWOLF)
+	person = relationship('Person', back_populates='eegscans')
+	eegmachine = relationship('EEGMachine', back_populates='eegscans')
+	groups = relationship('Group', secondary=association_table_group_eegscan, back_populates='eegscans')
 
 class Group(BaseModel):
 	"""Group."""
@@ -162,11 +170,12 @@ class Group(BaseModel):
 
 	# relationships
 	people = relationship('Person', secondary = association_table_group_person, back_populates = 'groups')
-	scans = relationship('MRIScan', secondary = association_table_group_scan, back_populates = 'groups')
+	mriscans = relationship('MRIScan', secondary = association_table_group_mriscan, back_populates = 'groups')
+	eegscans = relationship('EEGScan', secondary = association_table_group_eegscan, back_populates = 'groups')
 	studies = relationship('ResearchStudy', secondary = association_table_group_study, back_populates = 'groups')
 
 	def get_scanlist(self):
-		return [scan.filename for scan in self.scans]
+		return [scan.filename for scan in self.mriscans]
 
 	def get_subject_namelist(self):
 		return [person.name for person in self.people]
@@ -191,7 +200,7 @@ class ResearchStudy(BaseModel):
 	def __repr__(self):
 		return "<Study(name='{}', description='{}', alias='{}')>".format(self.name, self.description, self.alias)
 
-	def list_groups(self):
+	def list_group(self):
 		res = []
 		for gp in self.groups:
 			res.append(gp.name)
@@ -206,7 +215,7 @@ class ResearchStudy(BaseModel):
 	def get_scans_of_subject(self, subject_name):
 		scan_list = []
 		for gp in self.groups:
-			for scan in gp.scans:
+			for scan in gp.mriscans:
 				if scan.person.name == subject_name:
 					scan_list.append(scan)
 		scan_list = sorted(scan_list, key = lambda x: x.date)
