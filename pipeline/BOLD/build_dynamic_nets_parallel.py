@@ -45,7 +45,7 @@ class CalcDynamic:
 		start = 0
 		while start + self.windowLength < timepoints:
 			tscorr = np.corrcoef(ts[:, start:start + self.windowLength])
-			save_csvmat(self.outpath('corrcoef-%d-%d.csv' % (start, start + self.windowLength)), tscorr)
+			save_csvmat(self.outpath('corrcoef_%d_%d.csv' % (start, start + self.windowLength)), tscorr)
 			start += self.stepsize
 
 	def run(self):
@@ -54,23 +54,27 @@ class CalcDynamic:
 def func(args):
 	subject = args[0]
 	atlasname = args[1]
+	windowLength = args[2]
+	stepsize = args[3]
 	volumename = '3mm'
 	atlasobj = atlas.get(atlasname)
 	work_path = 'D:/Research/xuquan_FMRI/Dynamic tfMRI work/'
-	outfolder = os.path.join(work_path, subject, atlasname, 'bold_net', 'dynamic_1_10')
+	outfolder = os.path.join(work_path, subject, atlasname, 'bold_net', 'dynamic_%d_%d' % (stepsize, windowLength))
 	img = load_nii(os.path.join(work_path, subject, 'pBOLD.nii'))
 	os.makedirs(outfolder, exist_ok = True)
-	c = CalcDynamic(atlasobj, volumename, img, outfolder, 10, 1)
+	c = CalcDynamic(atlasobj, volumename, img, outfolder, windowLength, stepsize)
 	c.run()
 
 if __name__ == '__main__':
 	atlasList = ['brodmann_lrce']
 	mriscanstxt = 'D:/Research/xuquan_FMRI/DPARSFA work/namelist.txt'
 	subjectList = loadsave.load_txt(mriscanstxt)
+	windowLength = 10
+	stepsize = 1
 	taskList = []
 	for subject in subjectList:
 		for atlasname in atlasList:
-			taskList.append((subject, atlasname))
+			taskList.append((subject, atlasname, windowLength, stepsize))
 	taskCount = len(taskList)
 	totalResult = []
 	pool = multiprocessing.Pool(processes = 4)
