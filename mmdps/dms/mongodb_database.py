@@ -100,10 +100,10 @@ class MongoDBDatabase:
 		""" generate dynamic or static query """
 		query = {}
 		if mode == 'static':
-			query = dict(data_source=self.data_source, scan=scan,
+			query = dict(scan=scan,
 						 atlas=atlas_name, feature=feature, dynamic=0, comment=comment)
 		elif mode == 'dynamic1' or mode == 'dynamic2' or mode == 'dynamic':
-			query = dict(data_source=self.data_source, scan=scan, atlas=atlas_name, feature=feature,
+			query = dict(scan=scan, atlas=atlas_name, feature=feature,
 						 dynamic=1, window_length=window_length, step_size=step_size, comment=comment)
 		return query
 
@@ -277,9 +277,9 @@ class MongoDBDatabase:
 		collection = self.db['features']
 		count = collection.count_documents(query)
 		if count == 0:
-			raise NoRecordFoundException
+			raise NoRecordFoundException(scan)
 		elif count > 1:
-			raise MultipleRecordException
+			raise MultipleRecordException(scan)
 		else:
 			AttrData = pickle.loads(collection.find_one(query)['value'])
 			atlasobj = atlas.get(atlas_name)
@@ -292,7 +292,7 @@ class MongoDBDatabase:
 					 window_length=window_length, step_size=step_size)
 		collection = self.db['dynamic_attr']
 		if collection.find_one(query) is None:
-			raise NoRecordFoundException
+			raise NoRecordFoundException(scan)
 		else:
 			records = collection.find(
 				query).sort([('slice_num', pymongo.ASCENDING)])
@@ -303,14 +303,14 @@ class MongoDBDatabase:
 				attr.append_one_slice(pickle.loads(record['value']))
 			return attr
 
-	def get_net(self, scan, atlas_name, feature):
+	def get_net(self, scan, atlas_name, feature = 'BOLD.net'):
 		"""  Return to an net object directly  """
 		query = dict(scan=scan, atlas=atlas_name, feature=feature)
 		count = self.db['features'].count_documents(query)
 		if count == 0:
-			raise NoRecordFoundException
+			raise NoRecordFoundException(scan)
 		elif count > 1:
-			raise MultipleRecordException
+			raise MultipleRecordException(scan)
 		else:
 			NetData = pickle.loads(self.db['features'].find_one(query)['value'])
 			atlasobj = atlas.get(atlas_name)
