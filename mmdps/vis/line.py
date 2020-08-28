@@ -179,13 +179,12 @@ class LinePlot:
 
 class DynamicLinePlot:
 	"""
-	This class is used to plot the time series of dynamic features.
+	This class is used to plot the time series of dynamic features at one region.
 	"""
 	def __init__(self, attrs, regionIdx, stepSize, title, outfilepath):
 		"""
-		Attrs should be a dict of lists of attrs
-		Only attrs related to region is plotted
-		The key of attrs are taken as labels
+		Attrs should be a list of DynamicAttr
+		Only attrs related to regionIdx is plotted
 		"""
 		self.attrs = attrs
 		self.regionIdx = regionIdx
@@ -195,9 +194,9 @@ class DynamicLinePlot:
 
 	def plot(self):
 		plt.figure(figsize = (20, 6))
-		for key in self.attrs:
-			self.count = len(self.attrs[key])
-			plt.plot(range(1, self.count+1), [attr.data[self.regionIdx] for attr in self.attrs[key]], '.-', label = key)
+		for attr in self.attrs:
+			self.count = attr.data.shape[1]
+			plt.plot(range(1, self.count+1), attr.data[self.regionIdx, :], '.-', label = attr.scan)
 		plt.xlim([0, self.count+1])
 		plt.xticks(range(1, self.count+1), range(1, self.count*self.stepSize, self.stepSize))
 		plt.grid(True)
