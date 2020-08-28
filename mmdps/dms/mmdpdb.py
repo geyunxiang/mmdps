@@ -58,8 +58,8 @@ class MMDPDatabase:
 			if res is not None:
 				ret_list.append(res)
 			else:
-				doc = self.mdb.total_query('static',scan, atlasobj, feature_name, comment)
-				if doc.count() != 0:
+				doc = self.mdb.total_query('static', scan, atlasobj, feature_name, comment)
+				if doc is not None:
 					ret_list.append(self.rdb.set_value(doc[0],self.data_source))
 				else:
 					raise mongodb_database.NoRecordFoundException('No such item in redis and mongodb: ' + scan + ' ' + atlasobj + ' ' + feature_name)
@@ -91,8 +91,11 @@ class MMDPDatabase:
 			if res is not None:
 				ret_list.append(res)
 			else:
-				doc = self.mdb.total_query('dynamic',scan, atlasobj, feature_name, comment, window_length, step_size)
-				if doc.count() != 0:
+				if feature_name.find('BOLD.net') != -1:
+					doc = self.mdb.total_query('dynamic2', scan, atlasobj, feature_name, comment, window_length, step_size)
+				else:
+					doc = self.mdb.total_query('dynamic1', scan, atlasobj, feature_name, comment, window_length, step_size)
+				if doc is not None:
 					mat = self.rdb.set_value(doc,self.data_source)
 					ret_list.append(mat)
 				else:
