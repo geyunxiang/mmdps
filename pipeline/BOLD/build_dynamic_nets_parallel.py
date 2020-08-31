@@ -43,7 +43,7 @@ class CalcDynamic:
 		save_csvmat(self.outpath('timeseries.csv'), ts)
 		timepoints = ts.shape[1] # number of total timepoints
 		start = 0
-		while start + self.windowLength < timepoints:
+		while start + self.windowLength <= timepoints:
 			tscorr = np.corrcoef(ts[:, start:start + self.windowLength])
 			save_csvmat(self.outpath('corrcoef_%d_%d.csv' % (start, start + self.windowLength)), tscorr)
 			start += self.stepsize
@@ -58,7 +58,7 @@ def func(args):
 	stepsize = args[3]
 	volumename = '3mm'
 	atlasobj = atlas.get(atlasname)
-	work_path = 'D:/Research/xuquan_FMRI/Dynamic tfMRI work/'
+	work_path = 'D:/Research/xuquan_FMRI/Dynamic_tfMRI_work/'
 	outfolder = os.path.join(work_path, subject, atlasname, 'bold_net', 'dynamic_%d_%d' % (stepsize, windowLength))
 	img = load_nii(os.path.join(work_path, subject, 'pBOLD.nii'))
 	os.makedirs(outfolder, exist_ok = True)
