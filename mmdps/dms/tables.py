@@ -23,13 +23,11 @@ association_table_group_mriscan = Table(
 	Column('group_id', Integer, ForeignKey('groups.id')),
 	Column('scan_id', Integer, ForeignKey('mriscans.id'))
 )
-
 association_table_group_eegscan = Table(
 	'association_group_eegscan', Base.metadata,
 	Column('group_id', Integer, ForeignKey('groups.id')),
 	Column('scan_id', Integer, ForeignKey('eegscans.id'))
 )
-
 association_table_group_study = Table(
 	'association_group_study', Base.metadata,
 	Column('group_id', Integer, ForeignKey('groups.id')),
@@ -39,7 +37,6 @@ association_table_group_study = Table(
 class BaseModel(Base):
 	"""Base model."""
 	__abstract__ = True
-
 class Person(BaseModel):
 	"""Person."""
 	__tablename__ = 'people'
@@ -51,6 +48,7 @@ class Person(BaseModel):
 	eegid = Column(String)
 	datasource = Column(String)
 	name = Column(String)
+	name_chinese = Column(String)
 	gender = Column(String)
 	birth = Column(DateTime)
 	weight = Column(Integer)
@@ -96,6 +94,7 @@ class MRIMachine(BaseModel):
 	def __repr__(self):
 		return "<MRIMachine(institution='{}', manufacturer='{}', modelname='{}'>".format(self.institution, self.manufacturer, self.modelname)
 
+
 class EEGMachine(BaseModel):
 	__tablename__ = 'eegmachines'
 	id = Column(Integer, primary_key=True)
@@ -106,7 +105,6 @@ class EEGMachine(BaseModel):
 	recordprotocolname = Column(String)
 	recordeegcapname = Column(String)
 
-	# relationships
 	eegscans = relationship('EEGScan', back_populates='eegmachine')
 
 class MRIScan(BaseModel):
@@ -134,6 +132,7 @@ class MRIScan(BaseModel):
 	def get_folder(self):
 		return "{}_{}".format(self.person.name, datetime.datetime.strftime(self.date, '%Y%m%d'))
 
+
 class EEGScan(BaseModel):
 
 	__tablename__ = 'eegscans'
@@ -155,7 +154,6 @@ class EEGScan(BaseModel):
 	physicalmax = Column(Float)
 	samplerate = Column(Integer)
 
-	# relationships
 	person = relationship('Person', back_populates='eegscans')
 	eegmachine = relationship('EEGMachine', back_populates='eegscans')
 	groups = relationship('Group', secondary=association_table_group_eegscan, back_populates='eegscans')
@@ -174,10 +172,10 @@ class Group(BaseModel):
 	eegscans = relationship('EEGScan', secondary = association_table_group_eegscan, back_populates = 'groups')
 	studies = relationship('ResearchStudy', secondary = association_table_group_study, back_populates = 'groups')
 
-	def get_scanlist(self):
+	def getMRIScanStrList(self):
 		return [scan.filename for scan in self.mriscans]
 
-	def get_subject_namelist(self):
+	def getSubjectNameList(self):
 		return [person.name for person in self.people]
 
 	def __repr__(self):
@@ -200,19 +198,19 @@ class ResearchStudy(BaseModel):
 	def __repr__(self):
 		return "<Study(name='{}', description='{}', alias='{}')>".format(self.name, self.description, self.alias)
 
-	def list_group(self):
+	def listGroups(self):
 		res = []
 		for gp in self.groups:
 			res.append(gp.name)
 		return res
 
-	def get_group(self, name_string):
+	def getGroup(self, name_string):
 		for gp in self.groups:
 			if name_string in gp.name:
 				return gp
 		return None
 
-	def get_scans_of_subject(self, subject_name):
+	def getMRIScansOfSubject(self, subject_name):
 		scan_list = []
 		for gp in self.groups:
 			for scan in gp.mriscans:

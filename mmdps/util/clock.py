@@ -57,5 +57,5 @@ def simple_to_time(simplestr):
     return datetime.datetime.strptime(simplestr, simplefmt())
 
 def eeg_time(t):
-    year, month, day = t[:t.find("T")].split('-')
-    return datetime.date(int(year),int(month),int(day))
+    year, month, day, hour, minute, second = t.replace('T','-').replace(':','-').split('-')
+    return datetime.datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
