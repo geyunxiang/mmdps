@@ -31,7 +31,7 @@ class MMDPDatabase:
 		if username is None:
 			self.mdb = mongodb_database.MongoDBDatabase(data_source = data_source)
 		else:
-			self.mdb = mongodb_database.MongoDBDatabase(data_source = data_source, username = username, password = password)
+			self.mdb = mongodb_database.MongoDBDatabase(data_source = data_source, user = username, pwd = password)
 		self.sdb = SQLiteDB()
 		self.data_source = data_source
 
