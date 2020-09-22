@@ -53,11 +53,11 @@ class MRIScanProcMRIScanAtlasExporter:
 		step_size = self.dataconfig['dynamic']['step_size']
 		window_idx = 0
 		while True:
-			file_path = file_base + '-%d.%d' % (window_idx, window_idx + window_length) + feature_config.get('file_type')
+			file_path = file_base + '_%d_%d' % (window_idx, window_idx + window_length) + feature_config.get('file_type')
 			if not os.path.isfile(file_path):
 				return file_list, out_file_list
 			file_list.append(file_path)
-			out_file_list.append(out_file_base + '-%d.%d' % (window_idx, window_idx + window_length) + feature_config.get('file_type'))
+			out_file_list.append(out_file_base + '_%d_%d' % (window_idx, window_idx + window_length) + feature_config.get('file_type'))
 			window_idx += step_size
 
 	def get_static_file_path(self, feature_config):

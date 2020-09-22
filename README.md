@@ -51,6 +51,14 @@ Open a Windows command prompt/interpreter (cmd.exe) as an Administrator, and run
 net start MongoDB
 ```
 
+#### Restore
+
+Open a Windows command prompt/interpreter (cmd.exe) and run the following: 
+```
+mongorestore.exe --host 101.6.70.6:27017 -u <username> -p <password> --authenticationDatabase admin -d <database> -c <collection> --dir "/path/to/xxx.bson"
+```
+
+
 ## Dependencies
 
 The python module `mmdps` requires the following python dependencies:

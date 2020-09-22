@@ -93,13 +93,15 @@ class RedisDatabase:
 				comment = {}
 			key_all = self.generate_dynamic_key(data_source, scan, atlas, feature, window_length, step_size, comment)
 			pipe = self.datadb.pipeline()
-			length=obj.count()
+			# length=obj.count()
 			try:
 				pipe.multi()
+				length = 0
+				for i, document in enumerate(obj):  # 使用查询关键字保证升序
+					length += 1
+					pipe.set(key_all + ':' + str(i + 1), (document['value']), ex=1800)
+					value.append(pickle.loads(document['value']))
 				pipe.set(key_all + ':0', length, ex=1600)
-				for i in range(length):  # 使用查询关键字保证升序
-					pipe.set(key_all + ':' + str(i + 1), (obj[i]['value']), ex=1800)
-					value.append(pickle.loads(obj[i]['value']))
 				pipe.execute()
 			except Exception as e:
 				raise Exception('An error occur when tring to set value in redis, error message: ' + str(e))
@@ -129,13 +131,13 @@ class RedisDatabase:
 
 	def generate_static_key(self, data_source, subject_scan, atlas_name, feature_name, comment):
 		key = data_source + ':' + subject_scan + ':' + atlas_name + ':' + feature_name + ':0'
-		if comment != None:
+		if comment is not None:
 			key += ':' + str(comment)
 		return key
 
 	def generate_dynamic_key(self, data_source, subject_scan, atlas_name, feature_name, window_length, step_size, comment):
 		key = data_source + ':' + subject_scan + ':' + atlas_name + ':' + feature_name +':1:'+ str(window_length) + ':' + str(step_size)
-		if comment != None:
+		if comment is not None:
 			key += ':' + str(comment)
 		return key
 
