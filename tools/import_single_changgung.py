@@ -35,7 +35,7 @@ def compress_dicom(scan_folder_name):
 	"""
 	logging.info('{} Compressing...'.format(clock.now()))
 	shutil.make_archive(os.path.join(rootconfig.dms.folder_temp, scan_folder_name), 'zip', os.path.join(rootconfig.dms.folder_temp, 'DICOM'))
-	os.system('robocopy /I "{}" "{}"'.format(os.path.join(rootconfig.dms.folder_temp, '{}.zip'.format(scan_folder_name)), rootconfig.dms.folder_dicom))
+	os.system('robocopy "{}" "{}" {}'.format(rootconfig.dms.folder_temp, rootconfig.dms.folder_dicom, '{}.zip'.format(scan_folder_name)))
 	logging.info('{} Compressed'.format(clock.now()))
 
 def convert_dicom_to_raw_nii(scan_folder_name):
