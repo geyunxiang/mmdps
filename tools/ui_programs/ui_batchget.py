@@ -2,7 +2,7 @@ import os
 import tkinter as tk
 from mmdps.gui import guiframe, tktools, field
 from mmdps import rootconfig
-from mmdps.util import run
+from mmdps.util import run, loadsave
 from mmdps.remote_service import batchget, apicore
 
 class Application(guiframe.MainWindow):
@@ -29,10 +29,12 @@ class Application(guiframe.MainWindow):
 		wmodal = self.fmodal.build_widget(self.mainframe)
 		woutfolder = self.foutfolder.build_widget(self.mainframe)
 		wrun = tktools.button(self.mainframe, 'Run', self.cb_run)
+		wrun_NAS = tktools.button(self.mainframe, 'Copy', self.cb_copy)
 		wmriscanstxt.pack()
 		wmodal.pack()
 		woutfolder.pack()
 		wrun.pack()
+		wrun_NAS.pack()
 
 	def cb_run(self):
 		txt = self.fmriscanstxt.value
@@ -41,6 +43,14 @@ class Application(guiframe.MainWindow):
 		bg = batchget.BatchGet(self.api, txt, modal, outfolder)
 		bg.run()
 		print('batch get end')
+
+	def cb_copy(self):
+		scanlist = loadsave.load_txt(self.fmriscanstxt.value)
+		modal = self.fmodal.value
+		outfolder = self.foutfolder.value
+		for scan in scanlist:
+			os.makedirs(os.path.join(outfolder, scan), exist_ok = True)
+			os.system('robocopy "{}" "{}" {}'.format(os.path.join(rootconfig.dms.folder_mridata, scan), os.path.join(outfolder, scan), modal))
 
 if __name__ == '__main__':
 	root = tk.Tk()
