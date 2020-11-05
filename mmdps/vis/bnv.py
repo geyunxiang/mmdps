@@ -169,6 +169,18 @@ class BNVNode:
 		"""
 		self.change_column(3, modular)
 
+	def change_modular_at(self, tick, modular):
+		for irow in range(self.count):
+			if self.nodedata[irow][5] == tick:
+				self.nodedata[irow][3] = modular
+				break
+
+	def change_value_at(self, tick, value):
+		for irow in range(self.count):
+			if self.nodedata[irow][5] == tick:
+				self.nodedata[irow][4] = value
+				break
+
 	def change_value(self, value):
 		"""Change the value column."""
 		self.change_column(4, value)
