@@ -51,6 +51,8 @@ if sys.platform == 'win32':
 		"""for data import and static mridata server."""
 		# data import working folder, scores go here
 		folder_working = r'F:/MMDPSoftware/mmdps/tools/import_changgung'
+		# data import temp path
+		folder_temp = r'D:/dicom_temp/'
 		# data import dicom folder
 		folder_dicom = r'F:/MMDPDatabase/data_dicom'
 		# data import raw nifti folder, niftis converted from dicom go here
