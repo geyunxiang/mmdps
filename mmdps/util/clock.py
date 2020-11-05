@@ -55,3 +55,7 @@ def iso_to_simple(isostr):
 def simple_to_time(simplestr):
     """Simple time string to time object."""
     return datetime.datetime.strptime(simplestr, simplefmt())
+
+def eeg_time(t):
+    year, month, day, hour, minute, second = t.replace('T','-').replace(':','-').split('-')
+    return datetime.datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
