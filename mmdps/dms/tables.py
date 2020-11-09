@@ -37,6 +37,7 @@ association_table_group_study = Table(
 class BaseModel(Base):
 	"""Base model."""
 	__abstract__ = True
+
 class Person(BaseModel):
 	"""Person."""
 	__tablename__ = 'people'
@@ -94,7 +95,6 @@ class MRIMachine(BaseModel):
 	def __repr__(self):
 		return "<MRIMachine(institution='{}', manufacturer='{}', modelname='{}'>".format(self.institution, self.manufacturer, self.modelname)
 
-
 class EEGMachine(BaseModel):
 	__tablename__ = 'eegmachines'
 	id = Column(Integer, primary_key=True)
@@ -131,7 +131,6 @@ class MRIScan(BaseModel):
 
 	def get_folder(self):
 		return "{}_{}".format(self.person.name, datetime.datetime.strftime(self.date, '%Y%m%d'))
-
 
 class EEGScan(BaseModel):
 
