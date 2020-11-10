@@ -1,0 +1,12 @@
+{
+    "name": "BoldCalcAllDynamic",
+    "typename": "BatchJob",
+    "config": [
+        
+        {
+            "name": "CalcCommunityHub",
+            "typename": "PythonJob",
+            "cmd": "community_hub.py"
+        }
+    ]
+}

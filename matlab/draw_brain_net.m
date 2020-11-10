@@ -10,7 +10,9 @@ outpngname = outpath;
 %	return
 %end
 
-BrainNet_MapCfg(bnv_mesh, nodefile, edgefile, bnv_cfg, outpngname);
+% BrainNet_MapCfg(bnv_mesh, nodefile, edgefile, bnv_cfg, outpngname);
+BrainNet_MapCfg(bnv_mesh, desc, nodefile, edgefile, bnv_cfg, outpngname);  %with des = surface.nii
+
 
 close all;
 % add_title_to_pic(outpngname, desc);
