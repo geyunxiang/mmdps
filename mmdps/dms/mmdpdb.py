@@ -270,7 +270,7 @@ class SQLiteDB:
 			# alright
 			for scan in scan_list:
 				db_scan = self.session.query(tables.MRIScan).filter_by(filename = scan).one()
-				group.scans.append(db_scan)
+				group.mriscans.append(db_scan)
 				group.people.append(db_scan.person)
 			self.session.add(group)
 			self.session.commit()

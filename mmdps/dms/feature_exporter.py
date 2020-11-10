@@ -134,12 +134,12 @@ class MRIScanProcMMDPDatabaseExporter(MRIScanProcMRIScanAtlasExporter):
 				for file in in_file_list:
 					feature.append_one_slice(load_csvmat(file))
 				try:
-					self.mdb.save_dynamic_network(feature)
+					self.mdb.save_dynamic_net(feature)
 				except mongodb_database.MultipleRecordException:
 					if self.force:
 						# delete and overwrite
-						self.mdb.remove_dynamic_network(self.mriscan, self.dataconfig['dynamic']['window_length'], self.dataconfig['dynamic']['step_size'], self.atlasname)
-						self.mdb.save_dynamic_network(feature)
+						self.mdb.remove_dynamic_net(self.mriscan, self.dataconfig['dynamic']['window_length'], self.dataconfig['dynamic']['step_size'], self.atlasname)
+						self.mdb.save_dynamic_net(feature)
 					else:
 						print('!!!Already Exist: %s %s %s. Skipped' % (self.mriscan, self.atlasname, feature_name))
 			else:
@@ -166,17 +166,26 @@ class MRIScanProcMMDPDatabaseExporter(MRIScanProcMRIScanAtlasExporter):
 					continue
 				if feature_name.find('net') != -1:
 					feature = netattr.Net(load_csvmat(file), self.atlasname, self.mriscan, feature_name)
+					try:
+						self.mdb.save_static_net(feature)
+					except mongodb_database.MultipleRecordException:
+						if self.force:
+							# delete and overwrite
+							self.mdb.remove_static_net(self.mriscan, self.atlasname, feature_name)
+							self.mdb.save_static_net(feature)
+						else:
+							print('!!!Already Exist: %s %s %s. Skipped' % (self.mriscan, self.atlasname, feature_name))
 				else:
 					feature = netattr.Attr(load_csvmat(file), self.atlasname, self.mriscan, feature_name)
-				try:
-					self.mdb.save_static_feature(feature)
-				except mongodb_database.MultipleRecordException:
-					if self.force:
-						# delete and overwrite
-						self.mdb.remove_static_feature(self.mriscan, self.atlasname, feature_name)
-						self.mdb.save_static_feature(feature)
-					else:
-						print('!!!Already Exist: %s %s %s. Skipped' % (self.mriscan, self.atlasname, feature_name))
+					try:
+						self.mdb.save_static_attr(feature)
+					except mongodb_database.MultipleRecordException:
+						if self.force:
+							# delete and overwrite
+							self.mdb.remove_static_attr(self.mriscan, self.atlasname, feature_name)
+							self.mdb.save_static_attr(feature)
+						else:
+							print('!!!Already Exist: %s %s %s. Skipped' % (self.mriscan, self.atlasname, feature_name))
 
 class MRIScanProcExporter:
 	"""
