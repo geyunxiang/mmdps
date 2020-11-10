@@ -30,6 +30,7 @@ dynamic document
 }
 '''
 
+import os
 import pymongo
 import pickle
 import json
@@ -48,8 +49,8 @@ class MongoDBDatabase:
 			if dbname != None:
 				uri += '/' + dbname
 			self.client = pymongo.MongoClient(uri)
-		print(self.client)
-		with open("EEG_conf.json", 'r') as f:
+		# print(self.client)
+		with open(os.path.join(rootconfig.path.dms, 'EEG_conf.json'), 'r') as f:
 			self.EEG_conf = json.loads(f.read())
 		self.data_source = data_source
 		self.sadb = self.client[self.data_source + '_SA']
