@@ -1,9 +1,9 @@
 {
     "name": "T1Proc",
-    "MainFolder": "D:/Research/MSA/T1 work",
-    "FolderList": "D:/Research/MSA/scan_namelist.txt",
+    "MainFolder": "E:/DataProcessing/T1",
+    "FolderList": "E:/namelist.txt",
     "Second": true,
-    "SecondList": "C:/Users/geyx/Desktop/workshop/mmdps/atlas/atlas_list.txt",
+    "SecondList": "D:/workshop/mmdps/atlas/atlas_list.txt",
     "JobConfig": "configjob_atlased_t1_calcgmd.json",
     "RunMode": "Parallel"
 }

@@ -1,7 +1,7 @@
 {
     "name": "T1Proc",
-    "MainFolder": "D:/Research/MSA/T1 work",
-    "FolderList": "D:/Research/MSA/scan_namelist.txt",
+    "MainFolder": "E:/DataProcessing/T1",
+    "FolderList": "E:/namelist.txt",
     "Second": false,
     "SecondList": "",
     "JobConfig": "configjob_unatlased_t1.json",

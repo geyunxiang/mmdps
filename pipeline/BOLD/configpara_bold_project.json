@@ -4,6 +4,6 @@
     "FolderList": "E:/namelist.txt",
     "Second": true,
     "SecondList": "E:/DataProcessing/atlas_list.txt",
-    "JobConfig": "configjob_bold_main.json",
+    "JobConfig": "configjob_bold_main_zzl.json",
     "RunMode": "Parallel"
 }
