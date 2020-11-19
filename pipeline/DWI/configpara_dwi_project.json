@@ -1,7 +1,7 @@
 {
     "name": "DWIProc",
-    "MainFolder": "/media/LocalDisk_E/DataProcessing/DWI/",
-    "FolderList": "/media/LocalDisk_E/namelist.txt",
+    "MainFolder": "/mnt/hgfs/DataProcessing/DWI/",
+    "FolderList": "/mnt/hgfs/DataProcessing/scanlist_sup.txt",
     "Second": false,
     "SecondList": "",
     "JobConfig": "configjob_dwi.json",
