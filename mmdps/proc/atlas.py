@@ -101,6 +101,9 @@ class Atlas:
 		regions = [self._tickregiondict[tick] for tick in ticks]
 		return regions
 
+	def region_to_name(self, region):
+		return self.region_names[self.regions.index(region)]
+
 	def regions_to_indexes(self, regions):
 		"""Convert regions to indexes."""
 		if not hasattr(self, '_regionindexdict'):
