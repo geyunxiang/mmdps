@@ -26,13 +26,16 @@ from mmdps import rootconfig
 from mmdps.dms import mongodb_database, redis_database
 
 class MMDPDatabase:
-	def __init__(self, data_source = 'Changgung'):
+	def __init__(self, data_source = 'Changgung', username = None, password = None):
 		self.rdb = redis_database.RedisDatabase()
-		self.mdb = mongodb_database.MongoDBDatabase(data_source = data_source)
+		if username is None:
+			self.mdb = mongodb_database.MongoDBDatabase(data_source = data_source)
+		else:
+			self.mdb = mongodb_database.MongoDBDatabase(data_source = data_source, user = username, pwd = password)
 		self.sdb = SQLiteDB()
 		self.data_source = data_source
 
-	def get_feature(self, scan_list, atlasobj, feature_name):
+	def get_feature(self, scan_list, atlasobj, feature_name, comment = {}):
 		"""
 		Designed for static networks and attributes query.
 		Using scan name , altasobj/altasobj name, feature name and data source(the default is Changgung) to query data from Redis.
@@ -46,15 +49,24 @@ class MMDPDatabase:
 			return_single = True
 		if type(atlasobj) is atlas.Atlas:
 			atlasobj = atlasobj.name
+
+		if (not (type(scan_list) is list or type(scan_list) is str) or type(atlasobj) is not str or type(feature_name) is not str):
+			raise Exception("Please input in the format as follows : scan must be str or a list of str, atlas and feature must be str")
 		ret_list = []
 		for scan in scan_list:
-			res = self.rdb.get_static_value(self.data_source, scan, atlasobj, feature_name)
+			res = self.rdb.get_static_value(self.data_source, scan, atlasobj, feature_name, comment)
 			if res is not None:
 				ret_list.append(res)
 			else:
-				doc = self.mdb.query_static(scan, atlasobj, feature_name)
-				if doc.count() != 0:
-					ret_list.append(self.rdb.set_value(doc[0],self.data_source))
+				if feature_name.find('.net') == -1:
+					doc = self.mdb.total_query('SA', scan, atlasobj, feature_name, comment)
+				else:
+					doc = self.mdb.total_query('SN', scan, atlasobj, feature_name, comment)
+				doc = list(doc)
+				# doc =self.mdb.total_query('SA',scan,atlasobj,feature_name,comment)
+				# doc =self.mdb,total_query('SN',scan,atlasobj,feature_name,comment)
+				if len(doc) != 0:
+					ret_list.append(self.rdb.set_value(doc[0],self.data_source, atlasobj, feature_name))
 				else:
 					raise mongodb_database.NoRecordFoundException('No such item in redis and mongodb: ' + scan + ' ' + atlasobj + ' ' + feature_name)
 					# raise Exception('No such item in redis and mongodb: ' + scan +' '+ atlasobj +' '+ feature_name)
@@ -63,7 +75,7 @@ class MMDPDatabase:
 		else:
 			return ret_list
 
-	def get_dynamic_feature(self, scan_list, atlasobj, feature_name, window_length, step_size):
+	def get_dynamic_feature(self, scan_list, atlasobj, feature_name, window_length, step_size, comment = {}):
 		"""
 		Designed for dynamic networks and attributes query.
 		Using scan name , altasobj/altasobj name, feature name, window length, step size and data source(the default is Changgung)
@@ -77,15 +89,23 @@ class MMDPDatabase:
 			return_single = True
 		if type(atlasobj) is atlas.Atlas:
 			atlasobj = atlasobj.name
+		if (not (type(scan_list) is list or type(scan_list) is str) or type(atlasobj) is not str or type(feature_name) is not str or type(window_length) is not int or type(step_size) is not int):
+			raise Exception("Please input in the format as follows : scan must be str or a list of str, atlas and feature must be str, window length and step size must be int")
 		ret_list = []
 		for scan in scan_list:
-			res = self.rdb.get_dynamic_value(self.data_source, scan, atlasobj, feature_name, window_length, step_size)
+			res = self.rdb.get_dynamic_value(self.data_source, scan, atlasobj, feature_name, window_length, step_size, comment)
 			if res is not None:
 				ret_list.append(res)
 			else:
-				doc = self.mdb.query_dynamic(scan, atlasobj, feature_name, window_length, step_size)
-				if doc.count() != 0:
-					mat = self.rdb.set_value(doc,self.data_source)
+				# doc = self.mdb.total_query('DA',scan, atlasobj, feature_name, comment, window_length, step_size)
+				# doc = self.mdb.total_query('DN',scan, atlasobj, feature_name, comment, window_length, step_size)
+				if feature_name.find('.net') == -1:
+					doc = self.mdb.total_query('DA', scan, atlasobj, feature_name, comment, window_length, step_size)
+				else:
+					doc = self.mdb.total_query('DN', scan, atlasobj, feature_name, comment, window_length, step_size)
+				doc = list(doc)
+				if len(doc) != 0:
+					mat = self.rdb.set_value(doc,self.data_source, atlasobj, feature_name, window_length, step_size)
 					ret_list.append(mat)
 				else:
 					raise mongodb_database.NoRecordFoundException('No such item in redis or mongodb: ' + scan + ' ' + atlasobj + ' ' + feature_name + ' ' + str(window_length) + ' ' + str(step_size))
@@ -106,6 +126,8 @@ class MMDPDatabase:
 		"""
 		Store a list to redis as cache with cache_key
 		"""
+		if (type(cache_key) is not str or not all((type(x) is int or type(x) is float) for x in value)):
+			raise Exception("Please input in the format as follows : key must be str, value must be a list of float or int")
 		self.rdb.set_list_all_cache(cache_key, value)
 
 	def append_cache_list(self, cache_key, value):
@@ -113,6 +135,8 @@ class MMDPDatabase:
 		Append value to a list in redis with cache_key.
 		If the given key is empty in redis, a new list will be created.
 		"""
+		if (type(cache_key) is not str or not (type(value) is int or type(value) is float)):
+			raise Exception("Please input in the format as follows : key mast be str, value must be int or float")
 		self.rdb.set_list_cache(cache_key, value)
 
 	def get_cache_list(self, cache_key):
@@ -244,12 +268,18 @@ class SQLiteDB:
 			self.session.query(tables.Group).filter_by(name = group_name).one()
 		except NoResultFound:
 			# alright
-			for scan in scan_list:
-				db_scan = self.session.query(tables.MRIScan).filter_by(filename = scan).one()
-				group.scans.append(db_scan)
-				group.people.append(db_scan.person)
-			self.session.add(group)
-			self.session.commit()
+			try:
+				for scan in scan_list:
+					db_scan = self.session.query(tables.MRIScan).filter_by(filename = scan).one()
+					group.mriscans.append(db_scan)
+					group.people.append(db_scan.person)
+				self.session.add(group)
+				self.session.commit()
+			except NoResultFound as e:
+				# no record for one scan
+				print('Error creating new group %s, scan: %s not found.' % (group_name, scan))
+				print('Error message: ', e)
+				exit()
 			return
 		except MultipleResultsFound:
 			# more than one record found

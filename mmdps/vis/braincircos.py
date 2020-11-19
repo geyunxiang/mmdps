@@ -288,7 +288,12 @@ class CircosLink:
 								f.write('\n')
 
 class CircosValue:
-	def __init__(self, attr, valuerange = None, cmap_str = None):
+	def __init__(self, attr, valuerange = None, cmap_str = None, colormap = None):
+		"""
+		Input colormap as a dict mapping values in attr.data to color etc (10, 20, 30)
+		use matplotlib.colors.to_rgb('crimson') to get color tuple.
+		See https://matplotlib.org/3.1.1/gallery/color/named_colors.html#sphx-glr-gallery-color-named-colors-py
+		"""
 		self.brainparts = attr.atlasobj.get_brainparts()
 		if valuerange is None:
 			self.valuerange = (np.min(attr.data), np.max(attr.data))
@@ -298,6 +303,7 @@ class CircosValue:
 			self.set_cmap(cmap_str)
 		else:
 			self.cmap = cm.Reds
+		self.colormap = colormap
 		self.chrdict = self.brainparts.chrdict
 		self.attr = attr
 		self.data = self.attr.data
@@ -318,9 +324,12 @@ class CircosValue:
 
 	def get_color(self, chro, idx):
 		value = self.get_value(chro, idx)
-		value = self.map_value(value)
-		color = self.cmap(value, bytes=True)
-		return color
+		if self.colormap is None:
+			value = self.map_value(value)
+			color = self.cmap(value, bytes=True)
+			return color
+		else:
+			return tuple(list(channel*255 for channel in self.colormap[value]))
 
 	def map_value(self, value):
 		a = self.valuerange[0]

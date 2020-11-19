@@ -403,3 +403,31 @@ def attr_comparisons(attr_list_A, attr_list_B, comparison_method, correction_met
 	if correction_method is not None:
 		_, p_attr.data = correction_method(p_attr.data)
 	return stat_attr, p_attr
+
+def FC_values(network):
+	"""
+	Get FC values in a network.
+	Return a list of dict, whose keys are connection ticks ('L1-L2') and FC value (as %1.4f)
+	"""
+	atlasobj = network.atlasobj
+	ret = []
+	for xidx in range(atlasobj.count):
+		for yidx in range(xidx + 1, atlasobj.count):
+			if network.data[xidx, yidx] != 0:
+				ret.append(dict(connection = '%s-%s' % (atlasobj.ticks[xidx], atlasobj.ticks[yidx]), FC = '%1.4f' % (network.data[xidx, yidx])))
+	return ret
+
+def FC_count(FC_list):
+	"""
+	Input a list of strings representing FC connection ticks ('L1-L2')
+	Return number of within hemisphere FC and cross hemisphere FC
+	"""
+	within_hemisphere_FC_count = 0
+	cross_hemisphere_FC_count = 0
+	for FC in FC_list:
+		ticks = FC.split('-')
+		if ticks[0][0] == ticks[1][0]:
+			within_hemisphere_FC_count += 1
+		if ticks[0][0] != ticks[1][0]:
+			cross_hemisphere_FC_count += 1
+	return within_hemisphere_FC_count, cross_hemisphere_FC_count

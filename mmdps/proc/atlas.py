@@ -16,6 +16,7 @@ from mmdps.vis.bnv import BNVNode
 import nibabel as nib
 
 atlas_list = ['brodmann_lr', 'brodmann_lrce', 'aal', 'aicha', 'bnatlas']
+atlas_list_extended = ['brodmann_lr', 'brodmann_lrce', 'aal', 'aal2', 'aicha', 'bnatlas', 'aal3', 'JHU_WM']
 
 class Atlas:
 	"""
@@ -43,6 +44,8 @@ class Atlas:
 		self.regions = self.dd['regions']
 		# the ticks list, correspond to regions
 		self.ticks = self.dd['ticks']
+		# the region name list
+		self.region_names = self.dd['region_names']
 		# sub_networks
 		self.sensorimotor_ticks = self.dd.get('sensory motor ticks', None)
 		# the plotindexes list, n means it is the nth to be ploted.
@@ -279,6 +282,9 @@ aal = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aal.json')))
 aal2 = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aal2.json')))
 aicha = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aicha.json')))
 bnatlas = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'bnatlas.json')))
+aal3 = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aal3.json')))
+JHU_WM = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'JHU_WM.json')))
+LPBA40 = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'lpba40.json')))
 
 def get(atlasname, suppress = True):
 	if not suppress:
@@ -295,6 +301,12 @@ def get(atlasname, suppress = True):
 		return aicha
 	elif atlasname == 'bnatlas':
 		return bnatlas
+	elif atlasname == 'aal3':
+		return aal3
+	elif atlasname == 'JHU_WM':
+		return JHU_WM
+	elif atlasname == 'LPBA40':
+		return LPBA40
 	else:
 		print('Unknown atlasname = %s' % atlasname)
 		raise Exception()

@@ -65,40 +65,43 @@ class DatabaseGroupManager:
 	"""
 	This is an implementation of group manager using mmdpdb
 	"""
-	def __init__(self, db = mmdpdb.MMDPDatabase()):
+	def __init__(self, db = mmdpdb.SQLiteDB()):
 		self.db = db
-		self.session = self.db.new_session()
+		# self.session = self.db.new_session()
 
 	def getScansInGroup(self, groupName):
-		group = self.session.query(tables.Group).filter_by(name = groupName).one()
+		session = self.db.new_session()
+		group = session.query(tables.Group).filter_by(name = groupName).one()
 		return group.scans
 
 	def getNamesInGroup(self, groupName):
-		group = self.session.query(tables.Group).filter_by(name = groupName).one()
+		session = self.db.new_session()
+		group = session.query(tables.Group).filter_by(name = groupName).one()
 		return group.people
 
 	def getAllGroups(self):
 		"""
 		Return a list of all groups in this database
 		"""
-		return self.session.query(tables.Group).all()
+		return self.db.new_session().query(tables.Group).all()
 
 	def newGroupByScans(self, groupName, scanList, desc = None):
 		"""
 		Initialize a group by a list of scans
 		"""
+		session = self.db.new_session()
 		group = tables.Group(name = groupName, description = desc)
 		# check if group already exist
 		try:
-			self.session.query(tables.Group).filter_by(name = groupName).one()
+			session.query(tables.Group).filter_by(name = groupName).one()
 		except sqlalchemy.orm.exc.NoResultFound:
 			# alright
 			for scan in scanList:
-				db_scan = self.session.query(tables.MRIScan).filter_by(filename = scan).one()
+				db_scan = session.query(tables.MRIScan).filter_by(filename = scan).one()
 				group.scans.append(db_scan)
 				group.people.append(db_scan.person)
-			self.session.add(group)
-			self.session.commit()
+			session.add(group)
+			session.commit()
 			return
 		except sqlalchemy.orm.exc.MultipleResultsFound:
 			# more than one record found
@@ -112,19 +115,20 @@ class DatabaseGroupManager:
 		scanNum - which scan (first/second/etc)
 		accumulateScan - whether keep former scans in this group
 		"""
+		session = self.db.new_session()
 		group = tables.Group(name = groupName, description = desc)
 		try:
-			self.session.query(tables.Group).filter_by(name = groupName).one()
+			session.query(tables.Group).filter_by(name = groupName).one()
 		except sqlalchemy.orm.exc.NoResultFound:
 			for name in nameList:
-				db_person = self.session.query(tables.Person).filter_by(name = name).one()
+				db_person = session.query(tables.Person).filter_by(name = name).one()
 				group.people.append(db_person)
 				if accumulateScan:
 					group.scans += sorted(db_person.mriscans, key = lambda x: x.filename)[:scanNum]
 				else:
 					group.scans.append(sorted(db_person.mriscans, key = lambda x: x.filename)[scanNum - 1])
-			self.session.add(group)
-			self.session.commit()
+			session.add(group)
+			session.commit()
 			return
 		except sqlalchemy.orm.exc.MultipleResultsFound:
 			# more than one record found
@@ -136,35 +140,37 @@ class DatabaseGroupManager:
 		"""
 		Initialize a group by giving both name and scans
 		"""
+		session = self.db.new_session()
 		group = tables.Group(name = groupName, description = desc)
 		for name in nameList:
-			db_person = self.session.query(tables.Person).filter_by(name = name).one()
+			db_person = session.query(tables.Person).filter_by(name = name).one()
 			group.people.append(db_person)
 		for scan in scanList:
-			db_scan = self.session.query(tables.MRIScan).filter_by(filename = scan).one()
+			db_scan = session.query(tables.MRIScan).filter_by(filename = scan).one()
 			group.scans.append(db_scan)
-		self.session.add(group)
-		self.commit()
+		session.add(group)
+		session.commit()
 
 	def deleteGroupByName(self, groupName):
-		groupList = self.session.query(tables.Group).filter_by(name = groupName).all()
+		session = self.db.new_session()
+		groupList = session.query(tables.Group).filter_by(name = groupName).all()
 		# if group is None:
 		# 	raise Exception("%s group does not exist!" % groupName)
 		for group in groupList:
-			self.session.delete(group)
-		self.session.commit()
+			session.delete(group)
+		session.commit()
 
 def genDefaultScan(loader, manager, totalScanNum = 2):
-		"""
-		Generate scanDict from nameDict.
-		Specify total number of scans related to one person in totalScanNum
-		After this function, manager.scanDict will contain <totalScanNum> keys for each group
-			the naming of keys follows this rule: <groupName><totalScanNum> (control1 etc)
-		loader can be a basic loader
-		"""
-		for key, value in manager.nameDict.items():
-			for scanIdx in range(totalScanNum):
-				manager.scanDict[key+'%d' % (scanIdx + 1)] = loader.generate_mriscans(value, num_scan = scanIdx+1)
+	"""
+	Generate scanDict from nameDict.
+	Specify total number of scans related to one person in totalScanNum
+	After this function, manager.scanDict will contain <totalScanNum> keys for each group
+		the naming of keys follows this rule: <groupName><totalScanNum> (control1 etc)
+	loader can be a basic loader
+	"""
+	for key, value in manager.nameDict.items():
+		for scanIdx in range(totalScanNum):
+			manager.scanDict[key+'%d' % (scanIdx + 1)] = loader.generate_mriscans(value, num_scan = scanIdx+1)
 
 def getResearchStudy(alias):
 	"""

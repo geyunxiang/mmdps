@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 # from ..proc import atlas
 # from ..util import path
-from mmdps.util import path
+from mmdps.util import path, stats_utils
 
 class LinePlot:
 	"""Line plot to plot attrs."""
@@ -170,6 +170,7 @@ class LinePlot:
 		plt.grid(True)
 		plt.legend()
 		plt.title(self.title, fontsize=20)
+		path.makedirs_file(self.outfilepath)
 		plt.savefig(self.outfilepath, dpi=100)
 		plt.close()
 		if stat_list is not None:
@@ -178,13 +179,12 @@ class LinePlot:
 
 class DynamicLinePlot:
 	"""
-	This class is used to plot the time series of dynamic features.
+	This class is used to plot the time series of dynamic features at one region.
 	"""
 	def __init__(self, attrs, regionIdx, stepSize, title, outfilepath):
 		"""
-		Attrs should be a dict of lists of attrs
-		Only attrs related to region is plotted
-		The key of attrs are taken as labels
+		Attrs should be a list of DynamicAttr
+		Only attrs related to regionIdx is plotted
 		"""
 		self.attrs = attrs
 		self.regionIdx = regionIdx
@@ -194,14 +194,15 @@ class DynamicLinePlot:
 
 	def plot(self):
 		plt.figure(figsize = (20, 6))
-		for key in self.attrs:
-			self.count = len(self.attrs[key])
-			plt.plot(range(1, self.count+1), [attr.data[self.regionIdx] for attr in self.attrs[key]], '.-', label = key)
+		for attr in self.attrs:
+			self.count = attr.data.shape[1]
+			plt.plot(range(1, self.count+1), attr.data[self.regionIdx, :], '.-', label = attr.scan)
 		plt.xlim([0, self.count+1])
 		plt.xticks(range(1, self.count+1), range(1, self.count*self.stepSize, self.stepSize))
 		plt.grid(True)
 		plt.legend()
 		plt.title(self.title, fontsize = 20)
+		path.makedirs_file(self.outfilepath)
 		plt.savefig(self.outfilepath, dpi = 100)
 		plt.close()
 
@@ -210,11 +211,11 @@ class CorrPlot:
 	This class is used to generate correlation, usually correlation between FC/graph
 	attributes and clinical scores
 	"""
-	def __init__(self, xvec, yvec, xlabel, ylabel, title, outfile):
+	def __init__(self, xvec, yvec, xlabel, ylabel, title, outfilepath):
 		self.xvec = xvec
 		self.yvec = yvec
 		self.title = title
-		self.outfile = outfile
+		self.outfilepath = outfilepath
 		self.xlabel = xlabel
 		self.ylabel = ylabel
 		self.labelsize = None
@@ -250,13 +251,18 @@ class CorrPlot:
 			plt.title(self.title)
 		plt.xlabel(self.xlabel)
 		plt.ylabel(self.ylabel)
-		path.makedirs_file(self.outfile)
-		fig.savefig(self.outfile, dpi = 300)
+		path.makedirs_file(self.outfilepath)
+		fig.savefig(self.outfilepath, dpi = 300)
 		plt.close()
 
-def plot_correlation(xvec, yvec, xlabel, ylabel, title, outfile):
-	plotter = CorrPlot(xvec, yvec, xlabel, ylabel, title, outfile)
+def plot_correlation(xvec, yvec, xlabel, ylabel, title, outfilepath):
+	plotter = CorrPlot(xvec, yvec, xlabel, ylabel, title, outfilepath)
 	plotter.plot()
+
+def plot_correlation_if_significant(xvec, yvec, xlabel, ylabel, title, outfilepath):
+	pr, prp = stats_utils.correlation_Pearson(xvec, yvec)
+	if prp < 0.05:
+		plot_correlation(xvec, yvec, xlabel, ylabel, title, outfilepath)
 
 def plot_attr_lines(attrs, title, outfilepath, sig_positions = None, stat_list = None, adjust_method = None):
 	plotter = LinePlot(attrs, title, outfilepath)
