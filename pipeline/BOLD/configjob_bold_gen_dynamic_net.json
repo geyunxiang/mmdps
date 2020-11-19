@@ -1,0 +1,11 @@
+{
+    "name": "BoldGenDynamicNet",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "GenDynamicNet",
+            "typename": "PythonJob",
+            "cmd": "bold_gen_dynamic_net.py"
+        }
+    ]
+}
