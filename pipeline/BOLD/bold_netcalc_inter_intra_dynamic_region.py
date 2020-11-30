@@ -200,28 +200,28 @@ class IntraAttrCalcDynamic:
 
 
 def inter_calc_dynamic():
-	print(os.getcwd())
+	# print(os.getcwd())
 	corrcoef_path = os.path.join(os.getcwd(),'bold_net')
 	nii_path = os.path.join(path.curparent(), 'pBOLD.nii')
 	outfolder = os.path.join(os.getcwd(), OUTFOLDER_INTER)
 	json_path = path.fullfile("inter_attr_dynamic.json")
-	print(outfolder)
-	print(corrcoef_path)
+	# print(outfolder)
+	# print(corrcoef_path)
 	if not os.path.isdir(outfolder):
 		os.mkdir(outfolder)
 	inter_ac = InterAttrCalcDynamic(nii_path,corrcoef_path,outfolder,json_path)
 	inter_ac.calc()
 
 def intra_calc_dynamic():
-	print(os.getcwd())
+	# print(os.getcwd())
 	atlasobj = path.curatlas()
 	volumename = '3mm'
 
 	nii_path = os.path.join(path.curparent(), 'pBOLD.nii')
 	outfolder = os.path.join(os.getcwd(), OUTFOLDER_INTRA)
 	json_path = path.fullfile("intra_attr_dynamic.json")
-	print(nii_path)
-	print(outfolder)
+	# print(nii_path)
+	# print(outfolder)
 	if not os.path.isdir(outfolder):
 		os.mkdir(outfolder)
 	intra_ac = IntraAttrCalcDynamic(nii_path,atlasobj,outfolder,json_path)
