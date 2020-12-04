@@ -6,6 +6,7 @@ import csv
 from collections import OrderedDict
 import nibabel as nib
 import numpy as np
+import scipy.io as scio
 
 from mmdps.util import path
 
@@ -49,6 +50,17 @@ def load_nii(niifile):
     img = nib.load(niifile)
     canonical_img = nib.as_closest_canonical(img)
     return canonical_img
+
+def load_mat(matfile):
+    """
+    Load MATLAB .mat file
+    return a dict
+    """
+    dic = scio.loadmat(matfile)
+    dic.pop('__header__')
+    dic.pop('__version__')
+    dic.pop('__globals__')
+    return dic
 
 def load_csvmat(matfile, delimiter = ','):
     """

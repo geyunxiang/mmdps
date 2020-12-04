@@ -12,7 +12,7 @@ import os
 import shutil
 
 from mmdps import rootconfig
-from mmdps.dms import data_customs, dbgen, mmdpdb
+from mmdps.dms import data_customs, mmdpdb
 from mmdps.util import clock
 
 def copy_dicom_from_CD(scan_folder_name):
