@@ -115,3 +115,14 @@ def load_csv_to_list(outfile):
         for row in reader:
             ret.append(row)
     return ret
+
+def load_csv_to_dict(outfile, key_column):
+    """
+    Load csv file as a dict. Specify which column value should be used as key
+    """
+    ret = dict()
+    with open(outfile, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            ret[row[key_column]] = row
+    return ret

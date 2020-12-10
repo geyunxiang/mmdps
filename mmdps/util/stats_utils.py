@@ -143,23 +143,32 @@ def filter_sigdiff_connections_FDR(netListA, netListB, sigLevel = 0.05):
 	print('SigDiff connections: %d. Discover rate: %1.4f with sigLevel: %1.4f' % (len(ret), float(len(ret))/totalTests, sigLevel))
 	return ret
 
-def sigdiff_connections_after_treatment(netListA, netListB, sigLevel = 0.05):
+def sigdiff_connections_after_treatment(netListA, netListB, sigLevel = 0.05, method = 'ttest'):
 	"""
 	This function takes in two lists of networks, perform paired 1-sample t-test
 	on each connections, and take out those that are significant.
 	This function is used for the first and second scan of the same group to identify
 	difference in FC after treatment.
 	A connection is represented by a 4-element-tuple of idx, t-val and p-val
+	method = 'ttest' or 'nonparametric'
 	"""
 	ret = []
 	atlasobj = netListA[0].atlasobj
 	totalTests = 0
 	for xidx in range(atlasobj.count):
 		for yidx in range(xidx + 1, atlasobj.count):
-			# perform t-test
-			t, p = scipy.stats.ttest_rel(
-				[a.data[xidx, yidx] for a in netListA], 
-				[b.data[xidx, yidx] for b in netListB])
+			if method == 'ttest':
+				# perform t-test
+				t, p = scipy.stats.ttest_rel(
+					[a.data[xidx, yidx] for a in netListA], 
+					[b.data[xidx, yidx] for b in netListB])
+			elif method == 'nonparametric':
+				# perform Wilcoxon
+				t, p = scipy.stats.wilcoxon(
+					[a.data[xidx, yidx] for a in netListA], 
+					[b.data[xidx, yidx] for b in netListB])
+			else:
+				raise Exception('Unknown comparison method: %s' % method)
 			totalTests += 1
 			if p < sigLevel:
 				ret.append((xidx, yidx, t, p))

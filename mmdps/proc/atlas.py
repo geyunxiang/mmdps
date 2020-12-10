@@ -160,12 +160,14 @@ class Atlas:
 		subatlasobj.bnvnode = self.bnvnode.copy_sub(subindexes)
 		return subatlasobj
 
-	def adjust_ticks(self):
+	def adjust_ticks(self, ticks = None):
 		"""Adjust ticks according to plotindexes."""
+		if ticks is None:
+			ticks = self.ticks
 		adjticks = [None] * self.count
 		for i in range(self.count):
 			realpos = self.plotindexes[i]
-			adjticks[i] = self.ticks[realpos]
+			adjticks[i] = ticks[realpos]
 		return adjticks
 
 	def adjust_vec(self, vec):
