@@ -66,15 +66,24 @@ class DicomInfo:
 		try:
 			d['Birth'] = date_only_str(datetime.datetime.strptime(self.plan.PatientsBirthDate, '%Y%m%d'))
 		except:
-			pass
+			try:
+				d['Birth'] = date_only_str(datetime.datetime.strptime(self.plan.PatientBirthDate, '%Y%m%d'))
+			except:
+				pass
 		try:
 			d['Gender'] = str(self.plan.PatientsSex)
 		except:
-			pass
+			try:
+				d['Gender'] = str(self.plan.PatientSex)
+			except:
+				pass
 		try:
 			d['Weight'] = int(self.plan.PatientsWeight)
 		except:
-			pass
+			try:
+				d['Weight'] = int(self.plan.PatientWeight)
+			except:
+				pass
 		try:
 			d['Age'] = parse_date_space_time(self.studydate()).year - parse_date_only(d['Birth']).year
 		except:
@@ -82,7 +91,10 @@ class DicomInfo:
 		try:
 			d['AgeRaw'] = int(self.plan.PatientsAge[:-1])
 		except:
-			pass
+			try:
+				d['AgeRaw'] = int(self.plan.PatientsAge[:-1])
+			except:
+				pass
 		return d
 
 	def machine(self):
