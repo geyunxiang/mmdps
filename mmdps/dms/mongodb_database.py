@@ -38,10 +38,38 @@ import scipy.io as scio
 from mmdps.proc import atlas, netattr
 from mmdps import rootconfig
 
+service_id = 'MMDPS_MMDPDB'
+MAGIC_USERNAME_KEY = 'MMDPDB_USER_NAME'
+
+def store_password(username, password):
+	try:
+		import keyring
+		# the service is just a namespace for your app
+		keyring.set_password(service_id, username, password)
+		keyring.set_password(service_id, MAGIC_USERNAME_KEY, username)
+	except ModuleNotFoundError:
+		print('Module keyring not found. Cannot store password')
+		return
+
+def get_password(username = None):
+	try:
+		import keyring
+		if username is not None:
+			return username, keyring.get_password(service_id, username)
+		else:
+			username = keyring.get_password(service_id, MAGIC_USERNAME_KEY)
+			return username, keyring.get_password(service_id, username)
+	except ModuleNotFoundError:
+		print('Module keyring not found. Cannot restore password')
+		return None, None
+
 class MongoDBDatabase:
 
 	def __init__(self, data_source, host=rootconfig.dms.mongo_host, user=None, pwd=None, dbname=None, port=27017):
 		""" Connect to mongo server """
+		self.client = pymongo.MongoClient(host, port)
+		if user == None and pwd == None:
+			user, pwd = get_password()
 		if user == None and pwd == None:
 			self.client = pymongo.MongoClient(host, port)
 		else:
@@ -49,6 +77,7 @@ class MongoDBDatabase:
 			if dbname != None:
 				uri += '/' + dbname
 			self.client = pymongo.MongoClient(uri)
+		self.authenticate(host, port, user, pwd)
 		# print(self.client)
 		with open(os.path.join(rootconfig.path.dms, "EEG_conf.json"), 'r') as f:
 			self.EEG_conf = json.loads(f.read())
@@ -60,6 +89,21 @@ class MongoDBDatabase:
 		self.EEG_db = self.client[self.data_source + '_EEG']
 		self.temp_db = self.client[self.data_source + '_TEMP']
 		self.temp_collection = self.temp_db['Temp-collection']
+
+	def authenticate(self, host, port, user, pwd):
+		from mmdps.gui import auth_pop_window
+		while True:
+			try:
+				self.client.list_databases()
+				store_password(user, pwd)
+				return
+			except pymongo.errors.OperationFailure:
+				# need authentication
+				auth_app = auth_pop_window.MainApplication(True)
+				user = auth_app.username()
+				pwd = auth_app.password()
+				uri = 'mongodb://%s:%s@%s:%s' % (user, pwd, host, str(port))
+				self.client = pymongo.MongoClient(uri)
 
 	def query(self, dbname, colname, filter_query):
 		db = self.client[dbname]
@@ -359,4 +403,6 @@ class NoRecordFoundException(Exception):
 
 
 if __name__ == '__main__':
-	pass
+	mdb = MongoDBDatabase('Changgung')
+	mdb.client.list_databases()
+	
