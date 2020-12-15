@@ -160,7 +160,7 @@ class CircosConfigFile:
 		self.plotconfs = []
 		self.linkconfs = []
 		self.label_size = None
-		self.linkThickness = 10 # default link thickness
+		self.linkThickness = 15 # default link thickness
 
 	def add_plot(self, file):
 		self.plotconfs.append(file)
