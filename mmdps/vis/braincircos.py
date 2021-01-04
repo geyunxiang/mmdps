@@ -16,11 +16,18 @@ def color_to_str(color):
 	return 'color=({},{},{})'.format(color[0], color[1], color[2])
 
 class Chromosome:
+	"""
+	A Chromosome is a lobe in the brain, such as Frontal, Parietal etc.
+	It contains a list of brain regions, whose names are stored at self.ticks.
+	The actual index in data is stored at self.indexes.
+	The data order, as well as the plot order is the same as in self.ticks.
+	"""
 	def __init__(self, atlasobj, chrname, configdict):
 		self.atlasobj = atlasobj
 		self.configdict = configdict
 		self.chrname = chrname
 		self.name = configdict['name']
+		self.ticks = configdict['ticks']
 		self.indexes = None
 		self.bandtuples = None
 		self.count = 0
@@ -148,6 +155,18 @@ class CircosConfigFile:
 	r0 = {r0}
 	</plot>
 	"""
+	DirectedPlotFmt = """
+	<plot>
+	type = scatter
+	file = {file}
+	glyph = triangle
+	glyph_size = 48p
+	min = 0
+	max = 1
+	r1 = 0.94r
+	r0 = 0.94r
+	</plot>
+	"""
 	LinkFmt = """
 	<link>
 	file = {file}
@@ -158,6 +177,7 @@ class CircosConfigFile:
 	"""
 	def __init__(self):
 		self.plotconfs = []
+		self.direction_confs = []
 		self.linkconfs = []
 		self.label_size = None
 		self.linkThickness = 15 # default link thickness
@@ -167,6 +187,9 @@ class CircosConfigFile:
 
 	def add_link(self, file):
 		self.linkconfs.append(file)
+
+	def add_direction(self, file):
+		self.direction_confs.append(file)
 
 	def build_circos_conf(self, plotstrs, linkstrs):
 		self.circos_template = load_rawtext(os.path.join(CircosConfigFolder, 'circos_template.conf'))
@@ -199,6 +222,9 @@ class CircosConfigFile:
 			r1f = 0.99 - iplot * plotwidth
 			r0f = r1f - 0.04
 			plotstr = self.PlotFmt.format(file=plotconf, r1=rfmt.format(r1f), r0=rfmt.format(r0f))
+			plotstrs.append(plotstr)
+		for iplot, direction_conf in enumerate(self.direction_confs):
+			plotstr = self.DirectedPlotFmt.format(file=direction_conf)
 			plotstrs.append(plotstr)
 		nplot = len(self.plotconfs)
 		linkstrs = []
@@ -241,6 +267,7 @@ class CircosLink:
 			return None
 		else:
 			colorstr = color_to_str(color)
+			# python3 starred expression: expand iterables to positional arguments
 			linkline = linkfmt.format(*chrA.bandtuples[idxA], *chrB.bandtuples[idxB], colorstr)
 			return linkline
 
@@ -286,6 +313,35 @@ class CircosLink:
 							if line:
 								f.write(line)
 								f.write('\n')
+
+class CircosDirectedLink(CircosLink):
+	def get_mask(self):
+		mask = np.zeros(self.net.data.shape, dtype=bool)
+		threshold = self.threshold
+		mask[np.abs(self.net.data) > threshold] = True
+		return mask
+
+	def write(self, linkpath, endpath):
+		link_file = open(linkpath, 'w')
+		end_file = open(endpath, 'w')
+		end_node_list = []
+		self.mask = self.get_mask()
+		for chrA in self.chrdict['all']:
+			for idxA in range(chrA.count):
+				for chrB in self.chrdict['all']:
+					for idxB in range(chrB.count):
+						line = self.get_line(chrA, idxA, chrB, idxB)
+						if line:
+							link_file.write(line)
+							link_file.write('\n')
+							end_node = ' '.join(line.split(' ')[3:6])
+							if end_node in end_node_list:
+								continue
+							# link to
+							end_node_list.append(end_node)
+							end_file.write(' '.join(line.split(' ')[3:6]) + ' 0 ' + line.split(' ')[-1] + '\n')
+		link_file.close()
+		end_file.close()
 
 class CircosValue:
 	def __init__(self, attr, valuerange = None, cmap_str = None, colormap = None):
@@ -365,6 +421,7 @@ class CircosPlotBuilder:
 		path.makedirs(self.circosfolder)
 		self.circosConfigFile = CircosConfigFile()
 		self.circoslinks = []
+		self.circos_directed_links = []
 		self.circosvalues = []
 		self.customizedSizes = False
 		self.radius = None
@@ -400,6 +457,9 @@ class CircosPlotBuilder:
 
 	def add_circoslink(self, circoslink):
 		self.circoslinks.append(circoslink)
+
+	def add_circos_directed_link(self, circos_directed_link):
+		self.circos_directed_links.append(circos_directed_link)
 
 	def get_colorlist(self):
 		return ['grey'] * self.atlasobj.count
@@ -437,6 +497,12 @@ class CircosPlotBuilder:
 			currentFile = 'net{}.link.txt'.format(i)
 			self.circosConfigFile.add_link(currentFile)
 			circoslink.write(self.fullpath(currentFile))
+		for i, circoslink in enumerate(self.circos_directed_links):
+			currentFile = 'net{}.link.txt'.format(i)
+			currentEnd = 'linkend{}.txt'.format(i)
+			self.circosConfigFile.add_link(currentFile)
+			self.circosConfigFile.add_direction(currentEnd)
+			circoslink.write(self.fullpath(currentFile), self.fullpath(currentEnd))
 		self.circosConfigFile.write(self.fullpath())
 		if self.customizedSizes:
 			self.circosConfigFile.customized_rewrite(self.fullpath())

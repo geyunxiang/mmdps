@@ -160,6 +160,30 @@ class Atlas:
 		subatlasobj.bnvnode = self.bnvnode.copy_sub(subindexes)
 		return subatlasobj
 
+	def iterate_idx(self):
+		for xidx in range(self.count):
+			for yidx in range(xidx + 1, self.count):
+				yield xidx, yidx
+
+	def iterate_tick(self):
+		for xidx in range(self.count):
+			for yidx in range(xidx + 1, self.count):
+				yield self.ticks[xidx], self.ticks[yidx]
+
+	def iterate_idx_all(self):
+		for xidx in range(self.count):
+			for yidx in range(self.count):
+				if xidx == yidx:
+					continue
+				yield xidx, yidx
+
+	def iterate_tick_all(self):
+		for xidx in range(self.count):
+			for yidx in range(self.count):
+				if xidx == yidx:
+					continue
+				yield self.ticks[xidx], self.ticks[yidx]
+
 	def adjust_ticks(self, ticks = None):
 		"""Adjust ticks according to plotindexes."""
 		if ticks is None:
@@ -292,6 +316,8 @@ JHU_WM = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'JHU_WM.js
 LPBA40 = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'lpba40.json')))
 
 def get(atlasname, suppress = True):
+	if type(atlasname) is Atlas:
+		return atlasname
 	if not suppress:
 		print('You are using atlas.get() to obtain an atlasobj\nYou can use mmdps.proc.atlas.%s directly. \nfrom mmdps.proc import atlas\natlas.%s' % (atlasname, atlasname))
 	if atlasname == 'brodmann_lr':

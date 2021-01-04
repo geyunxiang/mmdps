@@ -137,6 +137,57 @@ class DynamicAttr(Mat):
 		tickIdx = self.atlasobj.ticks.index(tick)
 		return self.data[tickIdx, :]
 
+class Connection:
+	"""
+	Connection represents a link/edge in a network.
+	It contains xidx, yidx, xtick, ytick in atlasobj, and value
+	During initialization, only need to provide x, y, and value
+	Connection will judge the datatype of x, y to assign them to 
+	idx or ticks.
+	"""
+	def __init__(self, atlasobj, x, y, value = 0, directional = False):
+		self.atlasobj = atlasobj
+		if type(x) is str and type(y) is str:
+			# tick input
+			self.xtick = x
+			self.ytick = y
+			self.xidx = atlasobj.ticks.index(x)
+			self.yidx = atlasobj.ticks.index(y)
+		elif type(x) is int and type(y) is int:
+			# idx input
+			self.xidx = x
+			self.yidx = y
+			self.xtick = atlasobj.ticks[x]
+			self.ytick = atlasobj.ticks[y]
+		else:
+			raise ValueError('Input tick as str or idx as int during Connection construction')
+		self.value = value
+		self.directional = directional
+
+	def invert(self):
+		"""
+		invert the direction. Swap x and y
+		"""
+		return Connection(self.atlasobj, self.yidx, self.xidx, self.value, self.directional)
+
+	def __str__(self):
+		if self.directional:
+			line = '%s-%s directional val = %1.3f' % (self.xtick, self.ytick, self.value)
+		else:
+			line = '%s-%s val = %1.3f' % (self.xtick, self.ytick, self.value)
+		return line
+
+	def __eq__(self, other):
+		if not isinstance(other, self.__class__):
+			return False
+		if self.directional and self.xidx == other.xidx and self.yidx == other.yidx:
+			return True
+		elif not self.directional and self.xidx == other.xidx and self.yidx == other.yidx:
+			return True
+		elif not self.directional and self.xidx == other.yidx and self.yidx == other.xidx:
+			return True
+		return False
+
 class Net(Mat):
 	"""
 	Net is a network. It is a two dimensional sqaure symmetric matrix.
@@ -150,6 +201,23 @@ class Net(Mat):
 		The scan can be any string that can be useful.
 		""" 
 		super().__init__(data, atlasobj, scan, feature_name)
+
+	def rescale_data(self):
+		"""
+		Re-scale data to valuerange (-1, 1)
+		"""
+		max_value = np.max(self.data)
+		min_value = np.abs(np.min(self.data))
+		self.data[self.data>0] /= max_value
+		self.data[self.data<0] /= min_value
+
+	def iterate(self):
+		"""
+		Iterate over all connection in this network
+		"""
+		for xidx in range(self.atlasobj.count):
+			for yidx in range(xidx + 1, self.atlasobj.count):
+				yield Connection(self.atlasobj, xidx, yidx, self.data[xidx, yidx])
 
 	def uniqueValueAsList(self, selectedAreas = None):
 		"""
@@ -187,6 +255,19 @@ class Net(Mat):
 				counter += 1
 		self.data += np.transpose(self.data)
 		self.data += np.eye(n)
+
+	def set_data_from_connections(self, conn_list, unified_value = None):
+		"""
+		This function takes a list of Connections and store them in a symmetric matrix
+		Specify unified_value to override connection value
+		"""
+		for conn in conn_list:
+			if unified_value is not None:
+				self.data[conn.xidx, conn.yidx] = unified_value
+				self.data[conn.yidx, conn.xidx] = unified_value
+			else:
+				self.data[conn.xidx, conn.yidx] = conn.value
+				self.data[conn.yidx, conn.xidx] = conn.value
 
 	def copy(self):
 		"""Copy the net."""
@@ -320,6 +401,26 @@ class DynamicNet(Mat):
 			else:
 				break
 			start += self.step_size
+
+class DirectedNet(Net):
+	"""
+	"""
+	def __init__(self, data, atlasobj, scan = None, feature_name = 'BOLD.net'):
+		super().__init__(data, atlasobj, scan, feature_name)
+
+	def iterate(self):
+		for xidx in range(self.atlasobj.count):
+			for yidx in range(self.atlasobj.count):
+				if xidx == yidx:
+					continue
+				yield Connection(self.atlasobj, xidx, yidx, self.data[xidx, yidx])
+
+	def set_data_from_connections(self, conn_list, unified_value = None):
+		for conn in conn_list:
+			if unified_value is not None:
+				self.data[conn.xidx, conn.yidx] = unified_value
+			else:
+				self.data[conn.xidx, conn.yidx] = conn.value
 
 def zero_net(atlasobj):
 	return Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
