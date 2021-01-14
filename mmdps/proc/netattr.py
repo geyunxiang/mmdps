@@ -360,7 +360,7 @@ class Net(Mat):
 				newnet.data[yidx, xidx] = 0
 		return newnet
 
-	def setValueAtTicks(self, xtick, ytick, value):
+	def set_value_at_tick(self, xtick, ytick, value):
 		self.data[self.atlasobj.ticks.index(xtick), self.atlasobj.ticks.index(ytick)] = value
 		self.data[self.atlasobj.ticks.index(ytick), self.atlasobj.ticks.index(xtick)] = value
 
@@ -421,6 +421,9 @@ class DirectedNet(Net):
 				self.data[conn.xidx, conn.yidx] = unified_value
 			else:
 				self.data[conn.xidx, conn.yidx] = conn.value
+
+	def set_value_at_tick(self, xtick, ytick, value):
+		self.data[self.atlasobj.ticks.index(xtick), self.atlasobj.ticks.index(ytick)] = value
 
 def zero_net(atlasobj):
 	return Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)

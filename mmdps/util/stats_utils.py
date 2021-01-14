@@ -4,6 +4,7 @@ stats utils
 import numpy as np
 import scipy, scipy.stats
 from statsmodels.stats import multitest
+from mmdps.proc import netattr
 
 def row_wise_ttest(net1, net2, sigLevel = 0.05):
 	"""
@@ -85,27 +86,39 @@ def bonferroni_correction(p_list, sigLevel = 0.05):
 	reject, pvals_corrected, _, _ = multitest.multipletests(p_list, sigLevel, method='bonferroni')
 	return reject, pvals_corrected
 
-def filter_sigdiff_connections(netListA, netListB, sigLevel = 0.05):
+def filter_sigdiff_connections(netListA, netListB, sigLevel = 0.05, method = 'ttest', iterate_all = False):
 	"""
 	This function returns a list of significant different connections
 	between two groups. The two groups can be a patient group and a 
 	healthy control group. 
-	This function takes in two lists of networks, perform 2 sample t-test on each 
+	This function takes in two lists of networks, perform 2 sample t-test or non-parametric tests on each 
 	connections, and take out those that are significant.
-	A connection is represented by a 4-element-tuple of idx, t-val and p-val
+	Connection is returned as a tuple of netattr.Connection. The first connection stores the t-val while the second connection stores p-val.
+	If iterate_all, go over all connection pairs regardless of order. The connection returned is assumed to be directional. Otherwise only upper triangle part will be iterated
 	"""
 	ret = []
 	atlasobj = netListA[0].atlasobj
 	totalTests = 0
-	for xidx in range(atlasobj.count):
-		for yidx in range(xidx + 1, atlasobj.count):
+	if iterate_all:
+		idx_iterator = atlasobj.iterate_idx_all()
+	else:
+		idx_iterator = atlasobj.iterate_idx()
+	for xidx, yidx in idx_iterator:
+		if method == 'ttest':
 			# perform t-test
 			t, p = scipy.stats.ttest_ind(
 				[a.data[xidx, yidx] for a in netListA], 
 				[b.data[xidx, yidx] for b in netListB])
-			totalTests += 1
-			if p < sigLevel:
-				ret.append((xidx, yidx, t, p))
+		elif method == 'nonparametric':
+			# perform Mann-Whitney U
+			t, p = scipy.stats.mannwhitneyu(
+				[a.data[xidx, yidx] for a in netListA], 
+				[b.data[xidx, yidx] for b in netListB])
+		else:
+			raise Exception('Unknown comparison method: %s' % method)
+		totalTests += 1
+		if p < sigLevel:
+			ret.append((netattr.Connection(atlasobj, xidx, yidx, t, directional = iterate_all), netattr.Connection(atlasobj, xidx, yidx, p, directional = iterate_all)))
 	print('SigDiff connections: %d. Discover rate: %1.4f with sigLevel: %1.4f' % (len(ret), float(len(ret))/totalTests, sigLevel))
 	return ret
 
@@ -143,35 +156,38 @@ def filter_sigdiff_connections_FDR(netListA, netListB, sigLevel = 0.05):
 	print('SigDiff connections: %d. Discover rate: %1.4f with sigLevel: %1.4f' % (len(ret), float(len(ret))/totalTests, sigLevel))
 	return ret
 
-def sigdiff_connections_after_treatment(netListA, netListB, sigLevel = 0.05, method = 'ttest'):
+def sigdiff_connections_after_treatment(netListA, netListB, sigLevel = 0.05, method = 'ttest', iterate_all = False):
 	"""
 	This function takes in two lists of networks, perform paired 1-sample t-test
 	on each connections, and take out those that are significant.
 	This function is used for the first and second scan of the same group to identify
 	difference in FC after treatment.
-	A connection is represented by a 4-element-tuple of idx, t-val and p-val
-	method = 'ttest' or 'nonparametric'
+	Connection is returned as a tuple of netattr.Connection. The first connection stores the t-val while the second connection stores p-val.
+	If iterate_all, go over all connection pairs regardless of order. The connection returned is assumed to be directional. Otherwise only upper triangle part will be iterated
 	"""
 	ret = []
 	atlasobj = netListA[0].atlasobj
 	totalTests = 0
-	for xidx in range(atlasobj.count):
-		for yidx in range(xidx + 1, atlasobj.count):
-			if method == 'ttest':
-				# perform t-test
-				t, p = scipy.stats.ttest_rel(
-					[a.data[xidx, yidx] for a in netListA], 
-					[b.data[xidx, yidx] for b in netListB])
-			elif method == 'nonparametric':
-				# perform Wilcoxon
-				t, p = scipy.stats.wilcoxon(
-					[a.data[xidx, yidx] for a in netListA], 
-					[b.data[xidx, yidx] for b in netListB])
-			else:
-				raise Exception('Unknown comparison method: %s' % method)
-			totalTests += 1
-			if p < sigLevel:
-				ret.append((xidx, yidx, t, p))
+	if iterate_all:
+		idx_iterator = atlasobj.iterate_idx_all()
+	else:
+		idx_iterator = atlasobj.iterate_idx()
+	for xidx, yidx in idx_iterator:
+		if method == 'ttest':
+			# perform t-test
+			t, p = scipy.stats.ttest_rel(
+				[a.data[xidx, yidx] for a in netListA], 
+				[b.data[xidx, yidx] for b in netListB])
+		elif method == 'nonparametric':
+			# perform Wilcoxon
+			t, p = scipy.stats.wilcoxon(
+				[a.data[xidx, yidx] for a in netListA], 
+				[b.data[xidx, yidx] for b in netListB])
+		else:
+			raise Exception('Unknown comparison method: %s' % method)
+		totalTests += 1
+		if p < sigLevel:
+			ret.append((netattr.Connection(atlasobj, xidx, yidx, t, directional = iterate_all), netattr.Connection(atlasobj, xidx, yidx, p, directional = iterate_all)))
 	print('SigDiff connections: %d. Discover rate: %1.4f with sigLevel: %1.4f' % (len(ret), float(len(ret))/totalTests, sigLevel))
 	return ret
 
