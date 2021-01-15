@@ -148,11 +148,6 @@ class MongoDBDatabase:
 		doc = dict(scan=attr.scan, value=attrdata, comment=comment)
 		self.sadb[col].insert_one(doc)
 
-	def remove_static_attr(self, scan, atlas_name, feature, comment={}):
-		col = self.getcol(atlas_name, feature)
-		query = dict(scan=scan, comment=comment)
-		self.sadb[col].find_one_and_delete(query)
-
 	def save_static_net(self, net, comment={}):
 		atlas_name = net.atlasobj.name
 		attrname = net.feature_name
@@ -162,11 +157,6 @@ class MongoDBDatabase:
 		netdata = pickle.dumps(net.data)
 		doc = dict(scan=net.scan, value=netdata, comment=comment)
 		self.sndb[col].insert_one(doc)
-
-	def remove_static_net(self, scan, atlas_name, feature, comment={}):
-		col = self.getcol(atlas_name, feature)
-		query = dict(scan=scan, comment=comment)
-		self.sndb[col].find_one_and_delete(query)
 
 	def save_dynamic_attr(self, attr, comment={}):
 		""" Attr could be Dynamic Attr instance """
@@ -184,11 +174,6 @@ class MongoDBDatabase:
 			docs.append(doc)
 		self.dadb[col].insert_many(docs)
 
-	def remove_dynamic_attr(self, scan, atlas_name, feature, window_length, step_size, comment={}):
-		col = self.getcol(atlas_name, feature, window_length, step_size)
-		query = dict(scan=scan, comment=comment)
-		self.dadb[col].delete_many(query)
-
 	def save_dynamic_net(self, net, comment={}):
 		atlas_name = net.atlasobj.name
 		attrname = net.feature_name
@@ -202,11 +187,6 @@ class MongoDBDatabase:
 			doc = dict(scan=net.scan, value=value, slice=idx, comment=comment)
 			docs.append(doc)
 		self.dndb[col].insert_many(docs)
-
-	def remove_dynamic_net(self, scan, atlas_name, feature, window_length, step_size, comment={}):
-		col = self.getcol(atlas_name, feature, window_length, step_size)
-		query = dict(scan=scan, comment=comment)
-		self.dndb[col].delete_many(query)
 
 	def loadmat(self, path):
 		""" load mat, return data dict"""
@@ -233,36 +213,52 @@ class MongoDBDatabase:
 					dic[field] = pickle.dumps(DataArray[field])
 		self.EEG_db[feature].insert_one(dic)
 
+	def save_temp_data(self, temp_data, description_dict, overwrite=False):
+		"""
+		Insert temporary data into MongoDB. 
+		Input temp_data as a serializable object (like np.array).
+		The description_dict should be a dict whose keys do not contain 'value', which is used to store serialized data
+		"""
+		# check if record already exists, given description_dict
+		count = self.temp_collection.count_documents(description_dict)
+		if count > 0 and not overwrite:
+			raise MultipleRecordException(description_dict, 'Please consider a new name')
+		elif count > 0 and overwrite:
+			self.temp_collection.delete_many(description_dict)
+		description_dict.update(dict(value=pickle.dumps(temp_data)))
+		self.temp_collection.insert_one(description_dict)
+
+	def remove_static_attr(self, scan, atlas_name, feature, comment={}):
+		col = self.getcol(atlas_name, feature)
+		query = dict(scan=scan, comment=comment)
+		self.sadb[col].find_one_and_delete(query)
+
+	def remove_static_net(self, scan, atlas_name, feature, comment={}):
+		col = self.getcol(atlas_name, feature)
+		query = dict(scan=scan, comment=comment)
+		self.sndb[col].find_one_and_delete(query)
+
+	def remove_dynamic_attr(self, scan, atlas_name, feature, window_length, step_size, comment={}):
+		col = self.getcol(atlas_name, feature, window_length, step_size)
+		query = dict(scan=scan, comment=comment)
+		self.dadb[col].delete_many(query)
+
+	def remove_dynamic_net(self, scan, atlas_name, feature, window_length, step_size, comment={}):
+		col = self.getcol(atlas_name, feature, window_length, step_size)
+		query = dict(scan=scan, comment=comment)
+		self.dndb[col].delete_many(query)
+
 	def remove_mat_dict(self, scan, feature):
 		"""remove mat record"""
 		query = dict(scan=scan)
 		self.EEG_db[feature].delete_many(query)
 
-	def get_mat(self, scan, mat, field):
-		""" Get mat and its field from mongo """
-		""" it doesn't work well """
-		query = dict(scan=scan)
-		feature = mat
-		count = self.EEG_db[feature].count_documents(query)
-		currentMat = mat+'.mat'
-		dic = {}
-		if count == 0:
-			raise NoRecordFoundException((scan, mat))
-		elif count > 1:
-			raise MultipleRecordException((scan, mat))
-		else:
-			record = self.EEG_db[feature].find_one(query)
-			if field in record.keys():
-				matname = '%s_%s.mat' % (mat, field)
-				if self.EEG_conf[currentMat]['fields'] != []:
-					dic[field] = pickle.loads(record[field])[0, 0]
-				else:
-					dic[field] = pickle.loads(record[field])
-				scio.savemat(matname, dic)
-				return dic
-			else:
-				print('%s not in %s' % (field, mat))
-				return None
+	def remove_temp_data(self, description_dict={}):
+		"""
+		Delete all temp records according to description_dict
+		If None is input, delete all temp data
+		"""
+		self.temp_collection.delete_many(description_dict)
 
 	def get_static_attr(self, scan, atlas_name, feature, comment={}):
 		"""  Return to an attr object  directly """
@@ -327,28 +323,40 @@ class MongoDBDatabase:
 				net.append_one_slice(pickle.loads(record['value']))
 			return net
 
-	def put_temp_data(self, temp_data, description_dict, overwrite=False):
-		"""
-		Insert temporary data into MongoDB. 
-		Input temp_data as a serializable object (like np.array).
-		The description_dict should be a dict whose keys do not contain 'value', which is used to store serialized data
-		"""
-		# check if record already exists, given description_dict
-		count = self.temp_collection.count_documents(description_dict)
-		if count > 0 and not overwrite:
-			raise MultipleRecordException(
-				description_dict, 'Please consider a new name')
-		elif count > 0 and overwrite:
-			self.temp_collection.delete_many(description_dict)
-		description_dict.update(dict(value=pickle.dumps(temp_data)))
-		self.temp_collection.insert_one(description_dict)
+	def get_mat(self, scan, mat, field):
+		""" Get mat and its field from mongo """
+		""" it doesn't work well """
+		query = dict(scan=scan)
+		feature = mat
+		count = self.EEG_db[feature].count_documents(query)
+		currentMat = mat+'.mat'
+		dic = {}
+		if count == 0:
+			raise NoRecordFoundException((scan, mat))
+		elif count > 1:
+			raise MultipleRecordException((scan, mat))
+		else:
+			record = self.EEG_db[feature].find_one(query)
+			if field in record.keys():
+				matname = '%s_%s.mat' % (mat, field)
+				if self.EEG_conf[currentMat]['fields'] != []:
+					dic[field] = pickle.loads(record[field])[0, 0]
+				else:
+					dic[field] = pickle.loads(record[field])
+				scio.savemat(matname, dic)
+				return dic
+			else:
+				print('%s not in %s' % (field, mat))
+				return None
 
-	def remove_temp_data(self, description_dict={}):
-		"""
-		Delete all temp records according to description_dict
-		If None is input, delete all temp data
-		"""
-		self.temp_collection.delete_many(description_dict)
+	def get_temp_data(self, description_dict):
+		count = self.temp_collection.count_documents(description_dict)
+		if count == 0:
+			raise NoRecordFoundException(description_dict)
+		elif count > 1:
+			raise MultipleRecordException(description_dict)
+		temp_data = pickle.loads(self.temp_collection.find_one(description_dict)['value'])
+		return temp_data
 
 	def drop_collection(self, dbname, col):
 		""" Drop a collection in a database """
