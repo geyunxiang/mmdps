@@ -35,6 +35,7 @@ class FWrap:
 		return_dict = dict(start_time = time.time())
 		res = self.f(arg)
 		return_dict['message'] = 'arg: %s, res: %s' % (arg, res)
+		return_dict['res'] = res
 		self.q.put(return_dict)
 		return res
 

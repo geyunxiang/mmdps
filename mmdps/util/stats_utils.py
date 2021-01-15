@@ -215,6 +215,35 @@ def sigdiff_connections_after_treatment_FDR(netListA, netListB, sigLevel = 0.05)
 	print('SigDiff connections: %d. Discover rate: %1.4f with sigLevel: %1.4f' % (len(ret), float(len(ret))/totalTests, sigLevel))
 	return ret
 
+def connection_wise_test(netListA, netListB, method = 'ttest', iterate_all = False):
+	"""
+	This function compare each connection using data in netListA against netListB
+	The comparison results, stat and pval, are stored in two netattr.Net and returned
+	"""
+	atlasobj = netListA[0].atlasobj
+	stat_net = netattr.zero_net(atlasobj)
+	pval_net = netattr.zero_net(atlasobj)
+	if iterate_all:
+		idx_iterator = atlasobj.iterate_idx_all()
+	else:
+		idx_iterator = atlasobj.iterate_idx()
+	for xidx, yidx in idx_iterator:
+		if method == 'ttest':
+			# perform t-test
+			t, p = scipy.stats.ttest_ind(
+				[a.data[xidx, yidx] for a in netListA], 
+				[b.data[xidx, yidx] for b in netListB])
+		elif method == 'nonparametric':
+			# perform Mann-Whitney U
+			t, p = scipy.stats.mannwhitneyu(
+				[a.data[xidx, yidx] for a in netListA], 
+				[b.data[xidx, yidx] for b in netListB])
+		else:
+			raise Exception('Unknown comparison method: %s' % method)
+		stat_net.data[xidx, yidx] = t
+		pval_net.data[xidx, yidx] = p
+	return stat_net, pval_net
+
 def get_sub_network_connections(sub_network_list, atlasobj):
 	"""
 	This function takes in a list of sub_network nodes and return all 

@@ -324,14 +324,20 @@ class Net(Mat):
 					newnet.data[xidx, yidx] = 0
 		return newnet
 
-	def binarize(self, threshold):
+	def binarize(self, threshold, less_than = False):
 		"""
 		Return a copy of current network, with values binarized
 		abs(FC) < threshold --> FC = 0
 		abs(FC) >= threshold --> FC = 1
+		if less_than, return a network containing values less than threshold 
+		abs(FC) > threshold --> FC = 0
+		abs(FC) <= threshold --> FC = 1
 		"""
 		newnet = Net(self.data.copy(), self.atlasobj, self.scan, self.feature_name)
-		newnet.data = (np.abs(newnet.data) >= threshold).astype(int)
+		if less_than:
+			newnet.data = (np.abs(newnet.data) <= threshold).astype(int)
+		else:
+			newnet.data = (np.abs(newnet.data) >= threshold).astype(int)
 		return newnet
 
 	def select_ROI(self, roi_list):
@@ -363,6 +369,31 @@ class Net(Mat):
 	def set_value_at_tick(self, xtick, ytick, value):
 		self.data[self.atlasobj.ticks.index(xtick), self.atlasobj.ticks.index(ytick)] = value
 		self.data[self.atlasobj.ticks.index(ytick), self.atlasobj.ticks.index(xtick)] = value
+
+	def connected_components(self):
+		"""
+		Reference: https://www.geeksforgeeks.org/connected-components-in-an-undirected-graph/
+		Return a list of indices in connected components in the current network, as well as the largest_size of cc
+		The size of connected components is defined as the number of nodes
+		"""
+		def DFSUtil(cc_list, idx, visited):
+			visited[idx] = True
+			cc_list.append(idx)
+			for nidx in np.nonzero(self.data[idx, :])[0]:
+				if not visited[nidx]:
+					cc_list = DFSUtil(cc_list, nidx, visited)
+			return cc_list
+		
+		largest_size = -1
+		visited = [False] * self.atlasobj.count
+		cc_net = []
+		for idx in range(self.atlasobj.count):
+			if not visited[idx]:
+				cc_list = DFSUtil([], idx, visited)
+				if len(cc_list) > largest_size:
+					largest_size = len(cc_list)
+				cc_net.append(cc_list)
+		return cc_net, largest_size
 
 class DynamicNet(Mat):
 	"""
@@ -535,3 +566,20 @@ def FC_count(FC_list):
 		if ticks[0][0] != ticks[1][0]:
 			cross_hemisphere_FC_count += 1
 	return within_hemisphere_FC_count, cross_hemisphere_FC_count
+
+def test_net_connected_components():
+	atlasobj = atlas.get('aal')
+	znet = zero_net(atlasobj)
+	znet.data[2, 3] = 1
+	znet.data[3, 2] = 1
+	znet.data[3, 5] = 1
+	znet.data[5, 3] = 1
+	znet.data[6, 7] = 1
+	znet.data[7, 6] = 1
+	cc, lsize = znet.connected_components()
+	print(cc)
+	print(len(cc))
+	print(lsize)
+
+if __name__ == '__main__':
+	test_net_connected_components()
