@@ -172,10 +172,13 @@ class Connection:
 
 	def __str__(self):
 		if self.directional:
-			line = '%s-%s directional val = %1.3f' % (self.xtick, self.ytick, self.value)
+			line = '%s->%s val = %1.3f' % (self.xtick, self.ytick, self.value)
 		else:
 			line = '%s-%s val = %1.3f' % (self.xtick, self.ytick, self.value)
 		return line
+
+	def __repr__(self):
+		return self.__str__()
 
 	def __eq__(self, other):
 		if not isinstance(other, self.__class__):
@@ -372,10 +375,11 @@ class Net(Mat):
 
 	def connected_components(self):
 		"""
-		Reference: https://www.geeksforgeeks.org/connected-components-in-an-undirected-graph/
-		Return a list of indices in connected components in the current network, as well as the largest_size of cc
+		Return a list of node indices of connected components in the current network, as well as the largest_size of cc
 		The size of connected components is defined as the number of nodes
+		Reference: https://www.geeksforgeeks.org/connected-components-in-an-undirected-graph/
 		"""
+		print('Net CC called')
 		def DFSUtil(cc_list, idx, visited):
 			visited[idx] = True
 			cc_list.append(idx)
@@ -453,8 +457,62 @@ class DirectedNet(Net):
 			else:
 				self.data[conn.xidx, conn.yidx] = conn.value
 
+	def to_connection_list(self):
+		"""
+		Convert the directed network to a list of connections
+		Useful in confirmation for sparse network
+		:return: A list of Connection
+		"""
+		ret = []
+		for i in range(self.atlasobj.count):
+			for j in np.nonzero(self.data[i, :])[0]:
+				ret.append(Connection(self.atlasobj, int(i), int(j), self.data[i, j], directional=True))
+		return ret
+
 	def set_value_at_tick(self, xtick, ytick, value):
 		self.data[self.atlasobj.ticks.index(xtick), self.atlasobj.ticks.index(ytick)] = value
+
+	def connected_components(self):
+		"""
+		Return a list of node indices of the strongly connected components (SCC) in the current network,
+		as well as the largest_size of cc.
+		A directed graph is strongly connected if there is a path between all pairs of vertices.
+		The size of connected components is defined as the number of nodes
+		Reference:
+			[1] https://www.geeksforgeeks.org/strongly-connected-components/
+			[2] https://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/
+		"""
+		print('Directed version SCC called')
+		def fill_order(idx, visited, stack):
+			visited[idx] = True
+			for i in np.nonzero(self.data[idx, :])[0]:
+				if not visited[i]:
+					fill_order(i, visited, stack)
+			stack = stack.append(idx)
+		def DFSUtil(data, idx, visited, scc):
+			visited[idx] = True
+			scc.append(idx)
+			for i in np.nonzero(data[idx, :])[0]:
+				if not visited[i]:
+					DFSUtil(data, i, visited, scc)
+		stack = []
+		visited = [False] * self.atlasobj.count
+		for idx in range(self.atlasobj.count):
+			if not visited[idx]:
+				fill_order(idx, visited, stack)
+		t_data = np.transpose(self.data)
+		visited = [False] * self.atlasobj.count
+		result = [] # list of scc
+		largest_size = 0
+		while stack:
+			i = stack.pop()
+			if not visited[i]:
+				scc = []
+				DFSUtil(t_data, i, visited, scc)
+				if len(scc) > largest_size:
+					largest_size = len(scc)
+				result.append(scc)
+		return result, largest_size
 
 def zero_net(atlasobj):
 	return Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
@@ -581,5 +639,16 @@ def test_net_connected_components():
 	print(len(cc))
 	print(lsize)
 
+def test_directed_net_strongly_connected_components():
+	atlasobj = atlas.get('aal')
+	znet = DirectedNet(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
+	znet.data[1, 0] = 1
+	znet.data[0, 2] = 1
+	znet.data[2, 1] = 1
+	znet.data[0, 3] = 1
+	znet.data[3, 4] = 1
+	scc, lsize = znet.connected_components()
+	print(scc, len(scc), lsize)
+
 if __name__ == '__main__':
-	test_net_connected_components()
+	test_directed_net_strongly_connected_components()
