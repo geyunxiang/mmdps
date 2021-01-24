@@ -33,9 +33,18 @@ def plot_whole_digraph(net, savepath, color_scheme = {}):
 		graph.node(atlasobj.ticks[r], atlasobj.ticks[r] + '\n' + atlasobj.region_names[r], style = 'filled', fillcolor = fillcolor)
 		fillcolor = color_scheme.get(atlasobj.ticks[c], default_fillcolor)
 		graph.node(atlasobj.ticks[c], atlasobj.ticks[c] + '\n' + atlasobj.region_names[c], style = 'filled', fillcolor = fillcolor)
-		if atlasobj.ticks[r][0] != atlasobj.ticks[c][0]:
-			# L2 -> R6 etc
+		if atlasobj.ticks[r][0] != 'A' and atlasobj.ticks[c][0] != 'A' and atlasobj.ticks[r][0] != atlasobj.ticks[c][0]:
+			# L3 -> R6 etc
 			graph.edge(atlasobj.ticks[r], atlasobj.ticks[c], color = 'red')
+		elif atlasobj.ticks[r][0] == 'A' and atlasobj.ticks[c][0] != 'A' and atlasobj.ticks[r][1] != atlasobj.ticks[c][0]:
+			# AL91 -> R6 etc
+			graph.edge(atlasobj.ticks[r], atlasobj.ticks[c], color='red')
+		elif atlasobj.ticks[r][0] != 'A' and atlasobj.ticks[c][0] == 'A' and atlasobj.ticks[r][0] != atlasobj.ticks[c][1]:
+			# L2 -> AR96 etc
+			graph.edge(atlasobj.ticks[r], atlasobj.ticks[c], color='red')
+		elif atlasobj.ticks[r][0] == 'A' and atlasobj.ticks[c][0] == 'A' and atlasobj.ticks[r][1] != atlasobj.ticks[c][1]:
+			# AL93 -> AR96 etc
+			graph.edge(atlasobj.ticks[r], atlasobj.ticks[c], color='red')
 		else:
 			graph.edge(atlasobj.ticks[r], atlasobj.ticks[c])
 	graph.render()

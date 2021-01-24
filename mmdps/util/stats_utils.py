@@ -239,7 +239,8 @@ def connection_wise_test(netListA, netListB, method = 'ttest', iterate_all = Fal
 				[a.data[xidx, yidx] for a in netListA], 
 				[b.data[xidx, yidx] for b in netListB])
 		else:
-			raise Exception('Unknown comparison method: %s' % method)
+			raise ValueError(
+				'Parameter comparison_method should be one of [\'ttest\', \'nonparametric\']. Given parameter value = %s' % method)
 		stat_net.data[xidx, yidx] = t
 		pval_net.data[xidx, yidx] = p
 	return stat_net, pval_net

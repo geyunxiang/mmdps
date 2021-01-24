@@ -253,12 +253,16 @@ class MongoDBDatabase:
 		query = dict(scan=scan)
 		self.EEG_db[feature].delete_many(query)
 
-	def remove_temp_data(self, description_dict={}):
+	def remove_temp_data(self, description_dict={}, mongo_id = None):
 		"""
-		Delete all temp records according to description_dict
-		If None is input, delete all temp data
+		Delete temp records. Input description_dict to delete all records related to the dict.
+		Otherwise input mongo_id to delete the exact record.
 		"""
-		self.temp_collection.delete_many(description_dict)
+		if mongo_id is not None:
+			self.temp_collection.remove(mongo_id)
+			return
+		else:
+			self.temp_collection.delete_many(description_dict)
 
 	def get_static_attr(self, scan, atlas_name, feature, comment={}):
 		"""  Return to an attr object  directly """
@@ -349,12 +353,15 @@ class MongoDBDatabase:
 				print('%s not in %s' % (field, mat))
 				return None
 
-	def get_temp_data(self, description_dict):
+	def get_temp_data(self, description_dict, find_all = False):
 		count = self.temp_collection.count_documents(description_dict)
 		if count == 0:
 			raise NoRecordFoundException(description_dict)
 		elif count > 1:
-			raise MultipleRecordException(description_dict)
+			if find_all:
+				return self.temp_collection.find(description_dict)
+			else:
+				raise MultipleRecordException(description_dict)
 		temp_data = pickle.loads(self.temp_collection.find_one(description_dict)['value'])
 		return temp_data
 

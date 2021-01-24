@@ -379,7 +379,7 @@ class Net(Mat):
 		The size of connected components is defined as the number of nodes
 		Reference: https://www.geeksforgeeks.org/connected-components-in-an-undirected-graph/
 		"""
-		print('Net CC called')
+		# print('Net CC called')
 		def DFSUtil(cc_list, idx, visited):
 			visited[idx] = True
 			cc_list.append(idx)
@@ -482,7 +482,7 @@ class DirectedNet(Net):
 			[1] https://www.geeksforgeeks.org/strongly-connected-components/
 			[2] https://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/
 		"""
-		print('Directed version SCC called')
+		# print('Directed version SCC called')
 		def fill_order(idx, visited, stack):
 			visited[idx] = True
 			for i in np.nonzero(self.data[idx, :])[0]:
