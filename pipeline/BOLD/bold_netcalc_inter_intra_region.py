@@ -152,7 +152,7 @@ class IntraAttrCalc:
 		else:
 			temp_path = self.outfolder+"\\"+str(self.argsDict['netthreshold'])
 			if not os.path.isdir(temp_path):
-				os.mkdir(temp_path)
+				os.makedirs(temp_path, exist_ok = True)
 			cmd = self.build_cmd(out = temp_path)
 			# os.system(cmd)
 			subprocess.call(cmd)

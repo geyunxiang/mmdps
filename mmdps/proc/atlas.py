@@ -101,6 +101,9 @@ class Atlas:
 		regions = [self._tickregiondict[tick] for tick in ticks]
 		return regions
 
+	def tick_to_name(self, tick):
+		return self.region_names[self.ticks.index(tick)]
+
 	def region_to_name(self, region):
 		return self.region_names[self.regions.index(region)]
 

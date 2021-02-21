@@ -75,7 +75,12 @@ def load_csvmat(matfile, delimiter = ','):
         if len(ret.shape) > 1:
             # does not support loading network
             raise Exception
-        ret = ret[:-1]
+        # check if last character is ','
+        with open(matfile, 'r') as f:
+            f.seek(0, 2) # seek to the end (2)
+            f.seek(f.tell() -1 , 0) # seek to 1 character before end
+            if f.read() == ',':
+                ret = ret[:-1]
     return ret
 
 def save_csvmat(matfile, mat, delimiter = ','):

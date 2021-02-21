@@ -343,6 +343,10 @@ class Net(Mat):
 			newnet.data = (np.abs(newnet.data) >= threshold).astype(int)
 		return newnet
 
+	def zero_diagonal(self, value = 0):
+		for idx in range(self.atlasobj.count):
+			self.data[idx, idx] = value
+
 	def select_ROI(self, roi_list):
 		"""
 		Return a copy of current network, with connections associated with regions in 
