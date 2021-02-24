@@ -18,19 +18,18 @@ def color_to_str(color):
 class Chromosome:
 	"""
 	A Chromosome is a lobe in the brain, such as Frontal, Parietal etc.
-	It contains a list of brain regions, whose names are stored at self.ticks.
+	It contains a list of brain regions.
 	The actual index in data is stored at self.indexes.
-	The data order, as well as the plot order is the same as in self.ticks.
 	"""
 	def __init__(self, atlasobj, chrname, configdict):
 		self.atlasobj = atlasobj
 		self.configdict = configdict
 		self.chrname = chrname
 		self.name = configdict['name']
-		self.ticks = configdict['ticks']
 		self.indexes = None
 		self.bandtuples = None
 		self.count = 0
+		self.region_names = False
 		self.build_bands()
 		self.build_bandtuples()
 
@@ -39,8 +38,11 @@ class Chromosome:
 			self.indexes = self.atlasobj.ticks_to_indexes(self.configdict['ticks'])
 		elif 'indexes' in self.configdict:
 			self.indexes = self.configdict['indexes']
+		elif 'region_names' in self.configdict:
+			self.region_names = True
+			self.indexes = [self.atlasobj.region_names.index(name) for name in self.configdict['region_names']]
 		else:
-			print('Use ticks or indexes to specify brain regions.')
+			print('Use ticks, indexes or region_names to specify brain regions.')
 			raise Exception('bad chromosome')
 		self.count = len(self.indexes)
 
@@ -51,7 +53,18 @@ class Chromosome:
 			tuples.append(t)
 		self.bandtuples = tuples
 
+	def get_region_name(self, idx):
+		if self.region_names:
+			return self.atlasobj.region_names[idx]
+		else:
+			return self.atlasobj.ticks[idx]
+
 class BrainParts:
+	"""
+	A structure defining Lobes, regions and ticks, corresponding to ideogram/karyotype in circos.
+	I.e., the outer main ring.
+	Constructed by loading json config file in atlas/<atlas_name>/circosparts_default.json etc.
+	"""
 	def __init__(self, configdict):
 		self.configdict = configdict
 		self.atlasname = self.configdict['atlas']
@@ -61,6 +74,9 @@ class BrainParts:
 
 	def build_all(self):
 		leftconfig = self.configdict['config'].get('left')
+		lchrs = []
+		rchrs = []
+		cchrs = []
 		if leftconfig:
 			lchrs = self.build_chromosomes('L_', leftconfig)
 			self.chrdict['left'] = lchrs
@@ -72,7 +88,7 @@ class BrainParts:
 		if centerconfig:
 			cchrs = self.build_chromosomes('C_', centerconfig)
 			self.chrdict['center'] = cchrs
-		self.chrdict['all'] = lchrs + rchrs
+		self.chrdict['all'] = lchrs + rchrs + cchrs
 
 	def build_chromosomes(self, prefix, config):
 		sections = config['sections']
@@ -124,7 +140,7 @@ class CircosConfigChromosome:
 			for i in range(chromosome.count):
 				atlasindex = chromosome.indexes[i]
 				bandtuple = chromosome.bandtuples[i]
-				atlastick = self.atlasobj.ticks[atlasindex]
+				atlastick = chromosome.get_region_name(atlasindex)
 				bandline = bandfmt.format(bandtuple[0], atlastick, atlastick, bandtuple[1], bandtuple[2], self.colorlist[atlasindex])
 				f.write(bandline + '\n')
 
@@ -134,7 +150,7 @@ class CircosConfigChromosome:
 			for i in range(chromosome.count):
 				atlasindex = chromosome.indexes[i]
 				bandtuple = chromosome.bandtuples[i]
-				atlastick = self.atlasobj.ticks[atlasindex]
+				atlastick = chromosome.get_region_name(atlasindex)
 				labelline = labelfmt.format(bandtuple[0], bandtuple[1], bandtuple[2], atlastick)
 				f.write(labelline + '\n')
 
@@ -163,8 +179,8 @@ class CircosConfigFile:
 	glyph_size = 48p
 	min = 0
 	max = 1
-	r1 = 0.94r
-	r0 = 0.94r
+	r1 = {r1}
+	r0 = {r0}
 	</plot>
 	"""
 	LinkFmt = """
@@ -180,7 +196,7 @@ class CircosConfigFile:
 		self.direction_confs = []
 		self.linkconfs = []
 		self.label_size = None
-		self.linkThickness = 15 # default link thickness
+		self.linkThickness = 20 # default link thickness
 
 	def add_plot(self, file):
 		self.plotconfs.append(file)
@@ -218,18 +234,26 @@ class CircosConfigFile:
 		plotstrs = []
 		rfmt = '{:.2f}r'
 		plotwidth = 0.05
-		for iplot, plotconf in enumerate(self.plotconfs):
+		# heatmap
+		minr = 1
+		iplot = 0
+		for plotconf in self.plotconfs:
 			r1f = 0.99 - iplot * plotwidth
 			r0f = r1f - 0.04
+			minr = r0f
 			plotstr = self.PlotFmt.format(file=plotconf, r1=rfmt.format(r1f), r0=rfmt.format(r0f))
 			plotstrs.append(plotstr)
-		for iplot, direction_conf in enumerate(self.direction_confs):
-			plotstr = self.DirectedPlotFmt.format(file=direction_conf)
+			iplot += 1
+		for direction_conf in self.direction_confs:
+			r1f = minr - 0.02
+			r0f = r1f
+			minr = r0f
+			plotstr = self.DirectedPlotFmt.format(file=direction_conf, r1 = rfmt.format(r1f), r0 = rfmt.format(r0f))
 			plotstrs.append(plotstr)
-		nplot = len(self.plotconfs)
+			iplot += 1
 		linkstrs = []
 		for linkconf in self.linkconfs:
-			radius = 1.0 - nplot * plotwidth
+			radius = minr
 			linkstr = self.LinkFmt.format(file=linkconf, radius=rfmt.format(radius), thickness = self.linkThickness)
 			linkstrs.append(linkstr)
 		finalstring = self.build_circos_conf(plotstrs, linkstrs)
@@ -249,9 +273,12 @@ class CircosLink:
 				self.valuerange = (np.min(net.data), np.max(net.data))
 		else:
 			self.valuerange = valuerange
-		self.brainparts = net.atlasobj.get_brainparts()
-		self.chrdict = self.brainparts.chrdict
+
 		self.data = self.net.data
+
+	def set_brainparts(self, brainparts):
+		self.brainparts = brainparts
+		self.chrdict = self.brainparts.chrdict
 
 	def get_mask(self):
 		mask = np.zeros(self.net.data.shape, dtype=bool)
@@ -350,7 +377,6 @@ class CircosValue:
 		use matplotlib.colors.to_rgb('crimson') to get color tuple.
 		See https://matplotlib.org/3.1.1/gallery/color/named_colors.html#sphx-glr-gallery-color-named-colors-py
 		"""
-		self.brainparts = attr.atlasobj.get_brainparts()
 		if valuerange is None:
 			self.valuerange = (np.min(attr.data), np.max(attr.data))
 		else:
@@ -360,9 +386,12 @@ class CircosValue:
 		else:
 			self.cmap = cm.Reds
 		self.colormap = colormap
-		self.chrdict = self.brainparts.chrdict
 		self.attr = attr
 		self.data = self.attr.data
+
+	def set_brainparts(self, brainparts):
+		self.brainparts = brainparts
+		self.chrdict = self.brainparts.chrdict
 
 	def get_line(self, chro, idx):
 		valuefmt = '{} {} {} {} {}'  # L_1 0 1 0.312 color=(10,10,10)
@@ -409,9 +438,14 @@ class CircosValue:
 					f.write('\n')
 
 class CircosPlotBuilder:
-	def __init__(self, atlasobj, title, outfilepath):
+	def __init__(self, atlasobj, title, outfilepath, plot_config = None):
+		if plot_config is None:
+			plot_config = {}
 		self.atlasobj = atlasobj
-		self.brainparts = self.atlasobj.get_brainparts() # circosparts.json file in each atlas's folder
+		if plot_config.get('draw_RSN', False):
+			self.brainparts = BrainParts(self.atlasobj.get_brainparts_config('RSN')) # circosparts.json file in each atlas's folder
+		else:
+			self.brainparts = BrainParts(self.atlasobj.get_brainparts_config()) # circosparts.json file in each atlas's folder
 		self.title = title
 		if outfilepath[-4:] == '.png':
 			outfilepath = outfilepath[:-4]
@@ -423,25 +457,43 @@ class CircosPlotBuilder:
 		self.circoslinks = []
 		self.circos_directed_links = []
 		self.circosvalues = []
-		self.customizedSizes = False
-		self.radius = None
+		self.ideogram_radius = None
+		self.colorlist = None
 		if atlasobj.name == 'bnatlas':
-			self.customizeSize(label_size = '20p', linkThickness = '10p')
+			plot_config['region_tick_size'] = '20p'
+			plot_config['link_thickness'] = '10p'
 		elif atlasobj.name == 'aicha':
-			self.customizeSize(label_size = '10p', linkThickness = '5p')
+			plot_config['region_tick_size'] = '10p'
+			plot_config['link_thickness'] = '5p'
+		self.customizeSize(plot_config)
 
-	def customizeSize(self, ideogram_radius = '0.8r', label_size = '40p', linkThickness = '20p'):
+	def customizeSize(self, plot_config):
 		"""
-		input ideogram_radius as a string like '0.80r'
-			- ideogram_radius controls the size of the whole ring
-		input label_size as a string like '40p'
-			- label_size controls the font size of the ticks (L1, R2 etc.)
-		input linkThickness as an integer like 20p
-			- linkThickness controls the thickness of network links(edges)
+		Configable fields in plot_config:
+		* General
+			- 'draw_RSN': True or False (Default). Whether draw RSN according to circosparts_RSN.json
+		* Ideogram (main ring, outer ring, with brain regions on it)
+			- 'ideogram_radius': Specify as '0.8r', '0.6r' etc
+			- 'ideogram_show_label': 'yes' or 'no'. Whether show 'Frontal' etc text
+			- 'ideogram_thickness': '20p', '40p' etc. Controls the thickness of ideogram.
+		* Ticks (small separating lines on the ideogram)
+			- 'tick_radius': Specify as '1r-20p', '1r-30p' etc. Normally '1r-<ideogram_thickness>'
+			- 'tick_thickness': '2p', '10p' etc
+			- 'tick_color': 'black', 'red' etc
+			- 'tick_size': '10p', '20p' etc. Normally equals 'ideogram_thickness'
+		* Region name
+			- 'region_tick_size': Specify as '40p' etc. Controls the text size of brain regions ('L1', 'R2' etc.)
+		* Link (connections)
+			- 'link_thickness': Specify as '10p', '5p' etc. Controls the line thickness of link.
 		"""
-		self.customizedSizes = True
-		self.radius = ideogram_radius
-		self.circosConfigFile.customizeSize(label_size, linkThickness)
+		self.ideogram_radius = plot_config.get('ideogram_radius', '0.8r')
+		self.ideogram_show_label = plot_config.get('ideogram_show_label', 'yes')
+		self.ideogram_thickness = plot_config.get('ideogram_thickness', '20p')
+		self.tick_radius = plot_config.get('tick_radius', '1r')
+		self.tick_thickness = plot_config.get('tick_thickness', '2p')
+		self.tick_color = plot_config.get('tick_color', 'black')
+		self.tick_size = plot_config.get('tick_size', '10p')
+		self.circosConfigFile.customizeSize(plot_config.get('region_tick_size', '40p'), plot_config.get('link_thickness', '20p'))
 
 	def fullpath(self, *p):
 		return os.path.join(self.circosfolder, *p)
@@ -451,18 +503,36 @@ class CircosPlotBuilder:
 		Check unique value amount. If all values are the same, do not add this value 
 		since circos will crash when plotting same values
 		"""
+		circosvalue.set_brainparts(self.brainparts)
 		if len(np.unique(circosvalue.attr.data)) == 1:
 			return
 		self.circosvalues.append(circosvalue)
 
 	def add_circoslink(self, circoslink):
+		circoslink.set_brainparts(self.brainparts)
 		self.circoslinks.append(circoslink)
 
 	def add_circos_directed_link(self, circos_directed_link):
+		circos_directed_link.set_brainparts(self.brainparts)
 		self.circos_directed_links.append(circos_directed_link)
 
+	def set_colorlist(self, colorlist):
+		"""
+		Set the color of each region on the ideogram
+		:param colorlist: A list of str of color corresponding to each region in atlasobj
+		:return:
+		"""
+		self.colorlist = colorlist
+
 	def get_colorlist(self):
-		return ['grey'] * self.atlasobj.count
+		"""
+		Config color of bands (each brain region) on the ideogram (main ring)
+		:return:
+		"""
+		if self.colorlist is None:
+			return ['grey'] * self.atlasobj.count
+		else:
+			return self.colorlist
 
 	def copy_files(self):
 		"""
@@ -472,17 +542,36 @@ class CircosPlotBuilder:
 		configfiles = ['ideogram.conf', 'ticks.conf']
 		for file in configfiles:
 			shutil.copy2(os.path.join(configfolder, file), self.fullpath(file))
-		if self.customizedSizes:
-			# adjust ideogram radius
-			os.rename(self.fullpath('ideogram.conf'), self.fullpath('ideogram.conf.bk'))
-			ideogramFile = open(self.fullpath('ideogram.conf'), 'w')
-			with open(self.fullpath('ideogram.conf.bk')) as bk:
-				for line in bk.readlines():
-					if line.find('radius') != -1 and line.find('=') != -1 and line.find('label_radius') == -1:
-						line = '%s%sr\n' % (line[:line.find('=') + 2], self.radius)
-					ideogramFile.write(line)
-			ideogramFile.close()
-			os.remove(self.fullpath('ideogram.conf.bk'))
+
+		os.rename(self.fullpath('ideogram.conf'), self.fullpath('ideogram.conf.bk'))
+		ideogramFile = open(self.fullpath('ideogram.conf'), 'w')
+		with open(self.fullpath('ideogram.conf.bk')) as bk:
+			for line in bk.readlines():
+				if line.find('radius') != -1 and line.find('=') != -1 and line.find('label_radius') == -1:
+					line = '%s%s\n' % (line[:line.find('=') + 2], self.ideogram_radius)
+				if line.find('show_label') != -1 and line.find('=') != -1:
+					line = '%s%s\n' % (line[:line.find('=') + 2], self.ideogram_show_label)
+				if line.find('thickness') != -1 and line.find('=') != -1 and line.find('stroke_thickness') == -1:
+					line = '%s%s\n' % (line[:line.find('=') + 2], self.ideogram_thickness)
+				ideogramFile.write(line)
+		ideogramFile.close()
+		os.remove(self.fullpath('ideogram.conf.bk'))
+
+		os.rename(self.fullpath('ticks.conf'), self.fullpath('ticks.conf.bk'))
+		ticksFile = open(self.fullpath('ticks.conf'), 'w')
+		with open(self.fullpath('ticks.conf.bk')) as bk:
+			for line in bk.readlines():
+				if line.find('radius') != -1 and line.find('=') != -1:
+					line = '%s%s\n' % (line[:line.find('=') + 2], self.tick_radius)
+				if line.find('thickness') != -1 and line.find('=') != -1:
+					line = '%s%s\n' % (line[:line.find('=') + 2], self.tick_thickness)
+				if line.find('color') != -1 and line.find('=') != -1:
+					line = '%s%s\n' % (line[:line.find('=') + 2], self.tick_color)
+				if line.find('size') != -1 and line.find('=') != -1:
+					line = '%s%s\n' % (line[:line.find('=') + 2], self.tick_size)
+				ticksFile.write(line)
+		ticksFile.close()
+		os.remove(self.fullpath('ticks.conf.bk'))
 
 	def write_files(self):
 		"""
@@ -504,8 +593,7 @@ class CircosPlotBuilder:
 			self.circosConfigFile.add_direction(currentEnd)
 			circoslink.write(self.fullpath(currentFile), self.fullpath(currentEnd))
 		self.circosConfigFile.write(self.fullpath())
-		if self.customizedSizes:
-			self.circosConfigFile.customized_rewrite(self.fullpath())
+		self.circosConfigFile.customized_rewrite(self.fullpath())
 		circosconfigchr = CircosConfigChromosome(self.brainparts, self.get_colorlist())
 		circosconfigchr.write(self.fullpath())
 

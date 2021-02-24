@@ -77,11 +77,9 @@ class Atlas:
 		circosfile = 'circosparts_{}.json'.format(name)
 		self.brainparts = braincircos.BrainParts(loadsave.load_json(os.path.join(self.circosfolder, circosfile)))
 
-	def get_brainparts(self):
-		if self.brainparts:
-			return self.brainparts
-		self.set_brainparts('default')
-		return self.brainparts
+	def get_brainparts_config(self, name = 'default'):
+		circosfile = 'circosparts_{}.json'.format(name)
+		return loadsave.load_json(os.path.join(self.circosfolder, circosfile))
 
 	def add_volumes(self, volumes):
 		"""Add volumes for actual nii files."""
