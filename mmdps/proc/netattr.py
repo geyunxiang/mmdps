@@ -172,9 +172,9 @@ class Connection:
 
 	def __str__(self):
 		if self.directional:
-			line = '%s->%s val = %1.3f' % (self.xtick, self.ytick, self.value)
+			line = '%s(%s) -> %s(%s) val = %1.3f' % (self.xtick, self.atlasobj.region_names[self.xidx], self.ytick, self.atlasobj.region_names[self.yidx], self.value)
 		else:
-			line = '%s-%s val = %1.3f' % (self.xtick, self.ytick, self.value)
+			line = '%s(%s) - %s(%s) val = %1.3f' % (self.xtick, self.atlasobj.region_names[self.xidx], self.ytick, self.atlasobj.region_names[self.yidx], self.value)
 		return line
 
 	def __repr__(self):

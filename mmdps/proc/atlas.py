@@ -92,6 +92,9 @@ class Atlas:
 		"""Get one volume using volumename."""
 		return self.volumes[volumename]
 
+	def get_data(self, resolution = 1):
+		return loadsave.load_nii(os.path.join(rootconfig.path.atlas, self.name, '%s_%d.nii' % (self.name, resolution))).get_data()
+
 	def ticks_to_regions(self, ticks):
 		"""Convert ticks to regions."""
 		if not hasattr(self, '_tickregiondict'):
@@ -105,12 +108,18 @@ class Atlas:
 	def region_to_name(self, region):
 		return self.region_names[self.regions.index(region)]
 
+	def regions_to_names(self, regions):
+		return [self.region_to_name(region) for region in regions]
+
 	def regions_to_indexes(self, regions):
 		"""Convert regions to indexes."""
 		if not hasattr(self, '_regionindexdict'):
 			self._regionindexdict = dict([(k, i) for i, k in enumerate(self.regions)])
 		indexes = [self._regionindexdict[region] for region in regions]
 		return indexes
+
+	def regions_to_ticks(self, regions):
+		return [self.ticks[self.regions.index(region)] for region in regions]
 
 	def ticks_to_indexes(self, ticks):
 		"""

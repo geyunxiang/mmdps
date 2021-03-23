@@ -254,6 +254,9 @@ class CircosConfigFile:
 		linkstrs = []
 		for linkconf in self.linkconfs:
 			radius = minr
+			if radius == 1:
+				# if plot undirected links
+				radius = 0.99
 			linkstr = self.LinkFmt.format(file=linkconf, radius=rfmt.format(radius), thickness = self.linkThickness)
 			linkstrs.append(linkstr)
 		finalstring = self.build_circos_conf(plotstrs, linkstrs)
@@ -284,7 +287,7 @@ class CircosLink:
 		mask = np.zeros(self.net.data.shape, dtype=bool)
 		threshold = self.threshold
 		mask[np.abs(self.net.data) > threshold] = True
-		mask = np.triu(mask, 1)
+		# mask = np.triu(mask, 1)
 		return mask
 
 	def get_line(self, chrA, idxA, chrB, idxB):
