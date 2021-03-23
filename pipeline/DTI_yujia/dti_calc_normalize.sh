@@ -3,7 +3,7 @@
 # Do normalization, normalize nodif_brain and DWI data to MNI space
 
 
-FILEPATH_MNI152_T1_2mm_brain=$MMDPS_ROOTDIR/data/MNI/MNI152_T1_2mm_brain.nii.gz
+FILEPATH_MNI152_T1_2mm_brain=/usr/local/fsl/data/standard/MNI152_T1_2mm_brain.nii.gz
 
 
 
