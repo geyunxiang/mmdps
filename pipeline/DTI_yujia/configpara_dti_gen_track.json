@@ -1,0 +1,9 @@
+{
+    "name": "DTIGenTrack",
+    "MainFolder": "I:/geyunxiang/MSA_DATA/DTI/",
+    "FolderList": "listdir",
+    "Second": false,
+    "SecondList": "",
+    "JobConfig": "configjob_dti_gen_track.json",
+    "RunMode": "Parallel"
+}
