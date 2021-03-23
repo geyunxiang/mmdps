@@ -17,12 +17,12 @@ FILEPATH_MNI152_T1_2mm_brain=$MMDPS_ROOTDIR/data/MNI/MNI152_T1_2mm_brain.nii.gz
 # -searchrz <min_angle> <max_angle>  (angles in degrees: default is -90 90)
 # -dof  <number of transform dofs>   (default is 12)
 # -interp {trilinear,nearestneighbour,sinc,spline}  (final interpolation: def - trilinear)
-fsl5.0-flirt -in iso2.0_nodif_brain -ref $FILEPATH_MNI152_T1_2mm_brain -out normalized_iso2.0_nodif_brain -omat normalized_iso2.0_nodif_brain.mat -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 12 -interp trilinear
+flirt -in iso2.0_nodif_brain -ref $FILEPATH_MNI152_T1_2mm_brain -out normalized_iso2.0_nodif_brain -omat normalized_iso2.0_nodif_brain.mat -bins 256 -cost corratio -searchrx -90 90 -searchry -90 90 -searchrz -90 90 -dof 12 -interp trilinear
 
 # invert the transform matrix, can transform from MNI 2 to individual 2
 # Tool for manipulating FSL transformation matrices
 # convert_xfm -omat <outmat> -inverse <inmat>
-fsl5.0-convert_xfm -omat inv_normalized_iso2.0_nodif_brain.mat -inverse normalized_iso2.0_nodif_brain.mat
+convert_xfm -omat inv_normalized_iso2.0_nodif_brain.mat -inverse normalized_iso2.0_nodif_brain.mat
 
 
 
