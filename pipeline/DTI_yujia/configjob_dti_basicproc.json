@@ -1,0 +1,16 @@
+{
+    "name": "DTIBasicProc",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "Preprocess",
+            "typename": "ShellJob",
+            "cmd": "dti_preprocess.sh"
+        },
+        {
+            "name": "normalize",
+            "typename": "ShellJob",
+            "cmd": "dti_calc_normalize.sh"
+        }
+    ]
+}

@@ -77,6 +77,7 @@ def searchpathlist():
 	searchpaths.extend(pathvarlist)
 	searchpaths.extend(builtinlist)
 	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'DWI'))
+	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'DTI_yujia'))
 	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'T1'))
 	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'BOLD'))
 	searchpaths.append(os.path.join(rootconfig.path.root, 'tools', 'helper_tools'))
