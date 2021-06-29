@@ -12,10 +12,11 @@ import os
 import shutil
 
 from mmdps import rootconfig
-from mmdps.dms import data_customs, dbgen, mmdpdb
-from mmdps.util import clock
+from mmdps.dms import data_customs, mmdpdb
+from mmdps.util import clock, loadsave
+from mmdps.remote_service import pmar
 
-def copy_dicom_from_CD(scan_folder_name):
+def copy_dicom_from_CD():
 	"""
 	copy dicom from CD to local temp folder
 	dcm2niix conversion is faster on local
@@ -82,23 +83,39 @@ def update_sql_database(scan_folder_name, modalities_coverage):
 	# worker.insert_mrirow(scan_folder_name, modalities_coverage[0],
 	#                      modalities_coverage[1], modalities_coverage[2], modalities_coverage[3])
 
+def update_PMAR_database(scan_folder_name, name_zh):
+	scan_info = loadsave.load_json(os.path.join(rootconfig.dms.folder_mridata, scan_folder_name, 'scan_info.json'))
+	search_res = pmar.search_patients(name = name_zh)
+	print(search_res)
+	if len(search_res) < 1:
+		# new patient
+		search_res = pmar.add_patient(name_zh, scan_info['Patient']['Birth'], scan_info['Patient']['Gender'], scan_info['Patient']['ID'])
+	else:
+		assert len(search_res) == 1
+		search_res = search_res[0]
+	ret = pmar.add_scan(search_res['id'], scan_info['StudyDate'].replace(' ', 'T'))
+	print('update PMAR result: ', ret)
+
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--name', help = 'name of the subject.', required = True, default = '')
+	parser.add_argument('--zh', help = 'name_zh of the subject.', required = True, default = '')
 	parser.add_argument('--date', help = 'scanning date', required = True, default = '')
 	args = parser.parse_args()
 	subject_name = args.name
+	name_zh = args.zh
 	scan_date = args.date
 	scan_folder_name = '%s_%s' % (subject_name, scan_date)
 
 	logging.basicConfig(filename='import_changgung.log', level=logging.DEBUG)
 	logging.info('{} New Run {}'.format(clock.now(), scan_folder_name))
 
-	copy_dicom_from_CD(scan_folder_name)
+	copy_dicom_from_CD()
 	compress_dicom(scan_folder_name)
 	convert_dicom_to_raw_nii(scan_folder_name)
 	modalities_coverage = extract_modalities(scan_folder_name)
 	update_sql_database(scan_folder_name, modalities_coverage)
+	update_PMAR_database(scan_folder_name, name_zh)
 
 if __name__ == '__main__':
 	main()

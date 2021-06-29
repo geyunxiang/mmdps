@@ -1,0 +1,9 @@
+{
+    "name": "DTIProc",
+    "MainFolder": "/mnt/hgfs/DTI/",
+    "FolderList": "/mnt/hgfs/DTI/namelist.txt",
+    "Second": false,
+    "SecondList": "",
+    "JobConfig": "configjob_dti_basicproc.json",
+    "RunMode": "Parallel"
+}

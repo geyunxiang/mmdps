@@ -20,8 +20,8 @@ class Calc:
 		data = self.img.get_data()
 		atdata = self.atlasimg.get_data()
 		timepoints = data.shape[3]
-		timeseries = np.empty((atlasobj.count, timepoints))
-		for i, region in enumerate(atlasobj.regions):
+		timeseries = np.empty((self.atlasobj.count, timepoints))
+		for i, region in enumerate(self.atlasobj.regions):
 			regiondots = data[atdata==region, :]
 			regionts = np.mean(regiondots, axis=0)
 			timeseries[i, :] = regionts

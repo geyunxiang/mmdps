@@ -1,0 +1,42 @@
+{
+    "atlas": "aal",
+    "config": {
+        "left": {
+            "notused": "notused",
+            "sections": [
+                {
+                    "name": "DMN",
+                    "region_names": ["Cingulum_Post_L", "Precuneus_L", "Hippocampus_L", "ParaHippocampal_L", "Frontal_Sup_Medial_L", "Parietal_Inf_L", "Temporal_Mid_L", "Temporal_Inf_L"]
+                },
+                {
+                    "name": "CEN",
+                    "region_names": ["Frontal_Mid_L", "Parietal_Sup_L"]
+                },
+                {
+                    "name": "SAL",
+                    "region_names": ["Insula_L", "Cingulum_Ant_L"]
+                }
+            ]
+        },
+        "right": {
+            "notused": "notused",
+            "sections": [
+                {
+                    "name": "DMN",
+                    "region_names": ["Cingulum_Post_R", "Precuneus_R", "Hippocampus_R", "ParaHippocampal_R", "Frontal_Sup_Medial_R", "Parietal_Inf_R", "Temporal_Mid_R", "Temporal_Inf_R"]
+                },
+                {
+                    "name": "CEN",
+                    "region_names": ["Frontal_Mid_R", "Parietal_Sup_R"]
+                },
+                {
+                    "name": "SAL",
+                    "region_names": ["Insula_R", "Cingulum_Ant_R"]
+                }
+            ]
+        },
+        "center": {
+
+        }
+    }
+}

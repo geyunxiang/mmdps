@@ -1,0 +1,11 @@
+{
+    "name": "DTIAtlasedJob",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "CalcTrackNum",
+            "typename": "PythonJob",
+            "cmd": "dti_calc_atlas_track_num.py"
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+	"brief": "Brain template JHU_WM_2", 
+	"count": 48, 
+	"name": "JHU_WM", 
+	"plotindexes": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47], 
+	"regions": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48], 
+	"ticks": ["B1", "B2", "B3", "B4", "B5", "B6", "R7", "L8", "R9", "L10", "R11", "L12", "R13", "L14", "R15", "L16", "R17", "L18", "R19", "L20", "R21", "L22", "R23", "L24", "R25", "L26", "R27", "L28", "R29", "L30", "R31", "L32", "R33", "L34", "R35", "L36", "R37", "L38", "R39", "L40", "R41", "L42", "R43", "L44", "R45", "L46", "R47", "L48"],
+	"region_names": ["Middle_cerebellar_peduncle", "Pontine_crossing_tract_(a_part_of_MCP)", "Genu_of_corpus_callosum", "Body_of_corpus_callosum", "Splenium_of_corpus_callosum", "Fornix_(column_and_body_of_fornix)", "Corticospinal_tract_R", "Corticospinal_tract_L", "Medial_lemniscus_R", "Medial_lemniscus_L", "Inferior_cerebellar_peduncle_R", "Inferior_cerebellar_peduncle_L", "Superior_cerebellar_peduncle_R", "Superior_cerebellar_peduncle_L", "Cerebral_peduncle_R", "Cerebral_peduncle_L", "Anterior_limb_of_internal_capsule_R", "Anterior_limb_of_internal_capsule_L", "Posterior_limb_of_internal_capsule_R", "Posterior_limb_of_internal_capsule_L", "Retrolenticular_part_of_internal_capsule_R", "Retrolenticular_part_of_internal_capsule_L", "Anterior_corona_radiata_R", "Anterior_corona_radiata_L", "Superior_corona_radiata_R", "Superior_corona_radiata_L", "Posterior_corona_radiata_R", "Posterior_corona_radiata_L", "Posterior_thalamic_radiation_(include_optic_radiation)_R", "Posterior_thalamic_radiation_(include_optic_radiation)_L", "Sagittal_stratum_(include_inferior_longitidinal_fasciculus_and_inferior_fronto-occipital_fasciculus)_R", "Sagittal_stratum_(include_inferior_longitidinal_fasciculus_and_inferior_fronto-occipital_fasciculus)_L", "External_capsule_R", "External_capsule_L", "Cingulum_(cingulate_gyrus)_R", "Cingulum_(cingulate_gyrus)_L", "Cingulum_(hippocampus)_R", "Cingulum_(hippocampus)_L", "Fornix_(cres)_/_Stria_terminalis_(can_not_be_resolved_with_current_resolution)_R", "Fornix_(cres)_/_Stria_terminalis_(can_not_be_resolved_with_current_resolution)_L", "Superior_longitudinal_fasciculus_R", "Superior_longitudinal_fasciculus_L", "Superior_fronto-occipital_fasciculus_(could_be_a_part_of_anterior_internal_capsule)_R", "Superior_fronto-occipital_fasciculus_(could_be_a_part_of_anterior_internal_capsule)_L", "Uncinate_fasciculus_R", "Uncinate_fasciculus_L", "Tapetum_R", "Tapetum_L"],
+	"volumes": {
+		"1mm": {
+			"niifile": "JHU_WM_1.nii",
+			"region_counts": [15644, 1500, 8851, 13711, 12729, 659, 1362, 1370, 690, 699, 968, 968, 992, 992, 2278, 2278, 3138, 3018, 3754, 3752, 2515, 2469, 6849, 6852, 7500, 7508, 3728, 3714, 3972, 3978, 2228, 2231, 5611, 5587, 2342, 2751, 1236, 1155, 1124, 1125, 6607, 6605, 507, 507, 380, 376, 596, 600]
+		},
+		"2mm": {
+			"niifile": "JHU_WM_2.nii",
+			"region_counts": [1898, 183, 1131, 1727, 1543, 81, 176, 178, 86, 83, 113, 119, 123, 121, 268, 263, 407, 392, 501, 477, 316, 311, 856, 865, 920, 924, 452, 446, 487, 478, 286, 288, 729, 692, 294, 337, 153, 131, 137, 147, 825, 815, 59, 55, 47, 49, 78, 71]
+		}
+	}
+}

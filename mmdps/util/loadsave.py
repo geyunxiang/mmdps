@@ -6,6 +6,7 @@ import csv
 from collections import OrderedDict
 import nibabel as nib
 import numpy as np
+import scipy.io as scio
 
 from mmdps.util import path
 
@@ -50,6 +51,17 @@ def load_nii(niifile):
     canonical_img = nib.as_closest_canonical(img)
     return canonical_img
 
+def load_mat(matfile):
+    """
+    Load MATLAB .mat file
+    return a dict
+    """
+    dic = scio.loadmat(matfile)
+    dic.pop('__header__')
+    dic.pop('__version__')
+    dic.pop('__globals__')
+    return dic
+
 def load_csvmat(matfile, delimiter = ','):
     """
     Load csv array in csv file.
@@ -63,7 +75,12 @@ def load_csvmat(matfile, delimiter = ','):
         if len(ret.shape) > 1:
             # does not support loading network
             raise Exception
-        ret = ret[:-1]
+        # check if last character is ','
+        with open(matfile, 'r') as f:
+            f.seek(0, 2) # seek to the end (2)
+            f.seek(f.tell() -1 , 0) # seek to 1 character before end
+            if f.read() == ',':
+                ret = ret[:-1]
     return ret
 
 def save_csvmat(matfile, mat, delimiter = ','):
@@ -102,4 +119,15 @@ def load_csv_to_list(outfile):
         reader = csv.DictReader(f)
         for row in reader:
             ret.append(row)
+    return ret
+
+def load_csv_to_dict(outfile, key_column):
+    """
+    Load csv file as a dict. Specify which column value should be used as key
+    """
+    ret = dict()
+    with open(outfile, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            ret[row[key_column]] = row
     return ret

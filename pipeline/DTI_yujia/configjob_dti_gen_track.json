@@ -1,0 +1,11 @@
+{
+    "name": "DTIGenTrack",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "Gen track",
+            "typename": "PythonJob",
+            "cmd": "dti_gen_FA_track.py"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+	"brief": "RSN config AAL",
+	"RSN order": ["DMN", "CEN", "SAL"],
+	"RSN brief dict": {
+		"DMN": "Default Mode Network", 
+		"CEN": "Control Execute Network",
+		"SAL": "Salience Network"
+	}, 
+	"ticks dict": {
+		"DMN": ["Cingulum_Post_L", "Cingulum_Post_R", "Precuneus_L", "Precuneus_R", "Hippocampus_L", "Hippocampus_R", "ParaHippocampal_L", "ParaHippocampal_R", "Frontal_Sup_Medial_L", "Frontal_Sup_Medial_R", "Parietal_Inf_L", "Parietal_Inf_R", "Temporal_Mid_L", "Temporal_Mid_R", "Temporal_Inf_L", "Temporal_Inf_R"],
+		"CEN": ["Frontal_Mid_L", "Frontal_Mid_R", "Parietal_Sup_L", "Parietal_Sup_R"],
+		"SAL": ["Insula_L", "Insula_R", "Cingulum_Ant_L", "Cingulum_Ant_R"]
+	}
+}

@@ -1,0 +1,16 @@
+{
+    "name": "BoldCalcAllDynamic",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "GenDynamicNet",
+            "typename": "BatchJob",
+            "config": "configjob_bold_gen_dynamic_net.json"
+        },
+        {
+            "name": "CalcDynamicAttr",
+            "typename": "BatchJob",
+            "config": "configjob_bold_calc_dynamic_attr_zzl.json"
+        }
+    ]
+}

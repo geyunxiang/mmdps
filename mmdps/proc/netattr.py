@@ -137,6 +137,60 @@ class DynamicAttr(Mat):
 		tickIdx = self.atlasobj.ticks.index(tick)
 		return self.data[tickIdx, :]
 
+class Connection:
+	"""
+	Connection represents a link/edge in a network.
+	It contains xidx, yidx, xtick, ytick in atlasobj, and value
+	During initialization, only need to provide x, y, and value
+	Connection will judge the datatype of x, y to assign them to 
+	idx or ticks.
+	"""
+	def __init__(self, atlasobj, x, y, value = 0, directional = False):
+		self.atlasobj = atlasobj
+		if type(x) is str and type(y) is str:
+			# tick input
+			self.xtick = x
+			self.ytick = y
+			self.xidx = atlasobj.ticks.index(x)
+			self.yidx = atlasobj.ticks.index(y)
+		elif type(x) is int and type(y) is int:
+			# idx input
+			self.xidx = x
+			self.yidx = y
+			self.xtick = atlasobj.ticks[x]
+			self.ytick = atlasobj.ticks[y]
+		else:
+			raise ValueError('Input tick as str or idx as int during Connection construction')
+		self.value = value
+		self.directional = directional
+
+	def invert(self):
+		"""
+		invert the direction. Swap x and y
+		"""
+		return Connection(self.atlasobj, self.yidx, self.xidx, self.value, self.directional)
+
+	def __str__(self):
+		if self.directional:
+			line = '%s(%s) -> %s(%s) val = %1.3f' % (self.xtick, self.atlasobj.region_names[self.xidx], self.ytick, self.atlasobj.region_names[self.yidx], self.value)
+		else:
+			line = '%s(%s) - %s(%s) val = %1.3f' % (self.xtick, self.atlasobj.region_names[self.xidx], self.ytick, self.atlasobj.region_names[self.yidx], self.value)
+		return line
+
+	def __repr__(self):
+		return self.__str__()
+
+	def __eq__(self, other):
+		if not isinstance(other, self.__class__):
+			return False
+		if self.directional and self.xidx == other.xidx and self.yidx == other.yidx:
+			return True
+		elif not self.directional and self.xidx == other.xidx and self.yidx == other.yidx:
+			return True
+		elif not self.directional and self.xidx == other.yidx and self.yidx == other.xidx:
+			return True
+		return False
+
 class Net(Mat):
 	"""
 	Net is a network. It is a two dimensional sqaure symmetric matrix.
@@ -150,6 +204,23 @@ class Net(Mat):
 		The scan can be any string that can be useful.
 		""" 
 		super().__init__(data, atlasobj, scan, feature_name)
+
+	def rescale_data(self):
+		"""
+		Re-scale data to valuerange (-1, 1)
+		"""
+		max_value = np.max(self.data)
+		min_value = np.abs(np.min(self.data))
+		self.data[self.data>0] /= max_value
+		self.data[self.data<0] /= min_value
+
+	def iterate(self):
+		"""
+		Iterate over all connection in this network
+		"""
+		for xidx in range(self.atlasobj.count):
+			for yidx in range(xidx + 1, self.atlasobj.count):
+				yield Connection(self.atlasobj, xidx, yidx, self.data[xidx, yidx])
 
 	def uniqueValueAsList(self, selectedAreas = None):
 		"""
@@ -187,6 +258,19 @@ class Net(Mat):
 				counter += 1
 		self.data += np.transpose(self.data)
 		self.data += np.eye(n)
+
+	def set_data_from_connections(self, conn_list, unified_value = None):
+		"""
+		This function takes a list of Connections and store them in a symmetric matrix
+		Specify unified_value to override connection value
+		"""
+		for conn in conn_list:
+			if unified_value is not None:
+				self.data[conn.xidx, conn.yidx] = unified_value
+				self.data[conn.yidx, conn.xidx] = unified_value
+			else:
+				self.data[conn.xidx, conn.yidx] = conn.value
+				self.data[conn.yidx, conn.xidx] = conn.value
 
 	def copy(self):
 		"""Copy the net."""
@@ -243,15 +327,25 @@ class Net(Mat):
 					newnet.data[xidx, yidx] = 0
 		return newnet
 
-	def binarize(self, threshold):
+	def binarize(self, threshold, less_than = False):
 		"""
 		Return a copy of current network, with values binarized
 		abs(FC) < threshold --> FC = 0
 		abs(FC) >= threshold --> FC = 1
+		if less_than, return a network containing values less than threshold 
+		abs(FC) > threshold --> FC = 0
+		abs(FC) <= threshold --> FC = 1
 		"""
 		newnet = Net(self.data.copy(), self.atlasobj, self.scan, self.feature_name)
-		newnet.data = (np.abs(newnet.data) >= threshold).astype(int)
+		if less_than:
+			newnet.data = (np.abs(newnet.data) <= threshold).astype(int)
+		else:
+			newnet.data = (np.abs(newnet.data) >= threshold).astype(int)
 		return newnet
+
+	def zero_diagonal(self, value = 0):
+		for idx in range(self.atlasobj.count):
+			self.data[idx, idx] = value
 
 	def select_ROI(self, roi_list):
 		"""
@@ -279,9 +373,35 @@ class Net(Mat):
 				newnet.data[yidx, xidx] = 0
 		return newnet
 
-	def setValueAtTicks(self, xtick, ytick, value):
+	def set_value_at_tick(self, xtick, ytick, value):
 		self.data[self.atlasobj.ticks.index(xtick), self.atlasobj.ticks.index(ytick)] = value
 		self.data[self.atlasobj.ticks.index(ytick), self.atlasobj.ticks.index(xtick)] = value
+
+	def connected_components(self):
+		"""
+		Return a list of node indices of connected components in the current network, as well as the largest_size of cc
+		The size of connected components is defined as the number of nodes
+		Reference: https://www.geeksforgeeks.org/connected-components-in-an-undirected-graph/
+		"""
+		# print('Net CC called')
+		def DFSUtil(cc_list, idx, visited):
+			visited[idx] = True
+			cc_list.append(idx)
+			for nidx in np.nonzero(self.data[idx, :])[0]:
+				if not visited[nidx]:
+					cc_list = DFSUtil(cc_list, nidx, visited)
+			return cc_list
+		
+		largest_size = -1
+		visited = [False] * self.atlasobj.count
+		cc_net = []
+		for idx in range(self.atlasobj.count):
+			if not visited[idx]:
+				cc_list = DFSUtil([], idx, visited)
+				if len(cc_list) > largest_size:
+					largest_size = len(cc_list)
+				cc_net.append(cc_list)
+		return cc_net, largest_size
 
 class DynamicNet(Mat):
 	"""
@@ -320,6 +440,83 @@ class DynamicNet(Mat):
 			else:
 				break
 			start += self.step_size
+
+class DirectedNet(Net):
+	"""
+	"""
+	def __init__(self, data, atlasobj, scan = None, feature_name = 'BOLD.net'):
+		super().__init__(data, atlasobj, scan, feature_name)
+
+	def iterate(self):
+		for xidx in range(self.atlasobj.count):
+			for yidx in range(self.atlasobj.count):
+				if xidx == yidx:
+					continue
+				yield Connection(self.atlasobj, xidx, yidx, self.data[xidx, yidx])
+
+	def set_data_from_connections(self, conn_list, unified_value = None):
+		for conn in conn_list:
+			if unified_value is not None:
+				self.data[conn.xidx, conn.yidx] = unified_value
+			else:
+				self.data[conn.xidx, conn.yidx] = conn.value
+
+	def to_connection_list(self):
+		"""
+		Convert the directed network to a list of connections
+		Useful in confirmation for sparse network
+		:return: A list of Connection
+		"""
+		ret = []
+		for i in range(self.atlasobj.count):
+			for j in np.nonzero(self.data[i, :])[0]:
+				ret.append(Connection(self.atlasobj, int(i), int(j), self.data[i, j], directional=True))
+		return ret
+
+	def set_value_at_tick(self, xtick, ytick, value):
+		self.data[self.atlasobj.ticks.index(xtick), self.atlasobj.ticks.index(ytick)] = value
+
+	def connected_components(self):
+		"""
+		Return a list of node indices of the strongly connected components (SCC) in the current network,
+		as well as the largest_size of cc.
+		A directed graph is strongly connected if there is a path between all pairs of vertices.
+		The size of connected components is defined as the number of nodes
+		Reference:
+			[1] https://www.geeksforgeeks.org/strongly-connected-components/
+			[2] https://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/
+		"""
+		# print('Directed version SCC called')
+		def fill_order(idx, visited, stack):
+			visited[idx] = True
+			for i in np.nonzero(self.data[idx, :])[0]:
+				if not visited[i]:
+					fill_order(i, visited, stack)
+			stack = stack.append(idx)
+		def DFSUtil(data, idx, visited, scc):
+			visited[idx] = True
+			scc.append(idx)
+			for i in np.nonzero(data[idx, :])[0]:
+				if not visited[i]:
+					DFSUtil(data, i, visited, scc)
+		stack = []
+		visited = [False] * self.atlasobj.count
+		for idx in range(self.atlasobj.count):
+			if not visited[idx]:
+				fill_order(idx, visited, stack)
+		t_data = np.transpose(self.data)
+		visited = [False] * self.atlasobj.count
+		result = [] # list of scc
+		largest_size = 0
+		while stack:
+			i = stack.pop()
+			if not visited[i]:
+				scc = []
+				DFSUtil(t_data, i, visited, scc)
+				if len(scc) > largest_size:
+					largest_size = len(scc)
+				result.append(scc)
+		return result, largest_size
 
 def zero_net(atlasobj):
 	return Net(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
@@ -431,3 +628,31 @@ def FC_count(FC_list):
 		if ticks[0][0] != ticks[1][0]:
 			cross_hemisphere_FC_count += 1
 	return within_hemisphere_FC_count, cross_hemisphere_FC_count
+
+def test_net_connected_components():
+	atlasobj = atlas.get('aal')
+	znet = zero_net(atlasobj)
+	znet.data[2, 3] = 1
+	znet.data[3, 2] = 1
+	znet.data[3, 5] = 1
+	znet.data[5, 3] = 1
+	znet.data[6, 7] = 1
+	znet.data[7, 6] = 1
+	cc, lsize = znet.connected_components()
+	print(cc)
+	print(len(cc))
+	print(lsize)
+
+def test_directed_net_strongly_connected_components():
+	atlasobj = atlas.get('aal')
+	znet = DirectedNet(np.zeros((atlasobj.count, atlasobj.count)), atlasobj)
+	znet.data[1, 0] = 1
+	znet.data[0, 2] = 1
+	znet.data[2, 1] = 1
+	znet.data[0, 3] = 1
+	znet.data[3, 4] = 1
+	scc, lsize = znet.connected_components()
+	print(scc, len(scc), lsize)
+
+if __name__ == '__main__':
+	test_directed_net_strongly_connected_components()

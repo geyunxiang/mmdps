@@ -1,0 +1,17 @@
+{
+    "name": "inter_attr_dynamic",
+    "netthreshold": 0.5,
+    "if_stride": false,
+    "netthreshold_stride": 0.05,
+    "netthreshold_end": 0.6,
+    "windowLength":100,
+    "stepSize":3,
+    "calc_attr":{
+        "weighted_degree":true,
+        "betweenness_centrality":true,
+        "clustering_coefficients":true,
+        "local_efficiency":true,
+        "modularity":true,
+        "small_worldness":true
+    }
+}

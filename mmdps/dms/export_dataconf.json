@@ -8,8 +8,8 @@
         "BOLD.net": {
             "modal": "BOLD", "file": "bold_net/corrcoef", "file_type": ".csv", "out_file_name": "bold_net"
         },
-        "DWI.net": {
-            "modal": "DWI", "file": "nativespace/dwinet", "file_type": ".csv", "out_file_name": "dwi_net"
+        "DTI.net": {
+            "modal": "DTI", "file": "nativespace/dtinet", "file_type": ".csv", "out_file_name": "dti_net"
         }
     },
     "attrs": {
@@ -55,22 +55,31 @@
         "T1.GMD": {
             "modal": "T1", "file": "t1mean/greydensity", "file_type": ".csv", "out_file_name": "t1_GMD"
         },
-        "DWI.MD": {
-            "modal": "DWI", "file": "nativespace/meanMD", "file_type": ".csv", "out_file_name": "dwi_MD"
+        "T1.GMD.nothresh": {
+            "modal": "T1", "file": "t1mean/greydensity_nothresh", "file_type": ".csv", "out_file_name": "t1_GMD_nothresh"
         },
-        "DWI.FA": {
-            "modal": "DWI", "file": "nativespace/meanFA", "file_type": ".csv", "out_file_name": "dwi_FA"
+        "T1.GMV": {
+            "modal": "T1", "file": "t1mean/greyvolume", "file_type": ".csv", "out_file_name": "t1_GMV"
+        },
+        "T1.GMV.nothresh": {
+            "modal": "T1", "file": "t1mean/greyvolume_nothresh", "file_type": ".csv", "out_file_name": "t1_GMV_nothresh"
+        },
+        "DTI.MD": {
+            "modal": "DTI", "file": "nativespace/meanMD", "file_type": ".csv", "out_file_name": "dti_MD"
+        },
+        "DTI.FA": {
+            "modal": "DTI", "file": "nativespace/meanFA", "file_type": ".csv", "out_file_name": "dti_FA"
         }, 
-        "DWI.RD": {
-            "modal": "DWI", "file": "nativespace/meanRD", "file_type": ".csv", "out_file_name": "dwi_RD"
+        "DTI.RD": {
+            "modal": "DTI", "file": "nativespace/meanRD", "file_type": ".csv", "out_file_name": "dti_RD"
         }, 
-        "DWI.AD": {
-            "modal": "DWI", "file": "nativespace/meanAD", "file_type": ".csv", "out_file_name": "dwi_AD"
+        "DTI.AD": {
+            "modal": "DTI", "file": "nativespace/meanAD", "file_type": ".csv", "out_file_name": "dti_AD"
         }
     },
     "unatlased": {
-        "dwi_FAColor": {
-            "modal": "DWI", "file": "dtifitresult_FA_color", "file_type": ".nii.gz", "out_file_name": "dwi_FAColor"
+        "dti_FAColor": {
+            "modal": "DTI", "file": "dtifitresult_FA_color", "file_type": ".nii.gz", "out_file_name": "dti_FAColor"
         }
     }
 }

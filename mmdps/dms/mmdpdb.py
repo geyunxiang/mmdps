@@ -268,12 +268,18 @@ class SQLiteDB:
 			self.session.query(tables.Group).filter_by(name = group_name).one()
 		except NoResultFound:
 			# alright
-			for scan in scan_list:
-				db_scan = self.session.query(tables.MRIScan).filter_by(filename = scan).one()
-				group.mriscans.append(db_scan)
-				group.people.append(db_scan.person)
-			self.session.add(group)
-			self.session.commit()
+			try:
+				for scan in scan_list:
+					db_scan = self.session.query(tables.MRIScan).filter_by(filename = scan).one()
+					group.mriscans.append(db_scan)
+					group.people.append(db_scan.person)
+				self.session.add(group)
+				self.session.commit()
+			except NoResultFound as e:
+				# no record for one scan
+				print('Error creating new group %s, scan: %s not found.' % (group_name, scan))
+				print('Error message: ', e)
+				exit()
 			return
 		except MultipleResultsFound:
 			# more than one record found

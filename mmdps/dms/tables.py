@@ -171,10 +171,10 @@ class Group(BaseModel):
 	eegscans = relationship('EEGScan', secondary = association_table_group_eegscan, back_populates = 'groups')
 	studies = relationship('ResearchStudy', secondary = association_table_group_study, back_populates = 'groups')
 
-	def getMRIScanStrList(self):
+	def get_scanlist(self):
 		return [scan.filename for scan in self.mriscans]
 
-	def getSubjectNameList(self):
+	def get_namelist(self):
 		return [person.name for person in self.people]
 
 	def __repr__(self):
@@ -197,13 +197,13 @@ class ResearchStudy(BaseModel):
 	def __repr__(self):
 		return "<Study(name='{}', description='{}', alias='{}')>".format(self.name, self.description, self.alias)
 
-	def listGroups(self):
+	def list_groups(self):
 		res = []
 		for gp in self.groups:
 			res.append(gp.name)
 		return res
 
-	def getGroup(self, name_string):
+	def get_group(self, name_string):
 		for gp in self.groups:
 			if name_string in gp.name:
 				return gp

@@ -66,15 +66,24 @@ class DicomInfo:
 		try:
 			d['Birth'] = date_only_str(datetime.datetime.strptime(self.plan.PatientsBirthDate, '%Y%m%d'))
 		except:
-			pass
+			try:
+				d['Birth'] = date_only_str(datetime.datetime.strptime(self.plan.PatientBirthDate, '%Y%m%d'))
+			except:
+				pass
 		try:
 			d['Gender'] = str(self.plan.PatientsSex)
 		except:
-			pass
+			try:
+				d['Gender'] = str(self.plan.PatientSex)
+			except:
+				pass
 		try:
 			d['Weight'] = int(self.plan.PatientsWeight)
 		except:
-			pass
+			try:
+				d['Weight'] = int(self.plan.PatientWeight)
+			except:
+				pass
 		try:
 			d['Age'] = parse_date_space_time(self.studydate()).year - parse_date_only(d['Birth']).year
 		except:
@@ -82,7 +91,10 @@ class DicomInfo:
 		try:
 			d['AgeRaw'] = int(self.plan.PatientsAge[:-1])
 		except:
-			pass
+			try:
+				d['AgeRaw'] = int(self.plan.PatientsAge[:-1])
+			except:
+				pass
 		return d
 
 	def machine(self):
@@ -109,12 +121,7 @@ class DicomInfo:
 	def print_all(self):
 		print(self.plan)
 
-def gen_scan_info(infolder, outfolder):
-	"""
-	Generate scan_info.json file from dicom files.
-
-	Use one random dicom file.
-	"""
+def find_scan_dicom_info(infolder):
 	found = False
 	for dirpath, dirnames, filenames in os.walk(infolder):
 		if not found:
@@ -126,9 +133,19 @@ def gen_scan_info(infolder, outfolder):
 					pass
 				if found:
 					di = DicomInfo(os.path.join(dirpath, filename))
-					d = di.get_scan_info()
-					scanInfoFile = os.path.join(outfolder, 'scan_info.json')
-					loadsave.save_json_ordered(scanInfoFile, d)
+					return di
+	return None
+
+def gen_scan_info(infolder, outfolder):
+	"""
+	Generate scan_info.json file from dicom files.
+
+	Use one random dicom file.
+	"""
+	di = find_scan_dicom_info(infolder)
+	d = di.get_scan_info()
+	scanInfoFile = os.path.join(outfolder, 'scan_info.json')
+	loadsave.save_json_ordered(scanInfoFile, d)
 
 def convert_dicom_to_nifti(infolder, outfolder):
 	"""

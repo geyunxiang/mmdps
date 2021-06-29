@@ -1,0 +1,11 @@
+{
+    "name": "BoldCalcDynamicAttr",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "CalcDynamicAttr",
+            "typename": "PythonJob",
+            "cmd": "bold_netcalc_inter_intra_dynamic_region.py"
+        }
+    ]
+}

@@ -16,6 +16,7 @@ from mmdps.vis.bnv import BNVNode
 import nibabel as nib
 
 atlas_list = ['brodmann_lr', 'brodmann_lrce', 'aal', 'aicha', 'bnatlas']
+atlas_list_extended = ['brodmann_lr', 'brodmann_lrce', 'aal', 'aal2', 'aicha', 'bnatlas', 'aal3', 'JHU_WM']
 
 class Atlas:
 	"""
@@ -43,6 +44,8 @@ class Atlas:
 		self.regions = self.dd['regions']
 		# the ticks list, correspond to regions
 		self.ticks = self.dd['ticks']
+		# the region name list
+		self.region_names = self.dd['region_names']
 		# sub_networks
 		self.sensorimotor_ticks = self.dd.get('sensory motor ticks', None)
 		# the plotindexes list, n means it is the nth to be ploted.
@@ -74,11 +77,9 @@ class Atlas:
 		circosfile = 'circosparts_{}.json'.format(name)
 		self.brainparts = braincircos.BrainParts(loadsave.load_json(os.path.join(self.circosfolder, circosfile)))
 
-	def get_brainparts(self):
-		if self.brainparts:
-			return self.brainparts
-		self.set_brainparts('default')
-		return self.brainparts
+	def get_brainparts_config(self, name = 'default'):
+		circosfile = 'circosparts_{}.json'.format(name)
+		return loadsave.load_json(os.path.join(self.circosfolder, circosfile))
 
 	def add_volumes(self, volumes):
 		"""Add volumes for actual nii files."""
@@ -91,6 +92,9 @@ class Atlas:
 		"""Get one volume using volumename."""
 		return self.volumes[volumename]
 
+	def get_data(self, resolution = 1):
+		return loadsave.load_nii(os.path.join(rootconfig.path.atlas, self.name, '%s_%d.nii' % (self.name, resolution))).get_data()
+
 	def ticks_to_regions(self, ticks):
 		"""Convert ticks to regions."""
 		if not hasattr(self, '_tickregiondict'):
@@ -98,12 +102,24 @@ class Atlas:
 		regions = [self._tickregiondict[tick] for tick in ticks]
 		return regions
 
+	def tick_to_name(self, tick):
+		return self.region_names[self.ticks.index(tick)]
+
+	def region_to_name(self, region):
+		return self.region_names[self.regions.index(region)]
+
+	def regions_to_names(self, regions):
+		return [self.region_to_name(region) for region in regions]
+
 	def regions_to_indexes(self, regions):
 		"""Convert regions to indexes."""
 		if not hasattr(self, '_regionindexdict'):
 			self._regionindexdict = dict([(k, i) for i, k in enumerate(self.regions)])
 		indexes = [self._regionindexdict[region] for region in regions]
 		return indexes
+
+	def regions_to_ticks(self, regions):
+		return [self.ticks[self.regions.index(region)] for region in regions]
 
 	def ticks_to_indexes(self, ticks):
 		"""
@@ -154,12 +170,38 @@ class Atlas:
 		subatlasobj.bnvnode = self.bnvnode.copy_sub(subindexes)
 		return subatlasobj
 
-	def adjust_ticks(self):
+	def iterate_idx(self):
+		for xidx in range(self.count):
+			for yidx in range(xidx + 1, self.count):
+				yield xidx, yidx
+
+	def iterate_tick(self):
+		for xidx in range(self.count):
+			for yidx in range(xidx + 1, self.count):
+				yield self.ticks[xidx], self.ticks[yidx]
+
+	def iterate_idx_all(self):
+		for xidx in range(self.count):
+			for yidx in range(self.count):
+				if xidx == yidx:
+					continue
+				yield xidx, yidx
+
+	def iterate_tick_all(self):
+		for xidx in range(self.count):
+			for yidx in range(self.count):
+				if xidx == yidx:
+					continue
+				yield self.ticks[xidx], self.ticks[yidx]
+
+	def adjust_ticks(self, ticks = None):
 		"""Adjust ticks according to plotindexes."""
+		if ticks is None:
+			ticks = self.ticks
 		adjticks = [None] * self.count
 		for i in range(self.count):
 			realpos = self.plotindexes[i]
-			adjticks[i] = self.ticks[realpos]
+			adjticks[i] = ticks[realpos]
 		return adjticks
 
 	def adjust_vec(self, vec):
@@ -279,8 +321,13 @@ aal = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aal.json')))
 aal2 = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aal2.json')))
 aicha = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aicha.json')))
 bnatlas = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'bnatlas.json')))
+aal3 = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'aal3.json')))
+JHU_WM = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'JHU_WM.json')))
+LPBA40 = Atlas(loadsave.load_json(os.path.join(rootconfig.path.atlas, 'lpba40.json')))
 
 def get(atlasname, suppress = True):
+	if type(atlasname) is Atlas:
+		return atlasname
 	if not suppress:
 		print('You are using atlas.get() to obtain an atlasobj\nYou can use mmdps.proc.atlas.%s directly. \nfrom mmdps.proc import atlas\natlas.%s' % (atlasname, atlasname))
 	if atlasname == 'brodmann_lr':
@@ -295,6 +342,12 @@ def get(atlasname, suppress = True):
 		return aicha
 	elif atlasname == 'bnatlas':
 		return bnatlas
+	elif atlasname == 'aal3':
+		return aal3
+	elif atlasname == 'JHU_WM':
+		return JHU_WM
+	elif atlasname == 'LPBA40':
+		return LPBA40
 	else:
 		print('Unknown atlasname = %s' % atlasname)
 		raise Exception()
@@ -352,9 +405,9 @@ def color_atlas_region(atlasobj, regions, colors, outfilepath, resolution = '1mm
 		newAtlasData = np.zeros(newAtlasData.shape)
 		for region, color in zip(regions, colors):
 			regionMask = atlasData.copy()
-			regionMask[regionMask != atlasobj.regions[atlasobj.ticks.index(region)]] = 0
-			regionMask[regionMask == atlasobj.regions[atlasobj.ticks.index(region)]] = color
-			newAtlasData += regionMask
+			# newAtlasData[regionMask != atlasobj.regions[atlasobj.ticks.index(region)]] = 0
+			newAtlasData[regionMask == atlasobj.regions[atlasobj.ticks.index(region)]] = color
+			# newAtlasData += regionMask
 	elif type(regions) is list and type(colors) is int:
 		# one color for each region
 		newAtlasData = np.zeros(newAtlasData.shape)
