@@ -405,9 +405,9 @@ def color_atlas_region(atlasobj, regions, colors, outfilepath, resolution = '1mm
 		newAtlasData = np.zeros(newAtlasData.shape)
 		for region, color in zip(regions, colors):
 			regionMask = atlasData.copy()
-			regionMask[regionMask != atlasobj.regions[atlasobj.ticks.index(region)]] = 0
-			regionMask[regionMask == atlasobj.regions[atlasobj.ticks.index(region)]] = color
-			newAtlasData += regionMask
+			# newAtlasData[regionMask != atlasobj.regions[atlasobj.ticks.index(region)]] = 0
+			newAtlasData[regionMask == atlasobj.regions[atlasobj.ticks.index(region)]] = color
+			# newAtlasData += regionMask
 	elif type(regions) is list and type(colors) is int:
 		# one color for each region
 		newAtlasData = np.zeros(newAtlasData.shape)

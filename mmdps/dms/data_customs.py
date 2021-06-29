@@ -121,12 +121,7 @@ class DicomInfo:
 	def print_all(self):
 		print(self.plan)
 
-def gen_scan_info(infolder, outfolder):
-	"""
-	Generate scan_info.json file from dicom files.
-
-	Use one random dicom file.
-	"""
+def find_scan_dicom_info(infolder):
 	found = False
 	for dirpath, dirnames, filenames in os.walk(infolder):
 		if not found:
@@ -138,9 +133,19 @@ def gen_scan_info(infolder, outfolder):
 					pass
 				if found:
 					di = DicomInfo(os.path.join(dirpath, filename))
-					d = di.get_scan_info()
-					scanInfoFile = os.path.join(outfolder, 'scan_info.json')
-					loadsave.save_json_ordered(scanInfoFile, d)
+					return di
+	return None
+
+def gen_scan_info(infolder, outfolder):
+	"""
+	Generate scan_info.json file from dicom files.
+
+	Use one random dicom file.
+	"""
+	di = find_scan_dicom_info(infolder)
+	d = di.get_scan_info()
+	scanInfoFile = os.path.join(outfolder, 'scan_info.json')
+	loadsave.save_json_ordered(scanInfoFile, d)
 
 def convert_dicom_to_nifti(infolder, outfolder):
 	"""
