@@ -65,10 +65,7 @@ class LinePlot:
 		x_maximum = 6 # experiment result. At most 6 columns under line plot
 		y_maximum = 4 # how many records per column. need to be determined dynamically
 		# count how many significant result
-		counter = 0
-		for stat in stat_list:
-			if stat[1] <= 0.05:
-				counter += 1
+		counter = len(stat_list)
 		if counter > x_maximum * y_maximum:
 			# adjust y_maximum so that all results can fill under line plot
 			y_maximum = int(counter/x_maximum + 1)
@@ -85,10 +82,10 @@ class LinePlot:
 		y_count = 0
 		x_shift = 0
 		for idx, stat in enumerate(stat_list):
-			if stat[1] > 0.05:
-				continue
+			# if stat[1] > 0.05:
+			# 	continue
 			y_count += 1
-			draw.text((x_offset, y_offset), '* %s' % self.atlasobj.ticks[idx], (0, 0, 0), font = font)
+			draw.text((x_offset, y_offset), '* %s' % stat[2], (0, 0, 0), font = font)
 			x_offset += (w-10) # magic
 			x_shift += (w-10)
 			draw.text((x_offset, y_offset), 't = %1.3f' % (stat[0]), (0, 0, 0), font = font)
@@ -155,6 +152,16 @@ class LinePlot:
 		plt.xlim(self.xlim)
 		plt.ylim(self.ylim)
 		ax = plt.gca()
+
+		if stat_list is not None:
+			# keep significant stats according to sig_positions
+			stat_list = list(stat_list) # persist zip
+			new_list = []
+			for idx, flag in enumerate(sig_positions):
+				if flag:
+					new_list.append(stat_list[idx])
+			stat_list = new_list
+
 		if adjust_method == 'RSN':
 			self.adjust_RSN(ax, sig_positions)
 		elif adjust_method == 'circos':
@@ -259,9 +266,9 @@ def plot_correlation(xvec, yvec, xlabel, ylabel, title, outfilepath):
 	plotter = CorrPlot(xvec, yvec, xlabel, ylabel, title, outfilepath)
 	plotter.plot()
 
-def plot_correlation_if_significant(xvec, yvec, xlabel, ylabel, title, outfilepath):
+def plot_correlation_if_significant(xvec, yvec, xlabel, ylabel, title, outfilepath, sig_level = 0.05):
 	pr, prp = stats_utils.correlation_Pearson(xvec, yvec)
-	if prp < 0.05:
+	if prp < sig_level:
 		plot_correlation(xvec, yvec, xlabel, ylabel, title, outfilepath)
 
 def plot_attr_lines(attrs, title, outfilepath, sig_positions = None, stat_list = None, adjust_method = None):
