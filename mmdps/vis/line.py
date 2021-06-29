@@ -85,7 +85,7 @@ class LinePlot:
 			# if stat[1] > 0.05:
 			# 	continue
 			y_count += 1
-			draw.text((x_offset, y_offset), '* %s' % stat[2], (0, 0, 0), font = font)
+			draw.text((x_offset, y_offset), '* %s' % self.atlasobj.ticks[stat[2]], (0, 0, 0), font = font)
 			x_offset += (w-10) # magic
 			x_shift += (w-10)
 			draw.text((x_offset, y_offset), 't = %1.3f' % (stat[0]), (0, 0, 0), font = font)
@@ -159,6 +159,7 @@ class LinePlot:
 			new_list = []
 			for idx, flag in enumerate(sig_positions):
 				if flag:
+					stat_list[idx] += (idx,)
 					new_list.append(stat_list[idx])
 			stat_list = new_list
 
