@@ -238,6 +238,11 @@ def connection_wise_test(netListA, netListB, method = 'ttest', iterate_all = Fal
 			t, p = scipy.stats.mannwhitneyu(
 				[a.data[xidx, yidx] for a in netListA], 
 				[b.data[xidx, yidx] for b in netListB])
+		elif method == 'ttest rel':
+			# perform paired t-test
+			t, p = scipy.stats.ttest_rel(
+				[a.data[xidx, yidx] for a in netListA], 
+				[b.data[xidx, yidx] for b in netListB])
 		else:
 			raise ValueError(
 				'Parameter comparison_method should be one of [\'ttest\', \'nonparametric\']. Given parameter value = %s' % method)
