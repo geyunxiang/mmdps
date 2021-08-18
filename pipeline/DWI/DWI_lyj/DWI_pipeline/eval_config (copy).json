@@ -1,0 +1,8 @@
+{
+    "track_root": ".",
+    "name_list": "./namelist.txt",
+    "tracking_method": "EuDX",
+    "eval_method": 0,
+    "evals_map_name": "None",
+    "output_file": "."
+}

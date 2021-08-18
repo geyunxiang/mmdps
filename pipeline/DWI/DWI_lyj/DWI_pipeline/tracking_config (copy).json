@@ -1,0 +1,11 @@
+{
+    "tracking_method": 5,
+    "result_folder": ".", 
+    "seed_mask_file": "None",
+    "FA_name": "FA.nii.gz",
+    "evals_map_name": "None",
+    "index_map_name": "None",
+    "StoppingThreshold": 0.1
+}
+
+//result folder personall folder

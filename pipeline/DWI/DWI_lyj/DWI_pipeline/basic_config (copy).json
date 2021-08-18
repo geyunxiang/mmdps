@@ -1,0 +1,8 @@
+{
+    "data_root": "/home/mmdp/Zhangziliang/GitWorkspace/DWI_DATA/",
+    "name_list": "/home/mmdp/Zhangziliang/GitWorkspace/mmdps-geyx-pydoc/pipeline/DWI/DWI_lyj/DWI_pipeline/namelist.txt",
+    "norm_DWI_name": "normalized_pDWI.nii.gz",
+    "brain_mask_name": "normalized_mask.nii.gz",
+    "bvec_name": "DWI.bvec",
+    "bval_name": "DWI.bval"
+}

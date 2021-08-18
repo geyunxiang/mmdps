@@ -1,0 +1,8 @@
+{
+    "atlas_path": "../data/atlas/aal/aal_2.nii.gz",
+    "track_root": "../pipeline/exp14/ROI_167",
+    "output_root": "../pipeline/exp14/ROI_167",
+    "feature_list_output_filename": "aal_feature.mat",
+    "matrix_output_filename": "aal_matrix.mat",
+    "tracking_method": "probabilistic"
+}
