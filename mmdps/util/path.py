@@ -5,6 +5,7 @@ The config files and cmd files specified are searched in paths, like matlab.
 """
 
 import os
+from re import search
 import shutil
 
 # from .. import rootconfig
@@ -26,11 +27,8 @@ def makedirs_file(file):
 	The dir is extracted use dirname.
 	"""
 	d = os.path.dirname(file)
-	if len(d) < 1:
-		# if the given file contains only filename
-		return
 	makedirs(d)
-
+	
 def makedirs(dirs):
 	"""Makedirs that use exist_ok=True."""
 	os.makedirs(dirs, exist_ok=True)
@@ -69,20 +67,24 @@ def projectpathlist():
 
 def searchpathlist():
 	"""The full path list for searching."""
+	_ret = []
 	defaultlist = defaultpathlist()
 	builtinlist = builtinpathlist()
 	pathvarlist = projectpathlist()
+	_ret.extend(defaultlist)
+	_ret.extend(pathvarlist)
+	_ret.extend(builtinlist)
+
 	searchpaths = []
-	searchpaths.extend(defaultlist)
-	searchpaths.extend(pathvarlist)
-	searchpaths.extend(builtinlist)
 	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'DWI'))
-	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'DTI_yujia'))
 	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'T1'))
 	searchpaths.append(os.path.join(rootconfig.path.root, 'pipeline', 'BOLD'))
 	searchpaths.append(os.path.join(rootconfig.path.root, 'tools', 'helper_tools'))
 	searchpaths.append(os.path.join(rootconfig.path.root, 'tools', 'job_runner'))
-	return searchpaths
+	for _pa in searchpaths:
+		for _dirpath,_,_ in os.walk(_pa):
+			_ret.append(_dirpath)
+	return _ret
 
 def getfilepath(filename):
 	"""Search the file in all search paths, return the full path."""
@@ -90,6 +92,12 @@ def getfilepath(filename):
 		return os.path.abspath(filename)
 	pathlist = searchpathlist()
 	return findfile(filename, pathlist)
+
+# def getdirpath(dirname):
+# 	if os.path.isdir(dirname):
+# 		return os.path.abspath(dirname)
+# 	pathlist = searchpathlist()
+# 	return find
 
 def fullfile(filename):
 	"""Search the file and return the full path in all search paths."""
@@ -133,9 +141,3 @@ def name_date(mriscan):
 	"""Split name date."""
 	l = mriscan.split('_')
 	return l[0], l[1]
-
-def clean_listdir(root_path):
-	"""
-	Same as os.listdir, excluding non-directory
-	"""
-	return [dirname for dirname in sorted(os.listdir(root_path)) if os.path.isdir(os.path.join(root_path, dirname))]
