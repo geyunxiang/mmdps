@@ -98,6 +98,7 @@ def LiFE_new(streamlines=None, gtab=None, data=None,
 
 
     fiber_model = life_.FiberModel(gtab)
+    streamlines = reduct(streamlines)
     fiber_fit = fiber_model.fit(data, streamlines, affine=np.eye(4), sphere=False, evals_map=eval_map[:,:,:,0])
 
     model_predict = fiber_fit.predict()
@@ -119,6 +120,7 @@ def LiFE_new(streamlines=None, gtab=None, data=None,
 def LiFE(streamlines=None, gtab=None, data=None):
 
     fiber_model = life.FiberModel(gtab)
+    streamlines = reduct(streamlines)
     fiber_fit = fiber_model.fit(data, streamlines, affine=np.eye(4), sphere=False)
 
     model_predict = fiber_fit.predict()
