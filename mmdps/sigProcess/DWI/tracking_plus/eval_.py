@@ -129,7 +129,7 @@ def LiFE(streamlines=None, gtab=None, data=None):
     a = model_error.copy()
 
     model_rmse = np.sqrt(np.mean(a[:, :] ** 2, -1))
-
+    vol_model = np.ones(data.shape[:3]) * np.nan
     vol_model[fiber_fit.vox_coords[:, 0],
               fiber_fit.vox_coords[:, 1],
               fiber_fit.vox_coords[:, 2]] = model_rmse

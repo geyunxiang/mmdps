@@ -1,0 +1,9 @@
+{
+    "name": "DWI_FA",
+    "MainFolder": "/home/mmdp/Zhangziliang/GitWorkspace/DWI_DATA/",
+    "FolderList": "/home/mmdp/Zhangziliang/GitWorkspace/DWI_DATA/namelist.txt",
+    "Second": false,
+    "SecondList": "/home/mmdp/Zhangziliang/GitWorkspace/DWI_DATA/atlaslist.txt",
+    "JobConfig": "/home/mmdp/Zhangziliang/GitWorkspace/mmdps/pipeline/DWI/DWI_lyj_para/configjob_DWI_DTIFIT.json",
+    "RunMode": "Parallel"
+}

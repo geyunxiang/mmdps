@@ -1,0 +1,11 @@
+{
+    "name": "DWI_TRACKING",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "DWI_Tracking",
+            "typename": "PythonJob",
+            "cmd": "dwi_tracking_job.py"
+        }
+    ]
+}
