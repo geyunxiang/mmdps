@@ -1,0 +1,11 @@
+{
+    "name": "DWI_EVAL",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "DWI_Eval",
+            "typename": "PythonJob",
+            "cmd": "dwi_eval_job.py"
+        }
+    ]
+}

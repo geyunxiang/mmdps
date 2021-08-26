@@ -1,0 +1,9 @@
+{
+    "T1InputName":"T1brain.img",
+    "T2InputName":"T2brain.img",
+    "segOutputName":"SegResult.img",
+    "t1Level":"90",
+    "t2Level":"172",
+    "maskOutputName":"mask.img",
+    "maskThreshold":"0.4"
+}

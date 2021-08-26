@@ -1,0 +1,11 @@
+{
+    "name": "DWI_DTIFIT",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "DWI_DTIFIT_FA",
+            "typename": "PythonJob",
+            "cmd": "dwi_dtifit_job.py"
+        }
+    ]
+}

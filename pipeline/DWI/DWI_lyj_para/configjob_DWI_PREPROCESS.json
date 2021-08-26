@@ -1,0 +1,16 @@
+{
+    "name": "DWI_PREPROCESS",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "DWI_preprocess",
+            "typename": "ShellJob",
+            "cmd": "dwi_preprocess.sh"
+        },
+        {
+            "name": "DWI_calc_normalize",
+            "typename": "ShellJob",
+            "cmd": "dwi_calc_normalize.sh"
+        }
+    ]
+}

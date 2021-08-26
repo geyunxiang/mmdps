@@ -1,0 +1,11 @@
+{
+    "name": "DWI_CONNECTIVITY",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "DWI_Connectivity",
+            "typename": "PythonJob",
+            "cmd": "dwi_connectivity_matrix_job.py"
+        }
+    ]
+}

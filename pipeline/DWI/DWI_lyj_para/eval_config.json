@@ -1,0 +1,7 @@
+{
+    "track_root": "./tracking_result",
+    "tracking_method": "EuDX",
+    "eval_method": 0,
+    "evals_map_name": "None",
+    "output_file": "./eval_result"
+}
