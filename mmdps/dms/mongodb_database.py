@@ -69,8 +69,7 @@ class MongoDBDatabase:
 		""" Connect to mongo server """
 		self.client = pymongo.MongoClient(host, port)
 		if user == None and pwd == None:
-			user, pwd = get_password()
-		if user == None and pwd == None:
+		# 	user, pwd = get_password()
 			self.client = pymongo.MongoClient(host, port)
 		else:
 			uri = 'mongodb://%s:%s@%s:%s' % (user, pwd, host, str(port))
@@ -95,7 +94,8 @@ class MongoDBDatabase:
 		while True:
 			try:
 				self.client.list_databases()
-				store_password(user, pwd)
+				if user is not None:
+					store_password(user, pwd)
 				return
 			except pymongo.errors.OperationFailure:
 				# need authentication

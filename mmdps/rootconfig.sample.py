@@ -65,6 +65,10 @@ if sys.platform == 'win32':
 		CD_dicom_path = 'G:/DICOM/'
 		# MongoDB host address
 		mongo_host = 'localhost'
+		# MongoDB username
+		mongo_username = 'username'
+		# MongoDB password
+		mongo_password = 'password'
 
 else:
 	matlab_bin = '/usr/local/bin/matlab'

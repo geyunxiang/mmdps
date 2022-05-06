@@ -26,7 +26,7 @@ from mmdps import rootconfig
 from mmdps.dms import mongodb_database, redis_database
 
 class MMDPDatabase:
-	def __init__(self, data_source = 'Changgung', username = None, password = None):
+	def __init__(self, data_source = 'Changgung', username = rootconfig.dms.mongo_username, password = rootconfig.dms.mongo_password):
 		self.rdb = redis_database.RedisDatabase()
 		if username is None:
 			self.mdb = mongodb_database.MongoDBDatabase(data_source = data_source)
