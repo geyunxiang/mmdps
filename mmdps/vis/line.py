@@ -47,7 +47,7 @@ class LinePlot:
 		"""
 		sig_positions is a np.array with length = atlasobj.count
 		The value at each index is 0 or 1, with 1 representing significance
-		stat_list is a list of zipped value (stat, p). The length = atlasobj.count
+		stat_list is a list of zipped value (stat, p, idx). The length = amount of sig results
 		"""
 		stat_list = list(stat_list) # persist zip
 		image = Image.open(self.outfilepath)
@@ -171,6 +171,75 @@ class LinePlot:
 			self.adjust_plot_index(sig_positions)
 		for attr in self.attrs:
 			plt.plot(range(self.count), attr.data, '.-', label = attr.scan)
+
+		plt.xticks(range(self.count), self.plot_ticks, rotation=60)
+		if sig_positions is not None:
+			self.add_markers()
+		plt.grid(True)
+		plt.legend()
+		plt.title(self.title, fontsize=20)
+		path.makedirs_file(self.outfilepath)
+		plt.savefig(self.outfilepath, dpi=100)
+		plt.close()
+		if stat_list is not None:
+			# add text goes AFTER the image is saved
+			self.add_text(stat_list)
+
+class LinePlotCI(LinePlot):
+	"""
+	Line plot with confidence interval
+	"""
+	def __init__(self, attr, mean_list, upper_bound_list, lower_bound_list, title, outfilepath):
+		super().__init__([attr], title, outfilepath)
+		self.attr = attr
+		self.mean_list = mean_list
+		self.upper_bound_list = upper_bound_list
+		self.lower_bound_list = lower_bound_list
+		self.H = np.max(np.concatenate((attr.data, upper_bound_list)))
+		self.ylim = (0 - 0.1*self.H, self.H * 1.1)
+
+	def add_markers(self):
+		"""
+		positions - a list of index
+		"""
+		for plot_p, sig_flag in enumerate(self.sig_positions):
+			if sig_flag != 1:
+				continue
+			h = np.max((self.attr.data[plot_p], self.upper_bound_list[plot_p]))
+			if self.H - h > 0.2 * self.H:
+				plt.plot([plot_p, plot_p], [h + 0.05 * self.H, self.H], color = 'g')
+			plt.text(plot_p - 0.5, self.H, '*', fontsize = 20)
+
+	def plot(self, sig_positions = None, stat_list = None, adjust_method = None):
+		"""
+		"""
+		plt.figure(figsize=(20, 6))
+		plt.xlim(self.xlim)
+		plt.ylim(self.ylim)
+		ax = plt.gca()
+
+		if stat_list is not None:
+			# keep significant stats according to sig_positions
+			stat_list = list(stat_list) # persist zip
+			new_list = []
+			for idx, flag in enumerate(sig_positions):
+				if flag:
+					stat_list[idx] += (idx,)
+					new_list.append(stat_list[idx])
+			stat_list = new_list
+
+		if adjust_method == 'RSN':
+			self.adjust_RSN(ax, sig_positions)
+		elif adjust_method == 'circos':
+			self.adjust_circos(ax, sig_positions)
+		else:
+			self.adjust_plot_index(sig_positions)
+
+		plt.plot(range(self.atlasobj.count), self.mean_list, '.-g', label = 'mean')
+		plt.plot(range(self.atlasobj.count), self.upper_bound_list, '.-c', label = 'upper bound')
+		plt.plot(range(self.atlasobj.count), self.lower_bound_list, '.-c', label = 'lower bound')
+		plt.fill_between(range(self.atlasobj.count), self.lower_bound_list, self.upper_bound_list, alpha = 0.25, color = 'g')
+		plt.plot(range(self.atlasobj.count), self.attr.data, '.-r', label = self.attr.scan)
 
 		plt.xticks(range(self.count), self.plot_ticks, rotation=60)
 		if sig_positions is not None:
