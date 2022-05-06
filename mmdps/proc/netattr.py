@@ -601,6 +601,24 @@ def attr_comparisons(attr_list_A, attr_list_B, comparison_method, correction_met
 		_, p_attr.data = correction_method(p_attr.data)
 	return stat_attr, p_attr
 
+def attr_comparisons_single_subject(attr, attr_list_B, comparison_method, correction_method = None):
+	"""
+	Comparison is performed by one sample tests.
+	The population attr (attr_list_B) is usually calculated from HC.
+	A.k.a, the single subject attr value is treated as population mean and HC attr list is treated as sample
+	"""
+	atlasobj = attr.atlasobj
+	stat_attr = zero_attr(atlasobj)
+	p_attr = zero_attr(atlasobj)
+	for idx in range(atlasobj.count):
+		t, tp = comparison_method(attr.data[idx], 
+								  [attr.data[idx] for attr in attr_list_B])
+		stat_attr.data[idx] = t
+		p_attr.data[idx] = tp
+	if correction_method is not None:
+		_, p_attr.data = correction_method(p_attr.data)
+	return stat_attr, p_attr
+
 def FC_values(network):
 	"""
 	Get FC values in a network.

@@ -30,6 +30,15 @@ def mean_confidence_interval(data, confidence = 0.95):
 	h = se * scipy.stats.t.ppf((1+confidence)/2., n-1)
 	return m, m-h, m+h
 
+def oneSampleTTest(a, b):
+	"""
+	a - single value
+	b - group of values
+	https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_1samp.html
+	"""
+	t, p = scipy.stats.ttest_1samp(b, a)
+	return (t, p)
+
 def twoSampleTTest(a, b):
 	"""
 	https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html
