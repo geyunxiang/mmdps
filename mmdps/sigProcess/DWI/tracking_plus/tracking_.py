@@ -10,7 +10,7 @@ from dipy.tracking.streamline import Streamlines
 from dipy.tracking.stopping_criterion import ThresholdStoppingCriterion, CmcStoppingCriterion
 
 from dipy.io.stateful_tractogram import Space, StatefulTractogram
-from dipy.io.streamline import save_trk
+from dipy.io.streamline import save_trk,save_vtk
 from dipy.data import small_sphere, default_sphere, get_sphere
 from dipy.reconst.shm import CsaOdfModel
 from dipy.reconst import sfm
@@ -20,8 +20,7 @@ import numpy as np
 from mmdps.sigProcess.DWI.tracking_plus.utils import get_data
 from mmdps.sigProcess.DWI.tracking_plus import sfm_, peaks_
 from mmdps.sigProcess.DWI.tracking_plus.eval_ import get_evals_map
-
-
+from dipy.io.vtk import save_vtk_streamlines, load_vtk_streamlines
 #5 tracking methods
 
 
@@ -29,7 +28,6 @@ def probal(name=None, data_path=None, output_path='.',
            norm='normalized_pDWI.nii.gz', bvec='DWI.bvec', bval='DWI.bval',
            mask='normalized_mask.nii.gz', FA='FA.nii.gz',
            Threshold=.2, data_list=None, seed='.'):
-
 
     if data_list == None:
         data, affine, img, gtab, head_mask, FA = get_data(data_path=data_path,
@@ -60,9 +58,9 @@ def probal(name=None, data_path=None, output_path='.',
     gfa = csa_model.fit(data, mask=white_matter).gfa
     stopping_criterion = ThresholdStoppingCriterion(gfa, Threshold)
 
-    print("begin tracking, time:", time.time() - time0)
     fod = csd_fit.odf(small_sphere)
     pmf = fod.clip(min=0)
+    #FIXME break down here
     prob_dg = ProbabilisticDirectionGetter.from_pmf(pmf, max_angle=30.,
                                                     sphere=small_sphere)
     streamline_generator = LocalTracking(prob_dg, stopping_criterion, seeds,
@@ -71,9 +69,9 @@ def probal(name=None, data_path=None, output_path='.',
 
     sft = StatefulTractogram(streamlines, img, Space.RASMM)
 
-    output = output_path+'/tractogram_probabilistic_'+name+'.trk'
-
-    save_trk(sft, output)
+    output = output_path+'/tractogram_probabilistic_'+name
+    save_vtk(sft, output+'.vtk', streamlines)
+    save_trk(sft, output+'.trk', streamlines)
 
 
 
@@ -121,9 +119,10 @@ def determine(name=None, data_path=None, output_path='.',
                                          affine, step_size=.5)
     streamlines = Streamlines(streamline_generator)
     sft = StatefulTractogram(streamlines, img, Space.RASMM)
-
-    output = output_path + '/tractogram_deterministic_' + name + '.trk'
-    save_trk(sft, output)
+    output = output_path + '/tractogram_deterministic_' + name
+    save_vtk(sft, output+'.vtk', streamlines)
+    # save_vtk_streamlines(sft.streamlines, filename, binary=True)
+    save_trk(sft, output+'.trk', streamlines)
 
 
 def basic_tracking(name=None, data_path=None,
@@ -178,8 +177,11 @@ def basic_tracking(name=None, data_path=None,
     from dipy.io.streamline import save_trk
 
     sft = StatefulTractogram(streamlines, img, Space.RASMM)
-    output = output_path+'/tractogram_EuDX_'+name+'.trk'
-    save_trk(sft, output, streamlines)
+    output = output_path+'/tractogram_EuDX_'+name
+
+    save_vtk(sft, output+'.vtk')
+    print('not streamlines')
+    save_trk(sft, output+'.trk')
 
 def sfm_tracking(name=None, data_path=None,
                  norm='normalized_pDWI', bval='DWI.bval', bvec='DWI.bvec',
@@ -212,7 +214,7 @@ def sfm_tracking(name=None, data_path=None,
     from dipy.direction import peaks_from_model
 
     response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.7)
-
+    print('after auto_response_ssst')
     sphere = get_sphere()
     sf_model = sfm.SparseFascicleModel(gtab, sphere=sphere,
                                        l1_ratio=0.5, alpha=0.001,
@@ -225,7 +227,7 @@ def sfm_tracking(name=None, data_path=None,
                            parallel=True)
 
     stopping_criterion = ThresholdStoppingCriterion(pnm.gfa, Threshold)
-
+    print('after ThresholdStoppingCriterion')
 
     streamline_generator = LocalTracking(pnm, stopping_criterion, seeds, affine,
                                          step_size=.5)
@@ -235,8 +237,10 @@ def sfm_tracking(name=None, data_path=None,
     from dipy.io.streamline import save_trk
 
     sft = StatefulTractogram(streamlines, img, Space.RASMM)
-    output = output_path + '/tractogram_sfm_' + name + '.trk'
-    save_trk(sft, output, streamlines)
+    # output = output_path + '/tractogram_sfm_' + name + '.trk'
+    output = output_path + '/tractogram_sfm_' + name
+    save_trk(sft, output + '.trk', streamlines)
+    save_vtk(sft, output + '.vtk', streamlines)
 
 
 def sfm_new(name=None, data_path=None,
@@ -252,7 +256,7 @@ def sfm_new(name=None, data_path=None,
                                                           norm=norm, bval=bval, bvec=bvec,
                                                           mask=mask, FA=FA)
     if evals_map == None or index_map == None:
-        evals_map, index_map = get_evals_map(gtab, data, head_mask, FA)
+        evals_map, index_map = get_evals_map(gtab, data, head_mask, FA, loc_range=3, FA_th=0.1) # loc_range=3 for running faster
         save_nifti(data_path + '/' + 'evals_map.nii.gz', evals_map, affine)
         save_nifti(data_path + '/' + 'index_map.nii.gz', index_map, affine)
 
@@ -269,13 +273,15 @@ def sfm_new(name=None, data_path=None,
     else:
         seed_mask = (FA > Threshold) * (head_mask == 1)
 
+    print('after seed_mask')
+
     white_matter = (FA > 0.2) * (head_mask == 1)
     seeds = utils.seeds_from_mask(seed_mask, affine, density=1)
 
     from dipy.reconst.csdeconv import auto_response_ssst
     from dipy.reconst.shm import CsaOdfModel
     from dipy.data import default_sphere
-    from dipy.direction import peaks_from_model_
+    # from dipy.direction import peaks_from_model_
 
     sphere = get_sphere()
     sf_model = sfm_.SparseFascicleModel(gtab, sphere=sphere,
@@ -296,7 +302,8 @@ def sfm_new(name=None, data_path=None,
 
     streamlines = Streamlines(streamline_generator)
     sft = StatefulTractogram(streamlines, img, Space.RASMM)
-    output = output_path + '/tractogram_sfmnew_' + name + '.trk'
-    save_trk(sft, output, streamlines)
+    output = output_path + '/tractogram_sfmnew_' + name 
+    save_vtk(sft, output+'.vtk', streamlines)
+    save_trk(sft, output+'.trk', streamlines)
 
 

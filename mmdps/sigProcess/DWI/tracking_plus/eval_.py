@@ -9,11 +9,11 @@ from  mmdps.sigProcess.DWI.tracking_plus.utils import reduct
 
 ## return engine vectors and index map
 
-def get_evals_map(gtab, data, head_mask, FA):
+def get_evals_map(gtab, data, head_mask, FA, FA_th=0.15, loc_range=2):
 
-
+    #pdb.set_trace()
     values = np.zeros((data.shape[0], data.shape[1], data.shape[2], 3))
-    loc = np.where((head_mask*(FA>0.1) != 0))
+    loc = np.where((head_mask*(FA>FA_th) != 0))
     row = loc[0]
     col = loc[1]
     z = loc[2]
@@ -21,19 +21,22 @@ def get_evals_map(gtab, data, head_mask, FA):
     mark = np.zeros_like(data[:, :, :, 0])
     mark_index = np.zeros_like(data[:, :, :, 0])
     index = 0
-
+    #pdb.set_trace()
 
     for i in range(row.shape[0]):
 
         if mark[row[i], col[i], z[i]] == 0:
-
+            #pdb.set_trace()
             response, ratio = auto_response_ssst(gtab, data, roi_radii=10, fa_thr=0.1,
                                                  roi_center=[row[i], col[i], z[i]])
+            #pdb.set_trace()
 
-            mark[row[i] - 1:row[i] + 1, col[i] - 1:col[i] + 1, z[i] - 1:z[i] + 1] = 1
-            mark_index[row[i] - 1:row[i] + 1, col[i] - 1:col[i] + 1, z[i] - 1:z[i] + 1] = index
+            mark[row[i] -loc_range :row[i] + loc_range, col[i] - loc_range:col[i] + loc_range, z[i] - loc_range:z[i] + loc_range] = 1
+            mark_index[row[i] - loc_range:row[i] + loc_range, col[i] - loc_range:col[i] + loc_range, z[i] - loc_range:z[i] + loc_range] = index
 
             values[row[i], col[i], z[i]] = response[0]
+            print('{}/{} finished!'.format(i, row.shape[0]) )
+    #pdb.set_trace()
 
 
     return values*(np.expand_dims(head_mask>0,3).repeat(3,axis=3)), mark_index*(head_mask>0)
@@ -60,7 +63,7 @@ def get_percentage(error, data):
     return p
 
 
-def get_new_life_error(error, data, gtab):
+def get_new_life_error(error, data, gtab, direction_map):
 
     # input error, numpy array: [x, y, z, d-1]
     # return numpy array: [x, y, z, d-1]

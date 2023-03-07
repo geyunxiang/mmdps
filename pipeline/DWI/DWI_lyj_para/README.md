@@ -37,3 +37,8 @@ python脚本和config文件，在FSL预处理之后进行。
 
 5. **dwi_connectivity_matrix.py**
 需要basic_config和atlas_config和追踪结果，得到连接矩阵并保存为.mat文件。
+
+
+### sfm_new方法运行过慢解决
+get_evals_map()运行过慢，增大loc_range为3可以加快运行速度
+/home/mmdp/Zhangziliang/GitWorkspace/mmdps/mmdps/sigProcess/DWI/tracking_plus/eval_.py

@@ -1,9 +1,9 @@
 {
     "name": "DWI_TRACKING",
-    "MainFolder": "/home/mmdp/Zhangziliang/GitWorkspace/DWI_DATA/",
-    "FolderList": "/home/mmdp/Zhangziliang/GitWorkspace/DWI_DATA/namelist.txt",
+    "MainFolder": "/home/mmdp/Zhangziliang/DWI_test_Data/",
+    "FolderList": "/home/mmdp/Zhangziliang/DWI_test_Data/namelist.txt",
     "Second": false,
-    "SecondList": "/home/mmdp/Zhangziliang/GitWorkspace/DWI_DATA/atlaslist.txt",
+    "SecondList": "/home/mmdp/Zhangziliang/DWI_test_Data//atlaslist.txt",
     "JobConfig": "/home/mmdp/Zhangziliang/GitWorkspace/mmdps/pipeline/DWI/DWI_lyj_para/configjob_DWI_TRACKING.json",
     "RunMode": "Parallel"
 }
