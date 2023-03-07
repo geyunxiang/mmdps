@@ -1,0 +1,11 @@
+{
+    "name": "TUMOR_SEG",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "Tumor_seg",
+            "typename": "PythonJob",
+            "cmd": "tumorSeg_job.py"
+        }
+    ]
+}
