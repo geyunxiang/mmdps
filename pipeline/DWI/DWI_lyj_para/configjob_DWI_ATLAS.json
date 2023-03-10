@@ -1,0 +1,11 @@
+{
+    "name": "DWI_ATLAS",
+    "typename": "BatchJob",
+    "config": [
+        {
+            "name": "DWI_Atlas",
+            "typename": "PythonJob",
+            "cmd": "dwi_atlas_job.py"
+        }
+    ]
+}

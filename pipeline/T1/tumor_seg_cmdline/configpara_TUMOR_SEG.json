@@ -1,0 +1,9 @@
+{
+    "name": "DWI_PREPROCESS",
+    "MainFolder": "D:/zhangziliang/GitWorkspace/tumor_test_data/",
+    "FolderList": "D:/zhangziliang/GitWorkspace/tumor_test_data/namelist.txt",
+    "Second": false,
+    "SecondList": "",
+    "JobConfig": "D:\\zhangziliang\\GitWorkspace\\mmdps\\pipeline\\T1\\tumor_seg_cmdline\\configjob_TUMOR_SEG.json",
+    "RunMode": "Parallel"
+}

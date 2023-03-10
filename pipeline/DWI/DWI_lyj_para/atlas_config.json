@@ -1,0 +1,9 @@
+{
+    "atlas_volume": "2mm",
+    "track_root": "../tracking_result",
+    "output_root": "./",
+    "feature_connectivity_filename":"connectivity.mat",
+    "feature_ROI_filename":"ROI_count.mat",
+    "matrix_output_filename": "matrix.mat",
+    "tracking_method": "EuDX"
+}
