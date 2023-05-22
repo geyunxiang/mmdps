@@ -1,5 +1,5 @@
 {
-    "tracking_method": 5,
+    "tracking_method": 2,
     "result_folder": "./tracking_result", 
     "seed_mask_file": "None",
     "FA_name": "FA.nii.gz",

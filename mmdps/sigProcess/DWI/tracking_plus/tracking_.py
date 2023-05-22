@@ -20,7 +20,8 @@ import numpy as np
 from mmdps.sigProcess.DWI.tracking_plus.utils import get_data
 from mmdps.sigProcess.DWI.tracking_plus import sfm_, peaks_
 from mmdps.sigProcess.DWI.tracking_plus.eval_ import get_evals_map
-from dipy.io.vtk import save_vtk_streamlines, load_vtk_streamlines
+import time
+
 #5 tracking methods
 
 
@@ -58,6 +59,7 @@ def probal(name=None, data_path=None, output_path='.',
     gfa = csa_model.fit(data, mask=white_matter).gfa
     stopping_criterion = ThresholdStoppingCriterion(gfa, Threshold)
 
+    # print("begin tracking, time:", time.time() - time0)
     fod = csd_fit.odf(small_sphere)
     pmf = fod.clip(min=0)
     #FIXME break down here
@@ -119,9 +121,9 @@ def determine(name=None, data_path=None, output_path='.',
                                          affine, step_size=.5)
     streamlines = Streamlines(streamline_generator)
     sft = StatefulTractogram(streamlines, img, Space.RASMM)
+
     output = output_path + '/tractogram_deterministic_' + name
     save_vtk(sft, output+'.vtk', streamlines)
-    # save_vtk_streamlines(sft.streamlines, filename, binary=True)
     save_trk(sft, output+'.trk', streamlines)
 
 
@@ -178,9 +180,7 @@ def basic_tracking(name=None, data_path=None,
 
     sft = StatefulTractogram(streamlines, img, Space.RASMM)
     output = output_path+'/tractogram_EuDX_'+name
-
-    save_vtk(sft, output+'.vtk')
-    print('not streamlines')
+    save_vtk(sft, output+'.vtk', streamlines)
     save_trk(sft, output+'.trk')
 
 def sfm_tracking(name=None, data_path=None,
