@@ -1,9 +1,9 @@
 {
-    "tracking_method": 1,
+    "tracking_method": 2,
     "result_folder": "./tracking_result", 
     "seed_mask_file": "None",
     "FA_name": "FA.nii.gz",
     "evals_map_name": "None",
     "index_map_name": "None",
-    "StoppingThreshold": 0.1
+    "StoppingThreshold": 0.5
 }

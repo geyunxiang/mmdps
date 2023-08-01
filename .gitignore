@@ -8,3 +8,4 @@ server/apiserver/mmdpdb.db
 .cache
 rootconfig.py
 .DS_Store
+circos-0.69/

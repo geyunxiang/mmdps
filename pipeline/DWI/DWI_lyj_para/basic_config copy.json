@@ -1,0 +1,6 @@
+{
+    "norm_DWI_name": "normalized_pDWI.nii.gz",
+    "brain_mask_name": "normalized_mask.nii.gz",
+    "bvec_name": "DWI.bvec",
+    "bval_name": "DWI.bval"
+}
